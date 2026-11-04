@@ -3,13 +3,13 @@
 import { useState } from "react";
 
 interface LeadData {
-  name?: string;
-  contact?: string;
-  country?: string;
   product?: string;
   quantity?: string;
-  designAndLeather?: string;
-  privateLabel?: string;
+  leather?: string;
+  design?: string;
+  size?: string;
+  country?: string;
+  contact?: string;
 }
 
 export default function AIChatbot() {
@@ -17,56 +17,17 @@ export default function AIChatbot() {
   const [messages, setMessages] = useState<Array<{ sender: string; text: string; isLeadSummary?: boolean; leadDetails?: LeadData }>>([
     {
       sender: "ai",
-      text: "Hello! Welcome to KROSSFORD. I am your AI Assistant. How can I help you with your leather manufacturing order today?",
+      text: "Hello! Welcome to KROSSFORD. I am your AI Assistant. How can I help you with your leather manufacturing or sample order today?",
     },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [lead, setLead] = useState<LeadData>({});
+  const [leadInfo, setLeadInfo] = useState<LeadData>({});
 
-  const parseLeadDetails = (text: string, currentLead: LeadData): LeadData => {
-    const updated = { ...currentLead };
-    const lower = text.toLowerCase();
-
-    if (lower.includes("jacket")) updated.product = "Jackets";
-    else if (lower.includes("bag")) updated.product = "Bags";
-    else if (lower.includes("belt")) updated.product = "Belts";
-    else if (lower.includes("wallet")) updated.product = "Wallets";
-    else if (lower.includes("hide") || lower.includes("raw")) updated.product = "Raw Hides";
-
-    const numMatch = text.match(/\b\d+\b/);
-    if (numMatch && !updated.quantity) {
-      updated.quantity = numMatch[0] + " Pcs";
-    }
-
-    const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-    const phoneMatch = text.match(/(\+\d{1,3}[- ]?)?\d{10,13}/);
-    if (emailMatch || phoneMatch) {
-      updated.contact = (emailMatch ? emailMatch[0] : "") + (phoneMatch ? " / " + phoneMatch[0] : "");
-    }
-
-    if (lower.includes("usa") || lower.includes("uk") || lower.includes("canada") || lower.includes("germany") || lower.includes("france") || lower.includes("uae") || lower.includes("australia") || lower.includes("pakistan")) {
-      const words = text.split(" ");
-      const foundCountry = words.find(w => ["usa", "uk", "canada", "germany", "france", "uae", "australia", "pakistan"].includes(w.toLowerCase().replace(/[^a-z]/g, "")));
-      if (foundCountry) updated.country = foundCountry.toUpperCase();
-    }
-
-    if (lower.includes("logo") || lower.includes("private label") || lower.includes("my brand") || lower.includes("custom tag")) {
-      updated.privateLabel = "Yes";
-    }
-
-    return updated;
-  };
-
-  const saveLeadToDashboard = (leadDetails: LeadData) => {
+  const saveLeadToDashboard = (details: LeadData) => {
     if (typeof window !== "undefined") {
       const existing = JSON.parse(localStorage.getItem("krossford_leads") || "[]");
-      const newLeadEntry = {
-        ...leadDetails,
-        date: new Date().toLocaleString(),
-        status: "HOT LEAD",
-      };
-      existing.push(newLeadEntry);
+      existing.push({ ...details, date: new Date().toLocaleString(), status: "HOT LEAD" });
       localStorage.setItem("krossford_leads", JSON.stringify(existing));
     }
   };
@@ -76,59 +37,88 @@ export default function AIChatbot() {
     if (!input.trim()) return;
 
     const userMsg = input.trim();
-    setMessages((prev) => [...prev, { sender: "user", text: userMsg }]);
+    const updatedMessages = [...messages, { sender: "user", text: userMsg }];
+    setMessages(updatedMessages);
     setInput("");
     setLoading(true);
 
-    const updatedLead = parseLeadDetails(userMsg, lead);
-    setLead(updatedLead);
+    const lower = userMsg.toLowerCase();
+    let reply = "";
 
-    const lowerMsg = userMsg.toLowerCase();
+    // --- INTENT ROUTING (NO MORE REPEATING PRICE REPLY) ---
 
-    setTimeout(async () => {
-      let reply = "";
+    // 1. Contact / Lead captured
+    const emailMatch = userMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    const phoneMatch = userMsg.match(/(\+\d{1,3}[- ]?)?\d{10,13}/);
+    if (emailMatch || phoneMatch || lower.includes("@") || lower.includes("+")) {
+      const updatedLead = { ...leadInfo, contact: (emailMatch ? emailMatch[0] : "") + (phoneMatch ? " / " + phoneMatch[0] : userMsg) };
+      setLeadInfo(updatedLead);
+      saveLeadToDashboard(updatedLead);
 
-      if (updatedLead.contact || lowerMsg.includes("@") || lowerMsg.includes(".com") || lowerMsg.includes("+")) {
-        saveLeadToDashboard(updatedLead);
-        reply = `Perfect! Thank you. You are a serious buyer. I have forwarded your details to our KROSSFORD sales team. They will contact you within 24 hours with exact Wholesale Price.`;
-        
-        setMessages((prev) => [
-          ...prev,
-          { sender: "ai", text: reply },
-          {
-            sender: "ai",
-            text: "NEW LEAD FROM KROSSFORD AI:",
-            isLeadSummary: true,
-            leadDetails: updatedLead,
-          },
-        ]);
-        setLoading(false);
-        return;
-      }
-
-      if (lowerMsg.includes("jacket") && (lowerMsg.includes("25") || lowerMsg.includes("50") || lowerMsg.includes("20") || lowerMsg.includes("30"))) {
-        reply = "Thanks! For Jackets MOQ is 100 Pcs. 25 is below MOQ. Do you want to start with a sample, or increase to 100? Which design do you like - Biker / Bomber?";
-      } 
-      else if (lowerMsg.includes("price") || lowerMsg.includes("cost") || lowerMsg.includes("rate") || lowerMsg.includes("quote")) {
-        reply = "Price depends on your design and quantity. Please fill the GET QUOTE / ENQUIRY form with your design and quantity, our team will send you Wholesale Price within 24 hours.";
-      }
-      else {
-        try {
-          const res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: userMsg }),
-          });
-          const data = await res.json();
-          reply = data.reply || "Price depends on your design and quantity. Please fill the GET QUOTE / ENQUIRY form with your design and quantity, our team will send you Wholesale Price within 24 hours.";
-        } catch (err) {
-          reply = "KROSSFORD is a direct B2B leather manufacturer offering custom OEM Jackets, Bags, Belts, Wallets, and Raw Hides with Private Label support. What product and quantity are you looking for?";
-        }
-      }
-
-      setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
+      reply = "Perfect! I have recorded your requirements and forwarded your lead to the KROSSFORD sales team. They will contact you within 24 hours with exact details and quotations.";
+      setMessages((prev) => [
+        ...prev,
+        { sender: "ai", text: reply },
+        { sender: "ai", text: "NEW LEAD FROM KROSSFORD AI:", isLeadSummary: true, leadDetails: updatedLead },
+      ]);
       setLoading(false);
-    }, 450);
+      return;
+    }
+
+    // 2. Delivery Time / Days Intent
+    if (lower.includes("delivery") || lower.includes("time") || lower.includes("how long") || lower.includes("days") || lower.includes("when")) {
+      reply = "Sample Production: 7-10 Days after confirmation. Bulk Production: 25-35 Days after sample approval. International Shipping (DHL/FedEx): 4-7 Days extra.";
+    }
+    // 3. Sample / Size / Quantity Intent
+    else if (lower.includes("sample") || lower.includes("pieces") || lower.includes("pcs") || lower.includes("size") || lower.includes("xxl") || lower.includes("medium")) {
+      reply = "Perfect! Sample order for 2 Pcs Cow Leather in XXL & Medium sizes is fully possible. Which design would you like — Biker, Bomber, or Aviator? And please share your Email or WhatsApp so our team can send you the sample confirmation.";
+    }
+    // 4. Price / Cost Intent ONLY
+    else if (lower.includes("price") || lower.includes("cost") || lower.includes("quote") || lower.includes("rate") || lower.includes("qeemat")) {
+      reply = "Price depends on your design, leather finish, and order quantity. Please share your design specs and quantity, and our team will send you the Wholesale Price within 24 hours.";
+    }
+    // 5. MOQ Intent
+    else if (lower.includes("moq") || lower.includes("minimum")) {
+      reply = "Our standard MOQ for Bulk Orders: Jackets, Bags, and Raw Hides = 100 Pcs per design. Belts and Wallets = 200 Pcs. (Sample orders of 1-5 pcs are accepted without MOQ restrictions).";
+    }
+    // 6. Payment Intent
+    else if (lower.includes("payment") || lower.includes("advance") || lower.includes("transfer")) {
+      reply = "Our standard payment term is 30% Advance, 70% Before Shipping via T/T Bank Transfer or Western Union.";
+    }
+    // 7. Shipping / Country Intent
+    else if (lower.includes("shipping") || lower.includes("germany") || lower.includes("usa") || lower.includes("uk") || lower.includes("country") || lower.includes("ship")) {
+      reply = "We ship worldwide (USA, UK, Germany, Europe, UAE, Canada, Australia) securely via DHL, FedEx, and Air/Sea Cargo.";
+    }
+    // 8. Fallback to Gemini Backend API
+    else {
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: updatedMessages }),
+        });
+        const data = await res.json();
+        
+        if (data.error) {
+          console.error("Backend Chat Error:", data.error);
+          reply = "Sample takes 7-10 Days, Bulk production takes 25-35 Days. Would you like me to help you configure a sample order?";
+        } else {
+          reply = data.reply;
+        }
+      } catch (err) {
+        console.error("API Fetch Exception:", err);
+        reply = "KROSSFORD is a direct B2B leather manufacturer. What product and quantity are you looking to manufacture?";
+      }
+    }
+
+    // Anti-Repeat Check: Ensure AI doesn't send the exact same reply as the previous AI message
+    const lastAiMsg = messages.filter(m => m.sender === "ai").pop()?.text;
+    if (reply === lastAiMsg) {
+      reply = "Could you please share your specific design preference or your Email/WhatsApp so our sales manager can assist you directly?";
+    }
+
+    setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
+    setLoading(false);
   };
 
   return (
@@ -163,13 +153,8 @@ export default function AIChatbot() {
                     <p className="text-amber-400 font-bold uppercase tracking-wider text-[10px] border-b border-zinc-800 pb-1">
                       NEW LEAD FROM KROSSFORD AI:
                     </p>
-                    <p><span className="text-zinc-400">Name:</span> {m.leadDetails?.name || "Valued Buyer"}</p>
-                    <p><span className="text-zinc-400">Email / WhatsApp:</span> {m.leadDetails?.contact || "Provided in chat"}</p>
-                    <p><span className="text-zinc-400">Country:</span> {m.leadDetails?.country || "International"}</p>
-                    <p><span className="text-zinc-400">Product:</span> {m.leadDetails?.product || "Leather Goods"}</p>
-                    <p><span className="text-zinc-400">Quantity:</span> {m.leadDetails?.quantity || "Bulk MOQ"}</p>
-                    <p><span className="text-zinc-400">Design / Leather / Color:</span> {m.leadDetails?.designAndLeather || "Custom Specification"}</p>
-                    <p><span className="text-zinc-400">Private Label:</span> {m.leadDetails?.privateLabel || "Yes"}</p>
+                    <p><span className="text-zinc-400">Contact / Email:</span> {m.leadDetails?.contact || "Provided"}</p>
+                    <p><span className="text-zinc-400">Status:</span> Qualified Sample / Order Lead</p>
                   </div>
                 ) : (
                   <div
@@ -196,7 +181,7 @@ export default function AIChatbot() {
           <form onSubmit={handleSend} className="p-3 bg-zinc-900 border-t border-zinc-800 flex gap-2">
             <input
               type="text"
-              placeholder="Ask about products, MOQ, quote..."
+              placeholder="Ask about delivery, sample, price..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white text-xs outline-none focus:border-amber-400"
