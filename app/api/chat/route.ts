@@ -13,10 +13,28 @@ export async function POST(req: Request) {
       );
     }
 
-    const formattedContents = messages.map((m: { sender: string; text: string }) => ({
-      role: m.sender === "user" ? "user" : "model",
-      parts: [{ text: m.text }],
-    }));
+    // Format messages for Gemini API supporting text and inline image parts
+    const formattedContents = messages.map((m: { sender: string; text: string; image?: string }) => {
+      const parts: any[] = [{ text: m.text || (m.image ? "Here is my design photo." : "") }];
+      
+      if (m.image) {
+        // Extract base64 data and mime type from data URL (e.g., data:image/jpeg;base64,...)
+        const matches = m.image.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
+        if (matches && matches.length === 3) {
+          parts.push({
+            inlineData: {
+              mimeType: matches[1],
+              data: matches[2],
+            },
+          });
+        }
+      }
+
+      return {
+        role: m.sender === "user" ? "user" : "model",
+        parts,
+      };
+    });
 
     const systemInstruction = {
       role: "user",
@@ -26,15 +44,15 @@ export async function POST(req: Request) {
           
           RULES:
           1. BRAND NAME: KROSSFORD only. Never use "KF" or "A.H Leather".
-          2. NEVER give a price reply when the user asks about delivery time, sample details, shipping, or payment. Match the exact intent of the user.
-          3. Timelines: Sample takes 7-10 Days, Bulk production takes 25-35 Days.
-          4. Be professional, direct, and conversational.`,
+          2. When the user uploads a design image, analyze it professionally, acknowledge the style (e.g., Aviator, Biker, Bomber, Tote, Belt), and ask for their required quantity, size breakdown, and Email/WhatsApp to dispatch the wholesale quote.
+          3. Timelines: Sample takes 7-10 Days, Bulk production takes 25-35 Days.`,
         },
       ],
     };
 
     const contents = [systemInstruction, ...formattedContents];
 
+    // Using gemini-2.0-flash which supports multimodal image input
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
