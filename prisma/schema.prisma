@@ -1,0 +1,425 @@
+// This is your Prisma schema file.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+enum B2BStatus {
+  NONE
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum EnquiryStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  QUOTATION_ISSUED
+  EXPIRED
+  CANCELLED
+}
+
+enum QuotationStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum OrderStatus {
+  CONFIRMED
+  IN_PRODUCTION
+  READY_TO_SHIP
+  SHIPPED
+  DELIVERED
+  COMPLETED
+  CANCELLED
+  DISPUTED
+}
+
+enum PaymentStatus {
+  PENDING
+  PARTIALLY_PAID
+  PAID
+  PARTIALLY_REFUNDED
+  REFUNDED
+}
+
+enum RefundStatus {
+  REQUESTED
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ActorType {
+  CUSTOMER
+  STAFF
+  SYSTEM
+}
+
+enum AcceptanceSource {
+  CUSTOMER_PORTAL
+  STAFF_OVERRIDE
+}
+
+enum DeliverySource {
+  COURIER_WEBHOOK
+  STAFF_VERIFICATION
+  SYSTEM_AUTO
+}
+
+// ==========================================
+// AUTH.JS ADAPTER MODELS
+// ==========================================
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==========================================
+// CORE DOMAIN MODELS
+// ==========================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  phone         String?
+  phoneVerified DateTime?
+  role          Role      @default(CUSTOMER)
+  b2bStatus     B2BStatus @default(NONE)
+  companyName   String?
+  taxId         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts           Account[]
+  sessions           Session[]
+  enquiries          Enquiry[]
+  guestClaimTokens   GuestClaimToken[]
+  acceptedQuotations Quotation[] @relation("QuotationAcceptor")
+  orders             Order[]
+  reviews            Review[]
+  reviewReports      ReviewReport[]
+  auditLogs          AuditLog[] @relation("UserAudits")
+
+  @@index([email])
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  sku       String   @unique
+  name      String
+  slug      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enquiryItems   EnquiryItem[]
+  quotationItems QuotationItem[]
+  orderItems     OrderItem[]
+  reviews        Review[]
+
+  @@index([slug])
+}
+
+model Enquiry {
+  id            String        @id @default(cuid())
+  userId        String?
+  guestEmail    String?
+  guestName     String?
+  status        EnquiryStatus @default(SUBMITTED)
+  customerNotes String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user             User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  guestClaimTokens GuestClaimToken[]
+  items            EnquiryItem[]
+  quotations       Quotation[]
+
+  @@index([userId])
+  @@index([guestEmail])
+}
+
+model GuestClaimToken {
+  id        String   @id @default(cuid())
+  enquiryId String
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  enquiry Enquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([enquiryId])
+  @@index([userId])
+}
+
+model EnquiryItem {
+  id            String  @id @default(cuid())
+  enquiryId     String
+  productId     String
+  quantity      Int     @default(1)
+  customization String?
+
+  enquiry Enquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([enquiryId])
+}
+
+model Quotation {
+  id               String            @id @default(cuid())
+  enquiryId        String
+  status           QuotationStatus   @default(DRAFT)
+  totalAmount      Decimal           @db.Decimal(10, 2)
+  currency         String
+  validUntil       DateTime
+  staffNotes       String?
+  acceptedAt       DateTime?
+  acceptedByUserId String?
+  acceptanceSource AcceptanceSource?
+  acceptanceIpHash String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  enquiry    Enquiry @relation(fields: [enquiryId], references: [id], onDelete: Restrict)
+  acceptedBy User?   @relation("QuotationAcceptor", fields: [acceptedByUserId], references: [id], onDelete: SetNull)
+
+  items  QuotationItem[]
+  orders Order[]
+
+  @@index([enquiryId])
+}
+
+model QuotationItem {
+  id            String  @id @default(cuid())
+  quotationId   String
+  productId     String
+  quantity      Int
+  unitPrice     Decimal @db.Decimal(10, 2)
+  customization String?
+
+  // Historical product snapshots
+  productName String
+  productSku  String
+
+  quotation Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([quotationId])
+}
+
+model Order {
+  id                String        @id @default(cuid())
+  quotationId       String?       @unique
+  userId            String
+  status            OrderStatus   @default(CONFIRMED)
+  paymentStatus     PaymentStatus @default(PENDING)
+  totalAmount       Decimal       @db.Decimal(10, 2)
+  currency          String
+  shippingAddress   Json
+  trackingNumber    String?
+  deliveredAt       DateTime?
+  deliverySource    DeliverySource?
+  deliveryActorType ActorType?
+  deliveryActorId   String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  quotation     Quotation? @relation(fields: [quotationId], references: [id], onDelete: SetNull)
+  user          User       @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+  refunds       Refund[]
+  reviews       Review[]
+
+  @@unique([id, userId])
+  @@index([userId])
+}
+
+model OrderItem {
+  id            String  @id @default(cuid())
+  orderId       String
+  productId     String
+  quantity      Int
+  unitPrice     Decimal @db.Decimal(10, 2)
+  customization String?
+
+  // Historical product snapshots
+  productName String
+  productSku  String
+
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+  reviews     Review[]
+  refundItems RefundItem[]
+
+  @@unique([id, orderId])
+  @@unique([id, orderId, productId])
+  @@index([orderId])
+}
+
+model OrderStatusHistory {
+  id        String      @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  notes     String?
+  actorType ActorType
+  actorId   String
+  createdAt DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Refund {
+  id        String       @id @default(cuid())
+  orderId   String
+  amount    Decimal      @db.Decimal(10, 2)
+  currency  String
+  status    RefundStatus @default(REQUESTED)
+  reason    String
+  actorType ActorType
+  actorId   String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  refundItems RefundItem[]
+
+  @@unique([id, orderId])
+  @@index([orderId])
+}
+
+model RefundItem {
+  id          String   @id @default(cuid())
+  refundId    String
+  orderId     String
+  orderItemId String
+  quantity    Int
+  amount      Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  refund    Refund    @relation(fields: [refundId, orderId], references: [id, orderId], onDelete: Cascade)
+  orderItem OrderItem @relation(fields: [orderItemId, orderId], references: [id, orderId], onDelete: Restrict)
+
+  @@index([refundId])
+  @@index([orderItemId])
+}
+
+model Review {
+  id                 String       @id @default(cuid())
+  productId          String
+  userId             String
+  orderItemId        String
+  orderId            String
+  rating             Int
+  title              String
+  comment            String
+  status             ReviewStatus @default(PENDING)
+  isVerifiedPurchase Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  orderItem OrderItem @relation(fields: [orderItemId, orderId, productId], references: [id, orderId, productId], onDelete: Restrict)
+  order     Order     @relation(fields: [orderId, userId], references: [id, userId], onDelete: Restrict)
+
+  reports ReviewReport[]
+
+  @@unique([userId, orderItemId])
+  @@index([productId, status])
+}
+
+model ReviewReport {
+  id        String   @id @default(cuid())
+  reviewId  String
+  userId    String
+  reason    String
+  createdAt DateTime @default(now())
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([reviewId])
+}
+
+model AuditLog {
+  id        String    @id @default(cuid())
+  userId    String?
+  action    String
+  details   Json?
+  actorType ActorType
+  ipAddress String?
+  createdAt DateTime  @default(now())
+
+  user User? @relation("UserAudits", fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+}
