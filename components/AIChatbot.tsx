@@ -39,7 +39,6 @@ export default function AIChatbot() {
     const files = e.target.files;
     if (!files) return;
 
-    const newImages: string[] = [];
     const maxFiles = Math.min(files.length, 3 - selectedImages.length);
 
     for (let i = 0; i < maxFiles; i++) {
@@ -52,7 +51,6 @@ export default function AIChatbot() {
       };
       reader.readAsDataURL(file);
     }
-    // Reset file input
     e.target.value = "";
   };
 
@@ -67,11 +65,10 @@ export default function AIChatbot() {
     const userMsg = input.trim();
     const currentImgs = [...selectedImages];
 
-    // Build new message entry
     const newMsgEntry = {
       sender: "user",
       text: userMsg || (currentImgs.length > 0 ? "Here is my design photo attachment." : ""),
-      image: currentImgs[0], // primary attached image for bubble
+      image: currentImgs[0],
     };
 
     const updatedMessages = [...messages, newMsgEntry];
@@ -83,15 +80,34 @@ export default function AIChatbot() {
     const lower = userMsg.toLowerCase();
     let reply = "";
 
-    // Lead detection via email/phone
+    // Lead detection via email/phone with duplicate prevention check
     const emailMatch = userMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const phoneMatch = userMsg.match(/(\+\d{1,3}[- ]?)?\d{10,13}/);
+    
     if (emailMatch || phoneMatch || lower.includes("@") || lower.includes("+")) {
-      const updatedLead = { ...leadInfo, contact: (emailMatch ? emailMatch[0] : "") + (phoneMatch ? " / " + phoneMatch[0] : userMsg) };
+      const foundEmail = emailMatch ? emailMatch[0] : "";
+      const foundPhone = phoneMatch ? phoneMatch[0] : "";
+      
+      let existingContact = leadInfo.contact || "";
+      let parts = existingContact ? existingContact.split(" / ").map(p => p.trim()) : [];
+
+      if (foundEmail && !parts.includes(foundEmail)) {
+        parts.push(foundEmail);
+      }
+      if (foundPhone && !parts.includes(foundPhone)) {
+        parts.push(foundPhone);
+      }
+      if (!foundEmail && !foundPhone && userMsg && !parts.includes(userMsg)) {
+        parts.push(userMsg);
+      }
+
+      const mergedContact = parts.join(" / ");
+      const updatedLead = { ...leadInfo, contact: mergedContact };
+      
       setLeadInfo(updatedLead);
       saveLeadToDashboard(updatedLead);
 
-      reply = "Perfect! I have recorded your requirements and design photo. Our KROSSFORD sales team will contact you within 24 hours with exact wholesale pricing and sample timeline.";
+      reply = "Perfect! I have recorded your contact and requirements. Our KROSSFORD sales team will contact you within 24 hours with exact wholesale pricing and sample timeline.";
       setMessages((prev) => [
         ...prev,
         { sender: "ai", text: reply },
@@ -101,7 +117,6 @@ export default function AIChatbot() {
       return;
     }
 
-    // If image is uploaded, give immediate smart acknowledgement or call backend
     if (currentImgs.length > 0) {
       try {
         const res = await fetch("/api/chat", {
@@ -122,7 +137,6 @@ export default function AIChatbot() {
         reply = "Perfect! I received your design photo. Please share your required quantity and Email/WhatsApp so our master craftsman can review it.";
       }
     } 
-    // Standard Intent Routing
     else if (lower.includes("delivery") || lower.includes("time") || lower.includes("days")) {
       reply = "Sample Production: 7-10 Days. Bulk Production: 25-35 Days. Shipping via DHL/FedEx: 4-7 Days.";
     } else if (lower.includes("sample") || lower.includes("size") || lower.includes("pieces")) {
@@ -177,7 +191,7 @@ export default function AIChatbot() {
                 {m.isLeadSummary ? (
                   <div className="w-full bg-zinc-900 border border-amber-400/50 p-3 rounded text-[11px] space-y-1.5 text-zinc-200 my-1">
                     <p className="text-amber-400 font-bold uppercase tracking-wider text-[10px] border-b border-zinc-800 pb-1">
-                      NEW LEAD WITH DESIGN:
+                      NEW DESIGN LEAD:
                     </p>
                     <p><span className="text-zinc-400">Contact / Email:</span> {m.leadDetails?.contact || "Provided"}</p>
                     <p><span className="text-zinc-400">Status:</span> Sent to Manufacturing Floor</p>
@@ -209,7 +223,6 @@ export default function AIChatbot() {
             )}
           </div>
 
-          {/* Image Preview Area before sending */}
           {selectedImages.length > 0 && (
             <div className="px-3 py-2 bg-zinc-900 border-t border-zinc-800 flex gap-2 overflow-x-auto">
               {selectedImages.map((img, i) => (
@@ -228,7 +241,6 @@ export default function AIChatbot() {
           )}
 
           <form onSubmit={handleSend} className="p-3 bg-zinc-900 border-t border-zinc-800 flex items-center gap-2">
-            {/* Hidden file input */}
             <input
               type="file"
               ref={fileInputRef}
@@ -237,7 +249,6 @@ export default function AIChatbot() {
               multiple
               className="hidden"
             />
-            {/* Attach button */}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
