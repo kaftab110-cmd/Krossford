@@ -102,7 +102,7 @@ export default function AIChatbot() {
         const isGold = orderCount >= 3;
         aiReply = `❤️ Welcome Back, ${customerName}!\n\nYou are our ${isGold ? '🏆 GOLD VIP MEMBER' : '⭐ VIP FAMILY MEMBER'}. Your trust built KROSSFORD ENTERPRISES internationally. Thank you!\n\nYour last order (${lastProduct}) was crafted with pride. Your new order gets FIRST PRIORITY in our factory.\n\n✨ VIP Perks Unlocked:\n• 1st Sample Absolutely FREE\n• 5% Discount on Bulk\n• Free Private Label / Logo\n• Direct WhatsApp with Master Craftsman`;
       } else {
-        aiReply = "Welcome to KROSSFORD ENTERPRISES 🌍 - Crafted in Pakistan. Trusted Worldwide. Your inquiry has been dispatched to our international sales team.";
+        aiReply = "Welcome to KROSSFORD ENTERPRISES 🌍 - Crafted with Precision. Trusted Worldwide. Your inquiry has been dispatched to our international sales team.";
       }
 
       setMessages((prev) => [
@@ -124,18 +124,17 @@ export default function AIChatbot() {
   };
 
   return (
-    <div className="fixed z-50 font-mono bottom-[76px] md:bottom-5 right-3.5 md:right-5">
+    <>
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-full font-bold text-sm text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110 cursor-pointer border-2 border-amber-300"
-          style={{ backgroundColor: "#C9A227" }}
+          className="fixed bottom-[20px] right-[16px] z-50 w-[56px] h-[56px] bg-yellow-500 text-black rounded-full flex items-center justify-center font-bold shadow-lg cursor-pointer border-2 border-amber-300 font-mono"
           aria-label="Open AI Assistant"
         >
           AI
         </button>
       ) : (
-        <div className="fixed md:absolute bottom-[90px] md:bottom-[70px] right-3 md:right-0 w-[calc(100vw-24px)] max-w-[380px] h-[70vh] max-h-[550px] bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white">
+        <div className="fixed bottom-[90px] right-3 w-[calc(100vw-24px)] max-w-[380px] h-[70vh] max-h-[550px] bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white z-[60] font-mono">
           <div className="bg-zinc-900 px-4 py-3 border-b border-zinc-800 flex justify-between items-center">
             <h3 className="text-xs uppercase tracking-widest text-amber-400 font-bold">
               KROSSFORD ENTERPRISES - AI ASSISTANT
@@ -190,6 +189,6 @@ export default function AIChatbot() {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 }
