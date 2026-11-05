@@ -1,5 +1,17 @@
 import Link from "next/link";
-import { Instagram, Facebook, Linkedin, MessageCircle, Youtube, Video } from "lucide-react";
+import { MessageCircle } from "lucide-react";
+
+const SocialSVG = ({ path, label, href }: { path: string; label: string; href: string }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-[32px] h-[32px] inline-flex items-center justify-center bg-zinc-900 border border-zinc-800 rounded hover:border-[#C5A880] transition group"
+    title={label}
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="white" dangerouslySetInnerHTML={{ __html: path }} className="group-hover:scale-110 transition-transform" />
+  </a>
+);
 
 export default function Footer() {
   const whatsappNumber = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "923001234567";
@@ -16,24 +28,44 @@ export default function Footer() {
           </p>
 
           {/* Social Icons Row */}
-          <div className="flex items-center gap-3 mt-4">
-            <a href="https://instagram.com/krossfordenterprises" target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="Instagram">
-              <Instagram size={18} />
+          <div className="flex items-center gap-2 mt-4 flex-wrap">
+            <SocialSVG
+              label="Instagram"
+              href="https://instagram.com/krossfordenterprises"
+              path="<rect x='2' y='2' width='20' height='20' rx='5' fill='none' stroke='white' stroke-width='2'/><circle cx='12' cy='12' r='4' fill='none' stroke='white' stroke-width='2'/><circle cx='17.5' cy='6.5' r='1.5' fill='white'/>"
+            />
+            <SocialSVG
+              label="Facebook"
+              href="https://facebook.com/krossfordenterprises"
+              path="<path d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' fill='white'/>"
+            />
+            <SocialSVG
+              label="LinkedIn"
+              href="https://linkedin.com/company/krossfordenterprises"
+              path="<path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z' fill='white'/><rect x='2' y='9' width='4' height='12' fill='white'/><circle cx='4' cy='4' r='2' fill='white'/>"
+            />
+            <SocialSVG
+              label="YouTube"
+              href="https://youtube.com/@krossfordenterprises"
+              path="<path d='M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.92 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z' fill='white'/><polygon points='9.75 15.02 15.5 11.75 9.75 8.48' fill='black'/>"
+            />
+            <a
+              href={`https://wa.me/${whatsappNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-[32px] h-[32px] inline-flex items-center justify-center bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:border-amber-400 transition"
+              title="WhatsApp"
+            >
+              <MessageCircle size={16} />
             </a>
-            <a href="https://facebook.com/krossfordenterprises" target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="Facebook">
-              <Facebook size={18} />
-            </a>
-            <a href="https://linkedin.com/company/krossfordenterprises" target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="LinkedIn">
-              <Linkedin size={18} />
-            </a>
-            <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="WhatsApp">
-              <MessageCircle size={18} />
-            </a>
-            <a href="https://tiktok.com/@krossfordenterprises" target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="TikTok">
-              <Video size={18} />
-            </a>
-            <a href="https://youtube.com/@krossfordenterprises" target="_blank" rel="noopener noreferrer" className="p-2 bg-zinc-900 border border-zinc-800 rounded text-zinc-300 hover:text-amber-400 hover:border-amber-400 transition-all" title="YouTube">
-              <Youtube size={18} />
+            <a
+              href="https://tiktok.com/@krossfordenterprises"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-2 h-[32px] inline-flex items-center justify-center bg-zinc-900 border border-zinc-800 rounded text-[10px] font-bold text-zinc-300 hover:border-amber-400 transition"
+              title="TikTok"
+            >
+              TikTok
             </a>
           </div>
         </div>
@@ -76,16 +108,24 @@ export default function Footer() {
       {/* Payment Badges Section */}
       <div className="max-w-7xl mx-auto pt-6 pb-6 border-t border-zinc-900 flex flex-col items-center justify-center space-y-3">
         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">WE ACCEPT:</p>
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="bg-white text-zinc-950 px-3 py-1 rounded text-[10px] font-bold shadow">VISA</span>
-          <span className="bg-white text-zinc-950 px-3 py-1 rounded text-[10px] font-bold shadow">Mastercard</span>
-          <span className="bg-white text-zinc-950 px-3 py-1 rounded text-[10px] font-bold shadow">PayPal</span>
-          <span className="bg-white text-zinc-950 px-3 py-1 rounded text-[10px] font-bold shadow">Western Union</span>
-          <span className="bg-white text-zinc-950 px-3 py-1 rounded text-[10px] font-bold shadow">Bank Transfer / T/T</span>
+        <div className="flex flex-wrap items-center justify-center gap-2.5">
+          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">VISA</span>
+          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Mastercard</span>
+          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">PayPal</span>
+          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Western Union</span>
+          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Bank Transfer / T/T</span>
         </div>
-        <p className="text-[10px] text-zinc-500">
-          30% Advance - 70% Before Shipping | Secure & Protected Payments
-        </p>
+        
+        {/* Corrected B2B Payment Terms Policy Text */}
+        <div className="text-center space-y-1 mt-2">
+          <p className="text-[12px] font-bold text-[#C5A880]">
+            B2B Payment Terms: 50% Advance - 50% After Order Done
+          </p>
+          <p className="text-[11px] text-zinc-400 flex items-center justify-center gap-2">
+            <span>This Payment Plan is for B2B / Wholesale Customers Only. Not for Retail Customers.</span>
+            <span className="bg-amber-400 text-black px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">B2B ONLY</span>
+          </p>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto pt-4 border-t border-zinc-900 text-center space-y-1.5">
