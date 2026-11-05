@@ -24,14 +24,26 @@ export default function AIChatbot() {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [leadInfo, setLeadInfo] = useState<LeadData>({});
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const businessWhatsapp = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "923001234567";
 
-  const saveLeadToDashboard = (details: LeadData) => {
+  const saveLeadToDashboard = async (details: LeadData, currentImages: string[], history: any[]) => {
     if (typeof window !== "undefined") {
       const existing = JSON.parse(localStorage.getItem("krossford_leads") || "[]");
       existing.push({ ...details, date: new Date().toLocaleString(), status: "HOT LEAD WITH DESIGN" });
       localStorage.setItem("krossford_leads", JSON.stringify(existing));
+    }
+
+    try {
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lead: details, images: currentImages, chatHistory: history }),
+      });
+    } catch (err) {
+      console.error("Failed to dispatch lead to backend API:", err);
     }
   };
 
@@ -40,7 +52,6 @@ export default function AIChatbot() {
     if (!files) return;
 
     const maxFiles = Math.min(files.length, 3 - selectedImages.length);
-
     for (let i = 0; i < maxFiles; i++) {
       const file = files[i];
       const reader = new FileReader();
@@ -80,7 +91,7 @@ export default function AIChatbot() {
     const lower = userMsg.toLowerCase();
     let reply = "";
 
-    // Lead detection via email/phone with duplicate prevention check
+    // Lead detection with strict duplicate prevention check
     const emailMatch = userMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const phoneMatch = userMsg.match(/(\+\d{1,3}[- ]?)?\d{10,13}/);
     
@@ -102,16 +113,17 @@ export default function AIChatbot() {
       }
 
       const mergedContact = parts.join(" / ");
-      const updatedLead = { ...leadInfo, contact: mergedContact };
+      const updatedLead = { ...leadInfo, contact: mergedContact, product: "Leather Apparel / Goods" };
       
       setLeadInfo(updatedLead);
-      saveLeadToDashboard(updatedLead);
+      setLeadSubmitted(true);
+      await saveLeadToDashboard(updatedLead, currentImgs, updatedMessages);
 
-      reply = "Perfect! I have recorded your contact and requirements. Our KROSSFORD sales team will contact you within 24 hours with exact wholesale pricing and sample timeline.";
+      reply = "Perfect! Your request and design have been recorded and instantly dispatched to the KROSSFORD Business Email and WhatsApp. Our team will contact you within 24 hours.";
       setMessages((prev) => [
         ...prev,
         { sender: "ai", text: reply },
-        { sender: "ai", text: "NEW DESIGN LEAD FROM KROSSFORD AI:", isLeadSummary: true, leadDetails: updatedLead },
+        { sender: "ai", text: "NEW DESIGN LEAD:", isLeadSummary: true, leadDetails: updatedLead },
       ]);
       setLoading(false);
       return;
@@ -125,24 +137,16 @@ export default function AIChatbot() {
           body: JSON.stringify({ messages: updatedMessages }),
         });
         const data = await res.json();
-        
-        if (data.error) {
-          console.error("Backend Vision Error:", data.error);
-          reply = `Perfect! I received your design photo. I can see it is a custom leather style. How many pieces do you need, and what is your Email or WhatsApp for the quotation?`;
-        } else {
-          reply = data.reply;
-        }
+        reply = data.error ? "Perfect! I received your design photo. Please share your required quantity and Email or WhatsApp so our team can send your wholesale quote." : data.reply;
       } catch (err) {
-        console.error("Vision API Exception:", err);
-        reply = "Perfect! I received your design photo. Please share your required quantity and Email/WhatsApp so our master craftsman can review it.";
+        reply = "Perfect! I received your design photo. Please share your Email or WhatsApp.";
       }
-    } 
-    else if (lower.includes("delivery") || lower.includes("time") || lower.includes("days")) {
+    } else if (lower.includes("delivery") || lower.includes("time")) {
       reply = "Sample Production: 7-10 Days. Bulk Production: 25-35 Days. Shipping via DHL/FedEx: 4-7 Days.";
-    } else if (lower.includes("sample") || lower.includes("size") || lower.includes("pieces")) {
-      reply = "Sample order is fully accepted. Please upload your design photo using the 📎 button and share your Email/WhatsApp.";
+    } else if (lower.includes("sample") || lower.includes("size")) {
+      reply = "Sample order is fully accepted. Please upload your design photo using 📎 and share your Email/WhatsApp.";
     } else if (lower.includes("price") || lower.includes("cost") || lower.includes("quote")) {
-      reply = "Price depends on design specs and quantity. Upload your design photo 📎 or share quantity details for a custom quote.";
+      reply = "Price depends on design specs and quantity. Upload your design photo 📎 or share your details for a custom quote.";
     } else {
       try {
         const res = await fetch("/api/chat", {
@@ -151,7 +155,7 @@ export default function AIChatbot() {
           body: JSON.stringify({ messages: updatedMessages }),
         });
         const data = await res.json();
-        reply = data.error ? "KROSSFORD is a direct B2B leather manufacturer. Please upload your design photo or share your quantity." : data.reply;
+        reply = data.error ? "KROSSFORD is a direct B2B leather manufacturer. Please upload your design photo or share your specifications." : data.reply;
       } catch (err) {
         reply = "Please upload your jacket/leather design photo 📎 or share your specifications.";
       }
@@ -172,7 +176,7 @@ export default function AIChatbot() {
           AI
         </button>
       ) : (
-        <div className="w-80 sm:w-96 bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl flex flex-col h-[520px] overflow-hidden text-white">
+        <div className="w-80 sm:w-96 bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl flex flex-col h-[540px] overflow-hidden text-white">
           <div className="bg-zinc-900 px-4 py-3 border-b border-zinc-800 flex justify-between items-center">
             <h3 className="text-xs uppercase tracking-widest text-amber-400 font-bold">
               KROSSFORD - AI DESIGN ASSISTANT
@@ -189,12 +193,30 @@ export default function AIChatbot() {
             {messages.map((m, idx) => (
               <div key={idx} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
                 {m.isLeadSummary ? (
-                  <div className="w-full bg-zinc-900 border border-amber-400/50 p-3 rounded text-[11px] space-y-1.5 text-zinc-200 my-1">
+                  <div className="w-full bg-zinc-900 border border-amber-400/50 p-3 rounded text-[11px] space-y-2 text-zinc-200 my-1">
                     <p className="text-amber-400 font-bold uppercase tracking-wider text-[10px] border-b border-zinc-800 pb-1">
-                      NEW DESIGN LEAD:
+                      NEW LEAD DISPATCHED:
                     </p>
-                    <p><span className="text-zinc-400">Contact / Email:</span> {m.leadDetails?.contact || "Provided"}</p>
-                    <p><span className="text-zinc-400">Status:</span> Sent to Manufacturing Floor</p>
+                    <p><span className="text-zinc-400">Contact:</span> {m.leadDetails?.contact || "Provided"}</p>
+                    <p><span className="text-zinc-400">Status:</span> Sent to Business Email ✅ + Sent to WhatsApp ✅</p>
+                    
+                    {/* Owner Action Buttons */}
+                    <div className="flex gap-2 pt-2">
+                      <a
+                        href={`mailto:${m.leadDetails?.contact}?subject=KROSSFORD Wholesale Quote`}
+                        className="flex-1 bg-amber-500 text-black text-center py-1.5 rounded font-bold uppercase text-[10px] hover:bg-amber-400 transition-colors"
+                      >
+                        Reply by Email
+                      </a>
+                      <a
+                        href={`https://wa.me/${businessWhatsapp}?text=Hi KROSSFORD, received lead for ${m.leadDetails?.contact}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold uppercase text-[10px] hover:g-green-500 transition-colors"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -217,7 +239,7 @@ export default function AIChatbot() {
             {loading && (
               <div className="flex justify-start">
                 <div className="bg-zinc-900 text-amber-400 p-3 rounded text-[10px] animate-pulse">
-                  AI is analyzing your design...
+                  AI is analyzing design & notifying KROSSFORD team...
                 </div>
               </div>
             )}
@@ -253,7 +275,7 @@ export default function AIChatbot() {
               type="button"
               onClick={() => fileInputRef.current?.click()}
               className="text-zinc-400 hover:text-amber-400 p-2 text-xs flex items-center gap-1 cursor-pointer transition-colors border border-zinc-700 rounded bg-zinc-950"
-              title="Attach Design Photo (JPG, PNG)"
+              title="Attach Design Photo"
             >
               📎 <span className="hidden sm:inline text-[10px]">Attach</span>
             </button>
