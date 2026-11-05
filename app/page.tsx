@@ -31,13 +31,17 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[120px]">
-      {/* Hero Section */}
+      {/* Hero Section with Public Folder Image & Fallback */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111] px-4">
         <img 
-          src="https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop" 
-          alt="Premium Leather" 
+          src="/hero.jpg" 
+          alt="Krossford Leather" 
           className="absolute inset-0 w-full h-full object-cover" 
-          style={{ opacity: 0.55 }} 
+          style={{ opacity: 0.55 }}
+          onError={(e) => {
+            // Fallback if hero.jpg is named differently in public folder
+            (e.target as HTMLImageElement.prototype as any).src = "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
         <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-16">
@@ -57,6 +61,29 @@ export default function Home() {
             <a href="/b2b" className="bg-transparent text-white border border-white px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center hover:bg-white hover:text-black transition-colors">
               Wholesale Enquiry
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Colorful Leather Rolls / Hides Showcase Banner */}
+      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-3 max-w-xl text-center md:text-left">
+            <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase">Custom Hides Available</span>
+            <h2 className="text-2xl sm:text-3xl font-serif tracking-wide uppercase">All Colors Full-Grain Leather Rolls</h2>
+            <p className="text-xs text-zinc-400 uppercase leading-relaxed">
+              Black, Brown, Red, Pink, Green, Blue, Yellow, White — custom-dyed cowhide rolls available for international wholesale and private label manufacturing in Sialkot.
+            </p>
+          </div>
+          <div className="w-full md:w-[350px] h-48 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900">
+            <img 
+              src="/leather-rolls.jpg" 
+              alt="Colorful Leather Rolls" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop";
+              }}
+            />
           </div>
         </div>
       </section>
