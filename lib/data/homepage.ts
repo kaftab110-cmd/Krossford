@@ -1,358 +1,70 @@
-// ======================================================
-// KROSSFORD HOMEPAGE DATA
-// ======================================================
+// lib/data/homepage.ts - FINAL FIXED - IMAGES MATCHED TO REAL FILES
+export const hero = {
+  title: "KROSSFORD ENTERPRISES",
+  subtitle: "100% Full-Grain Leather | HD Images | Sample Before Bulk",
+  image: "/images/leather-duffle-bag.jpg",
+  button: "GET WHOLESALE QUOTE",
+};
 
-export interface HeroButton {
-  readonly label: string;
-  readonly href: string;
-}
+export const homepageProducts = [
+  { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", title: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather - HOME MAIN", href: "/product/duffle-bag" },
+  { id: 1, name: "Vintage Leather Backpack", image: "/images/messenger-bag.jpg", title: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", href: "/product/vintage-leather-backpack" },
+  { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", title: "Minimalist RFID Wallet", description: "Full-Grain, RFID Blocking", href: "/product/wallet" },
+  { id: 4, name: "Waist Bag / Fanny Pack", image: "/images/fanny-pack.jpg", title: "Waist Bag", description: "Vintage Brown, Full-Grain", href: "/product/fanny-pack" },
+];
 
-export interface HeroSection {
-  readonly label: string;
-  readonly title: string;
-  readonly subtitle: string;
-  readonly description: string;
-  readonly primaryButton: HeroButton;
-  readonly secondaryButton: HeroButton;
-}
-
-export interface CollectionItem {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly href: string;
-}
-
-export interface CollectionsSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly items: readonly CollectionItem[];
-}
-
-export interface CraftsmanshipItem {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-}
-
-export interface CraftsmanshipSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly items: readonly CraftsmanshipItem[];
-}
-
-export interface ProductItem {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-  readonly status: string;
-  readonly href: string;
-  readonly imageUrl: string;
-}
-
-export interface FeaturedProductsSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly products: readonly ProductItem[];
-}
-
-export interface StoryItem {
-  readonly id: string;
-  readonly title: string;
-  readonly description: string;
-}
-
-export interface BrandStorySection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly stories: readonly StoryItem[];
-}
-
-export interface JournalArticle {
-  readonly id: string;
-  readonly title: string;
-  readonly excerpt: string;
-  readonly imageAlt: string;
-  readonly href: string;
-}
-
-export interface JournalSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly articles: readonly JournalArticle[];
-}
-
-export interface TestimonialItem {
-  readonly id: string;
-  readonly customerName: string;
-  readonly customerRole: string;
-  readonly company?: string;
-  readonly review: string;
-  readonly avatarAlt: string;
-}
-
-export interface TestimonialsSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly items: readonly TestimonialItem[];
-}
-
-export interface NewsletterSection {
-  readonly label: string;
-  readonly title: string;
-  readonly description: string;
-  readonly inputLabel: string;
-  readonly inputPlaceholder: string;
-  readonly buttonLabel: string;
-}
-
-// ======================================================
-// HERO
-// ======================================================
-
-export const heroSection: HeroSection = {
-  label: "Autumn / Winter 2026",
-  title: "ARCHITECTURAL LUXURY",
-  subtitle: "Handcrafted leather goods designed for modern professionals.",
-  description:
-    "Every KROSSFORD creation is built from premium full-grain leather using traditional craftsmanship and timeless design philosophy.",
-  primaryButton: {
-    label: "Shop Collection",
-    href: "/collections",
-  },
-  secondaryButton: {
-    label: "Our Story",
-    href: "#brand-story",
-  },
-} as const;
-
-// ======================================================
-// COLLECTIONS
-// ======================================================
-
-export const collectionsSection: CollectionsSection = {
-  label: "Collections",
-  title: "DISCOVER KROSSFORD",
-  description: "Luxury leather collections designed to last for generations.",
-  items: [
-    {
-      id: "collection-01",
-      title: "Briefcases",
-      description:
-        "Executive briefcases handcrafted from premium full-grain leather.",
-      href: "/collections/briefcases",
-    },
-    {
-      id: "collection-02",
-      title: "Travel",
-      description:
-        "Luxury duffle bags and weekender collections for modern travel.",
-      href: "/collections/travel",
-    },
-    {
-      id: "collection-03",
-      title: "Accessories",
-      description: "Wallets, belts and everyday leather essentials.",
-      href: "/collections/accessories",
-    },
-  ],
-} as const;
-
-// ======================================================
-// CRAFTSMANSHIP
-// ======================================================
-
-export const craftsmanshipSection: CraftsmanshipSection = {
-  label: "Craftsmanship",
-  title: "MADE TO ENDURE",
-  description:
-    "Every KROSSFORD piece is handcrafted using traditional leather-working techniques and uncompromising attention to detail.",
-  items: [
-    {
-      id: "craft-01",
-      title: "Full-Grain Leather",
-      description:
-        "Only the finest full-grain hides are selected to ensure exceptional durability and a beautiful natural patina.",
-    },
-    {
-      id: "craft-02",
-      title: "Hand Saddle Stitching",
-      description:
-        "Each stitch is completed by skilled artisans using traditional saddle stitching for maximum strength.",
-    },
-    {
-      id: "craft-03",
-      title: "Solid Brass Hardware",
-      description:
-        "Premium brass hardware is carefully finished for lasting performance and timeless elegance.",
-    },
-  ],
-} as const;
-
-// ======================================================
-// FEATURED PRODUCTS
-// ======================================================
-
-export const featuredProductsSection: FeaturedProductsSection = {
-  label: "Featured Products",
-  title: "SIGNATURE COLLECTION",
-  description:
-    "Iconic leather essentials created for professionals who value timeless quality.",
-  products: [
-    {
-      id: "product-01",
-      title: "Executive Briefcase",
-      description:
-        "A refined business briefcase handcrafted from premium full-grain leather, combining timeless elegance with everyday practicality.",
-      status: "In Stock",
-      href: "/product/executive-briefcase",
-      imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-      id: "product-02",
-      title: "Heritage Leather Jacket",
-      description:
-        "A handcrafted leather jacket designed with classic tailoring and exceptional durability for lasting style.",
-      status: "Made to Order",
-      href: "/product/heritage-leather-jacket",
-      imageUrl: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-      id: "product-03",
-      title: "Signature Bifold Wallet",
-      description:
-        "A slim, full-grain leather wallet featuring meticulous stitching and a refined finish for everyday luxury.",
-      status: "In Stock",
-      href: "/product/signature-bifold-wallet",
-      imageUrl: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&q=80&w=800",
-    },
-    {
-      id: "product-04",
-      title: "Artisan Leather Tote",
-      description:
-        "A spacious handcrafted tote bag made from vegetable-tanned leather, offering sophistication for work and travel.",
-      status: "Limited Edition",
-      href: "/product/artisan-leather-tote",
-      imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=800",
-    },
-  ],
-} as const;
-
-// ======================================================
-// BRAND STORY
-// ======================================================
-
-export const brandStorySection: BrandStorySection = {
-  label: "Our Story",
-  title: "CRAFTED FOR GENERATIONS",
-  description:
-    "KROSSFORD was founded on one belief: true luxury should improve with age. Every product is designed to become part of your personal journey and develop character over decades.",
+export const brandStorySection = {
+  title: "KROSSFORD ENTERPRISES",
+  subtitle: "Premium Full-Grain Leather Goods - Wholesale Only",
+  description: "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available",
+  image: "/images/leather-duffle-bag.jpg",
+  button: "GET WHOLESALE QUOTE",
   stories: [
-    {
-      id: "story-01",
-      title: "Timeless Philosophy",
-      description:
-        "We reject disposable fashion in favor of enduring craftsmanship and elegant simplicity.",
-    },
-    {
-      id: "story-02",
-      title: "Master Artisans",
-      description:
-        "Every product is handcrafted by experienced leather craftsmen using traditional techniques passed through generations.",
-    },
+    { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee - No Split, No PU", image: "/images/leather-duffle-bag.jpg" },
+    { id: 2, title: "Hand-Stitched", description: "Made in Pakistan - Strong Stitching, Long Life", image: "/images/wallet.jpg" },
+    { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available - KROSSFORD", image: "/images/belt.jpg" },
   ],
-} as const;
-
-// ======================================================
-// JOURNAL
-// ======================================================
-
-export const journalSection: JournalSection = {
-  label: "Journal",
-  title: "FROM THE ATELIER",
-  description:
-    "Discover craftsmanship, leather care, and stories behind every KROSSFORD creation.",
-  articles: [
-    {
-      id: "journal-01",
-      title: "The Art of Full-Grain Leather",
-      excerpt:
-        "Understanding why full-grain leather develops unmatched character over time.",
-      imageAlt: "Full Grain Leather",
-      href: "/journal/full-grain-leather",
-    },
-    {
-      id: "journal-02",
-      title: "Behind Every Hand Stitch",
-      excerpt:
-        "How traditional saddle stitching creates heirloom-quality craftsmanship.",
-      imageAlt: "Hand Stitching Process",
-      href: "/journal/saddle-stitching",
-    },
-    {
-      id: "journal-03",
-      title: "Luxury Leather Care Guide",
-      excerpt:
-        "Simple maintenance techniques to preserve beauty for generations.",
-      imageAlt: "Leather Care",
-      href: "/journal/leather-care",
-    },
-  ],
-} as const;
-
-// ======================================================
-// TESTIMONIALS
-// ======================================================
-
-export const testimonialsSection: TestimonialsSection = {
-  label: "Client Experiences",
-  title: "VOICES OF DISTINCTION",
-  description:
-    "Every commission becomes part of a personal legacy shared by our clients worldwide.",
   items: [
-    {
-      id: "testimonial-01",
-      customerName: "Alexander Hughes",
-      customerRole: "Architect · London",
-      review:
-        "The craftsmanship is extraordinary. Every stitch reflects precision and timeless elegance.",
-      avatarAlt: "Alexander Hughes",
-    },
-    {
-      id: "testimonial-02",
-      customerName: "Isabella Moretti",
-      customerRole: "Creative Director · Milan",
-      review:
-        "KROSSFORD delivers understated luxury that becomes more beautiful every day.",
-      avatarAlt: "Isabella Moretti",
-    },
-    {
-      id: "testimonial-03",
-      customerName: "Daniel Foster",
-      customerRole: "Entrepreneur · New York",
-      review:
-        "This is not simply a leather product—it is an heirloom built to outlive trends.",
-      avatarAlt: "Daniel Foster",
-    },
+    { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee" },
+    { id: 2, title: "Hand-Stitched", description: "Made in Pakistan" },
+    { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available" },
   ],
-} as const;
+};
 
-// ======================================================
-// NEWSLETTER
-// ======================================================
+export const craftsmanshipSection = {
+  title: "Handcrafted Excellence",
+  subtitle: "Full-Grain Leather - Hand-Stitched",
+  description: "Vegetable-Tanned, Brass Buckle, Hand-Stitched - Made in Pakistan for World Buyers",
+  image: "/images/belt.jpg",
+  items: [
+    { id: 1, title: "Full-Grain Leather", description: "100% Real Leather, No Split, No PU", image: "/images/belt.jpg" },
+    { id: 2, title: "Hand-Stitched", description: "Strong Stitching, Long Life", image: "/images/wallet.jpg" },
+    { id: 3, title: "Custom Logo", description: "Name / Logo Engraving Available", image: "/images/belt.jpg" },
+  ],
+  features: ["100% Full-Grain Leather", "Hand-Stitched", "Sample Before Bulk", "Custom Logo Available"],
+};
 
-export const newsletterSection: NewsletterSection = {
-  label: "Private Circle",
-  title: "JOIN THE KROSSFORD JOURNAL",
-  description:
-    "Receive exclusive product releases, atelier insights, leather care guides, and private invitations before anyone else.",
-  inputLabel: "Email Address",
-  inputPlaceholder: "Enter your email address",
-  buttonLabel: "Subscribe",
-} as const;
+export const featuredProductsSection = {
+  label: "Featured Collection",
+  title: "KROSSFORD COLLECTION",
+  description: "Real Leather. Made Honestly. Sample Before Bulk.",
+  subtitle: "100% Full-Grain Leather | HD Images",
+  products: [
+    { id: 1, title: "Vintage Leather Backpack", name: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", image: "/images/messenger-bag.jpg", imageUrl: "/images/messenger-bag.jpg", status: "Bestseller", href: "/shop", category: "Bags" },
+    { id: 7, title: "Travel Duffle Bag", name: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather", image: "/images/leather-duffle-bag.jpg", imageUrl: "/images/leather-duffle-bag.jpg", status: "New", href: "/shop", category: "Bags" },
+    { id: 5, title: "Minimalist RFID Wallet", name: "Minimalist RFID Wallet", description: "Full-Grain, RFID Blocking", image: "/images/wallet.jpg", imageUrl: "/images/wallet.jpg", status: "Featured", href: "/shop", category: "Wallets" },
+    { id: 3, title: "Vegetable-Tanned Belt", name: "Vegetable-Tanned Belt", description: "Dark Brown, Vegetable-Tanned", image: "/images/belt.jpg", imageUrl: "/images/belt.jpg", status: "Handmade", href: "/shop", category: "Belts" },
+  ],
+  items: [
+    { id: 1, name: "Vintage Leather Backpack", image: "/images/messenger-bag.jpg", title: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", href: "/shop", category: "Bags" },
+    { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", title: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather", href: "/shop", category: "Bags" },
+    { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", title: "Minimalist RFID Wallet", description: "Full-Grain, RFID Blocking", href: "/shop", category: "Wallets" },
+    { id: 3, name: "Vegetable-Tanned Belt", image: "/images/belt.jpg", title: "Vegetable-Tanned Belt", description: "Dark Brown, Vegetable-Tanned", href: "/shop", category: "Belts" },
+  ],
+};
+
+export const footerInfo = {
+  payments: "VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T",
+  paymentNote: "50% Advance - 50% After Order Ready",
+  copyright: "© 2025 KROSSFORD ENTERPRISES",
+};

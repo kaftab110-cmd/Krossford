@@ -11,7 +11,7 @@ export default function BrandStory() {
       <div className="mx-auto grid max-w-7xl items-center justify-center gap-12 px-6 lg:grid-cols-2">
         <div className="flex flex-col items-center text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">
-            {brandStorySection.label}
+            {brandStorySection.subtitle}
           </span>
 
           <h2

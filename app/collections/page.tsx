@@ -2,95 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { products } from "@/lib/data/shop";
 
 export default function CollectionsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ["All", "Bags", "Belts", "Wallets", "Laptop Bags", "Accessories"];
+  const categories = ["All", "Bags", "Belts", "Wallets", "Custom", "Sets"];
 
-  const products = [
-    {
-      id: "w1",
-      name: "Executive Bi-Fold Wallet",
-      category: "Wallets",
-      leather: "Full-Grain Vegetable-Tanned",
-      image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80",
-      badge: "HOT",
-      colors: ["#1c1917", "#78350f", "#b45309"]
-    },
-    {
-      id: "b1",
-      name: "Artisan Dress Belt",
-      category: "Belts",
-      leather: "Solid Full-Grain Hide",
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
-      badge: "HOT",
-      colors: ["#1c1917", "#78350f"]
-    },
-    {
-      id: "lb1",
-      name: "Commander Laptop Briefcase",
-      category: "Laptop Bags",
-      leather: "Heavy-Duty Full-Grain Leather",
-      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80",
-      badge: "HOT",
-      colors: ["#1c1917", "#78350f", "#475569"]
-    },
-    {
-      id: "bg1",
-      name: "Handcrafted Duffle Bag",
-      category: "Bags",
-      leather: "Distressed Dark Brown Hide",
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
-      badge: "",
-      colors: ["#78350f", "#1c1917"]
-    },
-    {
-      id: "ac1",
-      name: "Minimalist Slim Card Holder",
-      category: "Accessories",
-      leather: "Front Pocket Design",
-      image: "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80",
-      badge: "",
-      colors: ["#1c1917", "#78350f"]
-    },
-    {
-      id: "w2",
-      name: "Traveler Card Wallet",
-      category: "Wallets",
-      leather: "Vegetable-Tanned Leather",
-      image: "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=600&q=80",
-      badge: "HOT",
-      colors: ["#78350f", "#1c1917"]
-    },
-    {
-      id: "lb2",
-      name: "Nomad Leather Backpack",
-      category: "Laptop Bags",
-      leather: "Pebbled Grain Leather",
-      image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80",
-      badge: "HOT",
-      colors: ["#78350f", "#475569"]
-    },
-    {
-      id: "b2",
-      name: "Founder's Buckle Belt",
-      category: "Belts",
-      leather: "Rugged Workwear Leather",
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80",
-      badge: "",
-      colors: ["#1c1917", "#78350f"]
-    }
-  ];
+  // 9 LOCKED wale hi aayenge, koi Unsplash / Gucci nahi
+  const allProducts = products.map((p) => ({
+    id: p.slug,
+    name: p.name,
+    category: p.category,
+    leather: p.description,
+    image: p.image,
+    badge: p.badge,
+    colors: ["#1c1917", "#78350f", "#b45309"],
+  }));
 
-  const filteredProducts = selectedCategory === "All" 
-    ? products 
-    : products.filter(p => p.category === selectedCategory);
+  const filteredProducts = selectedCategory === "All"
+    ? allProducts
+    : allProducts.filter((p) => p.category === selectedCategory);
 
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-7xl px-6 py-12">
-        {/* Page Title Header */}
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-widest text-yellow-500 mb-2">
             Exquisite Full-Grain Hide & Precision Haberdashery
@@ -100,7 +36,6 @@ export default function CollectionsPage() {
           </h1>
         </div>
 
-        {/* Category Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((cat) => (
             <button
@@ -117,7 +52,6 @@ export default function CollectionsPage() {
           ))}
         </div>
 
-        {/* Product Grid Layout with Direct Images */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <div
@@ -149,20 +83,14 @@ export default function CollectionsPage() {
                     {product.name}
                   </h3>
                 </Link>
-                <p className="text-xs text-zinc-400">
-                  {product.leather}
-                </p>
+                <p className="text-xs text-zinc-400">{product.leather}</p>
               </div>
 
               <div className="mt-4 pt-3 border-t border-zinc-900 flex items-center justify-between">
                 <span className="text-xs text-zinc-500 uppercase tracking-wider">Options</span>
                 <div className="flex gap-1">
                   {product.colors.map((col, i) => (
-                    <span 
-                      key={i} 
-                      className="w-3 h-3 rounded-full border border-zinc-700" 
-                      style={{ backgroundColor: col }} 
-                    />
+                    <span key={i} className="w-3 h-3 rounded-full border border-zinc-700" style={{ backgroundColor: col }} />
                   ))}
                 </div>
               </div>

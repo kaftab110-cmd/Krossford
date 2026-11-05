@@ -1,89 +1,88 @@
 "use client";
-
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
-export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export default function Navbar() {
+const [open, setOpen] = useState(false);
+const [cartCount, setCartCount] = useState(0);
+const pathname = usePathname();
 
-  return (
-    <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50 font-mono w-full px-4 py-3 flex justify-between items-center overflow-hidden">
-      {/* Brand Logo */}
-      <Link href="/" className="flex flex-col">
-        <span className="text-amber-400 font-bold uppercase tracking-wider text-[18px] md:text-[20px] leading-tight">
-          KROSSFORD
-        </span>
-        <span className="text-[10px] text-zinc-400 uppercase tracking-widest leading-none mt-0.5">
-          ENTERPRISES
-        </span>
-      </Link>
+useEffect(() => {
+  const updateCount = () => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+      const total = cart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
+      setCartCount(total);
+    } catch { setCartCount(0); }
+  };
+  updateCount();
+  window.addEventListener("cartUpdated", updateCount);
+  window.addEventListener("storage", updateCount);
+  return () => {
+    window.removeEventListener("cartUpdated", updateCount);
+    window.removeEventListener("storage", updateCount);
+  };
+}, []);
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:flex items-center gap-6 text-xs text-zinc-300">
-        <Link href="/store-policy" className="hover:text-amber-400 transition-colors">Shop</Link>
-        <Link href="/about-us" className="hover:text-amber-400 transition-colors">Wholesale / B2B</Link>
-        <Link href="/our-story" className="hover:text-amber-400 transition-colors">Our Story</Link>
-        <Link href="/help-center" className="hover:text-amber-400 transition-colors">Help Center</Link>
-        <Link href="/faqs" className="hover:text-amber-400 transition-colors">FAQs</Link>
-        <Link href="/contact-us" className="hover:text-amber-400 transition-colors">Contact</Link>
-      </nav>
-
-      <div className="hidden lg:flex items-center gap-4">
-        <Link href="/cart" className="text-xs text-amber-400 border border-amber-400/40 px-3 py-1.5 rounded hover:bg-amber-400/10 transition-colors">
-          Cart (0)
-        </Link>
-      </div>
-
-      {/* Mobile / Tablet Hamburger Button */}
-      <div className="flex lg:hidden items-center gap-3">
-        <Link href="/cart" className="text-xs text-amber-400 border border-amber-400/40 px-2.5 py-1 rounded">
-          Cart
-        </Link>
-        <button
-          onClick={() => setMobileMenuOpen(true)}
-          className="text-white p-1.5 focus:outline-none"
-          aria-label="Open Menu"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile Slide-in Drawer */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex justify-end">
-          <div className="w-[80%] max-w-[300px] bg-zinc-950 h-full p-6 flex flex-col justify-between border-l border-zinc-800 text-white font-mono">
-            <div>
-              <div className="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
-                <div>
-                  <h3 className="text-amber-400 font-bold uppercase text-sm">KROSSFORD</h3>
-                  <span className="text-[9px] text-zinc-400 tracking-widest">ENTERPRISES</span>
-                </div>
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-zinc-400 hover:text-white p-2 text-lg font-bold"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <nav className="flex flex-col space-y-4 text-xs">
-                <Link href="/store-policy" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">Shop</Link>
-                <Link href="/about-us" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">Wholesale / B2B</Link>
-                <Link href="/our-story" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">Our Story</Link>
-                <Link href="/help-center" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">Help Center</Link>
-                <Link href="/faqs" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">FAQs</Link>
-                <Link href="/contact-us" onClick={() => setMobileMenuOpen(false)} className="hover:text-amber-400 py-1 border-b border-zinc-900">Contact Us</Link>
-              </nav>
-            </div>
-
-            <div className="text-[10px] text-zinc-500 text-center border-t border-zinc-900 pt-4">
-              Crafted in Pakistan. Since 2025.
-            </div>
-          </div>
-        </div>
-      )}
-    </header>
-  );
+const cls = (h: string) => pathname === h ? "text-amber-400" : "text-zinc-300 hover:text-amber-400 transition-colors";
+return (
+<header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 font-mono w-full px-4 py-3 flex justify-between items-center">
+<Link href="/" className="flex items-center gap-3 group">
+<div className="relative w-[38px] h-[38px] shrink-0 flex items-center justify-center border border-amber-400/80 bg-amber-400/5">
+<span className="absolute top-[3px] left-[3px] w-[6px] h-[6px] border-t border-l border-amber-400"></span>
+<span className="absolute top-[3px] right-[3px] w-[6px] h-[6px] border-t border-r border-amber-400"></span>
+<span className="absolute bottom-[3px] left-[3px] w-[6px] h-[6px] border-b border-l border-amber-400"></span>
+<span className="absolute bottom-[3px] right-[3px] w-[6px] h-[6px] border-b border-r border-amber-400"></span>
+<span className="text-amber-400 font-serif font-bold text-[16px] tracking-[0.1em]">KF</span>
+</div>
+<div className="flex flex-col leading-none">
+<span className="text-white font-bold uppercase tracking-[0.15em] text-[18px] md:text-[20px]">KROSSFORD</span>
+<span className="text-[8px] text-amber-400/80 tracking-[0.4em] uppercase mt-1">Enterprises</span>
+</div>
+</Link>
+<nav className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider">
+<Link href="/" className={pathname==="/"?"text-amber-400":"text-white hover:text-amber-400"}>HOME</Link>
+<Link href="/shop" className={cls("/shop")}>SHOP</Link>
+<Link href="/contact-us" className={cls("/contact-us")}>WHOLESALE</Link>
+<Link href="/shop" className={cls("/shop")}>COLLECTIONS</Link>
+<Link href="/our-story" className={cls("/our-story")}>ABOUT</Link>
+<Link href="/contact-us" className={cls("/contact-us")}>CONTACT</Link>
+</nav>
+<div className="hidden lg:flex items-center gap-5 text-xs font-bold tracking-wider">
+<Link href="/contact-us" className="text-zinc-300 hover:text-white">ENQUIRY</Link>
+<Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
+</div>
+<div className="flex lg:hidden items-center gap-3">
+<Link href="/cart" className="text-xs text-white border border-white/40 px-2.5 py-1 rounded">CART ({cartCount})</Link>
+<button onClick={()=>setOpen(true)} className="text-white p-1.5" aria-label="Open Menu">
+<svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+</button>
+</div>
+{open && (
+<div className="fixed inset-0 z-50 bg-black/80 flex justify-end">
+<div className="w-[80%] max-w-[300px] bg-zinc-950 h-full p-6 flex flex-col justify-between border-l border-zinc-800 text-white font-mono">
+<div>
+<div className="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
+<div className="flex items-center gap-2">
+<div className="w-[30px] h-[30px] border border-amber-400/80 flex items-center justify-center"><span className="text-amber-400 font-serif font-bold text-[12px]">KF</span></div>
+<span className="text-white font-bold uppercase text-sm tracking-widest">KROSSFORD</span>
+</div>
+<button onClick={()=>setOpen(false)} className="text-zinc-400 hover:text-white p-2 text-lg font-bold">✕</button>
+</div>
+<nav className="flex flex-col space-y-4 text-xs font-bold tracking-wider">
+<Link href="/" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">HOME</Link>
+<Link href="/shop" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">SHOP</Link>
+<Link href="/contact-us" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">WHOLESALE</Link>
+<Link href="/shop" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">COLLECTIONS</Link>
+<Link href="/our-story" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">ABOUT</Link>
+<Link href="/contact-us" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">CONTACT</Link>
+</nav>
+</div>
+<div className="text-[10px] text-zinc-500 text-center border-t border-zinc-900 pt-4">Crafted in Pakistan. Since 2025.</div>
+</div>
+</div>
+)}
+</header>
+);
 }

@@ -29,7 +29,7 @@ export default function AIChatbot() {
   const [leadInfo, setLeadInfo] = useState<LeadData>({});
   
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const businessWhatsapp = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "923001234567";
+  const businessWhatsapp = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "";
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ export default function AIChatbot() {
         if (lookupData?.customer) {
           isRepeatCustomer = true;
           orderCount = (lookupData.customer.total_orders || 1) + 1;
-          customerName = lookupData.customer.name || "Kaftab";
+          customerName = lookupData.customer.name || "Valued Partner";
           lastProduct = lookupData.customer.total_products?.[0] || "Duffle Bag";
         }
       } catch (err) {
@@ -152,10 +152,14 @@ export default function AIChatbot() {
                       <span className="text-amber-300">★ ★ ★ ★ ★</span>
                     </p>
                     <p><span className="text-zinc-400">Contact:</span> {m.leadDetails?.contact || "Provided"}</p>
-                    <p><span className="text-zinc-400">Status:</span> Dispatched to Email & WhatsApp ✅</p>
+                    <p><span className="text-zinc-400">Status:</span> Saved in CRM ✅ Our team will reply on your Email</p>
                     <div className="flex gap-2 pt-1">
-                      <a href={`mailto:${m.leadDetails?.contact}?subject=KROSSFORD ENTERPRISES Quotation`} className="flex-1 bg-amber-500 text-black text-center py-1 rounded font-bold text-[9px]">Email Client</a>
-                      <a href={`https://wa.me/${businessWhatsapp}?text=Hi VIP Customer, regarding your lead.`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 text-white text-center py-1 rounded font-bold text-[9px]">WhatsApp</a>
+                      <a href={`mailto:${m.leadDetails?.contact?.split(" / ")[0]}?subject=KROSSFORD ENTERPRISES Quotation`} className="flex-1 bg-amber-500 text-black text-center py-1 rounded font-bold text-[9px]">Email Client</a>
+                      {businessWhatsapp ? (
+                        <a href={`https://wa.me/${businessWhatsapp}?text=Hi VIP Customer, regarding your lead.`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 text-white text-center py-1 rounded font-bold text-[9px]">WhatsApp</a>
+                      ) : (
+                        <span className="flex-1 bg-zinc-800 text-zinc-400 text-center py-1 rounded font-bold text-[9px]">WhatsApp Coming Soon</span>
+                      )}
                     </div>
                   </div>
                 ) : (

@@ -37,7 +37,6 @@ export default function CheckoutPage() {
       }
     };
     loadCart();
-
     window.addEventListener("storage", loadCart);
     window.addEventListener("cartUpdated", loadCart);
     return () => {
@@ -51,30 +50,22 @@ export default function CheckoutPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-
     if (!formData.name || !formData.email || !formData.address || !formData.city || !formData.phone) {
       setErrorMsg("Please fill in all required fields (Name, Email, Address, City, Phone).");
       return;
     }
-
     if (cartItems.length === 0) {
       setErrorMsg("Your cart is currently empty!");
       return;
     }
-
     const currentSubtotal = subtotal;
     const randomId = "KF-" + Math.floor(1000 + Math.random() * 9000);
-    
-    // Clear cart data immediately before setting order placed state
     localStorage.removeItem("krossford_cart");
     localStorage.setItem("krossford_cart", JSON.stringify([]));
     setCartItems([]);
-    
     setOrderId(randomId);
     setFinalSubtotal(currentSubtotal);
     setOrderPlaced(true);
-
-    // Broadcast cart update event so Navbar instantly displays CART (0)
     window.dispatchEvent(new Event("storage"));
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -133,7 +124,7 @@ export default function CheckoutPage() {
                     <p>SWIFT / BIC Code: <span className="text-amber-400 font-bold block">MUCBPKKAXXX</span></p>
                   </div>
                   <p className="text-[11px] text-zinc-400 leading-relaxed border-t border-zinc-800/80 pt-3 mt-2">
-                    Kindly forward your bank payment advise / SWIFT receipt to <span className="text-white">export@krossford.com</span>. Production scheduling begins immediately upon swift verification.
+                    Kindly forward your bank payment advise / SWIFT receipt to <span className="text-white">hello@krossford.com</span>. Production scheduling begins immediately upon swift verification.
                   </p>
                 </>
               )}

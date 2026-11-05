@@ -66,7 +66,7 @@ export default function ShopPage() {
               <div>
                 <span className="text-[10px] text-amber-400/90 tracking-widest uppercase font-mono">{product.category}</span>
                 <h3 className="text-sm font-semibold tracking-wider uppercase text-white mt-1">{product.name}</h3>
-                <p className="text-xs text-zinc-400 font-light mt-1">{product.leather}</p>
+                <p className="text-xs text-zinc-400 font-light mt-1">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400 mt-2">${product.price}</p>
               </div>
               <div className="pt-2 border-t border-zinc-900 flex items-center justify-between gap-2">

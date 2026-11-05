@@ -1,87 +1,95 @@
-import { contactContent } from "@/lib/data/contact";
+"use client";
 
-export default function ContactUsPage() {
-  const { title, intro, contact } = contactContent;
+import { useState } from "react";
+
+const contact = {
+  email: "hello@krossford.com",
+  whatsapp: "Coming Soon",
+  phone: "Coming Soon",
+  location: "Gujrat, Punjab, Pakistan",
+};
+
+export default function ContactPage() {
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", message: "", company: "" });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Abhi ke liye mailto se khulega - backend baad me jorenge
+    const subject = `Wholesale Enquiry from ${form.name} - ${form.company}`;
+    const body = `Name: ${form.name}%0D%0ACompany: ${form.company}%0D%0AEmail: ${form.email}%0D%0A%0D%0A${form.message}`;
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    setSent(true);
+  };
 
   return (
-    <main className="bg-black text-white min-h-screen">
-      <section className="mx-auto max-w-4xl px-6 sm:px-10 py-16 sm:py-24">
-        <h1 className="mb-4 text-3xl sm:text-4xl font-bold text-yellow-500">
-          {title}
-        </h1>
-        <p className="mb-10 text-sm sm:text-base leading-relaxed text-zinc-300 max-w-2xl">
-          {intro}
-        </p>
+    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6 md:p-12">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Wholesale & Contact</h1>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest">B2B Enquiry - Private Label & Bulk Production</p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Quick Contact Links */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Direct Touchpoints */}
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-white mb-4">Direct Touchpoints</h2>
             <a
               href={`mailto:${contact.email}`}
-              className="block rounded-md border border-yellow-500/20 px-5 py-4 text-yellow-500 transition hover:border-yellow-500 bg-zinc-950"
+              className="block rounded-md border border-yellow-500/20 px-5 py-4 text-yellow-500 transition hover:border-yellow-500/60"
             >
               <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
-              <span className="font-medium">{contact.email}</span>
+              <span className="text-sm font-bold">{contact.email}</span>
             </a>
-
-            <a
-              href={`tel:${contact.phone}`}
-              className="block rounded-md border border-yellow-500/20 px-5 py-4 text-yellow-500 transition hover:border-yellow-500 bg-zinc-950"
-            >
-              <span className="block text-xs text-zinc-400 uppercase">Call Direct</span>
-              <span className="font-medium">{contact.phone}</span>
-            </a>
-
-            <a
-              href={contact.whatsapp}
-              target="_blank"
-              rel="noreferrer"
-              className="block rounded-md border border-yellow-500/20 px-5 py-4 text-yellow-500 transition hover:border-yellow-500 bg-zinc-950"
-            >
-              <span className="block text-xs text-zinc-400 uppercase">Instant Support</span>
-              <span className="font-medium">Connect on WhatsApp →</span>
-            </a>
+            <div className="block rounded-md border border-zinc-800 px-5 py-4">
+              <span className="block text-xs text-zinc-400 uppercase">WhatsApp / Phone</span>
+              <span className="text-sm font-bold text-zinc-300">{contact.whatsapp}</span>
+            </div>
+            <div className="block rounded-md border border-zinc-800 px-5 py-4">
+              <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
+              <span className="text-sm font-bold text-zinc-300">{contact.location}</span>
+            </div>
           </div>
 
-          {/* Luxury Enquiry Form */}
-          <div className="rounded-lg border border-yellow-500/20 bg-zinc-950 p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Bespoke & Wholesale Enquiry</h2>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-xs text-zinc-400 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full rounded-md border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-white focus:border-yellow-500 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-zinc-400 mb-1">Email Address</label>
-                <input
-                  type="email"
-                  placeholder="name@company.com"
-                  className="w-full rounded-md border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-white focus:border-yellow-500 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-zinc-400 mb-1">Enquiry Details</label>
-                <textarea
-                  rows={4}
-                  placeholder="Specify product interest, wholesale quantity, or custom specification..."
-                  className="w-full rounded-md border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm text-white focus:border-yellow-500 focus:outline-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full rounded-md bg-yellow-500 py-3 text-sm font-medium text-black transition hover:bg-yellow-400"
-              >
-                Submit Request
-              </button>
-            </form>
-          </div>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">Send Enquiry</h2>
+            <input
+              required
+              placeholder="Full Name *"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
+            />
+            <input
+              placeholder="Company / Entity Name"
+              value={form.company}
+              onChange={(e) => setForm({ ...form, company: e.target.value })}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
+            />
+            <input
+              required
+              type="email"
+              placeholder="Corporate Email *"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
+            />
+            <textarea
+              required
+              rows={4}
+              placeholder="Tell us about your bulk order, quantity, leather type..."
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
+            />
+            <button type="submit" className="w-full bg-amber-400 text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-amber-500">
+              Send Enquiry
+            </button>
+            {sent && <p className="text-xs text-green-400 text-center">Opening your email app... Thank you!</p>}
+          </form>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }

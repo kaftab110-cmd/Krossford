@@ -11,7 +11,7 @@ export default function Craftsmanship() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto mb-14 max-w-3xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">
-            {craftsmanshipSection.label}
+            {craftsmanshipSection.subtitle}
           </span>
 
           <h2

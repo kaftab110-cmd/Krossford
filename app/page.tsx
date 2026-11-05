@@ -1,106 +1,63 @@
-"use client";
-
-import Link from "next/link";
-import HidesWeWorkWith from "@/components/HidesWeWorkWith";
-import Newsletter from "@/components/Newsletter";
+import BrandStory from "@/components/BrandStory";
+import Collections from "@/components/Collections";
+import FeaturedProducts from "@/components/FeaturedProducts";
+import Craftsmanship from "@/components/Craftsmanship";
+import Bespoke from "@/components/Bespoke";
 
 export default function Home() {
-  const collections = [
-    {
-      id: 1,
-      title: "Executive Outerwear",
-      subtitle: "Full-Grain Leather Jackets",
-      image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1000&auto=format&fit=crop",
-      link: "/shop?category=jackets"
-    },
-    {
-      id: 2,
-      title: "Architectural Travel",
-      subtitle: "Minimalist Duffles & Briefcases",
-      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1000&auto=format&fit=crop",
-      link: "/shop?category=bags"
-    },
-    {
-      id: 3,
-      title: "Bespoke Small Goods",
-      subtitle: "Handcrafted Leather Wallets & Belts",
-      image: "https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=1000&auto=format&fit=crop",
-      link: "/shop?category=wallets"
-    }
-  ];
-
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[120px]">
-      {/* Hero Section - Wahi Purani Wali - 1 Photo Only */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111] px-4">
-        <img 
-          src="/leather-rolls.jpg" 
-          alt="Custom Leather Products - Made For Your Brand" 
-          className="absolute inset-0 w-full h-full object-cover" 
-          style={{ opacity: 0.85 }}
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop";
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-24">
-          <h1 className="text-[32px] leading-[1.1] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full max-w-full px-2 break-words whitespace-normal tracking-normal uppercase font-serif overflow-hidden" style={{ wordBreak: "break-word", textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}>
-            Custom Leather<br/>Products - Made<br/>For Your Brand
+    <main className="bg-black text-white min-h-screen">
+      {/* Hero - With Background Image */}
+      <section 
+        className="relative mx-auto max-w-7xl px-6 pt-24 pb-20 text-center bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/leather-duffle-bag.jpg')" }}
+      >
+        {/* Kala parda - taake likhai saaf dikhe */}
+        <div className="absolute inset-0 bg-black/70"></div>
+
+        <div className="relative z-10">
+          <p className="text-amber-400 tracking-[0.3em] text-xs font-bold">KROSSFORD ENTERPRISES</p>
+          <h1 className="mt-4 text-4xl sm:text-6xl font-bold leading-tight">
+            Real Leather.<br />Made Honestly.
           </h1>
-          <p className="text-[13px] leading-[1.7] text-white w-full max-w-[560px] mt-4 break-words whitespace-normal tracking-normal px-4">
-            Architectural craftsmanship built for global wholesale, white-label retail, and custom private-label production.
+          <p className="mt-4 text-zinc-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+            A New-Generation International Leather Brand, Since 2025.
+            Sample Before Bulk. 100% Real Leather Guarantee.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center pb-4">
-            <a href="/shop" className="bg-white text-black font-bold px-8 py-3.5 rounded-sm text-[13px] uppercase tracking-widest text-center">
-              Request Custom Quote
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <a href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded-md text-sm font-bold hover:bg-amber-300">
+              Shop Collection
             </a>
-            <a href="/b2b" className="bg-transparent text-white border-2 border-white px-8 py-3.5 rounded-sm text-[13px] uppercase tracking-widest text-center hover:bg-white hover:text-black transition-colors">
-              B2B Wholesale Portal
+            <a href="/contact-us" className="border border-zinc-300 px-6 py-3 rounded-md text-sm font-medium hover:border-amber-400">
+              Request Sample
             </a>
           </div>
         </div>
       </section>
 
-      {/* Professional Collections Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="text-center space-y-3 mb-12 md:mb-16">
-          <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase">Curated Lineup</span>
-          <h2 className="text-[24px] sm:text-3xl font-serif tracking-[0.15em] sm:tracking-[0.2em] uppercase px-2">Professional Collections</h2>
-          <p className="text-[11px] sm:text-xs text-zinc-400 tracking-widest uppercase px-4">Explore our flagship full-grain leather categories</p>
-        </div>
+      <Collections />
+      <FeaturedProducts />
+      <Craftsmanship />
+      <BrandStory />
+      <Bespoke />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {collections.map((item) => (
-            <div key={item.id} className="bg-zinc-950 border border-zinc-800/80 rounded-lg overflow-hidden group">
-              <div className="relative h-64 sm:h-72 md:h-80 overflow-hidden bg-zinc-900">
-                <img 
-                  src={item.image} 
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <div className="p-5 sm:p-6 space-y-3 sm:space-y-4 text-center">
-                <span className="text-[10px] text-amber-400/90 tracking-widest uppercase font-mono block">{item.subtitle}</span>
-                <h3 className="text-sm font-semibold tracking-widest uppercase text-white">{item.title}</h3>
-                <div>
-                  <Link 
-                    href={item.link}
-                    className="inline-block text-[11px] font-medium tracking-[0.15em] uppercase text-amber-400 hover:text-white transition-colors border-b border-amber-400/50 pb-1"
-                  >
-                    View Collection &rarr;
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* Trust - No Fake Numbers */}
+      <section className="mx-auto max-w-7xl px-6 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
+            <p className="text-amber-400 font-bold">Sample Before Bulk</p>
+            <p className="text-zinc-400 text-xs mt-2">Order a sample first, then decide for bulk.</p>
+          </div>
+          <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
+            <p className="text-amber-400 font-bold">100% Real Leather</p>
+            <p className="text-zinc-400 text-xs mt-2">Full-grain leather. No fake claims.</p>
+          </div>
+          <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
+            <p className="text-amber-400 font-bold">Direct From Maker</p>
+            <p className="text-zinc-400 text-xs mt-2">Email us at hello@krossford.com</p>
+          </div>
         </div>
       </section>
-
-      {/* Hides We Work With Section - Leather Rolls Option Yahan Neeche Hides Ke Saath Mention Hoga */}
-      <HidesWeWorkWith />
-
-      {/* Newsletter / B2B Trade List Section */}
-      <Newsletter />
     </main>
   );
 }
