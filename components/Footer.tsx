@@ -17,8 +17,8 @@ export default function Footer() {
   const whatsappNumber = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "923001234567";
 
   return (
-    <footer className="bg-zinc-950 text-zinc-400 border-t border-zinc-800 py-12 px-6 font-mono text-xs">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-zinc-950 text-zinc-400 border-t border-zinc-800 py-12 px-4 sm:px-6 font-mono text-xs pb-[110px] overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <div>
           <h3 className="text-amber-400 font-bold uppercase tracking-wider text-sm mb-3">
             KROSSFORD ENTERPRISES
@@ -106,7 +106,7 @@ export default function Footer() {
       </div>
 
       {/* Payment Badges Section */}
-      <div className="max-w-7xl mx-auto pt-6 pb-6 border-t border-zinc-900 flex flex-col items-center justify-center space-y-3">
+      <div className="max-w-7xl mx-auto pt-6 pb-6 border-t border-zinc-900 flex flex-col items-center justify-center space-y-3 px-2">
         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">WE ACCEPT:</p>
         <div className="flex flex-wrap items-center justify-center gap-2.5">
           <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">VISA</span>
@@ -117,18 +117,18 @@ export default function Footer() {
         </div>
         
         {/* Corrected B2B Payment Terms Policy Text */}
-        <div className="text-center space-y-1 mt-2">
-          <p className="text-[12px] font-bold text-[#C5A880]">
+        <div className="text-center space-y-1 mt-2 px-2">
+          <p className="text-[12px] font-bold text-[#C5A880] break-words">
             B2B Payment Terms: 50% Advance - 50% After Order Done
           </p>
-          <p className="text-[11px] text-zinc-400 flex items-center justify-center gap-2">
+          <p className="text-[11px] text-zinc-400 flex flex-wrap items-center justify-center gap-2">
             <span>This Payment Plan is for B2B / Wholesale Customers Only. Not for Retail Customers.</span>
             <span className="bg-amber-400 text-black px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">B2B ONLY</span>
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto pt-4 border-t border-zinc-900 text-center space-y-1.5">
+      <div className="max-w-7xl mx-auto pt-4 border-t border-zinc-900 text-center space-y-1.5 px-2">
         <div className="text-[11px] text-zinc-200 font-bold uppercase tracking-wider">
           © 2025 KROSSFORD ENTERPRISES. All Rights Reserved.
         </div>

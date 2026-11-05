@@ -124,17 +124,18 @@ export default function AIChatbot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 font-mono">
+    <div className="fixed z-50 font-mono bottom-[76px] md:bottom-5 right-3.5 md:right-5">
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="w-14 h-14 rounded-full font-bold text-sm text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110 cursor-pointer border-2 border-amber-300"
+          className="w-[56px] h-[56px] md:w-[64px] md:h-[64px] rounded-full font-bold text-sm text-black flex items-center justify-center shadow-2xl transition-transform hover:scale-110 cursor-pointer border-2 border-amber-300"
           style={{ backgroundColor: "#C9A227" }}
+          aria-label="Open AI Assistant"
         >
           AI
         </button>
       ) : (
-        <div className="w-80 sm:w-96 bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl flex flex-col h-[560px] overflow-hidden text-white">
+        <div className="fixed md:absolute bottom-[90px] md:bottom-[70px] right-3 md:right-0 w-[calc(100vw-24px)] max-w-[380px] h-[70vh] max-h-[550px] bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white">
           <div className="bg-zinc-900 px-4 py-3 border-b border-zinc-800 flex justify-between items-center">
             <h3 className="text-xs uppercase tracking-widest text-amber-400 font-bold">
               KROSSFORD ENTERPRISES - AI ASSISTANT

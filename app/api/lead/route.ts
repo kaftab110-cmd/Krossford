@@ -1,61 +1,138 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(req: Request) {
   try {
-    const { lead, images, chatHistory } = await req.json();
+    const { lead, images, chatHistory, action } = await req.json();
+
+    // 1. Lookup Customer by Email or WhatsApp for Chatbot Instant Recognition
+    if (action === "lookup") {
+      const email = lead?.contactEmail;
+      const phone = lead?.contactPhone;
+      
+      let query = supabase.from("customers").select("*");
+      if (email) query = query.eq("email", email);
+      else if (phone) query = query.eq("whatsapp", phone);
+      else return NextResponse.json({ customer: null });
+
+      const { data } = await query.single();
+      return NextResponse.json({ customer: data || null });
+    }
+
+    // 2. Process HOT Lead & Update CRM Database
     const resendApiKey = process.env.RESEND_API_KEY;
     const businessEmail = process.env.BUSINESS_EMAIL || "kaftab110@gmail.com";
     const businessWhatsapp = process.env.BUSINESS_WHATSAPP_NUMBER || "923001234567";
 
-    // 1. Send Email via Resend if API key exists
+    const email = lead.email;
+    const whatsapp = lead.whatsapp || lead.contact;
+    const qty = parseInt(lead.quantity || "1", 10);
+    const product = lead.product || "Custom Leather Apparel";
+
+    // DB Sync: Check if customer exists
+    const { data: existingCustomer } = await supabase
+      .from("customers")
+      .select("*")
+      .or(`email.eq.${email},whatsapp.eq.${whatsapp}`)
+      .single();
+
+    let isRepeat = false;
+    let isVIP = false;
+    let customerRecord = null;
+
+    if (existingCustomer) {
+      isRepeat = true;
+      const newTotalOrders = (existingCustomer.total_orders || 1) + 1;
+      const newTotalQty = (existingCustomer.total_quantity || 0) + qty;
+      isVIP = newTotalOrders >= 3 || newTotalQty >= 500;
+
+      const { data: updated } = await supabase
+        .from("customers")
+        .update({
+          last_order_date: new Date().toISOString(),
+          total_orders: newTotalOrders,
+          total_quantity: newTotalQty,
+          lead_status: isVIP ? "VIP" : "Repeat",
+          priority: "HIGH PRIORITY",
+          total_products: Array.from(new Set([...(existingCustomer.total_products || []), product])),
+          design_photos: Array.from(new Set([...(existingCustomer.design_photos || []), ...(images || [])])),
+        })
+        .eq("id", existingCustomer.id)
+        .select()
+        .single();
+        
+      customerRecord = updated;
+    } else {
+      const { data: created } = await supabase
+        .from("customers")
+        .insert({
+          email: email || `guest_${Date.now()}@krossford.com`,
+          whatsapp: whatsapp,
+          country: lead.country || "Global",
+          total_orders: 1,
+          total_quantity: qty,
+          total_products: [product],
+          design_photos: images || [],
+          lead_status: "New",
+          priority: "Normal",
+        })
+        .select()
+        .single();
+
+      customerRecord = created;
+    }
+
+    // Insert Order Record
+    await supabase.from("orders").insert({
+      customer_email: email,
+      product: product,
+      quantity: qty,
+      details: lead.details || "Custom Specs",
+      status: qty >= 100 ? "Bulk" : "Sample",
+    });
+
+    // 3. Dispatch Priority Email via Resend
     if (resendApiKey) {
       const resend = new Resend(resendApiKey);
-      
+      const subjectTag = isVIP ? "🟢 VIP REPEAT CUSTOMER" : isRepeat ? "🟢 REPEAT CUSTOMER" : "🔵 NEW CUSTOMER";
+      const subject = `${subjectTag} - ${product} (${qty} Pcs) - ${lead.country || "Global"}`;
+
       const emailHtml = `
-        <div style="font-family: monospace; background: #121212; color: #fff; padding: 20px; border-radius: 8px;">
-          <h2 style="color: #C9A227; border-bottom: 1px solid #333; padding-bottom: 10px;">🔥 NEW HOT LEAD - KROSSFORD B2B</h2>
-          <p><strong>Customer Contact:</strong> ${lead.contact || "Not provided"}</p>
-          <p><strong>Product / Specs:</strong> ${lead.product || "Custom Leather Order"}</p>
-          <p><strong>Quantity:</strong> ${lead.quantity || "Not specified"}</p>
-          <p><strong>Leather / Design:</strong> ${lead.leather || "Cow Leather"} / ${lead.design || "Custom Design"}</p>
-          <p><strong>Country:</strong> ${lead.country || "International"}</p>
+        <div style="font-family: monospace; background: #000; color: #fff; padding: 20px; border-radius: 8px;">
+          <h2 style="color: ${isRepeat ? '#22c55e' : '#3b82f6'}; border-bottom: 1px solid #333; pb: 10px;">
+            ${subjectTag} ${isRepeat ? '- HANDLE FIRST!' : ''}
+          </h2>
+          <p><strong>Total Orders:</strong> ${customerRecord?.total_orders || 1}</p>
+          <p><strong>Contact:</strong> ${email || whatsapp}</p>
+          <p><strong>Product & Qty:</strong> ${product} (${qty} Pcs)</p>
+          <p><strong>Priority:</strong> ${isRepeat ? 'HIGH (Reply within 1 hour)' : 'Standard'}</p>
           <br/>
-          <h3 style="color: #C9A227;">Chat Summary:</h3>
-          <div style="background: #1a1a1a; padding: 10px; border-left: 3px solid #C9A227; font-size: 12px;">
-            ${Array.isArray(chatHistory) ? chatHistory.map((m: any) => `<p><b>${m.sender.toUpperCase()}:</b> ${m.text}</p>`).join("") : "No history"}
-          </div>
-          <br/>
-          <a href="mailto:${lead.contact}?subject=KROSSFORD Wholesale Quote & Inquiry" style="background: #C9A227; color: #000; padding: 10px 20px; text-decoration: none; font-weight: bold; display: inline-block; border-radius: 4px;">Reply to Customer by Email</a>
-          <br/><br/>
-          <a href="https://wa.me/${businessWhatsapp}?text=Hello KROSSFORD Team, regarding lead: ${lead.contact}" style="background: #25D366; color: #fff; padding: 10px 20px; text-decoration: none; font-weight: bold; display: inline-block; border-radius: 4px; margin-top: 10px;">Open WhatsApp Lead</a>
+          <a href="mailto:${email}?subject=KROSSFORD Order Priority Processing" style="background: #C9A227; color: #000; padding: 10px 20px; font-weight: bold; text-decoration: none; border-radius: 4px;">Reply to Customer</a>
         </div>
       `;
 
-      // Prepare attachments if images are present
-      const attachments = Array.isArray(images) ? images.map((img: string, idx: number) => {
-        const matches = img.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
-        if (matches) {
-          return {
-            filename: `design-photo-${idx + 1}.${matches[1].split('/')[1] || 'jpg'}`,
-            content: Buffer.from(matches[2], 'base64'),
-          };
-        }
-        return null;
-      }).filter(Boolean) : [];
-
       await resend.emails.send({
-        from: "KROSSFORD AI <noreply@krossford.com>",
+        from: "KROSSFORD CRM <noreply@krossford.com>",
         to: [businessEmail],
-        subject: `🔥 NEW HOT LEAD - ${lead.product || "Leather Goods"} - ${lead.quantity || "Bulk"} - ${lead.country || "Global"}`,
+        subject,
         html: emailHtml,
-        attachments: attachments.length > 0 ? (attachments as any) : undefined,
       });
     }
 
-    return NextResponse.json({ success: true, message: "Lead sent successfully to Business Email & WhatsApp pipeline." });
+    return NextResponse.json({
+      success: true,
+      isRepeat,
+      isVIP,
+      totalOrders: customerRecord?.total_orders || 1,
+      message: "Lead processed & CRM updated successfully.",
+    });
   } catch (error) {
-    console.error("Lead API Error:", error);
-    return NextResponse.json({ error: "Failed to dispatch business lead notification." }, { status: 500 });
+    console.error("CRM Lead Processing Error:", error);
+    return NextResponse.json({ error: "Failed to sync CRM lead data." }, { status: 500 });
   }
 }
