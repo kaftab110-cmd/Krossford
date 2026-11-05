@@ -31,58 +31,32 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[120px]">
-      {/* Hero Section */}
+      {/* Hero Section - Wahi Purani Wali - 1 Photo Only */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111] px-4">
         <img 
-          src="/hero.jpg" 
-          alt="Krossford Leather" 
+          src="/leather-rolls.jpg" 
+          alt="Custom Leather Products - Made For Your Brand" 
           className="absolute inset-0 w-full h-full object-cover" 
-          style={{ opacity: 0.55 }}
+          style={{ opacity: 0.85 }}
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-24">
-          <span className="text-[11px] tracking-[0.15em] text-yellow-400 border border-yellow-500/60 px-4 py-2 rounded-full font-mono max-w-full">
-            KROSSFORD ENTERPRISES B2B EXPORT
-          </span>
-          <h1 className="text-[28px] leading-[1.15] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full max-w-full px-2 break-words whitespace-normal tracking-normal uppercase font-sans overflow-hidden" style={{ wordBreak: "break-word" }}>
-            Uncompromising<br/>Leather<br/>Architecture
+          <h1 className="text-[32px] leading-[1.1] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full max-w-full px-2 break-words whitespace-normal tracking-normal uppercase font-serif overflow-hidden" style={{ wordBreak: "break-word", textShadow: "0 2px 20px rgba(0,0,0,0.8)" }}>
+            Custom Leather<br/>Products - Made<br/>For Your Brand
           </h1>
-          <p className="text-[13px] leading-[1.7] text-gray-200 w-full max-w-[520px] mt-4 break-words whitespace-normal tracking-normal px-4 uppercase">
-            Sourced and fabricated with precision. Handcrafted full-grain leather goods built for global wholesale procurement.
+          <p className="text-[13px] leading-[1.7] text-white w-full max-w-[560px] mt-4 break-words whitespace-normal tracking-normal px-4">
+            Architectural craftsmanship built for global wholesale, white-label retail, and custom private-label production.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center pb-4">
-            <a href="/shop" className="bg-yellow-500 text-black font-bold px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center">
-              Explore Catalog
+            <a href="/shop" className="bg-white text-black font-bold px-8 py-3.5 rounded-sm text-[13px] uppercase tracking-widest text-center">
+              Request Custom Quote
             </a>
-            <a href="/b2b" className="bg-transparent text-white border border-white px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center hover:bg-white hover:text-black transition-colors">
-              Wholesale Enquiry
+            <a href="/b2b" className="bg-transparent text-white border-2 border-white px-8 py-3.5 rounded-sm text-[13px] uppercase tracking-widest text-center hover:bg-white hover:text-black transition-colors">
+              B2B Wholesale Portal
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Colorful Leather Rolls / Hides Showcase Banner */}
-      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="relative rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-3 max-w-xl text-center md:text-left">
-            <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase">Custom Hides Available</span>
-            <h2 className="text-2xl sm:text-3xl font-serif tracking-wide uppercase">All Colors Full-Grain Leather Rolls</h2>
-            <p className="text-xs text-zinc-400 uppercase leading-relaxed">
-              Black, Brown, Red, Pink, Green, Blue, Yellow, White — custom-dyed leather rolls available for international wholesale and private label manufacturing.
-            </p>
-          </div>
-          <div className="w-full md:w-[350px] h-48 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900">
-            <img 
-              src="/leather-rolls.jpg" 
-              alt="Colorful Leather Rolls" 
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop";
-              }}
-            />
           </div>
         </div>
       </section>
@@ -122,7 +96,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Hides We Work With Section */}
+      {/* Hides We Work With Section - Leather Rolls Option Yahan Neeche Hides Ke Saath Mention Hoga */}
       <HidesWeWorkWith />
 
       {/* Newsletter / B2B Trade List Section */}
