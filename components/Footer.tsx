@@ -109,11 +109,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto pt-6 pb-6 border-t border-zinc-900 flex flex-col items-center justify-center space-y-3 px-2">
         <p className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold">WE ACCEPT:</p>
         <div className="flex flex-wrap items-center justify-center gap-2.5">
-          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">VISA</span>
-          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Mastercard</span>
-          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">PayPal</span>
-          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Western Union</span>
-          <span className="bg-white text-[#0A1A2F] px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Bank Transfer / T/T</span>
+          <span className="bg-white text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">VISA</span>
+          <span className="bg-white text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Mastercard</span>
+          <span className="bg-white text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">PayPal</span>
+          <span className="bg-white text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Western Union</span>
+          <span className="bg-white text-black px-3 py-1.5 rounded-full text-[11px] font-bold uppercase border border-[#C5A880] shadow">Bank Transfer / T/T</span>
         </div>
         
         {/* Corrected B2B Payment Terms Policy Text */}

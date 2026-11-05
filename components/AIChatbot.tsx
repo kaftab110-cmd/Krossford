@@ -46,7 +46,7 @@ export default function AIChatbot() {
 
     const lower = userMsg.toLowerCase();
     const emailMatch = userMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-    const phoneMatch = userMsg.match(/(\+\d{1,3}[- ]?)?\d{10,13}/);
+    const phoneMatch = userMsg.match(/(\+\d{1,3}[\s-]?)?\d{10,13}/);
 
     if (emailMatch || phoneMatch || lower.includes("@") || lower.includes("+")) {
       const foundEmail = emailMatch ? emailMatch[0] : "";
@@ -156,7 +156,7 @@ export default function AIChatbot() {
                     <p><span className="text-zinc-400">Status:</span> Dispatched to Email & WhatsApp ✅</p>
                     <div className="flex gap-2 pt-1">
                       <a href={`mailto:${m.leadDetails?.contact}?subject=KROSSFORD ENTERPRISES Quotation`} className="flex-1 bg-amber-500 text-black text-center py-1 rounded font-bold text-[9px]">Email Client</a>
-                      <a href={`https://wa.me/${businessWhatsapp}?text=Hi VIP Customer, regarding your lead.`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1 rounded font-bold text-[9px]">WhatsApp</a>
+                      <a href={`https://wa.me/${businessWhatsapp}?text=Hi VIP Customer, regarding your lead.`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-green-600 text-white text-center py-1 rounded font-bold text-[9px]">WhatsApp</a>
                     </div>
                   </div>
                 ) : (
@@ -186,7 +186,7 @@ export default function AIChatbot() {
             }} accept="image/*" className="hidden" />
             <button type="button" onClick={() => fileInputRef.current?.click()} className="text-zinc-400 hover:text-amber-400 p-2 text-xs border border-zinc-700 rounded bg-zinc-950">📎</button>
             <input type="text" placeholder="Type message or email..." value={input} onChange={(e) => setInput(e.target.value)} className="flex-1 bg-zinc-950 border border-zinc-800 rounded px-3 py-2 text-white text-xs outline-none focus:border-amber-400" />
-            <button type="submit" className="text-black px-3 py-2 rounded text-xs font-bold uppercase" style={{ backgroundColor: "#C9A227" }}>Send</button>
+            <button type="submit" className="text-black px-3 py-2 rounded text-xs font-bold uppercase cursor-pointer" style={{ backgroundColor: "#C9A227" }}>Send</button>
           </form>
         </div>
       )}

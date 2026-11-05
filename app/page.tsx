@@ -32,38 +32,31 @@ export default function Home() {
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[100px]">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[90vh] flex flex-col items-center justify-center text-center overflow-hidden bg-black">
-        <div className="absolute inset-0 z-0">
-          <img src="/hero.jpg" alt="Leather" className="w-full h-full object-cover opacity-50" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black"></div>
-        </div>
-        <div className="relative z-10 flex flex-col items-center px-4 pt-16 pb-24 max-w-4xl mx-auto space-y-6 w-full">
-          <span className="inline-block text-[10px] font-mono tracking-[0.2em] sm:tracking-[0.3em] uppercase text-amber-400 border border-amber-400/30 px-3 sm:px-4 py-1.5 rounded max-w-full">
-            Krossford Enterprises B2B Export
+      <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111]">
+        <img 
+          src="https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop" 
+          alt="Premium Leather" 
+          className="absolute inset-0 w-full h-full object-cover" 
+          style={{ opacity: 0.55 }} 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+        <div className="relative z-10 flex flex-col items-center px-4 py-20 max-w-4xl mx-auto">
+          <span className="text-[11px] tracking-[0.3em] text-yellow-400 border border-yellow-500/60 px-4 py-2 rounded-full font-mono">
+            KROSSFORD ENTERPRISES B2B EXPORT
           </span>
-          
-          <h1 className="text-[36px] leading-[1.05] sm:text-[52px] md:text-[64px] lg:text-[72px] font-bold text-white mt-6 break-words uppercase font-serif tracking-[0.1em]">
-            Uncompromising Leather Architecture
+          <h1 className="text-[36px] sm:text-[56px] lg:text-[72px] leading-[1.05] font-bold text-white mt-6 uppercase font-serif tracking-[0.1em]">
+            Uncompromising<br/>Leather<br/>Architecture
           </h1>
-          
-          <p className="text-[14px] sm:text-[16px] leading-relaxed text-zinc-300 tracking-wider sm:tracking-widest uppercase font-light max-w-xl mx-auto px-4">
+          <p className="text-[14px] sm:text-[16px] text-gray-200 max-w-[600px] mt-5 leading-relaxed tracking-wider uppercase">
             Sourced and fabricated in Sialkot, Pakistan. Handcrafted full-grain cowhide goods built for global wholesale procurement.
           </p>
-
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 px-4 w-full max-w-md sm:max-w-none mx-auto mt-8">
-            <Link 
-              href="/shop"
-              className="w-full sm:w-auto font-bold text-xs uppercase tracking-[0.2em] px-8 py-4 rounded-[4px] text-black transition-all hover:bg-amber-500 text-center"
-              style={{ backgroundColor: "#C9A227" }}
-            >
+          <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center">
+            <a href="/shop" className="bg-yellow-500 text-black font-bold px-8 py-3.5 rounded-full text-[15px] uppercase tracking-widest text-center">
               Explore Catalog
-            </Link>
-            <Link 
-              href="/b2b"
-              className="w-full sm:w-auto font-bold text-xs uppercase tracking-[0.2em] px-8 py-4 rounded-[4px] border border-white hover:bg-white hover:text-black transition-colors text-center"
-            >
+            </a>
+            <a href="/b2b" className="bg-transparent text-white border border-white px-8 py-3.5 rounded-full text-[15px] uppercase tracking-widest text-center hover:bg-white hover:text-black transition-colors">
               Wholesale Enquiry
-            </Link>
+            </a>
           </div>
         </div>
       </section>
