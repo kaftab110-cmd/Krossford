@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="overflow-x-hidden max-w-full">
-      <body className="bg-zinc-950 text-white min-h-screen overflow-x-hidden max-w-full antialiased font-mono flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+      <body className="bg-[#0a0a0a] text-white min-h-screen overflow-x-hidden max-w-full antialiased font-mono flex flex-col justify-between selection:bg-amber-500 selection:text-black">
         <div>
           <Navbar />
           {children}
