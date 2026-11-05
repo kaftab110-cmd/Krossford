@@ -30,9 +30,9 @@ export default function Home() {
   ];
 
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[100px]">
+    <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[120px]">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111]">
+      <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111] px-4">
         <img 
           src="https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop" 
           alt="Premium Leather" 
@@ -40,21 +40,21 @@ export default function Home() {
           style={{ opacity: 0.55 }} 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
-        <div className="relative z-10 flex flex-col items-center px-4 py-20 max-w-4xl mx-auto">
-          <span className="text-[11px] tracking-[0.3em] text-yellow-400 border border-yellow-500/60 px-4 py-2 rounded-full font-mono">
+        <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-16">
+          <span className="text-[11px] tracking-[0.15em] text-yellow-400 border border-yellow-500/60 px-4 py-2 rounded-full font-mono max-w-full">
             KROSSFORD ENTERPRISES B2B EXPORT
           </span>
-          <h1 className="text-[36px] sm:text-[56px] lg:text-[72px] leading-[1.05] font-bold text-white mt-6 uppercase font-serif tracking-[0.1em]">
+          <h1 className="text-[32px] leading-[1.1] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full break-words whitespace-normal tracking-normal uppercase font-serif">
             Uncompromising<br/>Leather<br/>Architecture
           </h1>
-          <p className="text-[14px] sm:text-[16px] text-gray-200 max-w-[600px] mt-5 leading-relaxed tracking-wider uppercase">
+          <p className="text-[14px] leading-[1.6] text-gray-200 w-full max-w-[520px] mt-4 break-words whitespace-normal tracking-normal px-2 uppercase">
             Sourced and fabricated in Sialkot, Pakistan. Handcrafted full-grain cowhide goods built for global wholesale procurement.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center">
-            <a href="/shop" className="bg-yellow-500 text-black font-bold px-8 py-3.5 rounded-full text-[15px] uppercase tracking-widest text-center">
+            <a href="/shop" className="bg-yellow-500 text-black font-bold px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center">
               Explore Catalog
             </a>
-            <a href="/b2b" className="bg-transparent text-white border border-white px-8 py-3.5 rounded-full text-[15px] uppercase tracking-widest text-center hover:bg-white hover:text-black transition-colors">
+            <a href="/b2b" className="bg-transparent text-white border border-white px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center hover:bg-white hover:text-black transition-colors">
               Wholesale Enquiry
             </a>
           </div>
