@@ -9,7 +9,7 @@ export default function Home() {
     {
       id: 1,
       title: "Executive Outerwear",
-      subtitle: "Full-Grain Cowhide Jackets",
+      subtitle: "Full-Grain Leather Jackets",
       image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1000&auto=format&fit=crop",
       link: "/shop?category=jackets"
     },
@@ -43,17 +43,17 @@ export default function Home() {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
-        <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-16">
+        <div className="relative z-10 flex flex-col items-center py-20 max-w-4xl mx-auto w-full pb-24">
           <span className="text-[11px] tracking-[0.15em] text-yellow-400 border border-yellow-500/60 px-4 py-2 rounded-full font-mono max-w-full">
             KROSSFORD ENTERPRISES B2B EXPORT
           </span>
-          <h1 className="text-[32px] leading-[1.1] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full break-words whitespace-normal tracking-normal uppercase font-serif">
+          <h1 className="text-[28px] leading-[1.15] sm:text-[48px] lg:text-[64px] font-bold text-white mt-6 w-full max-w-full px-2 break-words whitespace-normal tracking-normal uppercase font-sans overflow-hidden" style={{ wordBreak: "break-word" }}>
             Uncompromising<br/>Leather<br/>Architecture
           </h1>
-          <p className="text-[14px] leading-[1.6] text-gray-200 w-full max-w-[520px] mt-4 break-words whitespace-normal tracking-normal px-2 uppercase">
-            Sourced and fabricated in Sialkot, Pakistan. Handcrafted full-grain cowhide goods built for global wholesale procurement.
+          <p className="text-[13px] leading-[1.7] text-gray-200 w-full max-w-[520px] mt-4 break-words whitespace-normal tracking-normal px-4 uppercase">
+            Sourced and fabricated with precision. Handcrafted full-grain leather goods built for global wholesale procurement.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 mt-8 w-full max-w-[400px] sm:max-w-none justify-center pb-4">
             <a href="/shop" className="bg-yellow-500 text-black font-bold px-8 py-3.5 rounded-full text-[15px] uppercase tracking-normal text-center">
               Explore Catalog
             </a>
@@ -71,7 +71,7 @@ export default function Home() {
             <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase">Custom Hides Available</span>
             <h2 className="text-2xl sm:text-3xl font-serif tracking-wide uppercase">All Colors Full-Grain Leather Rolls</h2>
             <p className="text-xs text-zinc-400 uppercase leading-relaxed">
-              Black, Brown, Red, Pink, Green, Blue, Yellow, White — custom-dyed cowhide rolls available for international wholesale and private label manufacturing in Sialkot.
+              Black, Brown, Red, Pink, Green, Blue, Yellow, White — custom-dyed leather rolls available for international wholesale and private label manufacturing.
             </p>
           </div>
           <div className="w-full md:w-[350px] h-48 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900">
