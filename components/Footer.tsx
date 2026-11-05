@@ -34,35 +34,28 @@ export default function AIChatbot() {
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() && selectedImages.length === 0) return;
-
     const userMsg = input.trim();
     const currentImgs = [...selectedImages];
-
     const updatedMessages = [...messages, { sender: "user", text: userMsg, image: currentImgs[0] }];
     setMessages(updatedMessages);
     setInput("");
     setSelectedImages([]);
     setLoading(true);
-
     const lower = userMsg.toLowerCase();
     const emailMatch = userMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     const phoneMatch = userMsg.match(/(\+\d{1,3}[\s-]?)?\d{10,13}/);
-
     if (emailMatch || phoneMatch || lower.includes("@") || lower.includes("+")) {
       const foundEmail = emailMatch ? emailMatch[0] : "";
       const foundPhone = phoneMatch ? phoneMatch[0] : "";
-      
       let existingContact = leadInfo.contact || "";
       let parts = existingContact ? existingContact.split(" / ").map(p => p.trim()) : [];
       if (foundEmail && !parts.includes(foundEmail)) parts.push(foundEmail);
       if (foundPhone && !parts.includes(foundPhone)) parts.push(foundPhone);
       const mergedContact = parts.join(" / ");
-
       let isRepeatCustomer = false;
       let orderCount = 1;
       let customerName = "Valued Partner";
       let lastProduct = "Custom Leather Goods";
-
       try {
         const lookupRes = await fetch("/api/lead", {
           method: "POST",
@@ -79,7 +72,6 @@ export default function AIChatbot() {
       } catch (err) {
         console.error("CRM Lookup error:", err);
       }
-
       const updatedLead: LeadData = {
         ...leadInfo,
         contact: mergedContact,
@@ -88,23 +80,19 @@ export default function AIChatbot() {
         customerName: customerName,
         product: leadInfo.product || "Leather Apparel / Goods",
       };
-
       setLeadInfo(updatedLead);
-
       await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lead: { ...updatedLead, email: foundEmail, whatsapp: foundPhone }, images: currentImgs, chatHistory: updatedMessages }),
       });
-
       let aiReply = "";
       if (isRepeatCustomer) {
         const isGold = orderCount >= 3;
         aiReply = `❤️ Welcome Back, ${customerName}!\n\nYou are our ${isGold ? '🏆 GOLD VIP MEMBER' : '⭐ VIP FAMILY MEMBER'}. Your trust built KROSSFORD ENTERPRISES internationally. Thank you!\n\nYour last order (${lastProduct}) was crafted with pride. Your new order gets FIRST PRIORITY in our factory.\n\n✨ VIP Perks Unlocked:\n• 1st Sample Absolutely FREE\n• 5% Discount on Bulk\n• Free Private Label / Logo\n• Direct WhatsApp with Master Craftsman`;
       } else {
-        aiReply = "Welcome to KROSSFORD ENTERPRISES 🌍 - Crafted in Pakistan. Trusted Worldwide. Your inquiry has been dispatched to our international sales team.";
+        aiReply = "Welcome to KROSSFORD ENTERPRISES 🌍 - Crafted with Precision. Trusted Worldwide. Your inquiry has been dispatched to our international sales team.";
       }
-
       setMessages((prev) => [
         ...prev,
         { sender: "ai", text: aiReply, isVipWelcome: isRepeatCustomer },
@@ -113,35 +101,32 @@ export default function AIChatbot() {
       setLoading(false);
       return;
     }
-
     let reply = "KROSSFORD ENTERPRISES is an international leather manufacturer (Since 2025). Upload your design photo 📎 or share your quantity for wholesale pricing.";
     if (lower.includes("delivery") || lower.includes("time")) {
       reply = "Sample Production: 7-10 Days (VIP: 5-7 Days). Bulk Production: 25-35 Days. Shipping via DHL/FedEx to 15+ countries.";
     }
-
     setMessages((prev) => [...prev, { sender: "ai", text: reply }]);
     setLoading(false);
   };
 
   return (
-    <div className="fixed z-50 font-mono bottom-[20px] right-[16px]">
+    <>
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-[20px] right-[16px] z-50 w-[56px] h-[56px] bg-yellow-500 text-black rounded-full flex items-center justify-center font-bold shadow-lg cursor-pointer border-2 border-amber-300"
+          className="fixed bottom-[20px] right-[16px] z-50 w-[56px] h-[56px] bg-yellow-500 text-black rounded-full flex items-center justify-center font-bold shadow-lg cursor-pointer border-2 border-amber-300 font-mono"
           aria-label="Open AI Assistant"
         >
           AI
         </button>
       ) : (
-        <div className="fixed bottom-[90px] right-3 w-[calc(100vw-24px)] max-w-[380px] h-[70vh] max-h-[550px] bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white z-[60]">
+        <div className="fixed bottom-[90px] right-3 w-[calc(100vw-24px)] max-w-[380px] h-[70vh] max-h-[550px] bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-white z-[60] font-mono">
           <div className="bg-zinc-900 px-4 py-3 border-b border-zinc-800 flex justify-between items-center">
             <h3 className="text-xs uppercase tracking-widest text-amber-400 font-bold">
               KROSSFORD ENTERPRISES - AI ASSISTANT
             </h3>
             <button onClick={() => setIsOpen(false)} className="text-zinc-400 hover:text-white text-sm font-bold px-2">✕</button>
           </div>
-
           <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs">
             {messages.map((m, idx) => (
               <div key={idx} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
@@ -173,7 +158,6 @@ export default function AIChatbot() {
             ))}
             {loading && <div className="text-amber-400 text-[10px] animate-pulse">Syncing with KROSSFORD CRM & Manufacturing...</div>}
           </div>
-
           <form onSubmit={handleSend} className="p-3 bg-zinc-900 border-t border-zinc-800 flex gap-2">
             <input type="file" ref={fileInputRef} onChange={(e) => {
               const file = e.target.files?.[0];
@@ -189,6 +173,6 @@ export default function AIChatbot() {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 }
