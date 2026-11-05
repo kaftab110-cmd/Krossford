@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden pb-[120px]">
-      {/* Hero Section with Public Folder Image & Fallback */}
+      {/* Hero Section */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center text-center overflow-hidden bg-[#111] px-4">
         <img 
           src="/hero.jpg" 
@@ -39,8 +39,7 @@ export default function Home() {
           className="absolute inset-0 w-full h-full object-cover" 
           style={{ opacity: 0.55 }}
           onError={(e) => {
-            // Fallback if hero.jpg is named differently in public folder
-            (e.target as HTMLImageElement.prototype as any).src = "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop";
+            (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=2000&auto=format&fit=crop";
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
@@ -81,7 +80,7 @@ export default function Home() {
               alt="Colorful Leather Rolls" 
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop";
+                (e.currentTarget as HTMLImageElement).src = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1000&auto=format&fit=crop";
               }}
             />
           </div>
