@@ -6,16 +6,18 @@ import Bespoke from "@/components/Bespoke";
 
 export default function Home() {
   return (
-    <main className="bg-black text-white min-h-screen">
-      {/* Hero - With Background Image */}
-      <section 
-        className="relative mx-auto max-w-7xl px-6 pt-24 pb-20 text-center bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/leather-duffle-bag.jpg')" }}
-      >
+    <main className="bg-black text-white min-h-screen overflow-x-hidden">
+      {/* Hero - FIXED - Full Screen Fit */}
+      <section className="relative w-full h-[100svh] min-h-[600px] flex items-center justify-center text-center overflow-hidden">
+        {/* Background Image - Full Fit */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/leather-duffle-bag.jpg')" }}
+        />
         {/* Kala parda - taake likhai saaf dikhe */}
-        <div className="absolute inset-0 bg-black/70"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        <div className="relative z-10">
+        <div className="relative z-10 px-6 max-w-3xl mx-auto">
           <p className="text-amber-400 tracking-[0.3em] text-xs font-bold">KROSSFORD ENTERPRISES</p>
           <h1 className="mt-4 text-4xl sm:text-6xl font-bold leading-tight">
             Real Leather.<br />Made Honestly.
