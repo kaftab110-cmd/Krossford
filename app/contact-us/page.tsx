@@ -4,8 +4,9 @@ import { useState } from "react";
 
 const contact = {
   email: "hello@krossford.com",
-  whatsapp: "Coming Soon",
-  phone: "Coming Soon",
+  whatsapp: "923030006759", // +92303 0006759
+  whatsappDisplay: "+92303 0006759",
+  phone: "+92303 0006759",
   location: "Gujrat, Punjab, Pakistan",
 };
 
@@ -41,10 +42,15 @@ export default function ContactPage() {
               <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
-            <div className="block rounded-md border border-zinc-800 px-5 py-4">
+            <a
+              href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about wholesale / bulk leather order.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]"
+            >
               <span className="block text-xs text-zinc-400 uppercase">WhatsApp / Phone</span>
-              <span className="text-sm font-bold text-zinc-300">{contact.whatsapp}</span>
-            </div>
+              <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
+            </a>
             <div className="block rounded-md border border-zinc-800 px-5 py-4">
               <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
               <span className="text-sm font-bold text-zinc-300">{contact.location}</span>
