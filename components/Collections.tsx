@@ -9,14 +9,16 @@ export default function Collections() {
 
   const categories = ["All", "Bags", "Accessories", "Custom", "Office"];
 
-  const allProducts = products.map((p) => ({
-    id: p.slug,
+  const allProducts = products.map((p: any) => ({
+    id: p.slug || p.id,
     name: p.name,
     category: p.category,
     leather: p.description,
     image: p.image,
     badge: p.badge,
-    colors: ["#1c1917", "#78350f", "#b45309"],
+    // FIX: Asli colors data se lo, agar na ho to fallback
+    colors: p.colors ? p.colors.map((c: any) => c.code || c) : ["#1c1917", "#78350f", "#b45309"],
+    colorNames: p.colors ? p.colors.map((c: any) => c.name) : [],
   }));
 
   const filteredProducts =
@@ -64,7 +66,8 @@ export default function Collections() {
                 </span>
               )}
 
-              <Link href="/cart" className="block">
+              {/* FIX 1: Image ab Cart pe nahi, Product Page pe jayegi */}
+              <Link href={`/product/${product.id}`} className="block">
                 <div className="relative w-full h-64 rounded-lg bg-zinc-900 overflow-hidden border border-zinc-800/60">
                   <img
                     src={product.image}
@@ -78,7 +81,8 @@ export default function Collections() {
                 <span className="text-[11px] text-yellow-500 font-medium uppercase tracking-wider">
                   {product.category}
                 </span>
-                <Link href="/cart" className="block">
+                {/* FIX 2: Naam bhi Product Page pe jayega */}
+                <Link href={`/product/${product.id}`} className="block">
                   <h3 className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-500 transition-colors line-clamp-2">
                     {product.name}
                   </h3>
@@ -89,15 +93,18 @@ export default function Collections() {
               <div className="mt-4 pt-3 border-t border-zinc-900 flex items-center justify-between">
                 <span className="text-xs text-zinc-500 uppercase tracking-wider">Options</span>
                 <div className="flex gap-1">
-                  {product.colors.map((col, i) => (
-                    <span key={i} className="w-3 h-3 rounded-full border border-zinc-700" style={{ backgroundColor: col }} />
+                  {product.colors.map((col: string, i: number) => (
+                    <Link key={i} href={`/product/${product.id}`}>
+                      <span className="w-3 h-3 rounded-full border border-zinc-700 cursor-pointer block" style={{ backgroundColor: col }} />
+                    </Link>
                   ))}
                 </div>
               </div>
 
               <div className="mt-4">
+                {/* FIX 3: SELECT OPTIONS ab Cart pe nahi, Product Page pe jayega */}
                 <Link
-                  href="/cart"
+                  href={`/product/${product.id}`}
                   className="w-full block text-center rounded bg-zinc-900 hover:bg-yellow-500 hover:text-black border border-zinc-800 text-xs font-bold uppercase tracking-wider transition-all text-zinc-200 py-2.5"
                 >
                   Select Options

@@ -1,37 +1,52 @@
+"use client";
 import Link from "next/link";
-import { featuredProductsSection } from "@/lib/data/homepage";
+import { products } from "@/lib/data/shop";
 
 export default function FeaturedProducts() {
-  return (
-    <section id="featured-products" aria-labelledby="featured-products-title" className="bg-black py-20 text-white">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto mb-14 max-w-3xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">{featuredProductsSection.label}</span>
-          <h2 id="featured-products-title" className="mt-4 text-4xl font-bold">{featuredProductsSection.title}</h2>
-          <p className="mt-4 leading-7 text-zinc-300">{featuredProductsSection.description}</p>
-        </div>
+  const featured = products.slice(0, 4);
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {featuredProductsSection.products.map((product) => (
-            <article key={product.id} className="rounded-xl border border-yellow-500/20 bg-zinc-900 p-5 overflow-hidden">
-              <div className="mb-5 aspect-square overflow-hidden rounded-lg bg-zinc-800">
-                <img 
-                  src={product.imageUrl} 
-                  alt={product.title}
-                  className="h-full w-full object-cover transition duration-300 hover:scale-105"
-                />
-              </div>
-              <span className="inline-flex rounded-full border border-yellow-500/30 px-3 py-1 text-xs font-medium uppercase tracking-wide text-yellow-500">
-                {product.status}
-              </span>
-              <h3 className="mt-4 text-xl font-semibold text-yellow-500">{product.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-zinc-300">{product.description}</p>
-              <Link href={product.href} className="mt-5 inline-flex items-center gap-1 font-medium text-yellow-500 transition hover:underline">
-                View Piece <span aria-hidden>→</span>
+  return (
+    <section className="mx-auto max-w-7xl px-6 py-16">
+      <h2 className="text-2xl font-bold uppercase tracking-widest text-center mb-10">Featured Products</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {featured.map((product: any) => {
+          const slug = product.slug || product.id;
+          return (
+            <div key={product.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group">
+              <Link href={`/product/${slug}`}>
+                <div className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer">
+                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  {product.badge && (
+                    <span className="absolute top-3 left-3 bg-amber-400 text-black text-[9px] font-bold px-2 py-1 uppercase">{product.badge}</span>
+                  )}
+                </div>
               </Link>
-            </article>
-          ))}
-        </div>
+              <div className="p-5 space-y-3">
+                <span className="text-[10px] text-amber-400 tracking-widest uppercase">{product.category}</span>
+                <Link href={`/product/${slug}`}>
+                  <h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{product.name}</h3>
+                </Link>
+                <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
+                <p className="text-sm font-mono text-amber-400">${product.price}</p>
+
+                {/* Color Dots - Click karne pe bhi Product Page khulega */}
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-zinc-500 uppercase">Options:</span>
+                  {product.colors?.map((c: any) => (
+                    <Link key={c.name} href={`/product/${slug}`}>
+                      <span title={c.name} style={{ background: c.code, width: 16, height: 16, borderRadius: "50%", display: "inline-block", border: "1px solid #fff", cursor: "pointer" }} />
+                    </Link>
+                  ))}
+                </div>
+
+                {/* FIX: SELECT OPTIONS ab Cart pe nahi, Product Page pe jayega */}
+                <Link href={`/product/${slug}`} className="block w-full text-center bg-zinc-800 hover:bg-amber-400 hover:text-black text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
+                  Select Options
+                </Link>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
