@@ -32,7 +32,7 @@ export default function CheckoutPage() {
 
   const total = cart.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
 
-  const WHATSAPP_NUMBER = "923000000000";
+  const WHATSAPP_NUMBER = "923030006759"; // +92303 0006759 - FIXED
 
   const handlePlaceOrder = () => {
     if (!name.trim() || !country.trim() || !address.trim() || !phone.trim()) {
@@ -59,60 +59,60 @@ export default function CheckoutPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center gap-4 p-6 text-center">
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <p className="text-2xl font-bold">Your cart is empty</p>
-        <Link href="/shop" className="bg-black text-white px-6 py-3 rounded text-sm font-bold">Go To Shop</Link>
+        <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Go To Shop</Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white text-black p-6 md:p-12">
+    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6 md:p-12">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
         {/* LEFT - FORM */}
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
-          <p className="text-xs text-zinc-500 mt-1">Fill details - Order WhatsApp pe jayega</p>
+          <p className="text-xs text-zinc-400 mt-1">Fill details - Order WhatsApp pe jayega</p>
 
           <div className="mt-6 space-y-3">
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full border rounded px-3 py-3 text-sm outline-none focus:border-black" />
-            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full border rounded px-3 py-3 text-sm outline-none focus:border-black" />
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone / WhatsApp *" className="w-full border rounded px-3 py-3 text-sm outline-none focus:border-black" />
-            <input value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Country *" className="w-full border rounded px-3 py-3 text-sm outline-none focus:border-black" />
-            <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address *" rows={3} className="w-full border rounded px-3 py-3 text-sm outline-none focus:border-black" />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone / WhatsApp *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <input value={country} onChange={(e) => setCountry(e.target.value)} placeholder="Country *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
           </div>
 
-          <div className="mt-4 bg-amber-50 border border-amber-200 rounded p-3">
-            <p className="text-[11px] text-zinc-700">Shipment + Delivery Charges aur Customization ke extra charges order confirm hone pe bataye jayenge. Product price me shamil nahi hain.</p>
+          <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
+            <p className="text-[11px] text-zinc-400">Shipment + Delivery Charges aur Customization ke extra charges order confirm hone pe bataye jayenge. Product price me shamil nahi hain.</p>
           </div>
         </div>
 
         {/* RIGHT - SUMMARY */}
         <div>
-          <div className="bg-zinc-50 border rounded-lg p-5">
-            <p className="text-xs font-bold tracking-widest uppercase">Order Summary</p>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+            <p className="text-xs font-bold tracking-widest uppercase text-zinc-300">Order Summary</p>
             <div className="mt-4 space-y-4">
               {cart.map((it) => (
                 <div key={it.id} className="flex gap-3">
                   <img src={it.image} alt={it.name} className="w-16 h-16 object-cover rounded" />
                   <div className="flex-1">
                     <p className="text-sm font-bold leading-tight">{it.name}</p>
-                    <p className="text-[11px] text-zinc-500">Color: {it.colorName} | {it.customerType} | Qty: {it.quantity}</p>
+                    <p className="text-[11px] text-zinc-400">Color: {it.colorName} | {it.customerType} | Qty: {it.quantity}</p>
                     {it.additionalOption !== "none" && (
-                      <p className="text-[11px] text-amber-600">Custom: {it.additionalOption} {it.customText}</p>
+                      <p className="text-[11px] text-amber-400">Custom: {it.additionalOption} {it.customText}</p>
                     )}
                   </div>
                   <p className="text-sm font-bold">${Number(it.price) * Number(it.quantity)}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-4 pt-4 border-t flex justify-between">
+            <div className="mt-4 pt-4 border-t border-zinc-800 flex justify-between">
               <span className="font-bold">Total</span>
               <span className="font-bold">${total}</span>
             </div>
             <p className="text-[11px] text-zinc-500 mt-1">+ Shipment / Delivery - To Be Confirmed</p>
 
-            <button onClick={handlePlaceOrder} className="mt-5 w-full bg-black text-white py-3.5 rounded text-sm font-bold uppercase hover:bg-zinc-800">
+            <button onClick={handlePlaceOrder} className="mt-5 w-full bg-amber-400 text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-amber-300">
               Place Order on WhatsApp →
             </button>
             <Link href="/cart" className="block text-center mt-3 text-xs underline text-zinc-500">Back to Cart</Link>
