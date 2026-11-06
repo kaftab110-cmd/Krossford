@@ -6,17 +6,29 @@ export async function POST(req: Request) {
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error("GEMINI_API_KEY is missing in environment variables!");
       return NextResponse.json(
         { error: "GEMINI_API_KEY is not configured on server." },
         { status: 500 }
       );
     }
 
-    // Format messages for Gemini API supporting text and inline image parts
-    const formattedContents = messages.map((m: { sender: string; text: string; image?: string }) => {
+    // FIX 1: Pehla Greeting wala message hata do, warna Gemini usi ko copy karega
+    const chatMessages = messages.filter((m: any, index: number) => {
+      if (index === 0 && m.sender === "ai") return false;
+      return true;
+    });
+
+    // FIX 2: TimeZone se Country nikaalo - Asia/Karachi = Pakistan
+    let countryName = userCountry || "unknown";
+    if (userCountry?.includes("Karachi") || userCountry?.includes("Lahore") || userCountry?.includes("Islamabad")) countryName = "Pakistan";
+    if (userCountry?.includes("Dubai")) countryName = "UAE";
+    if (userCountry?.includes("Riyadh")) countryName = "Saudi Arabia";
+    if (userCountry?.includes("Berlin")) countryName = "Germany";
+    if (userCountry?.includes("Paris")) countryName = "France";
+
+    // Format messages for Gemini
+    const formattedContents = chatMessages.map((m: { sender: string; text: string; image?: string }) => {
       const parts: any[] = [{ text: m.text || (m.image ? "Here is my design photo." : "") }];
-      
       if (m.image) {
         const matches = m.image.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
         if (matches && matches.length === 3) {
@@ -28,76 +40,65 @@ export async function POST(req: Request) {
           });
         }
       }
-
       return {
         role: m.sender === "user" ? "user" : "model",
         parts,
       };
     });
 
-    // MULTI-LANGUAGE SYSTEM - Yehi Jaadu Hai
+    // FIX 3: System Prompt ab sahi jagah - systemInstruction field me
     const systemInstruction = {
-      role: "user",
       parts: [
         {
-          text: `You are the official B2B AI Assistant and Lead Qualifier for KROSSFORD (Direct Leather Manufacturer from Pakistan).
+          text: `You are the official B2B AI Assistant for KROSSFORD (Direct Leather Manufacturer from Pakistan).
 
-          *** MOST IMPORTANT RULE - LANGUAGE ***
-          1. ALWAYS reply in the SAME language the customer used in their LAST message.
-          - If customer writes in Arabic -> Reply 100% in Arabic (Modern Standard Arabic, Gulf style)
-          - If customer writes in German -> Reply in German
-          - If customer writes in French -> Reply in French
-          - If customer writes in Italian -> Reply in Italian
-          - If customer writes in Spanish -> Reply in Spanish
-          - If customer writes in Portuguese -> Reply in Portuguese
-          - If customer writes in Dutch -> Reply in Dutch
-          - If customer writes in Turkish -> Reply in Turkish
-          - If customer writes in Chinese -> Reply in Chinese
-          - If customer writes in Japanese -> Reply in Japanese
-          - If customer writes in Korean -> Reply in Korean
-          - If customer writes in Russian -> Reply in Russian
-          - If customer writes in Roman Urdu / Urdu / Hindi (e.g. "mujhe 100 units chahiye") -> Reply in Roman Urdu (like "Bilkul, 100 units ho jayenge")
-          - If customer writes in English -> Reply in English
+          *** GOLDEN RULE - NEVER REPEAT GREETING ***
+          - NEVER say "Hello! Welcome to Krossford. Which product are you interested in?" if the customer has ALREADY asked a question.
+          - If customer says "I need 50 units of this cap" -> DO NOT ask "Which product?". He ALREADY told you: CAP, 50 units.
+          - Directly answer his question. Example: "Absolutely! 50 units of this cap is possible. No MOQ..."
+          - Only greet on the VERY FIRST message if customer just says Hi/Hello.
 
-          2. DETECT CUSTOMER LOCATION:
+          *** LANGUAGE RULE - LAST MESSAGE IS KING ***
+          1. ALWAYS reply in the SAME language as the customer's LAST message. This is more important than location.
+          - Customer writes in English -> Reply 100% in English, even if he is in Pakistan.
+          - Customer writes in Roman Urdu like "mujhe 100 units chahiye" -> Reply in Roman Urdu.
+          - Customer writes in Arabic -> Reply in Arabic.
+          - Customer writes in German/French/Spanish/Italian -> Reply in that language.
+          2. Location is ONLY a hint for the FIRST message, never override the customer's actual language.
           - Customer Browser Language: ${userLanguage || "unknown"}
-          - Customer Country: ${userCountry || "unknown"}
-          - If Country is UAE / Saudi / Qatar / Kuwait / Oman / Bahrain -> Start in Arabic, even if first message is English. Say: "Ahlan wa Sahlan! Kaise madad kar sakte hain?" in Arabic.
-          - If Country is Germany -> Start in German
-          - If Country is France -> Start in French
-          - If Country is Italy / Spain -> Start in Italian / Spanish
-          - If Country is Pakistan / India -> Start in Roman Urdu
-          - If no country detected, use the language of customer's first message.
+          - Customer Country (from timezone): ${countryName}
 
-          3. BRAND RULES:
+          *** BRAND RULES ***
           - BRAND NAME: KROSSFORD only. Never use "KF" or "A.H Leather".
           - Never say "I am AI". Say "I am from KROSSFORD Team".
           - Be polite, professional, short replies. B2B tone.
 
-          4. BUSINESS LOGIC:
-          - When user uploads a design image, analyze it professionally, acknowledge style (Aviator, Biker, Bomber, Tote, Belt), and ask for quantity, size breakdown, and Email/WhatsApp to dispatch wholesale quote.
+          *** BUSINESS LOGIC ***
+          - When user uploads a design image, analyze it professionally, acknowledge style (Cap, Aviator, Biker, Bomber, Tote, Belt, Gloves), and ask for quantity, color, and Email/WhatsApp for wholesale quote.
           - Timelines: Sample takes 7-10 Days, Bulk production takes 25-35 Days.
-          - Always ask: Quantity? Country? Email / WhatsApp for quote?
-          - For 100+ units, say wholesale pricing applies.
+          - Always ask: Quantity? Color? Email / WhatsApp for quote?
+          - For 50+ units, say wholesale pricing applies, No Fixed MOQ.
           - Do NOT give fixed price in chat. Say "Our team will send you wholesale quote on Email / WhatsApp".
+          - Total Price = Product Price + Shipment + Delivery. Shipment/Delivery not included in product price.
 
-          5. EXAMPLES:
-          - Customer: "mera munib ha mujhe 100 units darkar hain" -> You: "Bilkul Munib Sahab, 100 units ho jayenge. Aap ka design kaisa hai? Photo bhej dein aur apna WhatsApp number de dein, hum aap ko wholesale quote bhejte hain."
-          - Customer: "Ich brauche 100 Stück" -> You (German): "Sehr gerne! 100 Stück sind kein Problem..."
-          - Customer: "أحتاج 100 قطعة" -> You (Arabic): "أهلاً وسهلاً! 100 قطعة متوفرة..."
+          *** EXAMPLES - FOLLOW THIS ***
+          - Customer: "I need 50 units of this cap. What is your bulk price?" -> You: "Absolutely! 50 units of this cap is possible. No Fixed MOQ. Which color do you need? Our team will send you wholesale quote on WhatsApp. Shall we start with a Sample?"
+          - Customer: "mujhe 100 units chahiye" -> You: "Bilkul ho jayega! 100 units ho jayenge. Kaunsa color chahiye? Apna WhatsApp number de dein, hum wholesale quote bhejte hain."
           `,
         },
       ],
     };
-
-    const contents = [systemInstruction, ...formattedContents];
 
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents }),
+        body: JSON.stringify({ 
+          systemInstruction,
+          contents: formattedContents,
+          generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
+        }),
       }
     );
 
