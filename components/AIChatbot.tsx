@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { products } from "@/lib/data/shop";
 
 type Msg = { sender: "user" | "ai"; text: string; image?: string };
 
@@ -38,6 +39,25 @@ export default function AIChatbot() {
     e.target.value = ""; // taake dobara same image bhi select ho sake
   };
 
+  // OFFLINE BACKUP - Agar /api/chat fail ho to ye jawab dega, Sorry nahi bolega
+  const getOfflineReply = (q: string): string => {
+    const t = q.toLowerCase();
+    if (t.includes("hello") || t.includes("hi") || t.includes("salam")) return "Hello! Welcome to Krossford. Aapko kaunsa product chahiye? Bag, Wallet, Jacket ya Belt? B2C single piece ya B2B bulk?";
+    if (t.includes("price") || t.includes("cost") || t.includes("rate")) {
+      const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
+      return `Our Top Products:\n${list}\n\nShipment + Delivery charges alag se confirm honge.`;
+    }
+    if (t.includes("b2b") || t.includes("bulk")) return "B2B - Bulk Order: As Per Your Need - No Fixed MOQ. Bulk Pallet Packing, Freight Insured delivery. Paid Sample milega, order pe sample price adjust ho jayega.";
+    if (t.includes("b2c") || t.includes("single")) return "B2C - Single Piece: 1 Piece se start. Single Packing, DHL Courier se delivery hogi.";
+    if (t.includes("sample")) return "Yes! Paid Sample available hai. Agar aap order place karte ho to sample price aapke order me adjust kar di jayegi.";
+    if (t.includes("shipment") || t.includes("delivery") || t.includes("shipping") || t.includes("total") || t.includes("courier") || t.includes("dhl")) return "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga.";
+    if (t.includes("custom") || t.includes("engrav") || t.includes("logo") || t.includes("design") || t.includes("photo") || t.includes("image")) return "Thanks for your design photo! ✅ Custom Name / Engraving aur Logo upload ho sakta hai. Is pe extra charges lagenge jo order confirm hone pe bataye jayenge. Aap is design ko WhatsApp pe bhi bhej sakte ho.";
+    if (t.includes("payment") || t.includes("pay")) return "Payment order confirm hone pe WhatsApp pe discuss hogi. Secure & Protected Payments hain.";
+    const found = products.find(p => t.includes(p.name.toLowerCase().split(" ")[0]));
+    if (found) return `${found.name} - $${found.price} - ${found.description || found.category}. Colour select karke Add To Cart kar sakte ho.`;
+    return "Aapka sawal samajh aa gaya. Aap Shop page se product select karke Checkout kar sakte ho, ya WhatsApp pe order kar sakte ho. Kya aapko Price, B2B, Sample ya Shipment ke baare me jaanna hai?";
+  };
+
   // Send button - Text + Image dono ek sath jayenge
   const handleSend = async () => {
     if (!input.trim() && !pendingImage) return;
@@ -64,9 +84,15 @@ export default function AIChatbot() {
         body: JSON.stringify({ messages: newMessages, userLanguage, userCountry }),
       });
       const data = await res.json();
-      setMessages([...newMessages, { sender: "ai", text: data.reply || "Sorry, please try again." }]);
+      // FIX: Agar API se Sorry aaye to offline jawab do
+      if (!data.reply || data.reply.includes("Sorry, please try again")) {
+        setMessages([...newMessages, { sender: "ai", text: getOfflineReply(userMsg.text) }]);
+      } else {
+        setMessages([...newMessages, { sender: "ai", text: data.reply }]);
+      }
     } catch (e) {
-      setMessages([...newMessages, { sender: "ai", text: "Sorry, connection error. Please WhatsApp us." }]);
+      // FIX: Connection fail hone pe bhi Sorry nahi, offline jawab
+      setMessages([...newMessages, { sender: "ai", text: getOfflineReply(userMsg.text) }]);
     }
     setLoading(false);
     setTimeout(() => inputRef.current?.focus(), 100);
@@ -77,14 +103,14 @@ export default function AIChatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-5 right-5 z-50 bg-black text-white px-4 py-3 rounded-full shadow-lg text-sm font-bold"
+          className="fixed bottom-24 right-5 z-50 bg-black text-white px-4 py-3 rounded-full shadow-lg text-sm font-bold border border-zinc-700"
         >
           💬 Ask Krossford AI
         </button>
       )}
 
       {isOpen && (
-        <div className="fixed bottom-5 right-5 z-50 w-[340px] max-w-[90vw] h-[480px] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
+        <div className="fixed bottom-5 right-3 z-50 w-[340px] max-w-[calc(100vw-24px)] h-[480px] max-h-[75vh] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
           <div className="bg-black text-white p-3 flex justify-between items-center">
             <div>
               <p className="text-sm font-bold">KROSSFORD AI Assistant</p>
@@ -96,7 +122,7 @@ export default function AIChatbot() {
           <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-zinc-50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] px-3 py-2 rounded-lg text-[13px] leading-relaxed ${m.sender === "user" ? "bg-black text-white" : "bg-white border text-black"}`}>
+                <div className={`max-w-[80%] px-3 py-2 rounded-lg text-[13px] leading-relaxed whitespace-pre-line ${m.sender === "user" ? "bg-black text-white" : "bg-white border text-black"}`}>
                   {m.image && <img src={m.image} alt="design" className="w-full rounded mb-1" />}
                   {m.text}
                 </div>
