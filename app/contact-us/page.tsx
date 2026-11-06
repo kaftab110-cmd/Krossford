@@ -13,12 +13,38 @@ const contact = {
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "", company: "" });
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files || []);
+    if (selected.length === 0) return;
+
+    const remaining = 5 - files.length;
+    if (selected.length > remaining) {
+      alert(`Sirf ${remaining} aur photo add kar sakte ho - Max 5 photos`);
+    }
+    const toAdd = selected.slice(0, remaining);
+    const newPreviews = toAdd.map((f) => URL.createObjectURL(f));
+    setFiles((prev) => [...prev, ...toAdd]);
+    setPreviews((prev) => [...prev, ...newPreviews]);
+    e.target.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    URL.revokeObjectURL(previews[index]);
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Abhi ke liye mailto se khulega - backend baad me jorenge
     const subject = `Wholesale Enquiry from ${form.name} - ${form.company}`;
-    const body = `Name: ${form.name}%0D%0ACompany: ${form.company}%0D%0AEmail: ${form.email}%0D%0A%0D%0A${form.message}`;
+    const filesText = files.length > 0
+      ? `%0D%0A%0D%0AAttached Design / Images (${files.length}):%0D%0A${files.map((f, i) => `${i + 1}. ${f.name}`).join("%0D%0A")}%0D%0A(Note: Photos email me manually attach kar dein)`
+      : "";
+    const body = `Name: ${form.name}%0D%0ACompany: ${form.company}%0D%0AEmail: ${form.email}%0D%0A%0D%0A${form.message}${filesText}`;
     window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
     setSent(true);
   };
@@ -89,6 +115,33 @@ export default function ContactPage() {
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
             />
+
+            {/* ✅ NEW - IMAGE / DESIGN UPLOAD */}
+            <div>
+              <label className="block text-[11px] tracking-widest text-zinc-400 uppercase font-bold">Upload Your Design / Image (Optional - Max 5)</label>
+              <label className="mt-2 w-full border-2 border-dashed border-zinc-700 rounded px-4 py-5 text-center block cursor-pointer hover:border-amber-400 bg-zinc-950">
+                <span className="text-sm text-zinc-300">📁 Click to Upload Image / Design (JPG / PNG)</span>
+                <span className="block text-[11px] text-zinc-500 mt-1">Apna logo, design ya reference photo yahan add karo</span>
+                <input type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
+              </label>
+
+              {previews.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-[11px] text-green-400">✅ {files.length} / 5 Photos Selected</p>
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {previews.map((src, i) => (
+                      <div key={i} className="relative w-[70px] h-[70px] rounded overflow-hidden border border-zinc-700">
+                        <img src={src} alt={files[i]?.name} className="w-full h-full object-cover" />
+                        <button type="button" onClick={() => removeFile(i)} className="absolute top-0 right-0 bg-black/80 text-white text-[10px] w-5 h-5 leading-none">✕</button>
+                        <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-[8px] px-1 truncate">{files[i]?.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-amber-400 mt-2">⚠️ SEND ENQUIRY dabane ke baad Email khulega - wahan photos dobara attach kar dena, taake design mil jaye.</p>
+                </div>
+              )}
+            </div>
+
             <button type="submit" className="w-full bg-amber-400 text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-amber-500">
               Send Enquiry
             </button>
