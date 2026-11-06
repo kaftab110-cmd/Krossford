@@ -37,35 +37,81 @@ export default function AIChatbot() {
     e.target.value = "";
   };
 
-  // LANGUAGE DETECT - FIXED: Arabic ko Urdu nahi samjhega
-  const detectLanguage = (q: string): "ar" | "ur" | "en" => {
-    // 1. Urdu ke khaas haroof - Ye Arabic me nahi hote
-    // ے ٹ ڈ ڑ ں ھ - Agar ye hain to 100% Urdu hai
+  // LANGUAGE DETECT - UPDATED with Google International Data
+  // Ab 8 Languages: Urdu, Arabic, English, German, French, Spanish, Italian, Turkish
+  const detectLanguage = (q: string): string => {
+    // 1. Urdu Script
     if (/[ےٹڈڑںھ]/.test(q)) return "ur";
-    // Urdu script me likhe hue Urdu lafz
-    if (q.includes("مجھے") || q.includes("چاہیے") || q.includes("کتنے")) return "ur";
-    // 2. Agar Arabic script hai lekin upar wale Urdu haroof nahi hain, to ye Arabic hai
+    if (q.includes("مجھے") || q.includes("چاہیے") || q.includes("کتنے") || q.includes("چمڑے")) return "ur";
+    // 2. Arabic Script
     if (/[\u0600-\u06FF]/.test(q)) return "ar";
-    // 3. Roman Urdu
     const lower = q.toLowerCase();
     const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
+    // 3. German - Ich brauche 100 Stück Lederjacken
+    if (["ich", "brauche", "stück", "stuck", "leder", "lederjacken", "wieviel", "wie viel", "preis", "bitte", "benötige", "benotige"].some(w => lower.includes(w))) return "de";
+    // 4. French
+    if (["je veux", "j'ai besoin", "besoin", "cuir", "combien", "prix", "s'il vous", "bonjour"].some(w => lower.includes(w))) return "fr";
+    // 5. Spanish
+    if (["necesito", "quiero", "cuero", "precio", "cuanto", "cuánto", "hola"].some(w => lower.includes(w))) return "es";
+    // 6. Italian
+    if (["voglio", "ho bisogno", "pelle", "prezzo", "quanto", "ciao"].some(w => lower.includes(w))) return "it";
+    // 7. Turkish
+    if (["istiyorum", "lazım", "lazim", "deri", "fiyat", "kaç", "merhaba"].some(w => lower.includes(w))) return "tr";
+    // 8. Roman Urdu
     const urduWords = ["aap", "mujhe", "chahiye", "kitne", "kya", "kaunsa", "kaisa", "kab", "kahan", "kitna", "hai", "hain", "batao", "samajh", "salam", "assalam", "bhai", "bata", "kro", "karo", "chahye", "maal"];
     if (urduWords.some(w => hasWord(w))) return "ur";
     return "en";
   };
 
-  // OFFLINE BACKUP - FIXED: Arabic / Urdu / English teeno alag
+  // OFFLINE BACKUP - UPDATED: Har Language ke liye Bulk / Price / Sample / Shipment
   const getOfflineReply = (q: string): string => {
     const lower = q.toLowerCase();
     const lang = detectLanguage(q);
     const urdu = lang === "ur";
     const arabic = lang === "ar";
     const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
+    const hasNumber = /\d+/.test(q); // 100, 50 etc - Har language me Bulk ka sign
+    const isBulk = hasNumber || lower.includes("bulk") || lower.includes("b2b") || lower.includes("units") || lower.includes("unit") || lower.includes("pieces") || lower.includes("piece") || lower.includes("stück") || lower.includes("stuck") || lower.includes("brauche") || lower.includes("necesito") || lower.includes("veux") || lower.includes("voglio") || lower.includes("istiyorum") || q.includes("أحتاج") || q.includes("احتاج") || hasWord("need") || hasWord("chahiye");
 
-    // ===== ARABIC - SAB SE PEHLE =====
+    // ===== GERMAN =====
+    if (lang === "de") {
+      if (isBulk) return `Sehr gerne! ${q} - Großhandelsbestellung ist möglich. Es gibt keine feste Mindestbestellmenge (No Fixed MOQ). Welche Farbe benötigen Sie? Benötigen Sie Logo / Individualisierung? Ein bezahltes Muster ist verfügbar, der Musterpreis wird in Ihrer Bestellung verrechnet. Sollen wir mit einem Muster starten oder soll ich Ihnen ein Großhandelsangebot schicken?`;
+      if (lower.includes("preis") || lower.includes("kosten")) {
+        const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
+        return `Unsere Top-Produkte:\n${list}\n\nVersand + Lieferkosten werden separat bestätigt.`;
+      }
+      if (lower.includes("muster")) return "Ja! Ein bezahltes Muster ist verfügbar. Wenn Sie eine Bestellung aufgeben, wird der Musterpreis in Ihrer Bestellung verrechnet.";
+      if (lower.includes("versand") || lower.includes("lieferung") || lower.includes("gesamt")) return "Gesamtpreis = Produktpreis + Versand (Verpackung) + Lieferung (Kurier). Versand- und Lieferkosten werden je nach Ihrem Land bestätigt, sie sind nicht im Produktpreis enthalten. Tracking-Nummer wird nach dem Versand geteilt.";
+      return `Hallo! Willkommen bei KROSSFORD. Welches Produkt benötigen Sie? Tasche, Geldbörse, Jacke, Gürtel oder Cap? Möchten Sie ein Einzelstück oder eine Großhandelsbestellung?`;
+    }
+
+    // ===== FRENCH =====
+    if (lang === "fr") {
+      if (isBulk) return `Avec plaisir! ${q} - Commande en gros possible. Pas de MOQ fixe. Quelle couleur voulez-vous? Avez-vous besoin d'un Logo / Personnalisation? Échantillon payant disponible, le prix de l'échantillon sera déduit de votre commande. On commence par un échantillon ou je vous envoie un devis gros?`;
+      return `Bonjour! Bienvenue chez KROSSFORD. Quel produit voulez-vous? Sac, Portefeuille, Veste, Ceinture ou Casquette? Vous voulez une seule pièce ou une commande en gros?`;
+    }
+
+    // ===== SPANISH =====
+    if (lang === "es") {
+      if (isBulk) return `¡Claro que sí! ${q} - Pedido al por mayor disponible. No hay MOQ fijo. ¿Qué color necesitas? ¿Necesitas Logo / Personalización? Muestra pagada disponible, el precio de la muestra se descontará de tu pedido. ¿Empezamos con una muestra o te envío una cotización mayorista?`;
+      return `¡Hola! Bienvenido a KROSSFORD. ¿Qué producto necesitas? ¿Bolso, Cartera, Chaqueta, Cinturón o Gorra? ¿Quieres una sola pieza o un pedido al por mayor?`;
+    }
+
+    // ===== ITALIAN =====
+    if (lang === "it") {
+      if (isBulk) return `Certamente! ${q} - Ordine all'ingrosso disponibile. Nessun MOQ fisso. Quale colore ti serve? Ti serve Logo / Personalizzazione? Campione a pagamento disponibile, il prezzo del campione verrà scalato dal tuo ordine. Iniziamo con un campione o ti mando un preventivo all'ingrosso?`;
+      return `Ciao! Benvenuto in KROSSFORD. Quale prodotto ti serve? Borsa, Portafoglio, Giacca, Cintura o Cappello? Vuoi un singolo pezzo o un ordine all'ingrosso?`;
+    }
+
+    // ===== TURKISH =====
+    if (lang === "tr") {
+      if (isBulk) return `Tabii ki! ${q} - Toptan sipariş mümkün. Sabit MOQ yok. Hangi renk istiyorsunuz? Logo / Özelleştirme lazım mı? Ücretli numune mevcut, numune fiyatı siparişinizden düşülecek. Numune ile başlayalım mı yoksa toptan fiyat teklifi göndereyim mi?`;
+      return `Merhaba! KROSSFORD'a hoş geldiniz. Hangi ürün lazım? Çanta, Cüzdan, Ceket, Kemer veya Şapka? Tek parça mı yoksa toptan sipariş mi istiyorsunuz?`;
+    }
+
+    // ===== ARABIC =====
     if (arabic) {
-      // Bulk / Need
-      if (q.includes("أحتاج") || q.includes("احتاج") || q.includes("اريد") || q.includes("أريد") || q.includes("قطعة") || q.includes("حقيبة") || q.includes("100") || q.includes("50")) {
+      if (q.includes("أحتاج") || q.includes("احتاج") || q.includes("اريد") || q.includes("أريد") || q.includes("قطعة") || q.includes("حقيبة") || hasNumber) {
         return `أهلاً وسهلاً! ${q} - طلب الجملة متوفر. لا يوجد حد أدنى للطلب. ما هو اللون الذي تريده؟ هل تحتاج شعار / تخصيص؟ العينة المدفوعة متوفرة، وسيتم خصم سعر العينة من طلبك. هل نبدأ بالعينة أم أرسل لك عرض سعر الجملة؟`;
       }
       if (q.includes("سعر") || q.includes("السعر") || q.includes("كم")) {
@@ -77,21 +123,24 @@ export default function AIChatbot() {
       return `أهلاً وسهلاً بك في KROSSFORD! كيف يمكنني مساعدتك في طلبك الجلدي؟ هل تريد حقيبة، محفظة، جاكيت، حزام أم قبعة؟ هل تريد قطعة واحدة أم طلب بالجملة؟`;
     }
 
+    // ===== URDU SCRIPT =====
+    if (lang === "ur" && /[\u0600-\u06FF]/.test(q)) {
+      if (hasNumber || q.includes("چاہیے") || q.includes("مجھے")) return `بالکل ہو جائے گا! ${q} - B2B بلک آرڈر کے لیے کوئی فکس MOQ نہیں ہے۔ آپ کو کونسا کلر چاہیے؟ لوگو / کسٹمائزیشن چاہیے؟ پیڈ سیمپل دستیاب ہے، سیمپل کی قیمت آپ کے آرڈر میں ایڈجسٹ ہو جائے گی۔ سیمپل سے شروع کریں یا بلک کوٹ دوں؟`;
+      return `السلام علیکم! KROSSFORD میں خوش آمدید۔ آپ کو کونسا پروڈکٹ چاہیے؟ بیگ، والٹ، جیکٹ، بیلٹ یا کیپ؟ سنگل پیس چاہیے یا بلک آرڈر؟`;
+    }
+
     // ===== URDU / ENGLISH =====
-    // 1. BULK
-    if (lower.includes("b2b") || lower.includes("bulk") || lower.includes("units") || lower.includes("unit") || lower.includes("pieces") || lower.includes("piece") || hasWord("need") || hasWord("chahiye")) {
+    if (isBulk) {
       return urdu
         ? `Bilkul ho jayega! ${q} - B2B Bulk Order ke liye No Fixed MOQ hai. Aapko kaunsa Color chahiye aur Logo / Customization chahiye? Paid Sample available hai, order pe sample price adjust ho jayega. Batao, Sample se start karein ya Bulk Quote dun?`
         : `Absolutely! For ${q} - B2B Bulk Order, there is No Fixed MOQ. Which Color do you need and do you need Logo / Customization? Paid Sample is available, sample price will be adjusted in your order. Shall we start with a Sample or should I give you a Bulk Quote?`;
     }
-    // 2. PRICE
     if (lower.includes("price") || lower.includes("cost") || lower.includes("rate") || hasWord("kitne")) {
       const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
       return urdu
         ? `Hamari Top Products:\n${list}\n\nShipment + Delivery charges alag se confirm honge.`
         : `Our Top Products:\n${list}\n\nShipment + Delivery charges will be confirmed separately.`;
     }
-    // 3. GREETING
     if (hasWord("hello") || hasWord("hi") || hasWord("hey") || lower.includes("salam") || lower.includes("assalam")) {
       return urdu
         ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?"
