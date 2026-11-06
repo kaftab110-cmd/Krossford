@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Footer() {
-  const businessWhatsapp = process.env.NEXT_PUBLIC_BUSINESS_WHATSAPP || "";
+  const businessWhatsapp = "923030006759"; // +92303 0006759
   const businessEmail = "hello@krossford.com";
 
   return (
@@ -31,14 +31,12 @@ export default function Footer() {
             <a href={`mailto:${businessEmail}`} className="hover:text-amber-400">
               Email: {businessEmail}
             </a>
-            {businessWhatsapp ? (
-              <a href={`https://wa.me/${businessWhatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">
-                WhatsApp: Chat Now
-              </a>
-            ) : (
-              <span className="text-zinc-500">WhatsApp: Coming Soon</span>
-            )}
-            <span className="text-zinc-500">Phone: Coming Soon</span>
+            <a href={`https://wa.me/${businessWhatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to order leather products.")}`} target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 text-[#25D366] font-bold">
+              WhatsApp: +92303 0006759 💬 Chat Now
+            </a>
+            <a href={`https://wa.me/${businessWhatsapp}`} target="_blank" rel="noopener noreferrer" className="hover:text-amber-400">
+              Phone: +92303 0006759
+            </a>
           </div>
         </div>
       </div>
