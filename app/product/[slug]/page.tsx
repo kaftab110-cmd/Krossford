@@ -112,15 +112,12 @@ export default function ProductPage() {
 
           <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
             <p className="text-xs font-bold tracking-widest uppercase">Customer Type - International Only</p>
-            {/* ✅ FIXED - Ab flex-col hai, dono ek ke neeche ek, kabhi katega nahi */}
             <div className="flex flex-col gap-2 mt-3 w-full">
               <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full ${customerType === "B2C" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
                 <span className="text-xs font-bold block">B2C - Single Piece</span>
-                <span className="text-[10px] text-zinc-500 block">As Per Your Need - 1 Piece Se Start</span>
               </button>
               <button onClick={() => setCustomerType("B2B")} className={`p-3 rounded border text-left w-full ${customerType === "B2B" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
                 <span className="text-xs font-bold block">B2B - Bulk Order</span>
-                <span className="text-[10px] text-zinc-500 block">As Per Your Need - No Fixed MOQ</span>
               </button>
             </div>
 
