@@ -37,45 +37,46 @@ export default function AIChatbot() {
     e.target.value = "";
   };
 
-  // SMART LANGUAGE DETECT - Samne wala kis language me hai?
+  // SMART LANGUAGE DETECT - FIXED: Ab "do", "kar", "hai" jaise lafz doosre lafzon me nahi dhoondega
   const isRomanUrdu = (q: string): boolean => {
-    const t = q.toLowerCase();
-    const urduWords = ["aap", "mujhe", "chahiye", "kitne", "kya", "kaunsa", "kaisa", "kab", "kahan", "kitna", "hai", "hain", "kar", "do", "batao", "samajh", "price kya", "rate kya", "piece", "salam", "assalam", "bhai", "bata", "kro", "karo", "chahye", "maal", "leather ka"];
-    // Agar Urdu lafz mile ya Urdu script ho to Roman Urdu samjho
+    const lower = q.toLowerCase();
     if (/[\u0600-\u06FF]/.test(q)) return true;
-    return urduWords.some(w => t.includes(w));
+    const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
+    const urduWords = ["aap", "mujhe", "chahiye", "kitne", "kya", "kaunsa", "kaisa", "kab", "kahan", "kitna", "hai", "hain", "batao", "samajh", "salam", "assalam", "bhai", "bata", "kro", "karo", "chahye", "maal"];
+    return urduWords.some(w => hasWord(w));
   };
 
-  // OFFLINE BACKUP - SMART: JIS LANGUAGE ME SAWAL, USI ME JAWAB
+  // OFFLINE BACKUP - FIXED: Pehle BULK, phir PRICE, phir GREETING
   const getOfflineReply = (q: string): string => {
-    const t = q.toLowerCase();
+    const lower = q.toLowerCase();
     const urdu = isRomanUrdu(q);
+    const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
 
-    // GREETING
-    if (t.includes("hello") || t.includes("hi") || t.includes("salam")) {
+    // 1. SAB SE PEHLE B2B / BULK / NEED - Taake "I need 50 units of this cap" pehle pakda jaye
+    if (lower.includes("b2b") || lower.includes("bulk") || lower.includes("units") || lower.includes("unit") || lower.includes("pieces") || lower.includes("piece") || hasWord("need") || hasWord("chahiye")) {
       return urdu
-        ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?"
-        : "Hello! Welcome to Krossford. Which product are you interested in? Bag, Wallet, Jacket, Belt or Cap? Are you looking for a single piece (B2C) or a bulk order (B2B)?";
+        ? `Bilkul ho jayega! ${q} - B2B Bulk Order ke liye No Fixed MOQ hai. Aapko kaunsa Color chahiye aur Logo / Customization chahiye? Paid Sample available hai, order pe sample price adjust ho jayega. Batao, Sample se start karein ya Bulk Quote dun?`
+        : `Absolutely! For ${q} - B2B Bulk Order, there is No Fixed MOQ. Which Color do you need and do you need Logo / Customization? Paid Sample is available, sample price will be adjusted in your order. Shall we start with a Sample or should I give you a Bulk Quote?`;
     }
-    // PRICE
-    if (t.includes("price") || t.includes("cost") || t.includes("rate") || t.includes("kitne")) {
+    // 2. PRICE
+    if (lower.includes("price") || lower.includes("cost") || lower.includes("rate") || hasWord("kitne")) {
       const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
       return urdu
         ? `Hamari Top Products:\n${list}\n\nShipment + Delivery charges alag se confirm honge.`
         : `Our Top Products:\n${list}\n\nShipment + Delivery charges will be confirmed separately.`;
     }
-    // B2B / BULK / UNITS - YEHI TUMHARA WALA CASE HAI
-    if (t.includes("b2b") || t.includes("bulk") || t.includes("units") || t.includes("unit") || t.includes("pieces") || t.includes("piece")) {
+    // 3. GREETING - FIXED: "this" me "hi" nahi pakdega, sirf alag "hi" pakdega
+    if (hasWord("hello") || hasWord("hi") || hasWord("hey") || lower.includes("salam") || lower.includes("assalam")) {
       return urdu
-        ? `Bilkul ho jayega! ${q} - B2B Bulk Order ke liye No Fixed MOQ hai. Aapko kaunsa Color chahiye aur Logo / Customization chahiye? Paid Sample available hai, order pe sample price adjust ho jayega. Batao, Sample se start karein ya Bulk Quote dun?`
-        : `Absolutely! For ${q} - B2B Bulk Order, there is No Fixed MOQ. Which Color do you need and do you need Logo / Customization? Paid Sample is available, sample price will be adjusted in your order. Shall we start with a Sample or should I give you a Bulk Quote?`;
+        ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?"
+        : "Hello! Welcome to Krossford. Which product are you interested in? Bag, Wallet, Jacket, Belt or Cap? Are you looking for a single piece (B2C) or a bulk order (B2B)?";
     }
-    if (t.includes("b2c") || t.includes("single")) return urdu ? "B2C - Single Piece: 1 Piece se start. Single Packing, DHL Courier se delivery hogi." : "B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via DHL Courier.";
-    if (t.includes("sample")) return urdu ? "Ji! Paid Sample available hai. Agar aap order place karte ho to sample price aapke order me adjust kar di jayegi." : "Yes! Paid Sample is available. If you place an order, the sample price will be adjusted in your order.";
-    if (t.includes("shipment") || t.includes("delivery") || t.includes("shipping") || t.includes("total") || t.includes("courier") || t.includes("dhl")) return urdu ? "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga." : "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment and Delivery charges will be confirmed according to your country, they are not included in the product price. Tracking number will be shared after dispatch.";
-    if (t.includes("custom") || t.includes("engrav") || t.includes("logo") || t.includes("design") || t.includes("photo") || t.includes("image") || t.includes("cap") || t.includes("glove") || t.includes("gloves")) return urdu ? `Shukriya! Aapka design mil gaya ✅ ${q} ke liye Custom Name / Engraving aur Logo ho sakta hai. Is pe extra charges lagenge jo order confirm hone pe bataye jayenge. Aap is design ko WhatsApp pe bhi bhej sakte ho.` : `Thanks for your design! ✅ For ${q}, Custom Name / Engraving and Logo is available. Extra charges will apply for customization and will be confirmed when your order is confirmed. You can also send this design on WhatsApp.`;
-    if (t.includes("payment") || t.includes("pay")) return urdu ? "Payment order confirm hone pe WhatsApp pe discuss hogi. Secure & Protected Payments hain." : "Payment will be discussed on WhatsApp after your order is confirmed. Secure & Protected Payments.";
-    const found = products.find(p => t.includes(p.name.toLowerCase().split(" ")[0]));
+    if (lower.includes("b2c") || lower.includes("single")) return urdu ? "B2C - Single Piece: 1 Piece se start. Single Packing, DHL Courier se delivery hogi." : "B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via DHL Courier.";
+    if (lower.includes("sample")) return urdu ? "Ji! Paid Sample available hai. Agar aap order place karte ho to sample price aapke order me adjust kar di jayegi." : "Yes! Paid Sample is available. If you place an order, the sample price will be adjusted in your order.";
+    if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier") || lower.includes("dhl")) return urdu ? "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga." : "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment and Delivery charges will be confirmed according to your country, they are not included in the product price. Tracking number will be shared after dispatch.";
+    if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("cap") || lower.includes("glove")) return urdu ? `Shukriya! Aapka design mil gaya ✅ ${q} ke liye Custom Name / Engraving aur Logo ho sakta hai. Is pe extra charges lagenge jo order confirm hone pe bataye jayenge. Aap is design ko WhatsApp pe bhi bhej sakte ho.` : `Thanks for your design! ✅ For ${q}, Custom Name / Engraving and Logo is available. Extra charges will apply for customization and will be confirmed when your order is confirmed. You can also send this design on WhatsApp.`;
+    if (lower.includes("payment") || lower.includes("pay")) return urdu ? "Payment order confirm hone pe WhatsApp pe discuss hogi. Secure & Protected Payments hain." : "Payment will be discussed on WhatsApp after your order is confirmed. Secure & Protected Payments.";
+    const found = products.find(p => lower.includes(p.name.toLowerCase().split(" ")[0]));
     if (found) return urdu ? `${found.name} - $${found.price} - ${found.description || found.category}. Colour select karke Add To Cart kar sakte ho.` : `${found.name} - $${found.price} - ${found.description || found.category}. Please select colour and Add To Cart.`;
     return urdu
       ? "Aapka sawal samajh aa gaya. Aap Shop page se product select karke Checkout kar sakte ho, ya WhatsApp pe order kar sakte ho. Kya aapko Price, B2B, Sample ya Shipment ke baare me jaanna hai?"
@@ -95,7 +96,6 @@ export default function AIChatbot() {
     setPendingImage(null);
     setLoading(true);
     try {
-      // SMART: User ki asli language bhejo, force English nahi
       const userLanguage = navigator.language || "en";
       const userCountry = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const res = await fetch("/api/chat", {
