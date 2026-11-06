@@ -37,22 +37,48 @@ export default function AIChatbot() {
     e.target.value = "";
   };
 
-  // SMART LANGUAGE DETECT - FIXED: Ab "do", "kar", "hai" jaise lafz doosre lafzon me nahi dhoondega
-  const isRomanUrdu = (q: string): boolean => {
+  // LANGUAGE DETECT - FIXED: Arabic ko Urdu nahi samjhega
+  const detectLanguage = (q: string): "ar" | "ur" | "en" => {
+    // 1. Urdu ke khaas haroof - Ye Arabic me nahi hote
+    // ے ٹ ڈ ڑ ں ھ - Agar ye hain to 100% Urdu hai
+    if (/[ےٹڈڑںھ]/.test(q)) return "ur";
+    // Urdu script me likhe hue Urdu lafz
+    if (q.includes("مجھے") || q.includes("چاہیے") || q.includes("کتنے")) return "ur";
+    // 2. Agar Arabic script hai lekin upar wale Urdu haroof nahi hain, to ye Arabic hai
+    if (/[\u0600-\u06FF]/.test(q)) return "ar";
+    // 3. Roman Urdu
     const lower = q.toLowerCase();
-    if (/[\u0600-\u06FF]/.test(q)) return true;
     const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
     const urduWords = ["aap", "mujhe", "chahiye", "kitne", "kya", "kaunsa", "kaisa", "kab", "kahan", "kitna", "hai", "hain", "batao", "samajh", "salam", "assalam", "bhai", "bata", "kro", "karo", "chahye", "maal"];
-    return urduWords.some(w => hasWord(w));
+    if (urduWords.some(w => hasWord(w))) return "ur";
+    return "en";
   };
 
-  // OFFLINE BACKUP - FIXED: Pehle BULK, phir PRICE, phir GREETING
+  // OFFLINE BACKUP - FIXED: Arabic / Urdu / English teeno alag
   const getOfflineReply = (q: string): string => {
     const lower = q.toLowerCase();
-    const urdu = isRomanUrdu(q);
+    const lang = detectLanguage(q);
+    const urdu = lang === "ur";
+    const arabic = lang === "ar";
     const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
 
-    // 1. SAB SE PEHLE B2B / BULK / NEED - Taake "I need 50 units of this cap" pehle pakda jaye
+    // ===== ARABIC - SAB SE PEHLE =====
+    if (arabic) {
+      // Bulk / Need
+      if (q.includes("أحتاج") || q.includes("احتاج") || q.includes("اريد") || q.includes("أريد") || q.includes("قطعة") || q.includes("حقيبة") || q.includes("100") || q.includes("50")) {
+        return `أهلاً وسهلاً! ${q} - طلب الجملة متوفر. لا يوجد حد أدنى للطلب. ما هو اللون الذي تريده؟ هل تحتاج شعار / تخصيص؟ العينة المدفوعة متوفرة، وسيتم خصم سعر العينة من طلبك. هل نبدأ بالعينة أم أرسل لك عرض سعر الجملة؟`;
+      }
+      if (q.includes("سعر") || q.includes("السعر") || q.includes("كم")) {
+        const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
+        return `منتجاتنا المميزة:\n${list}\n\nسيتم تأكيد رسوم الشحن والتوصيل بشكل منفصل.`;
+      }
+      if (q.includes("عينة") || q.includes("نموذج")) return "نعم! العينة المدفوعة متوفرة. إذا قمت بتقديم طلب، سيتم خصم سعر العينة من طلبك.";
+      if (q.includes("شحن") || q.includes("توصيل") || q.includes("الإجمالي")) return "السعر الإجمالي = سعر المنتج + الشحن (التغليف) + التوصيل (الكورير). سيتم تأكيد رسوم الشحن والتوصيل حسب بلدك، وهي غير مشمولة في سعر المنتج. سيتم مشاركة رقم التتبع بعد الشحن.";
+      return `أهلاً وسهلاً بك في KROSSFORD! كيف يمكنني مساعدتك في طلبك الجلدي؟ هل تريد حقيبة، محفظة، جاكيت، حزام أم قبعة؟ هل تريد قطعة واحدة أم طلب بالجملة؟`;
+    }
+
+    // ===== URDU / ENGLISH =====
+    // 1. BULK
     if (lower.includes("b2b") || lower.includes("bulk") || lower.includes("units") || lower.includes("unit") || lower.includes("pieces") || lower.includes("piece") || hasWord("need") || hasWord("chahiye")) {
       return urdu
         ? `Bilkul ho jayega! ${q} - B2B Bulk Order ke liye No Fixed MOQ hai. Aapko kaunsa Color chahiye aur Logo / Customization chahiye? Paid Sample available hai, order pe sample price adjust ho jayega. Batao, Sample se start karein ya Bulk Quote dun?`
@@ -65,7 +91,7 @@ export default function AIChatbot() {
         ? `Hamari Top Products:\n${list}\n\nShipment + Delivery charges alag se confirm honge.`
         : `Our Top Products:\n${list}\n\nShipment + Delivery charges will be confirmed separately.`;
     }
-    // 3. GREETING - FIXED: "this" me "hi" nahi pakdega, sirf alag "hi" pakdega
+    // 3. GREETING
     if (hasWord("hello") || hasWord("hi") || hasWord("hey") || lower.includes("salam") || lower.includes("assalam")) {
       return urdu
         ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?"
