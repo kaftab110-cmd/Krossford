@@ -48,7 +48,7 @@ export default function ProductPage() {
     );
   }
 
-  const WHATSAPP_NUMBER = "923000000000";
+  const WHATSAPP_NUMBER = "923030006759"; // +92303 0006759 - FIXED
 
   const handleSampleRequest = () => {
     const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Color: ${selectedColor.name}, Type: ${customerType}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
@@ -97,29 +97,30 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black p-6 md:p-12">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-        <div>
-          <img src={selectedColor.image || product.image} alt={product.name} className="w-full h-[500px] object-cover rounded-lg" />
+    <div className="min-h-screen bg-white text-black p-4 sm:p-6 md:p-12 overflow-x-hidden">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-10">
+        <div className="min-w-0">
+          <img src={selectedColor.image || product.image} alt={product.name} className="w-full h-auto max-h-[500px] object-cover rounded-lg" />
           <p className="text-xs text-zinc-500 mt-2">{product.description}</p>
         </div>
 
-        <div>
+        <div className="min-w-0">
           <p className="text-[11px] tracking-widest text-amber-600 uppercase">{product.category}</p>
-          <h1 className="text-3xl font-bold uppercase mt-2">{product.name}</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold uppercase mt-2 break-words">{product.name}</h1>
           <p className="text-xl font-bold mt-2">${product.price}</p>
           {product.badge && <span className="inline-block mt-2 bg-black text-amber-400 text-[10px] px-2 py-1 uppercase">{product.badge}</span>}
 
-          <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-5">
+          <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
             <p className="text-xs font-bold tracking-widest uppercase">Customer Type - International Only</p>
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left ${customerType === "B2C" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
+            {/* FIXED: Pehle grid-cols-2 tha, ab mobile pe 1 column, desktop pe 2 */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-3 w-full">
+              <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full min-w-0 ${customerType === "B2C" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
                 <span className="text-xs font-bold block">B2C - Single Piece</span>
-                <span className="text-[10px] text-zinc-500">As Per Your Need - 1 Piece Se Start</span>
+                <span className="text-[10px] text-zinc-500 block">As Per Your Need - 1 Piece Se Start</span>
               </button>
-              <button onClick={() => setCustomerType("B2B")} className={`p-3 rounded border text-left ${customerType === "B2B" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
+              <button onClick={() => setCustomerType("B2B")} className={`p-3 rounded border text-left w-full min-w-0 ${customerType === "B2B" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
                 <span className="text-xs font-bold block">B2B - Bulk Order</span>
-                <span className="text-[10px] text-zinc-500">As Per Your Need - No Fixed MOQ</span>
+                <span className="text-[10px] text-zinc-500 block">As Per Your Need - No Fixed MOQ</span>
               </button>
             </div>
 
@@ -151,7 +152,7 @@ export default function ProductPage() {
 
           <div className="mt-6">
             <p className="text-sm font-bold">SELECT COLOUR: {selectedColor.name}</p>
-            <div className="flex gap-3 mt-3">
+            <div className="flex gap-3 mt-3 flex-wrap">
               {product.colors?.map((c) => (
                 <button key={c.name} onClick={() => setSelectedColor(c)} title={c.name}
                   style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #f59e0b" : "1px solid #ccc", cursor: "pointer" }} />
@@ -159,23 +160,23 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-5">
+          <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-5">
             <p className="text-xs font-bold tracking-widest uppercase text-zinc-800">✦ Additional Options</p>
             <p className="text-[11px] text-amber-600 font-medium mt-1">
               * Customization pe extra charges apply honge - final price order confirm hone pe batayi jayegi.
             </p>
             <div className="mt-4 space-y-4">
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="radio" name="additional" checked={additionalOption === "none"} onChange={() => setAdditionalOption("none")} className="mt-1 w-4 h-4 accent-black" />
-                <span className="flex-1">
+                <input type="radio" name="additional" checked={additionalOption === "none"} onChange={() => setAdditionalOption("none")} className="mt-1 w-4 h-4 accent-black shrink-0" />
+                <span className="flex-1 min-w-0">
                   <span className="block text-sm font-medium">No Additional Option</span>
                   <span className="text-[11px] text-zinc-500">Simple order without customization</span>
                 </span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="radio" name="additional" checked={additionalOption === "engraving"} onChange={() => setAdditionalOption("engraving")} className="mt-1 w-4 h-4 accent-black" />
-                <span className="flex-1">
-                  <span className="flex justify-between items-center gap-2">
+                <input type="radio" name="additional" checked={additionalOption === "engraving"} onChange={() => setAdditionalOption("engraving")} className="mt-1 w-4 h-4 accent-black shrink-0" />
+                <span className="flex-1 min-w-0">
+                  <span className="flex justify-between items-start gap-2 flex-wrap">
                     <span className="block text-sm font-medium">Custom Name / Initials (Text Engraving)</span>
                     <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span>
                   </span>
@@ -183,9 +184,9 @@ export default function ProductPage() {
                 </span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="radio" name="additional" checked={additionalOption === "image"} onChange={() => setAdditionalOption("image")} className="mt-1 w-4 h-4 accent-black" />
-                <span className="flex-1">
-                  <span className="flex justify-between items-center gap-2">
+                <input type="radio" name="additional" checked={additionalOption === "image"} onChange={() => setAdditionalOption("image")} className="mt-1 w-4 h-4 accent-black shrink-0" />
+                <span className="flex-1 min-w-0">
+                  <span className="flex justify-between items-start gap-2 flex-wrap">
                     <span className="block text-sm font-medium">Upload Your Own Image</span>
                     <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span>
                   </span>
@@ -193,9 +194,9 @@ export default function ProductPage() {
                 </span>
               </label>
               <label className="flex items-start gap-3 cursor-pointer">
-                <input type="radio" name="additional" checked={additionalOption === "both"} onChange={() => setAdditionalOption("both")} className="mt-1 w-4 h-4 accent-black" />
-                <span className="flex-1">
-                  <span className="flex justify-between items-center gap-2">
+                <input type="radio" name="additional" checked={additionalOption === "both"} onChange={() => setAdditionalOption("both")} className="mt-1 w-4 h-4 accent-black shrink-0" />
+                <span className="flex-1 min-w-0">
+                  <span className="flex justify-between items-start gap-2 flex-wrap">
                     <span className="block text-sm font-medium">Custom Text + Upload Image</span>
                     <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span>
                   </span>
@@ -224,13 +225,13 @@ export default function ProductPage() {
             )}
           </div>
 
-          <div className="mt-6 flex gap-3 items-center">
-            <div className="flex items-center border rounded-md">
+          <div className="mt-6 flex gap-3 items-center flex-wrap">
+            <div className="flex items-center border rounded-md shrink-0">
               <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-3 py-2">-</button>
               <span className="px-2 font-bold">{quantity}</span>
               <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2">+</button>
             </div>
-            <button onClick={handleAddToCart} className="flex-1 bg-black text-white py-3 rounded-md text-sm font-bold uppercase hover:bg-zinc-800">
+            <button onClick={handleAddToCart} className="flex-1 min-w-[200px] bg-black text-white py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-zinc-800">
               Add To Cart - {selectedColor.name}
             </button>
           </div>
