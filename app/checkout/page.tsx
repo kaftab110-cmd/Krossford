@@ -24,6 +24,7 @@ export default function CheckoutPage() {
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
@@ -32,7 +33,7 @@ export default function CheckoutPage() {
 
   const total = cart.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
 
-  const WHATSAPP_NUMBER = "923030006759"; // +92303 0006759 - FIXED
+  const WHATSAPP_NUMBER = "923030006759";
 
   const handlePlaceOrder = () => {
     if (!name.trim() || !country.trim() || !address.trim() || !phone.trim()) {
@@ -48,7 +49,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -111,6 +112,31 @@ export default function CheckoutPage() {
               <span className="font-bold">${total}</span>
             </div>
             <p className="text-[11px] text-zinc-500 mt-1">+ Shipment / Delivery - To Be Confirmed</p>
+
+            {/* PAYMENT METHOD - KROSSFORD ENTERPRISES */}
+            <div className="mt-5 bg-zinc-950 border border-zinc-800 rounded p-4">
+              <p className="text-xs font-bold tracking-widest uppercase text-zinc-300">Payment Method - International Only</p>
+              
+              <div className="mt-3 space-y-2">
+                <label className="flex items-start gap-2 bg-zinc-900 border border-amber-400 rounded p-3 cursor-pointer">
+                  <input type="radio" name="payment" checked={paymentMethod === "Bank Wire Transfer - Bank Alfalah"} onChange={() => setPaymentMethod("Bank Wire Transfer - Bank Alfalah")} className="mt-1 accent-amber-400" />
+                  <span>
+                    <span className="block text-sm font-bold">Bank Wire Transfer - Bank Alfalah <span className="text-[10px] bg-amber-400 text-black px-1.5 py-0.5 rounded ml-1">RECOMMENDED FOR BULK</span></span>
+                    <span className="block text-[11px] text-zinc-400 mt-1">Account Title: KROSSFORD ENTERPRISES<br/>Bank: Bank Alfalah<br/>IBAN: PK__ ALFH ________________ (Will update after account opening)<br/>SWIFT: ALFHPKKAXXX</span>
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-2 bg-zinc-900 border border-zinc-800 rounded p-3 cursor-pointer">
+                  <input type="radio" name="payment" checked={paymentMethod === "Wise Transfer"} onChange={() => setPaymentMethod("Wise Transfer")} className="mt-1 accent-amber-400" />
+                  <span>
+                    <span className="block text-sm font-bold">Wise Transfer - Fast & Low Fee</span>
+                    <span className="block text-[11px] text-zinc-400 mt-1">Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation.</span>
+                  </span>
+                </label>
+              </div>
+
+              <p className="text-[11px] text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation.</p>
+            </div>
 
             <button onClick={handlePlaceOrder} className="mt-5 w-full bg-amber-400 text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-amber-300">
               Place Order on WhatsApp →
