@@ -7,7 +7,6 @@ export default function ReviewForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Review tumhare WhatsApp pe jayega - Website pe live NAHI hoga jab tak tum approve na karo
     const msg = `NEW REVIEW FOR APPROVAL - KROSSFORD%0A%0AName: ${form.name}%0ACity: ${form.city}%0AProduct: ${form.product}%0ARating: ${form.stars} / 5%0AReview: ${form.text}`;
     window.open(`https://wa.me/923030006759?text=${msg}`, "_blank");
     setOpen(false);
@@ -20,7 +19,6 @@ export default function ReviewForm() {
         <button onClick={() => setOpen(true)} className="bg-white text-black text-sm font-bold px-7 py-3 rounded-full hover:bg-amber-400 transition">
           ✍️ Write a Review
         </button>
-        <p className="text-[11px] text-zinc-500 mt-2">Tumhara review pehle hamari team approve karegi, phir live hoga.</p>
       </div>
     );
   }
