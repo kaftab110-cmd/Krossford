@@ -72,7 +72,7 @@ export default function CheckoutPage() {
         {/* LEFT - FORM */}
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
-          <p className="text-xs text-zinc-400 mt-1">Fill details - Order WhatsApp pe jayega</p>
+          <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
 
           <div className="mt-6 space-y-3">
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
@@ -83,7 +83,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
-            <p className="text-[11px] text-zinc-400">Shipment + Delivery Charges aur Customization ke extra charges order confirm hone pe bataye jayenge. Product price me shamil nahi hain.</p>
+            <p className="text-[11px] text-zinc-400">Shipping & delivery charges, plus any extra customization charges, will be confirmed after your order is confirmed. They are not included in the product price.</p>
           </div>
         </div>
 
