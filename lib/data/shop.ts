@@ -50,7 +50,7 @@ export const products: Product[] = [
       { name: "Dark Brown", code: "#3E2723", image: "/images/belt.jpg" },
       { name: "Cognac Tan", code: "#B87333", image: "/images/belt.jpg" },
     ]},
-  { id: 6, name: "Leather Tag + Keychain Set", image: "/images/key-holder.jpg", description: "Custom Name / Logo Engraving Available - KROSSFORD", category: "Custom", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", aliases: ["tag-keychain-set", "keychain-set"], price: 29,
+  { id: 6, name: "Leather Tag + Keychain Set", image: "/images/key-holder.jpg", description: "Custom Name / Logo Engraving Available - KROSSFORD", category: "Custom", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", aliases: ["tag-keychain-set", "keychain-set", "key-chain"], price: 25,
     colors: [
       { name: "Jet Black", code: "#111111", image: "/images/key-holder.jpg" },
       { name: "Dark Brown", code: "#3E2723", image: "/images/key-holder.jpg" },
@@ -62,11 +62,17 @@ export const products: Product[] = [
       { name: "Dark Brown", code: "#3E2723", image: "/images/leather-journal.jpg" },
       { name: "Cognac Tan", code: "#B87333", image: "/images/leather-journal.jpg" },
     ]},
-  { id: 8, name: "Crossbody Messenger Bag", image: "/images/crossbody-messenger-bag.jpg", description: "Cognac Brown, Full-Grain Leather, Adjustable Shoulder Strap, Brass Buckle", category: "Bags", badge: "NEW", slug: "crossbody-messenger-bag", aliases: ["messenger-bag", "crossbody-bag"], price: 119,
+  { id: 8, name: "Crossbody Messenger Bag", image: "/images/crossbody-messenger-bag.jpg", description: "Cognac Brown, Full-Grain Leather, Adjustable Shoulder Strap, Brass Buckle", category: "Bags", badge: "BEST SELLER", slug: "crossbody-messenger-bag", aliases: ["messenger-bag", "crossbody-bag"], price: 119,
     colors: [
       { name: "Jet Black", code: "#111111", image: "/images/crossbody-messenger-bag.jpg" },
       { name: "Dark Brown", code: "#3E2723", image: "/images/crossbody-messenger-bag.jpg" },
       { name: "Cognac Tan", code: "#B87333", image: "/images/crossbody-messenger-bag.jpg" },
+    ]},
+  { id: 9, name: "Card Holder - Minimalist", image: "/images/card-holder.jpg", description: "Dark Brown, Full-Grain Leather, 4 Card Slots, Hand-Stitched - Premium Quality. Honest Price. Built To Last.", category: "Wallets", badge: "BEST SELLER", slug: "card-holder", aliases: ["cardholder", "card-holder-minimalist", "minimalist-card-holder"], price: 29,
+    colors: [
+      { name: "Jet Black", code: "#111111", image: "/images/card-holder.jpg" },
+      { name: "Dark Brown", code: "#3E2723", image: "/images/card-holder.jpg" },
+      { name: "Cognac Tan", code: "#B87333", image: "/images/card-holder.jpg" },
     ]},
 ];
 

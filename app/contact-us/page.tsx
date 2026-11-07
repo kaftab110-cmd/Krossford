@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const contact = {
   email: "hello@krossford.com",
@@ -12,7 +13,7 @@ const contact = {
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "", company: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", company: "", orderType: "Single Piece - B2C", quantity: "" });
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
@@ -37,14 +38,25 @@ export default function ContactPage() {
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const buildMessage = () => {
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos WhatsApp / Email me manually attach kar dein)` : "";
+    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
+  };
+
+  const handleWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Abhi ke liye mailto se khulega - backend baad me jorenge
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      alert("Please fill Name, Email and Message");
+      return;
+    }
+    window.open(`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(buildMessage())}`, "_blank");
+    setSent(true);
+  };
+
+  const handleEmail = (e: React.FormEvent) => {
+    e.preventDefault();
     const subject = `Wholesale Enquiry from ${form.name} - ${form.company}`;
-    const filesText = files.length > 0
-      ? `%0D%0A%0D%0AAttached Design / Images (${files.length}):%0D%0A${files.map((f, i) => `${i + 1}. ${f.name}`).join("%0D%0A")}%0D%0A(Note: Photos email me manually attach kar dein)`
-      : "";
-    const body = `Name: ${form.name}%0D%0ACompany: ${form.company}%0D%0AEmail: ${form.email}%0D%0A%0D%0A${form.message}${filesText}`;
+    const body = buildMessage().replace(/\n/g, "%0D%0A");
     window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
     setSent(true);
   };
@@ -55,6 +67,20 @@ export default function ContactPage() {
         <div className="text-center space-y-2">
           <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Wholesale & Contact</h1>
           <p className="text-xs text-zinc-400 uppercase tracking-widest">B2B Enquiry - Private Label & Bulk Production</p>
+        </div>
+
+        {/* 2 Raste - Pehle Hi Sahi Jagah Bhejo */}
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-amber-400 transition-colors text-center">
+            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want To Buy 1 Piece</p>
+            <p className="text-xs text-zinc-400 mt-1">Card Holder $29 • Keychain $25 • Crossbody $119</p>
+            <p className="text-xs font-bold mt-2 underline">Go To Shop →</p>
+          </Link>
+          <Link href="/b2b" className="border border-amber-400/50 rounded-lg p-5 bg-amber-400/5 hover:border-amber-400 transition-colors text-center">
+            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want Bulk / Wholesale</p>
+            <p className="text-xs text-zinc-400 mt-1">Jacket 50+ • Biker Suit 25+ • Small Items 100+</p>
+            <p className="text-xs font-bold mt-2 underline">Go To B2B Form →</p>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
@@ -81,10 +107,15 @@ export default function ContactPage() {
               <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
               <span className="text-sm font-bold text-zinc-300">{contact.location}</span>
             </div>
+            <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
+              <span className="block text-xs text-zinc-400 uppercase">Payment</span>
+              <span className="text-xs text-zinc-300 mt-1 block">VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-400 mt-1 block">50% Advance - 50% After Order Ready • Sample Before Bulk</span>
+            </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
+          <form onSubmit={handleWhatsApp} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">Send Enquiry</h2>
             <input
               required
@@ -107,6 +138,19 @@ export default function ContactPage() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
             />
+            <div className="grid grid-cols-2 gap-3">
+              <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
+                <option>Single Piece - B2C</option>
+                <option>Bulk Order - B2B</option>
+                <option>Sample Request</option>
+              </select>
+              <input
+                placeholder="Quantity? e.g. 50"
+                value={form.quantity}
+                onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+                className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
+              />
+            </div>
             <textarea
               required
               rows={4}
@@ -137,15 +181,18 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-[11px] text-amber-400 mt-2">⚠️ SEND ENQUIRY dabane ke baad Email khulega - wahan photos dobara attach kar dena, taake design mil jaye.</p>
+                  <p className="text-[11px] text-amber-400 mt-2">⚠️ WhatsApp / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
                 </div>
               )}
             </div>
 
-            <button type="submit" className="w-full bg-amber-400 text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:bg-amber-500">
-              Send Enquiry
+            <button type="submit" className="w-full bg-[#25D366] text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:brightness-110">
+              Send Via WhatsApp (Fast) →
             </button>
-            {sent && <p className="text-xs text-green-400 text-center">Opening your email app... Thank you!</p>}
+            <button type="button" onClick={handleEmail} className="w-full border border-zinc-700 py-3 rounded text-xs font-bold uppercase tracking-wider hover:border-amber-400">
+              Send Via Email
+            </button>
+            {sent && <p className="text-xs text-green-400 text-center">Opening WhatsApp / Email... Thank you!</p>}
           </form>
         </div>
       </div>

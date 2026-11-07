@@ -2,12 +2,36 @@
 
 import { useState } from "react";
 
+const B2B_PRODUCTS = [
+  {
+    name: "Leather Jacket - Biker / Bomber",
+    img: "/images/biker-jacket.jpg",
+    desc: "Full-Grain / Sheep Leather. Custom Logo, Sizes XS-3XL.",
+    moq: "MOQ: 50 Pcs",
+    tag: "BEST FOR B2B",
+  },
+  {
+    name: "Leather Biker Suit - 2 Piece",
+    img: "/images/biker-suit.jpg",
+    desc: "CE Protection Ready. Custom Fit, Team / Brand Orders.",
+    moq: "MOQ: 25 Sets",
+    tag: "HIGH MARGIN",
+  },
+  {
+    name: "Bags, Belts & Wallets - Bulk",
+    img: "/images/leather-duffle-bag.jpg",
+    desc: "Bags, Belts, Card Holders, Keychains. White Label Available.",
+    moq: "MOQ: 100 Pcs",
+    tag: "WHITE LABEL",
+  },
+];
+
 export default function B2BPage() {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     companyName: "",
     businessEmail: "",
-    country: "Pakistan",
+    country: "United States",
     quantity: "100",
     productType: "Leather Jacket",
     whiteLabel: "Yes",
@@ -21,7 +45,7 @@ export default function B2BPage() {
 
   return (
     <main className="bg-black text-white min-h-screen py-16 px-6 sm:px-12">
-      <div className="max-w-3xl mx-auto space-y-8">
+      <div className="max-w-5xl mx-auto space-y-10">
         <div className="text-center space-y-3 border-b border-zinc-800 pb-8">
           <span className="text-[10px] tracking-[0.3em] uppercase text-amber-400 font-mono">
             Krossford Enterprises B2B Export Portal
@@ -32,6 +56,33 @@ export default function B2BPage() {
           <p className="text-xs text-zinc-400 tracking-widest uppercase font-light max-w-xl mx-auto">
             Direct manufacturer sourcing from Sialkot & Buneri hubs. Request a tailored wholesale quotation.
           </p>
+          <p className="text-[11px] text-amber-400/90 tracking-wide">
+            Sample Before Bulk • 50% Advance - 50% After Order Ready • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
+          </p>
+        </div>
+
+        {/* B2B PRODUCTS - Buyer Pehle Product Dekhega, Phir Form Bharega */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {B2B_PRODUCTS.map((p) => (
+            <div key={p.name} className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
+              <div className="h-44 bg-zinc-900 flex items-center justify-center overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.img} alt={p.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="p-5 space-y-2">
+                <span className="text-[9px] tracking-[0.2em] uppercase text-amber-400 font-semibold">{p.tag}</span>
+                <h3 className="text-sm font-serif uppercase tracking-wider">{p.name}</h3>
+                <p className="text-[11px] text-zinc-400 leading-relaxed">{p.desc}</p>
+                <p className="text-[11px] text-white font-semibold tracking-wider">{p.moq}</p>
+                <button
+                  onClick={() => setFormData({ ...formData, productType: p.name.includes("Biker Suit") ? "Biker Suit" : p.name.includes("Jacket") ? "Leather Jacket" : "Bag" })}
+                  className="text-[10px] uppercase tracking-[0.2em] text-amber-400 border border-amber-400/40 rounded px-3 py-2 hover:bg-amber-400 hover:text-black transition-colors"
+                >
+                  Get Quote For This →
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {submitted ? (
@@ -42,7 +93,7 @@ export default function B2BPage() {
             <div className="space-y-2">
               <h3 className="text-lg font-serif uppercase tracking-widest text-white">Request Received</h3>
               <p className="text-xs text-zinc-300 font-light tracking-wide max-w-md mx-auto leading-relaxed">
-                Our team will share quote in 24 hours on WhatsApp/Email.
+                Our team will share quote in 24 hours on WhatsApp/Email. Sample available before bulk order.
               </p>
             </div>
             <button
@@ -60,7 +111,7 @@ export default function B2BPage() {
                 <input
                   type="text"
                   required
-                  placeholder="Krossford Enterprises"
+                  placeholder="Your Company Name"
                   value={formData.companyName}
                   onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                   className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none"
@@ -72,7 +123,7 @@ export default function B2BPage() {
                 <input
                   type="email"
                   required
-                  placeholder="support@krossford.com"
+                  placeholder="you@company.com"
                   value={formData.businessEmail}
                   onChange={(e) => setFormData({ ...formData, businessEmail: e.target.value })}
                   className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none"
@@ -88,11 +139,11 @@ export default function B2BPage() {
                   onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                   className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none"
                 >
-                  <option value="Pakistan">Pakistan</option>
                   <option value="United States">United States</option>
                   <option value="United Kingdom">United Kingdom</option>
                   <option value="Germany">Germany</option>
                   <option value="United Arab Emirates">United Arab Emirates</option>
+                  <option value="Pakistan">Pakistan</option>
                   <option value="Other">Other Global Market</option>
                 </select>
               </div>
@@ -104,6 +155,7 @@ export default function B2BPage() {
                   onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                   className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none"
                 >
+                  <option value="25">25 Units - Biker Suit</option>
                   <option value="50">50 Units</option>
                   <option value="100">100 Units</option>
                   <option value="500">500 Units</option>
@@ -121,9 +173,11 @@ export default function B2BPage() {
                   className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none"
                 >
                   <option value="Leather Jacket">Leather Jacket</option>
+                  <option value="Biker Suit">Biker Suit - 2 Piece</option>
                   <option value="Belt">Belt</option>
                   <option value="Bag">Bag</option>
                   <option value="Wallet">Wallet</option>
+                  <option value="Card Holder / Keychain">Card Holder / Keychain - Bulk</option>
                 </select>
               </div>
 
@@ -181,6 +235,7 @@ export default function B2BPage() {
             >
               Submit Wholesale Inquiry
             </button>
+            <p className="text-center text-[10px] text-zinc-500 tracking-wide">No retail price here - Wholesale quote in 24 hours. Sample before bulk.</p>
           </form>
         )}
       </div>

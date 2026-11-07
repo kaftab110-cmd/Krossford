@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 
@@ -14,14 +14,33 @@ const navLinks = [
 ];
 
 const tickerItems = [
-  "Architectural Leather Works — Crafted for Modern Professionals",
-  "Exquisite Full-Grain Hide & Precision Haberdashery",
-  "Direct Global B2B & Wholesale Export Inquiries Welcome",
-  "Minimalist Elegance — Built to Last a Lifetime",
+  "Card Holder $29 • Keychain $25 • Crossbody $119 - Honest Price",
+  "100% Real Leather Guarantee - Sample Before Bulk",
+  "Wholesale: Leather Jacket & Biker Suit - MOQ 25+ Units - Get Quote",
+  "Ships to USA / UK / EU - VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
 ];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  // Cart Count - LocalStorage se - Bina Cart Khole Pata Chalega
+  useEffect(() => {
+    const updateCount = () => {
+      try {
+        const c = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+        const total = c.reduce((s: number, i: any) => s + Number(i.quantity || 1), 0);
+        setCartCount(total);
+      } catch { setCartCount(0); }
+    };
+    updateCount();
+    window.addEventListener("cartUpdated", updateCount);
+    window.addEventListener("storage", updateCount);
+    return () => {
+      window.removeEventListener("cartUpdated", updateCount);
+      window.removeEventListener("storage", updateCount);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -71,9 +90,14 @@ export default function Header() {
             </Link>
             <Link
               href="/cart"
-              className="rounded-md border border-yellow-500/50 px-4 py-2 text-sm font-medium text-yellow-500 transition hover:bg-yellow-500 hover:text-black"
+              className="relative rounded-md border border-yellow-500/50 px-4 py-2 text-sm font-medium text-yellow-500 transition hover:bg-yellow-500 hover:text-black"
             >
-              Cart
+              Cart {cartCount > 0 && `(${cartCount})`}
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -121,9 +145,10 @@ export default function Header() {
                 onClick={() => setIsOpen(false)}
                 className="text-sm font-medium text-yellow-500 hover:underline"
               >
-                Cart / Enquiry
+                Cart {cartCount > 0 && `(${cartCount})`} / Enquiry
               </Link>
             </div>
+            <p className="text-[11px] text-zinc-500 pt-2">Card Holder $29 • Keychain $25 • Crossbody $119</p>
           </div>
         )}
       </div>

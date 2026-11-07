@@ -2,14 +2,25 @@
 import Link from "next/link";
 import { products } from "@/lib/data/shop";
 
+// FEATURED = Hamara Starting Plan + 1 Hero Product - Hamesha Yehi Dikhega
+const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
+
 export default function FeaturedProducts() {
-  const featured = products.slice(0, 4);
+  const featured = FEATURED_SLUGS
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter(Boolean) as typeof products;
+
+  // Agar koi slug na mile to fallback - pehle 4
+  const list = featured.length === 4 ? featured : products.slice(0, 4);
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-16">
-      <h2 className="text-2xl font-bold uppercase tracking-widest text-center mb-10">Featured Products</h2>
+      <div className="text-center mb-10 space-y-2">
+        <h2 className="text-2xl font-bold uppercase tracking-widest">Featured Products</h2>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase">Best Sellers • Starting From $25 • Honest Price</p>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {featured.map((product: any) => {
+        {list.map((product: any) => {
           const slug = product.slug || product.id;
           return (
             <div key={product.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group">
@@ -47,6 +58,11 @@ export default function FeaturedProducts() {
             </div>
           );
         })}
+      </div>
+      <div className="text-center mt-10">
+        <Link href="/shop" className="inline-block border border-zinc-700 hover:border-amber-400 hover:text-amber-400 text-xs uppercase tracking-[0.2em] px-6 py-3 rounded transition-colors">
+          View All Products →
+        </Link>
       </div>
     </section>
   );

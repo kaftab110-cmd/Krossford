@@ -4,6 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { products } from "@/lib/data/shop";
 
+const CATEGORIES = ["ALL", "Wallets", "Bags", "Accessories", "Custom", "Office", "Belts"];
+
+// TOP 3 - Hamara Starting Plan - Hamesha Pehle Dikhega
+const TOP_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag"];
+
 export default function ShopPage() {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [notification, setNotification] = useState<string | null>(null);
@@ -11,6 +16,16 @@ export default function ShopPage() {
   const filteredProducts = selectedCategory === "ALL" 
     ? products 
     : products.filter(p => p.category === selectedCategory);
+
+  // Top 3 ko pehle, baaki ko baad me
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    const aTop = TOP_SLUGS.indexOf(a.slug);
+    const bTop = TOP_SLUGS.indexOf(b.slug);
+    if (aTop !== -1 && bTop !== -1) return aTop - bTop;
+    if (aTop !== -1) return -1;
+    if (bTop !== -1) return 1;
+    return 0;
+  });
 
   const handleAddToCart = (product: any, e: React.MouseEvent) => {
     e.preventDefault();
@@ -50,12 +65,32 @@ export default function ShopPage() {
           {notification}
         </div>
       )}
-      <div className="text-center space-y-3 mb-12">
-        <h1 className="text-3xl font-serif tracking-[0.2em] uppercase">B2B & Wholesale Catalog</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase">Select architectural leather goods for production</p>
+      <div className="text-center space-y-3 mb-8">
+        <span className="text-[10px] tracking-[0.3em] uppercase text-amber-400 font-mono">Krossford Enterprises • Handcrafted in Pakistan</span>
+        <h1 className="text-3xl font-serif tracking-[0.2em] uppercase">Shop - Handcrafted Leather Goods</h1>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase">100% Real Leather • Honest Price • Built To Last • Ships to USA / UK / EU</p>
+        <p className="text-[11px] text-amber-400/90 tracking-wide">Start With Our Best Sellers: Card Holder $29 • Keychain $25 • Crossbody $119</p>
       </div>
+
+      {/* CATEGORY FILTER - Pehle Tha Hi Nahi, Ab Kaam Karega */}
+      <div className="flex flex-wrap justify-center gap-2 mb-12">
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`text-[11px] uppercase tracking-[0.15em] px-4 py-2 rounded-full border transition-colors ${
+              selectedCategory === cat
+                ? "bg-amber-400 text-black border-amber-400 font-bold"
+                : "border-zinc-800 text-zinc-300 hover:border-amber-400 hover:text-amber-400"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProducts.map((product) => {
+        {sortedProducts.map((product) => {
           const slug = product.slug || product.id;
           return (
           <div key={product.id} className="bg-zinc-950 border border-zinc-800/80 rounded-lg overflow-hidden group">
@@ -85,6 +120,15 @@ export default function ShopPage() {
           </div>
           );
         })}
+      </div>
+
+      {/* B2B BANNER - B2B Buyer Bhi Na Bhage */}
+      <div className="mt-16 bg-zinc-950 border border-zinc-800 rounded-xl p-8 text-center space-y-3">
+        <h2 className="text-lg font-serif uppercase tracking-widest">Need Bulk? Jacket / Biker Suit / Bags?</h2>
+        <p className="text-xs text-zinc-400 tracking-wide">For Wholesale, White Label & Custom Production - MOQ 25 to 1000+ Units. Sample Before Bulk.</p>
+        <Link href="/b2b" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300 transition-colors">
+          Go To B2B Wholesale →
+        </Link>
       </div>
     </main>
   );

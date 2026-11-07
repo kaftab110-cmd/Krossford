@@ -7,7 +7,8 @@ import { products } from "@/lib/data/shop";
 export default function CollectionsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = ["All", "Bags", "Belts", "Wallets", "Custom", "Sets"];
+  // FIX: Categories products se hi lo - warna filter khali ho jata hai
+  const categories = ["All", ...Array.from(new Set(products.map((p) => p.category)))];
 
   // 9 LOCKED wale hi aayenge, koi Unsplash / Gucci nahi
   const allProducts = products.map((p) => ({
@@ -17,7 +18,8 @@ export default function CollectionsPage() {
     leather: p.description,
     image: p.image,
     badge: p.badge,
-    colors: ["#1c1917", "#78350f", "#b45309"],
+    price: p.price,
+    colors: p.colors || [],
   }));
 
   const filteredProducts = selectedCategory === "All"
@@ -34,6 +36,7 @@ export default function CollectionsPage() {
           <h1 className="text-3xl md:text-4xl font-bold tracking-wider text-white uppercase">
             Our Professional Collections
           </h1>
+          <p className="text-xs text-zinc-400 tracking-widest uppercase mt-3">Card Holder $29 • Keychain $25 • Crossbody $119 • Honest Price</p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -51,6 +54,10 @@ export default function CollectionsPage() {
             </button>
           ))}
         </div>
+
+        {filteredProducts.length === 0 && (
+          <p className="text-center text-zinc-400 text-sm py-10">No products in this collection yet. <Link href="/shop" className="text-yellow-500 underline">Go To Shop →</Link></p>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
@@ -83,14 +90,15 @@ export default function CollectionsPage() {
                     {product.name}
                   </h3>
                 </Link>
-                <p className="text-xs text-zinc-400">{product.leather}</p>
+                <p className="text-xs text-zinc-400 line-clamp-2">{product.leather}</p>
+                <p className="text-sm font-mono text-yellow-500 font-bold">${product.price}</p>
               </div>
 
               <div className="mt-4 pt-3 border-t border-zinc-900 flex items-center justify-between">
                 <span className="text-xs text-zinc-500 uppercase tracking-wider">Options</span>
                 <div className="flex gap-1">
-                  {product.colors.map((col, i) => (
-                    <span key={i} className="w-3 h-3 rounded-full border border-zinc-700" style={{ backgroundColor: col }} />
+                  {product.colors.map((col: any) => (
+                    <span key={col.name} title={col.name} className="w-3 h-3 rounded-full border border-zinc-700" style={{ backgroundColor: col.code }} />
                   ))}
                 </div>
               </div>
@@ -105,6 +113,15 @@ export default function CollectionsPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* B2B Banner */}
+        <div className="mt-12 border border-yellow-500/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
+          <p className="text-sm font-semibold uppercase tracking-widest">Are You A Brand / Store? Need Bulk?</p>
+          <p className="text-xs text-zinc-400">Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production. MOQ 25+ Units.</p>
+          <Link href="/b2b" className="inline-block bg-yellow-500 text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-yellow-400 mt-2">
+            Get Wholesale Quote →
+          </Link>
         </div>
       </section>
     </main>
