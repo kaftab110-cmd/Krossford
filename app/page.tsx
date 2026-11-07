@@ -3,6 +3,7 @@ import Collections from "@/components/Collections";
 import FeaturedProducts from "@/components/FeaturedProducts";
 import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
+import Reviews from "@/components/Reviews";
 
 export default function Home() {
   return (
@@ -40,6 +41,7 @@ export default function Home() {
       <Collections />
       <FeaturedProducts />
       <Craftsmanship />
+      <Reviews />
       <BrandStory />
       <Bespoke />
 
