@@ -14,12 +14,16 @@ const TOP3 = [
 export default function Home() {
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* Hero - FIXED - Full Screen Fit */}
+      {/* Hero - FIXED - Handle Ab Nahi Katega */}
       <section className="relative w-full h-[100svh] min-h-[600px] flex items-center justify-center text-center overflow-hidden">
-        {/* Background Image - Full Fit */}
+        {/* Background Image - FIXED: Top se dikhao */}
         <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/leather-duffle-bag.jpg')" }}
+          className="absolute inset-0 w-full h-full bg-cover bg-no-repeat"
+          style={{ 
+            backgroundImage: "url('/images/leather-duffle-bag.jpg')",
+            backgroundPosition: "center top",
+            backgroundSize: "cover"
+          }}
         />
         {/* Kala parda - taake likhai saaf dikhe */}
         <div className="absolute inset-0 bg-black/60"></div>
