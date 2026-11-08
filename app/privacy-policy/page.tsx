@@ -12,7 +12,6 @@ export default function PrivacyPage() {
     <main className="mx-auto max-w-4xl px-4 py-10">
       <LegalNav currentSlug="privacy-policy" />
       <h1 className="mt-6 text-3xl font-bold">{privacyContent.title}</h1>
-      <p className="mt-2 text-sm text-gray-500">Last updated: {privacyContent.lastUpdated}</p>
       <div className="mt-8 space-y-8">
         {privacyContent.sections.map((section) => (
           <section key={section.heading}>
