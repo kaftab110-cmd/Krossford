@@ -18,7 +18,6 @@ export default function Footer() {
           <p className="text-[11px] mt-3 text-amber-400/90 font-bold tracking-wide">
             Retail + Wholesale Both Available
           </p>
-          {/* DHL wali line yahan se HATA DI - Double ho rahi thi, neeche wali hi kaafi hai */}
         </div>
 
         <div>
@@ -60,7 +59,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* WE ACCEPT - Sirf Yahan DHL Rahega - Ab Double Nahi Hoga */}
       <div className="border-t border-zinc-800 py-8 text-center px-4 bg-black">
         <p className="text-sm font-bold tracking-[0.3em] text-white">WE ACCEPT:</p>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
@@ -70,7 +68,7 @@ export default function Footer() {
           <span className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black tracking-wider">BANK TRANSFER / T/T</span>
         </div>
         <p className="text-zinc-300 text-xs mt-4">
-          Retail: 100% Advance | Wholesale: 50% Advance - 50% Before Dispatch | Secure & Protected Payments | Pakistan Local Bank Transfer Available
+          Secure & Protected Payments | Pakistan Local Bank Transfer Available | Wholesale: 50% Advance - 50% Before Dispatch
         </p>
         <p className="text-zinc-500 text-[11px] mt-2">
           Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided • We aim to deliver earlier than estimated.

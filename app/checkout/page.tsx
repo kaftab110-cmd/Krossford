@@ -32,6 +32,8 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("United States");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
   const [phone, setPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
   const [orderSent, setOrderSent] = useState(false);
@@ -45,15 +47,16 @@ export default function CheckoutPage() {
 
   // AUTO DETECT - Retail ya Wholesale?
   const isWholesale = cart.some((it) => it.customerType === "B2B");
+  // Retail wale ko advance ka zikr nahi karna - sab ko pata hai payment advance hoti hai
   const paymentTerms = isWholesale
     ? "Wholesale: 50% Advance - 50% Before Dispatch"
-    : "Retail: 100% Advance";
+    : "";
 
   const WHATSAPP_NUMBER = "923030006759";
 
   const handlePlaceOrder = () => {
-    if (!name.trim() || !country.trim() || !address.trim() || !phone.trim()) {
-      alert("Please fill Name, Country, Address and Phone");
+    if (!name.trim() || !country.trim() || !address.trim() || !city.trim() || !postalCode.trim() || !phone.trim()) {
+      alert("Please fill Name, Country, Address, City, Postal Code and Phone");
       return;
     }
     if (cart.length === 0) {
@@ -65,7 +68,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}\nPayment Terms: ${paymentTerms}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\nCity: ${city}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -80,7 +83,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold">Order Sent!</p>
-        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms} • Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided.</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided.</p>
         <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
         <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
       </div>
@@ -103,7 +106,7 @@ export default function CheckoutPage() {
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
-          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • {paymentTerms} • Sample Before Bulk</p>
+          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : ""}</p>
 
           <div className="mt-6 space-y-3">
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
@@ -112,7 +115,13 @@ export default function CheckoutPage() {
             <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 text-white">
               {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
-            <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
+            <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
+            {/* CITY + POSTAL CODE - DHL Ke Liye Lazmi Hai */}
+            <div className="grid grid-cols-2 gap-3">
+              <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+              <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            </div>
+            <p className="text-[10px] text-zinc-500">Postal Code is required for DHL Express international delivery.</p>
           </div>
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
@@ -166,7 +175,7 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              <p className="text-[11px] text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation. {paymentTerms}.</p>
+              <p className="text-[11px] text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation.{paymentTerms ? ` ${paymentTerms}.` : ""}</p>
             </div>
 
             <button onClick={handlePlaceOrder} className="mt-5 w-full bg-amber-400 text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-amber-300">
