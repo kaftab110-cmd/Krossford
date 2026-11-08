@@ -2,14 +2,14 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[520px] flex items-center justify-center bg-black overflow-hidden px-6 py-20 border-b border-zinc-800">
+    <section className="relative min-h-[620px] lg:min-h-[700px] flex items-center justify-center bg-black overflow-hidden px-6 py-20 border-b border-zinc-800">
       {/* Dark Overlay & New Full-Grain Leather Hides Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1920&q=90" 
           alt="Stacked Full-Grain Leather Hides"
-          className="w-full h-full object-cover"
-          style={{ filter: "brightness(0.38) contrast(1.2)" }}
+          className="w-full h-full object-cover object-[center_35%]"
+          style={{ filter: "brightness(0.38) contrast(1.2)", objectPosition: "center 35%" }}
         />
         <div 
           className="absolute inset-0 pointer-events-none"
