@@ -37,7 +37,7 @@ export const paymentContent = {
       heading: "5. Currency & Charges",
       paragraphs: [
         "All prices are in USD unless otherwise stated in written quotation.",
-        "Bank charges, Western Union charges, or card charges (if any) are paid by buyer unless agreed otherwise in writing.",
+        "Bank charges, Western Union charges, or card charges (if any) are paid by the customer (Retail) / buyer (Wholesale) unless agreed otherwise in writing.",
       ],
     },
     {

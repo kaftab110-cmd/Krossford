@@ -3,21 +3,21 @@ import SafeImage from "./SafeImage";
 const testimonials = [
   {
     name: "Ahmed Raza",
-    role: "Verified Buyer - Lahore",
+    role: "Verified Customer - Lahore",
     text: "Quality is unreal for this price. Leather feels premium and stitching is perfect. My backpack gets compliments every day.",
     image: "/images/messenger-bag.jpg",
     rating: 5,
   },
   {
     name: "Sarah Khan",
-    role: "Verified Buyer - Karachi",
+    role: "Verified Customer - Karachi",
     text: "Ordered the duffle bag for my husband. Packaging, finishing, everything feels like a luxury brand. Highly recommended.",
     image: "/images/leather-duffle-bag.jpg",
     rating: 5,
   },
   {
     name: "Bilal Ahmed",
-    role: "Verified Buyer - Islamabad",
+    role: "Verified Customer - Islamabad",
     text: "I was worried about online leather shopping, but Krossford delivered more than expected. Will definitely order again.",
     image: "/images/crossbody-messenger-bag.jpg",
     rating: 5,

@@ -1,11 +1,49 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { products } from "@/lib/data/shop";
 
 // FEATURED = Hamara Starting Plan + 1 Hero Product - Hamesha Yehi Dikhega
 const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
 
+// FIX: Keychain ki image ka naam yahan force kiya - data file me purana naam ho to bhi yehi chalegi
+const IMAGE_FIX: Record<string, string> = {
+  "leather-tag-keychain-set": "/images/leather-tag-keychain-set.jpg",
+};
+
 export default function FeaturedProducts() {
+  const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  const handleAddToCart = (product: any) => {
+    const slug = product.slug || product.id;
+    const image = IMAGE_FIX[slug] || product.image;
+    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
+
+    if (existingIndex >= 0) {
+      existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
+    } else {
+      existingCart.push({
+        id: `${slug}-jet-black-b2c-${Date.now()}`,
+        slug: slug,
+        name: product.name,
+        price: product.price,
+        image: image,
+        quantity: 1,
+        colorName: "Jet Black",
+        customerType: "B2C",
+        additionalOption: "none",
+        customText: "",
+        uploadedFileName: "",
+      });
+    }
+
+    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+    setAddedSlug(slug);
+    setTimeout(() => setAddedSlug(null), 2000);
+  };
+
   const featured = FEATURED_SLUGS
     .map((slug) => products.find((p) => p.slug === slug))
     .filter(Boolean) as typeof products;
@@ -22,13 +60,14 @@ export default function FeaturedProducts() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {list.map((product: any) => {
           const slug = product.slug || product.id;
+          const displayImage = IMAGE_FIX[slug] || product.image;
           return (
             <div key={product.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group">
               <Link href={`/product/${slug}`}>
                 <div className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={displayImage} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {product.badge && (
-                    <span className="absolute top-3 left-3 bg-amber-400 text-black text-[9px] font-bold px-2 py-1 uppercase">{product.badge}</span>
+                    <span className="absolute top-3 left-3 z-10 bg-amber-400 text-black text-[9px] font-bold px-2 py-1 uppercase">{product.badge}</span>
                   )}
                 </div>
               </Link>
@@ -51,11 +90,14 @@ export default function FeaturedProducts() {
                   ))}
                 </div>
 
-                {/* FIX: Add to Cart - Buyer Seedha Order Karega */}
+                {/* FIX: Add to Cart - Ab Page Nahi Badlega - Wahi Pe Add Hoga */}
                 <div className="flex gap-2">
-                  <Link href={`/product/${slug}`} className="flex-1 block text-center bg-amber-400 hover:bg-amber-300 text-black text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
-                    Add to Cart →
-                  </Link>
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className={`flex-1 block text-center text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === slug ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                  >
+                    {addedSlug === slug ? "✓ Added!" : "Add to Cart →"}
+                  </button>
                   <Link href={`/product/${slug}`} className="flex-1 block text-center bg-zinc-800 hover:border-amber-400 border border-zinc-700 text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
                     Details
                   </Link>

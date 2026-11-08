@@ -38,14 +38,14 @@ export const shippingContent = {
         "• Packaging requirements.",
         "• Insurance, where applicable.",
         "• Remote-area surcharges and other known logistical costs.",
-        "Customers must receive the applicable shipping quotation and known additional charges before order confirmation or final payment. We do not promise that every possible future charge can be predicted in advance."
+        "Customers (Retail) and buyers (Wholesale) must receive the applicable shipping quotation and known additional charges before order confirmation or final payment. We do not promise that every possible future charge can be predicted in advance."
       ]
     },
     {
       heading: "Customs, Import Duties and Taxes",
       paragraphs: [
         "International shipments may be subject to customs duties, import taxes, clearance fees, and other destination-related charges.",
-        "Responsibility for these charges must follow applicable law and the delivery arrangement agreed with the customer. We do not state that buyers are always responsible for every tax, nor do we attempt to exclude KROSSFORD's own statutory tax obligations."
+        "Responsibility for these charges must follow applicable law and the delivery arrangement agreed with the customer (Retail) / buyer (Wholesale). We do not state that buyers are always responsible for every tax, nor do we attempt to exclude KROSSFORD's own statutory tax obligations."
       ]
     },
     {
@@ -53,7 +53,7 @@ export const shippingContent = {
       paragraphs: [
         "Ships via DHL Express - Tracking Provided.",
         "Tracking details will be shared when provided by the selected courier.",
-        "KROSSFORD will communicate material shipment updates and provide reasonable tracking assistance to customers.",
+        "KROSSFORD will communicate material shipment updates and provide reasonable tracking assistance to customers and buyers.",
         "For any tracking help, WhatsApp us: +92303 0006759"
       ]
     },

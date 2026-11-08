@@ -26,15 +26,18 @@ export default function ProductPage() {
   const [selectedColor, setSelectedColor] = useState<ProductColor>(
     product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" }
   );
+  // NEW - DESIGN SELECTION - Price Is Se Nahi Badlegi!
+  const [selectedDesign, setSelectedDesign] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [customerType, setCustomerType] = useState<"B2C" | "B2B">("B2C");
   const [additionalOption, setAdditionalOption] = useState("none");
   const [customText, setCustomText] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  // FIX: Product badle to Color / Quantity reset ho - warna purana color rehta tha
+  // FIX: Product badle to Color / Design / Quantity reset ho
   useEffect(() => {
     setSelectedColor(product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" });
+    setSelectedDesign(0);
     setQuantity(1);
     setAdditionalOption("none");
     setCustomText("");
@@ -59,8 +62,15 @@ export default function ProductPage() {
 
   const WHATSAPP_NUMBER = "923030006759";
 
+  // Gallery - Agar shop.ts me gallery nahi hai to image hi use hogi - Error nahi aayega!
+  const gallery: string[] = (product as any).gallery?.length ? (product as any).gallery : [product.image];
+  const mainImage = gallery[selectedDesign] || selectedColor.image || product.image;
+
+  // PRICE FIXED HAI - Design / Colour Se Nahi Badlegi!
+  const finalPrice = product.price;
+
   const handleSampleRequest = () => {
-    const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Color: ${selectedColor.name}, Type: ${customerType}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
+    const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Design: Design ${selectedDesign + 1}, Color: ${selectedColor.name}, Type: ${customerType}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
@@ -74,16 +84,17 @@ export default function ProductPage() {
       return;
     }
     const cartItem = {
-      id: `${product.slug || product.id}-${selectedColor.name}-${additionalOption}-${customText}`,
+      id: `${product.slug || product.id}-design${selectedDesign + 1}-${selectedColor.name}-${additionalOption}-${customText}`,
       slug: product.slug || product.id,
       name: product.name,
       category: product.category,
-      price: product.price,
-      image: selectedColor.image || product.image,
+      price: finalPrice,
+      image: mainImage,
       leather: product.description,
       quantity: quantity,
       colorName: selectedColor.name,
       colorCode: selectedColor.code,
+      design: `Design ${selectedDesign + 1}`,
       customerType: customerType,
       additionalOption: additionalOption,
       customText: customText,
@@ -105,8 +116,16 @@ export default function ProductPage() {
     window.location.href = "/cart";
   };
 
-  // Related - Same Category ya Top Sellers, Current Product ko chhod ke
-  const related = products.filter((p) => p.id !== product.id).slice(0, 3);
+  // Related - Pehle Same Category, Phir Baaki - LOW TO HIGH SORTED: $29 -> $39 -> $49...
+  const related = [...products]
+    .filter((p) => p.id !== product.id)
+    .sort((a, b) => {
+      const aSame = a.category === product.category ? 0 : 1;
+      const bSame = b.category === product.category ? 0 : 1;
+      if (aSame !== bSame) return aSame - bSame;
+      return a.price - b.price;
+    })
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-white text-black p-4 sm:p-6 md:p-12 overflow-x-hidden">
@@ -118,8 +137,25 @@ export default function ProductPage() {
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-10">
           <div className="min-w-0">
-            <img src={selectedColor.image || product.image} alt={product.name} className="w-full h-auto max-h-[500px] object-cover rounded-lg" />
+            <img src={mainImage} alt={product.name} className="w-full h-auto max-h-[500px] object-cover rounded-lg" />
             <p className="text-xs text-zinc-500 mt-2">{product.description}</p>
+
+            {/* NEW - DESIGN SELECTION - YAHAN SE DESIGN BADLEGA, PRICE NAHI! */}
+            {gallery.length > 1 && (
+              <div className="mt-5">
+                <p className="text-sm font-bold">SELECT DESIGN: Design {selectedDesign + 1} <span className="text-[11px] font-normal text-zinc-500">• Price Same Rahegi - ${finalPrice}</span></p>
+                <div className="flex gap-3 mt-3 flex-wrap">
+                  {gallery.map((g, i) => (
+                    <button key={i} onClick={() => setSelectedDesign(i)} title={`Design ${i + 1}`}
+                      className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer ${selectedDesign === i ? "ring-[3px] ring-amber-500" : "ring-1 ring-zinc-300"}`}>
+                      <img src={g} alt={`Design ${i + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-zinc-500 mt-2">👆 Kisi Bhi Design Pe Click Karo - Upar Badi Photo Badal Jayegi - Price Wahi Rahegi!</p>
+              </div>
+            )}
+
             <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
               <span className="bg-zinc-100 px-3 py-1.5 rounded-full">✓ 100% Real Leather</span>
               <span className="bg-zinc-100 px-3 py-1.5 rounded-full">✓ Hand-Stitched</span>
@@ -130,11 +166,12 @@ export default function ProductPage() {
           <div className="min-w-0">
             <p className="text-[11px] tracking-widest text-amber-600 uppercase">{product.category}</p>
             <h1 className="text-2xl sm:text-3xl font-bold uppercase mt-2 break-words">{product.name}</h1>
-            <p className="text-xl font-bold mt-2">${product.price} <span className="text-xs font-normal text-zinc-500">• Total: ${product.price * quantity} for {quantity} {quantity > 1 ? "pcs" : "pc"}</span></p>
+            <p className="text-xl font-bold mt-2">${finalPrice} <span className="text-xs font-normal text-zinc-500">• Total: ${finalPrice * quantity} for {quantity} {quantity > 1 ? "pcs" : "pc"}</span></p>
+            <p className="text-[11px] text-green-600 font-medium mt-1">✅ Price Fixed Hai - Design / Colour Badalne Se Price Nahi Badlegi! • Selected: Design {selectedDesign + 1} • Colour: {selectedColor.name}</p>
             {product.badge && <span className="inline-block mt-2 bg-black text-amber-400 text-[10px] px-2 py-1 uppercase">{product.badge}</span>}
 
             <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
-              <p className="text-xs font-bold tracking-widest uppercase">Customer Type - International Only</p>
+              <p className="text-xs font-bold tracking-widest uppercase">Order Type - International Only</p>
               <div className="flex flex-col gap-2 mt-3 w-full">
                 <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full ${customerType === "B2C" ? "border-black bg-white" : "border-zinc-200 bg-white/50"}`}>
                   <span className="text-xs font-bold block">B2C - Single Piece</span>
@@ -161,7 +198,7 @@ export default function ProductPage() {
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-200 mt-3">
                     <p className="text-xs font-bold">Sample Available - Paid Sample</p>
-                    <p className="text-[11px] text-zinc-500 mt-1">Sample Price Will Be Paid By Customer. Charges To Be Confirmed.</p>
+                    <p className="text-[11px] text-zinc-500 mt-1">Sample Price Will Be Paid By Buyer. Charges To Be Confirmed.</p>
                     <p className="text-[11px] text-green-600 font-medium mt-1">✅ If You Place Order, Sample Price Will Be Adjusted In Your Order.</p>
                     <button onClick={handleSampleRequest} className="mt-3 w-full border border-black text-black text-xs uppercase font-bold py-2.5 rounded hover:bg-black hover:text-white transition-all">
                       Request Paid Sample →
@@ -179,6 +216,7 @@ export default function ProductPage() {
                     style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #f59e0b" : "1px solid #ccc", cursor: "pointer" }} />
                 ))}
               </div>
+              <p className="text-[11px] text-zinc-500 mt-2">Colour Badalne Se Bhi Price Same Rahegi!</p>
             </div>
 
             <div className="mt-6 bg-zinc-50 border border-zinc-200 rounded-lg p-4 sm:p-5">
@@ -253,16 +291,16 @@ export default function ProductPage() {
                 <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2">+</button>
               </div>
               <button onClick={handleAddToCart} className="flex-1 min-w-[200px] bg-black text-white py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-zinc-800">
-                Add To Cart - {selectedColor.name} • ${product.price * quantity}
+                Add To Cart - {selectedColor.name} • Design {selectedDesign + 1} • ${finalPrice * quantity}
               </button>
             </div>
             <Link href="/shop" className="block text-center mt-3 text-xs underline text-zinc-500">Continue Shopping</Link>
           </div>
         </div>
 
-        {/* YOU MAY ALSO LIKE */}
+        {/* YOU MAY ALSO LIKE - LOW TO HIGH */}
         <div className="mt-14 border-t border-zinc-200 pt-8">
-          <h2 className="text-lg font-bold uppercase tracking-widest">You May Also Like</h2>
+          <h2 className="text-lg font-bold uppercase tracking-widest">You May Also Like - Low To High</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
             {related.map((p) => (
               <Link key={p.id} href={`/product/${p.slug}`} className="border border-zinc-200 rounded-lg overflow-hidden group hover:border-black transition-colors">

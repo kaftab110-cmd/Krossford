@@ -5,7 +5,7 @@ export const returnsContent = {
     {
       heading: "1. Return Policy Overview",
       paragraphs: [
-        "KROSSFORD Enterprises operates from Punjab, Pakistan and serves international Retail + Wholesale customers through its own facilities and independent manufacturing partners.",
+        "KROSSFORD Enterprises operates from Punjab, Pakistan and serves international Retail customers and Wholesale buyers through its own facilities and independent manufacturing partners.",
         "Return and refund requests are assessed according to the order details, product condition, agreed commercial terms, and applicable law.",
         "KROSSFORD does not offer a universal voluntary return window across all purchases unless explicitly stated for a specific product or order. Nothing in this policy limits or excludes any mandatory consumer rights that cannot legally be excluded under applicable law."
       ]
@@ -13,16 +13,16 @@ export const returnsContent = {
     {
       heading: "2. How to Request a Return",
       paragraphs: [
-        "To initiate a return or refund enquiry, customers should visit the website's Contact Us page and submit a request.",
+        "To initiate a return or refund enquiry, customers (Retail) and buyers (Wholesale) should visit the website's Contact Us page and submit a request.",
         "Or WhatsApp us directly: +92303 0006759 - Fastest Response.",
         "Please provide your order reference, product details, and a clear description of the issue or reason for the return so our team can review the request promptly.",
-        "Customers will receive guidance on the appropriate next steps. Prior return authorization or instructions are intended to facilitate a smooth process and do not restrict any mandatory customer rights provided by applicable law."
+        "Customers and buyers will receive guidance on the appropriate next steps. Prior return authorization or instructions are intended to facilitate a smooth process and do not restrict any mandatory customer rights provided by applicable law."
       ]
     },
     {
       heading: "3. Condition of Returned Products",
       paragraphs: [
-        "Where a return is applicable, customers should keep products in their original condition, with tags, accessories, and packaging where reasonably possible.",
+        "Where a return is applicable, customers and buyers should keep products in their original condition, with tags, accessories, and packaging where reasonably possible.",
         "Any assessment of diminished product value resulting from handling beyond what is necessary to inspect the item must follow applicable law.",
         "Opening or inspecting a product does not automatically render it non-returnable, and statutory rights regarding products that are faulty or not as described remain fully preserved."
       ]
@@ -47,7 +47,7 @@ export const returnsContent = {
     {
       heading: "6. Custom, Personalized and Made-to-Order Products",
       paragraphs: [
-        "Some KROSSFORD products may be custom-made, personalized, or produced according to specific customer requirements.",
+        "Some KROSSFORD products may be custom-made, personalized, or produced according to specific customer / buyer requirements.",
         "Return and cancellation arrangements for custom orders are reviewed based on the nature of the product, the production stage, and agreed order terms.",
         "Custom or made-to-order items are not automatically non-returnable, and mandatory legal rights for defective, damaged, incorrect, or non-conforming goods remain fully protected."
       ]
@@ -65,7 +65,7 @@ export const returnsContent = {
       heading: "8. International Orders, Customs and Duties",
       paragraphs: [
         "International returns may involve courier charges, customs clearance procedures, import or export requirements, and other destination-related expenses.",
-        "Responsibility for customs duties, taxes, and return shipment costs must follow applicable law and the delivery arrangement agreed with the customer.",
+        "Responsibility for customs duties, taxes, and return shipment costs must follow applicable law and the delivery arrangement agreed with the customer (Retail) / buyer (Wholesale).",
         "KROSSFORD does not claim that international buyers are automatically responsible for every charge in all circumstances, nor does this policy exempt KROSSFORD from its own statutory obligations."
       ]
     },

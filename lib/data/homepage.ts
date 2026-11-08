@@ -7,7 +7,7 @@ export const hero = {
 };
 
 export const homepageProducts = [
-  { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", title: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather - HOME MAIN", href: "/product/duffle-bag" },
+  { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", title: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather", href: "/product/duffle-bag" },
   { id: 1, name: "Vintage Leather Backpack", image: "/images/messenger-bag.jpg", title: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", href: "/product/vintage-leather-backpack" },
   { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", title: "Minimalist RFID Wallet", description: "Full-Grain, RFID Blocking", href: "/product/wallet" },
   { id: 4, name: "Waist Bag / Fanny Pack", image: "/images/fanny-pack.jpg", title: "Waist Bag", description: "Vintage Brown, Full-Grain", href: "/product/fanny-pack" },
@@ -34,7 +34,7 @@ export const brandStorySection = {
 export const craftsmanshipSection = {
   title: "Handcrafted Excellence",
   subtitle: "Full-Grain Leather - Hand-Stitched",
-  description: "Vegetable-Tanned, Brass Buckle, Hand-Stitched - Made in Pakistan for World Buyers",
+  description: "Vegetable-Tanned, Brass Buckle, Hand-Stitched - Made in Pakistan for Customers and Buyers Worldwide",
   image: "/images/belt.jpg",
   items: [
     { id: 1, title: "Full-Grain Leather", description: "100% Real Leather, No Split, No PU", image: "/images/belt.jpg" },

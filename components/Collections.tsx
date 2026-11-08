@@ -91,7 +91,7 @@ export default function Collections() {
                 <p className="text-xs text-zinc-400">{product.leather}</p>
               </div>
 
-              {/* PRICE + DELIVERY - Ab Buyer Ko Price Pehle Hi Pata Chalega */}
+              {/* PRICE + DELIVERY - Ab Customer Ko Price Pehle Hi Pata Chalega */}
               <div className="mt-4 pt-3 border-t border-zinc-900 flex items-center justify-between">
                 <span className="text-lg font-mono text-amber-400 font-bold">${product.price}</span>
                 <div className="flex gap-1">

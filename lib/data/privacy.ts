@@ -1,5 +1,6 @@
 export const privacyContent = {
   title: "Privacy Policy",
+  lastUpdated: "October 30, 2025",
   sections: [
     {
       heading: "Your Trust Is Our Craft.",
@@ -15,6 +16,7 @@ export const privacyContent = {
         "• Your Name & Contact - So we can confirm your order and update you on WhatsApp / Email.",
         "• Your Shipping Address - So your bag reaches you safely, anywhere in the world.",
         "• Your Order Details - Including your custom engraving or logo, so we make exactly what you asked for.",
+        "For wholesale buyers, this may also include Company Name and business contact details for quotation and invoicing.",
         "That's it. No hidden tracking. No unnecessary questions."
       ]
     },
@@ -41,7 +43,7 @@ export const privacyContent = {
         "• Ask us what information we have about you.",
         "• Ask us to correct it or delete it.",
         "• Ask us to stop contacting you.",
-        "Just write to us at info@krossford.com - A real person will reply within 48 hours, not a robot."
+        "Just write to us at hello@krossford.com - A real person will reply within 48 hours, not a robot."
       ]
     },
     {
@@ -54,8 +56,8 @@ export const privacyContent = {
       heading: "Our Commitment",
       paragraphs: [
         "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available",
-        "If you ever feel your privacy was not respected, tell us directly. We will fix it. Because for KROSSFORD, a customer is not an order number - you are part of our story.",
-        "Questions? info@krossford.com"
+        "If you ever feel your privacy was not respected, tell us directly. We will fix it. Because for KROSSFORD, a customer / buyer is not an order number - you are part of our story.",
+        "Questions? hello@krossford.com"
       ]
     }
   ]

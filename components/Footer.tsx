@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="text-white font-bold text-xs uppercase tracking-widest">Customer Service</h4>
+          <h4 className="text-white font-bold text-xs uppercase tracking-widest">Customer & Buyer Service</h4>
           <div className="flex flex-col gap-2 mt-3 text-xs">
             <Link href="/shipping" className="hover:text-amber-400">Shipping Policy</Link>
             <Link href="/returns" className="hover:text-amber-400">Returns & Exchange</Link>

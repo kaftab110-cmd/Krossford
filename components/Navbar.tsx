@@ -39,7 +39,7 @@ return (
 <nav className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider">
 <Link href="/" className={pathname==="/"?"text-amber-400":"text-white hover:text-amber-400"}>HOME</Link>
 <Link href="/shop" className={cls("/shop")}>SHOP</Link>
-<Link href="/contact-us" className={cls("/contact-us")}>WHOLESALE</Link>
+<Link href="/b2b" className={cls("/b2b")}>WHOLESALE</Link>
 <Link href="/shop" className={cls("/shop")}>COLLECTIONS</Link>
 <Link href="/our-story" className={cls("/our-story")}>ABOUT</Link>
 <Link href="/contact-us" className={cls("/contact-us")}>CONTACT</Link>
@@ -68,7 +68,7 @@ return (
 <nav className="flex flex-col space-y-4 text-xs font-bold tracking-wider">
 <Link href="/" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">HOME</Link>
 <Link href="/shop" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">SHOP</Link>
-<Link href="/contact-us" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">WHOLESALE</Link>
+<Link href="/b2b" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">WHOLESALE</Link>
 <Link href="/shop" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">COLLECTIONS</Link>
 <Link href="/our-story" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">ABOUT</Link>
 <Link href="/contact-us" onClick={()=>setOpen(false)} className="py-1 border-b border-zinc-900">CONTACT</Link>

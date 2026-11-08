@@ -17,12 +17,12 @@ type CartItem = {
   uploadedFileName: string;
 };
 
-const COUNTRIES = ["United States", "United Kingdom", "Germany", "United Arab Emirates", "Canada", "Australia", "France", "Netherlands", "Pakistan", "Other"];
+const COUNTRIES = ["United States", "United Kingdom", "Canada", "Australia", "Germany", "France", "Italy", "Spain", "Netherlands", "Belgium", "Sweden", "Denmark", "Norway", "Finland", "Ireland", "Portugal", "Austria", "Switzerland", "Greece", "Poland", "Czech Republic", "Slovakia", "Hungary", "Romania", "Bulgaria", "Croatia", "Slovenia", "Lithuania", "Latvia", "Estonia", "Malta", "Cyprus", "Luxembourg", "Iceland", "Albania", "Serbia", "Bosnia and Herzegovina", "Montenegro", "North Macedonia", "Moldova", "Ukraine", "Belarus", "United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman", "Jordan", "Lebanon", "Israel", "Turkey", "Iraq", "Iran", "Pakistan", "India", "Bangladesh", "Sri Lanka", "Nepal", "Afghanistan", "China", "Japan", "South Korea", "Taiwan", "Hong Kong", "Singapore", "Malaysia", "Thailand", "Vietnam", "Indonesia", "Philippines", "Cambodia", "Myanmar", "Laos", "Mongolia", "Kazakhstan", "Uzbekistan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Azerbaijan", "Georgia", "Armenia", "Russia", "Egypt", "Morocco", "Tunisia", "Algeria", "Libya", "Sudan", "Ethiopia", "Kenya", "Nigeria", "Ghana", "South Africa", "Angola", "Zimbabwe", "Zambia", "Tanzania", "Uganda", "Rwanda", "Senegal", "Ivory Coast", "Cameroon", "Mozambique", "Madagascar", "Mauritius", "Seychelles", "Mexico", "Brazil", "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Uruguay", "Panama", "Costa Rica", "Guatemala", "Dominican Republic", "Puerto Rico", "Jamaica", "Trinidad and Tobago", "Bahamas", "Barbados", "New Zealand", "Fiji", "Papua New Guinea", "Other"];
 
 const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
-  { id: "Western Union", title: "Western Union", badge: "", desc: "Available for international customers. Details will be shared on WhatsApp after order confirmation." },
+  { id: "Western Union", title: "Western Union", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
   { id: "VISA / Mastercard", title: "VISA / Mastercard", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
@@ -48,10 +48,10 @@ export default function CheckoutPage() {
 
   // AUTO DETECT - Retail ya Wholesale?
   const isWholesale = cart.some((it) => it.customerType === "B2B");
-  // Retail wale ko advance ka zikr nahi karna - sab ko pata hai payment advance hoti hai
+  // Retail + Wholesale Dono Ko Payment Terms Dikhane Hain - Chhupana Nahi Hai
   const paymentTerms = isWholesale
     ? "Wholesale: 50% Advance - 50% Before Dispatch"
-    : "";
+    : "Retail: 100% Secure Advance Payment";
 
   const WHATSAPP_NUMBER = "923030006759";
 
@@ -107,7 +107,7 @@ export default function CheckoutPage() {
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
-          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : ""}</p>
+          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
 
           <div className="mt-6 space-y-3">
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />

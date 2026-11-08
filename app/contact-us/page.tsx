@@ -55,7 +55,8 @@ export default function ContactPage() {
 
   const handleEmail = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `Wholesale Enquiry from ${form.name} - ${form.company}`;
+    const enquiryType = form.orderType.includes("B2B") ? "Wholesale Enquiry" : form.orderType.includes("Sample") ? "Sample Enquiry" : "Retail Enquiry";
+    const subject = `${enquiryType} from ${form.name} - ${form.company}`;
     const body = buildMessage().replace(/\n/g, "%0D%0A");
     window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
     setSent(true);
@@ -65,8 +66,8 @@ export default function ContactPage() {
     <div className="min-h-screen bg-zinc-950 text-white font-mono p-6 md:p-12">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Wholesale & Contact</h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest">B2B Enquiry - Private Label & Bulk Production</p>
+          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Contact Us</h1>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest">Retail + Wholesale Enquiry - 1 Piece or Bulk Production</p>
         </div>
 
         {/* 2 Raste - Pehle Hi Sahi Jagah Bhejo */}
@@ -95,7 +96,7 @@ export default function ContactPage() {
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
             <a
-              href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about wholesale / bulk leather order.")}`}
+              href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]"
@@ -110,7 +111,7 @@ export default function ContactPage() {
             <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
               <span className="block text-xs text-zinc-400 uppercase">Payment</span>
               <span className="text-xs text-zinc-300 mt-1 block">VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</span>
-              <span className="text-xs text-zinc-400 mt-1 block">50% Advance - 50% After Order Ready • Sample Before Bulk</span>
+              <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
             </div>
           </div>
 
@@ -154,7 +155,7 @@ export default function ContactPage() {
             <textarea
               required
               rows={4}
-              placeholder="Tell us about your bulk order, quantity, leather type..."
+              placeholder="Tell us about your order - 1 piece or bulk, quantity, leather type..."
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
               className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
