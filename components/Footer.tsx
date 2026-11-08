@@ -12,7 +12,7 @@ export default function Footer() {
         <div>
           <h3 className="text-amber-400 font-bold tracking-widest text-sm">KROSSFORD ENTERPRISES</h3>
           <p className="text-xs mt-3 leading-relaxed text-zinc-400">
-            A New-Generation International Leather Brand, Since 2026.
+            A New-Generation International Leather Brand, Since 2025.
             Sample Before Bulk. 100% Real Leather Guarantee. On-Time Delivery.
           </p>
           <p className="text-[11px] mt-3 text-amber-400/90 font-bold tracking-wide">
@@ -76,7 +76,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-zinc-800 py-4 text-center text-[11px] text-zinc-500">
-        © 2026 KROSSFORD ENTERPRISES. All Rights Reserved.
+        © 2025 KROSSFORD ENTERPRISES. All Rights Reserved. | Retail + Wholesale Both Available
       </div>
     </footer>
   );
