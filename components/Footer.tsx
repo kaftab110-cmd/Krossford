@@ -18,9 +18,7 @@ export default function Footer() {
           <p className="text-[11px] mt-3 text-amber-400/90 font-bold tracking-wide">
             Retail + Wholesale Both Available
           </p>
-          <p className="text-[11px] mt-1 text-zinc-400">
-            🚚 Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided
-          </p>
+          {/* DHL wali line yahan se HATA DI - Double ho rahi thi, neeche wali hi kaafi hai */}
         </div>
 
         <div>
@@ -62,7 +60,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* WE ACCEPT - PayPal Khatam Kar Diya */}
+      {/* WE ACCEPT - Sirf Yahan DHL Rahega - Ab Double Nahi Hoga */}
       <div className="border-t border-zinc-800 py-8 text-center px-4 bg-black">
         <p className="text-sm font-bold tracking-[0.3em] text-white">WE ACCEPT:</p>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
@@ -80,7 +78,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-zinc-800 py-4 text-center text-[11px] text-zinc-500">
-        © 2026 KROSSFORD ENTERPRISES. All Rights Reserved. | Retail + Wholesale Both Available
+        © 2026 KROSSFORD ENTERPRISES. All Rights Reserved.
       </div>
     </footer>
   );
