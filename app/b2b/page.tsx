@@ -59,6 +59,13 @@ export default function B2BPage() {
           <p className="text-[11px] text-amber-400/90 tracking-wide">
             Sample Before Bulk • 50% Advance - 50% After Order Ready • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
           </p>
+          {/* RETAIL WALA YAHAN NA ATKE */}
+          <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
+            <p className="text-[11px] text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
+            <a href="/shop" className="inline-block mt-2 bg-white text-black text-[11px] font-bold uppercase tracking-widest px-5 py-2.5 rounded hover:bg-amber-400">
+              Shop Retail - 1 Piece →
+            </a>
+          </div>
         </div>
 
         {/* B2B PRODUCTS - Buyer Pehle Product Dekhega, Phir Form Bharega */}
@@ -235,7 +242,7 @@ export default function B2BPage() {
             >
               Submit Wholesale Inquiry
             </button>
-            <p className="text-center text-[10px] text-zinc-500 tracking-wide">No retail price here - Wholesale quote in 24 hours. Sample before bulk.</p>
+            <p className="text-center text-[10px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express.</p>
           </form>
         )}
       </div>

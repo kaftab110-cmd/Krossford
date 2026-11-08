@@ -12,8 +12,14 @@ export default function Footer() {
         <div>
           <h3 className="text-amber-400 font-bold tracking-widest text-sm">KROSSFORD ENTERPRISES</h3>
           <p className="text-xs mt-3 leading-relaxed text-zinc-400">
-            A New-Generation International Leather Brand, Since 2025.
+            A New-Generation International Leather Brand, Since 2026.
             Sample Before Bulk. 100% Real Leather Guarantee. On-Time Delivery.
+          </p>
+          <p className="text-[11px] mt-3 text-amber-400/90 font-bold tracking-wide">
+            Retail + Wholesale Both Available
+          </p>
+          <p className="text-[11px] mt-1 text-zinc-400">
+            🚚 Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided
           </p>
         </div>
 
@@ -21,7 +27,8 @@ export default function Footer() {
           <h4 className="text-white font-bold text-xs uppercase tracking-widest">Quick Links</h4>
           <div className="flex flex-col gap-2 mt-3 text-xs">
             <Link href="/" className="hover:text-amber-400">Home</Link>
-            <Link href="/shop" className="hover:text-amber-400">Products</Link>
+            <Link href="/shop" className="hover:text-amber-400">Shop Retail - 1 Piece</Link>
+            <Link href="/b2b" className="hover:text-amber-400">Wholesale - 50+ Units</Link>
             <Link href="/our-story" className="hover:text-amber-400">About</Link>
             <Link href="/contact-us" className="hover:text-amber-400">Contact</Link>
           </div>
@@ -65,12 +72,15 @@ export default function Footer() {
           <span className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black tracking-wider">BANK TRANSFER / T/T</span>
         </div>
         <p className="text-zinc-300 text-xs mt-4">
-          50% Advance - 50% After Order Ready | Secure & Protected Payments | Pakistan Local Bank Transfer Available
+          Retail: 100% Advance | Wholesale: 50% Advance - 50% Before Dispatch | Secure & Protected Payments | Pakistan Local Bank Transfer Available
+        </p>
+        <p className="text-zinc-500 text-[11px] mt-2">
+          Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided • We aim to deliver earlier than estimated.
         </p>
       </div>
 
       <div className="border-t border-zinc-800 py-4 text-center text-[11px] text-zinc-500">
-        © 2025 KROSSFORD ENTERPRISES. All Rights Reserved.
+        © 2026 KROSSFORD ENTERPRISES. All Rights Reserved. | Retail + Wholesale Both Available
       </div>
     </footer>
   );

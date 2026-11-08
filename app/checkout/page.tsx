@@ -43,6 +43,12 @@ export default function CheckoutPage() {
 
   const total = cart.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
 
+  // AUTO DETECT - Retail ya Wholesale?
+  const isWholesale = cart.some((it) => it.customerType === "B2B");
+  const paymentTerms = isWholesale
+    ? "Wholesale: 50% Advance - 50% Before Dispatch"
+    : "Retail: 100% Advance";
+
   const WHATSAPP_NUMBER = "923030006759";
 
   const handlePlaceOrder = () => {
@@ -59,7 +65,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}\nPayment Terms: 50% Advance - 50% After Order Ready\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}\nPayment Terms: ${paymentTerms}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -74,7 +80,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold">Order Sent!</p>
-        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. 50% Advance - 50% After Order Ready.</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms} • Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided.</p>
         <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
         <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
       </div>
@@ -97,7 +103,7 @@ export default function CheckoutPage() {
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
-          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • 50% Advance - 50% After Order Ready • Sample Before Bulk</p>
+          <p className="text-[11px] text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • {paymentTerms} • Sample Before Bulk</p>
 
           <div className="mt-6 space-y-3">
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
@@ -111,6 +117,11 @@ export default function CheckoutPage() {
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
             <p className="text-[11px] text-zinc-400">Shipping & delivery charges, plus any extra customization charges, will be confirmed after your order is confirmed. They are not included in the product price.</p>
+          </div>
+
+          <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3">
+            <p className="text-[11px] text-amber-400 font-bold">🚚 Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided</p>
+            <p className="text-[10px] text-zinc-400 mt-1">We aim to deliver earlier than estimated.</p>
           </div>
         </div>
 
@@ -155,7 +166,7 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              <p className="text-[11px] text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation. 50% Advance - 50% After Order Ready.</p>
+              <p className="text-[11px] text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation. {paymentTerms}.</p>
             </div>
 
             <button onClick={handlePlaceOrder} className="mt-5 w-full bg-amber-400 text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-amber-300">

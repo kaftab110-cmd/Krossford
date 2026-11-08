@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/Logo";
 
 export default function Navbar() {
 const [open, setOpen] = useState(false);
@@ -27,15 +28,9 @@ useEffect(() => {
 
 const cls = (h: string) => pathname === h ? "text-amber-400" : "text-zinc-300 hover:text-amber-400 transition-colors";
 return (
-<header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 font-mono w-full px-4 py-3 flex justify-between items-center">
+<header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 font-mono w-full px-4 py-2 flex justify-between items-center">
 <Link href="/" className="flex items-center gap-3 group">
-<div className="relative w-[38px] h-[38px] shrink-0 flex items-center justify-center border border-amber-400/80 bg-amber-400/5">
-<span className="absolute top-[3px] left-[3px] w-[6px] h-[6px] border-t border-l border-amber-400"></span>
-<span className="absolute top-[3px] right-[3px] w-[6px] h-[6px] border-t border-r border-amber-400"></span>
-<span className="absolute bottom-[3px] left-[3px] w-[6px] h-[6px] border-b border-l border-amber-400"></span>
-<span className="absolute bottom-[3px] right-[3px] w-[6px] h-[6px] border-b border-r border-amber-400"></span>
-<span className="text-amber-400 font-serif font-bold text-[16px] tracking-[0.1em]">KF</span>
-</div>
+<Logo className="w-[58px] h-[58px] shrink-0" />
 <div className="flex flex-col leading-none">
 <span className="text-white font-bold uppercase tracking-[0.15em] text-[18px] md:text-[20px]">KROSSFORD</span>
 <span className="text-[8px] text-amber-400/80 tracking-[0.4em] uppercase mt-1">Enterprises</span>
@@ -65,7 +60,7 @@ return (
 <div>
 <div className="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
 <div className="flex items-center gap-2">
-<div className="w-[30px] h-[30px] border border-amber-400/80 flex items-center justify-center"><span className="text-amber-400 font-serif font-bold text-[12px]">KF</span></div>
+<Logo className="w-[46px] h-[46px]" />
 <span className="text-white font-bold uppercase text-sm tracking-widest">KROSSFORD</span>
 </div>
 <button onClick={()=>setOpen(false)} className="text-zinc-400 hover:text-white p-2 text-lg font-bold">✕</button>

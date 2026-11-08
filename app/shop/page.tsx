@@ -42,6 +42,7 @@ export default function ShopPage() {
     } else {
       existingCart.push({ 
         id: cartId,
+        slug: slug,
         name: product.name,
         category: product.category,
         price: product.price,
@@ -50,9 +51,14 @@ export default function ShopPage() {
         quantity: 1,
         colorName: defaultColor ? defaultColor.name : "Dark Brown",
         colorCode: defaultColor ? defaultColor.code : "#3E2723",
+        customerType: "B2C",
+        additionalOption: "none",
+        customText: "",
+        uploadedFileName: "",
       });
     }
     localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
+    localStorage.setItem("cart", JSON.stringify(existingCart));
     window.dispatchEvent(new Event("cartUpdated"));
     setNotification(`${product.name} added to cart successfully!`);
     setTimeout(() => { setNotification(null); }, 3000);
@@ -70,6 +76,7 @@ export default function ShopPage() {
         <h1 className="text-3xl font-serif tracking-[0.2em] uppercase">Shop - Handcrafted Leather Goods</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase">100% Real Leather • Honest Price • Built To Last • Ships to USA / UK / EU</p>
         <p className="text-[11px] text-amber-400/90 tracking-wide">Start With Our Best Sellers: Card Holder $29 • Keychain $25 • Crossbody $119</p>
+        <p className="text-[11px] text-zinc-400 tracking-wide">🚚 Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided</p>
       </div>
 
       {/* CATEGORY FILTER - Pehle Tha Hi Nahi, Ab Kaam Karega */}
@@ -110,6 +117,11 @@ export default function ShopPage() {
                 </Link>
                 <p className="text-xs text-zinc-400 font-light mt-1">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400 mt-2">${product.price}</p>
+                <p className="text-[11px] text-zinc-400 leading-relaxed mt-2">
+                  🚚 Ships via <span className="text-white font-bold">DHL Express</span><br />
+                  Processing: 7-10 Days + DHL Delivery: 7-10 Days<br />
+                  <span className="text-amber-400/90">Total: 18-24 Days | Tracking Provided</span>
+                </p>
                 <p className="text-[10px] text-zinc-500 mt-1 uppercase">Click image to select colour →</p>
               </div>
               <div className="pt-2 border-t border-zinc-900 flex items-center justify-between gap-2">
@@ -122,13 +134,19 @@ export default function ShopPage() {
         })}
       </div>
 
-      {/* B2B BANNER - B2B Buyer Bhi Na Bhage */}
-      <div className="mt-16 bg-zinc-950 border border-zinc-800 rounded-xl p-8 text-center space-y-3">
+      {/* RETAIL + WHOLESALE BANNER - Dono Buyer Na Bhagen */}
+      <div className="mt-16 bg-zinc-950 border border-amber-400/30 rounded-xl p-8 text-center space-y-3">
+        <p className="text-[11px] tracking-[0.3em] uppercase text-amber-400 font-bold">Retail + Wholesale Both Available</p>
         <h2 className="text-lg font-serif uppercase tracking-widest">Need Bulk? Jacket / Biker Suit / Bags?</h2>
-        <p className="text-xs text-zinc-400 tracking-wide">For Wholesale, White Label & Custom Production - MOQ 25 to 1000+ Units. Sample Before Bulk.</p>
-        <Link href="/b2b" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300 transition-colors">
-          Go To B2B Wholesale →
-        </Link>
+        <p className="text-xs text-zinc-400 tracking-wide">Retail: 1 Piece - Add to Cart Directly. For Wholesale, White Label & Custom Production - MOQ 25 to 1000+ Units. Sample Before Bulk.</p>
+        <div className="flex flex-wrap justify-center gap-3 pt-1">
+          <Link href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300 transition-colors">
+            Shop Retail - 1 Piece
+          </Link>
+          <Link href="/b2b" className="inline-block border border-amber-400 text-amber-400 text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-400 hover:text-black transition-colors">
+            Go To B2B Wholesale →
+          </Link>
+        </div>
       </div>
     </main>
   );

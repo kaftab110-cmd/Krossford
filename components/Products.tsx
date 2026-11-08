@@ -1,48 +1,60 @@
-// FILE 2 - app/components/Products.tsx - COPY KARKE PASTE KARO
 "use client";
-import { useState } from "react";
-import Image from "next/image";
-import { products } from "@/app/data/products";
+import Link from "next/link";
 
-const categories = ["ALL", "BAGS", "WALLETS", "BELTS", "CUSTOM", "SETS"];
+type Product = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  tag?: string;
+};
 
-export default function Products() {
-  const [active, setActive] = useState("ALL");
-  const filtered = active === "ALL" ? products : products.filter(p => p.category.toUpperCase() === active);
+export default function ProductCard({ product }: { product: Product }) {
+  const addToCart = () => {
+    try {
+      const cart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+      const existing = cart.find((i: any) => i.id === product.id);
+      if (existing) {
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      localStorage.setItem("krossford_cart", JSON.stringify(cart));
+      window.dispatchEvent(new Event("cartUpdated"));
+      alert(`${product.name} Added to Cart!`);
+    } catch {}
+  };
 
   return (
-    <section className="py-12 px-4 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center">KROSSFORD COLLECTION</h2>
-      <p className="text-center mt-2">100% Full-Grain Leather | HD Images | Sample Before Bulk</p>
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col font-mono">
+      <Link href={`/shop/${product.id}`}>
+        <img src={product.image} alt={product.name} className="w-full h-[260px] object-cover" />
+      </Link>
 
-      <div className="flex flex-wrap justify-center gap-2 mt-6">
-        {categories.map(c => (
-          <button key={c} onClick={() => setActive(c)} className={`px-4 py-2 rounded-full border ${active === c ? "bg-black text-white" : "bg-white"}`}>{c}</button>
-        ))}
-      </div>
+      <div className="p-4 flex flex-col flex-1">
+        <div className="flex justify-between items-start">
+          <h3 className="text-white font-bold text-[15px] uppercase tracking-wide">{product.name}</h3>
+          {product.tag && <span className="text-[9px] bg-amber-400 text-black font-bold px-2 py-1 rounded">{product.tag}</span>}
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {filtered.map(p => (
-          <div key={p.id} className="border rounded-xl overflow-hidden bg-white shadow-sm">
-            <div className="relative w-full h-[320px]">
-              <Image src={p.image} alt={p.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />
-              {p.badge && <span className="absolute top-3 left-3 bg-black text-white text-xs px-2 py-1 rounded">{p.badge}</span>}
-            </div>
-            <div className="p-4">
-              <h3 className="font-bold">{p.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{p.description}</p>
-              <p className="text-xs mt-2 font-semibold">✅ 100% Full-Grain Leather | HD Image</p>
-              <button className="w-full mt-3 bg-black text-white py-2 rounded-full">GET WHOLESALE QUOTE</button>
-            </div>
-          </div>
-        ))}
-      </div>
+        <p className="text-amber-400 font-bold text-lg mt-2">${product.price}</p>
 
-      <div className="text-center mt-10 text-sm">
-        <p>VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T</p>
-        <p>50% Advance - 50% After Order Ready</p>
-        <p>© 2025 KROSSFORD ENTERPRISES</p>
+        <p className="text-[11px] text-zinc-400 leading-relaxed mt-2">
+          🚚 Ships via <span className="text-white font-bold">DHL Express</span><br />
+          Processing: 7-10 Days After Order<br />
+          DHL Delivery: 7-10 Days After Dispatch<br />
+          <span className="text-amber-400/90">Total Delivery: 18-24 Days | Tracking Provided</span>
+        </p>
+
+        <p className="text-[10px] text-zinc-500 mt-2">We aim to deliver earlier than estimated.</p>
+
+        <button
+          onClick={addToCart}
+          className="mt-4 w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs tracking-widest py-3 rounded-lg transition-colors"
+        >
+          ADD TO CART
+        </button>
       </div>
-    </section>
+    </div>
   );
 }

@@ -38,13 +38,13 @@ export default function Home() {
               Shop Collection
             </a>
             <a href="/b2b" className="border border-amber-400 text-amber-400 px-6 py-3 rounded-md text-sm font-medium hover:bg-amber-400 hover:text-black">
-              Wholesale - Jacket / Biker Suit
+              Retail + Wholesale
             </a>
             <a href="/contact-us" className="border border-zinc-300 px-6 py-3 rounded-md text-sm font-medium hover:border-amber-400">
               Request Sample
             </a>
           </div>
-          <p className="mt-4 text-[11px] text-zinc-400 tracking-widest uppercase">Ships to USA / UK / EU • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</p>
+          <p className="mt-4 text-[11px] text-zinc-400 tracking-widest uppercase">Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</p>
         </div>
       </section>
 
@@ -61,6 +61,7 @@ export default function Home() {
                 <span className="text-[9px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
                 <h3 className="text-sm font-semibold uppercase tracking-wider mt-1">{p.name}</h3>
                 <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Hand-Stitched</p>
+                <p className="text-[10px] text-zinc-500 mt-1">DHL Express • 18-24 Days Delivery</p>
               </div>
               <div className="text-right shrink-0">
                 <p className="text-lg font-mono text-amber-400 font-bold">${p.price}</p>
@@ -94,13 +95,18 @@ export default function Home() {
             <p className="text-zinc-400 text-xs mt-2">Email us at hello@krossford.com</p>
           </div>
         </div>
-        {/* B2B BANNER - Home Page Se Bhi B2B Ka Rasta */}
+        {/* RETAIL + WHOLESALE BANNER - Home Page Se Bhi Dono Ka Rasta */}
         <div className="mt-6 border border-amber-400/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
-          <p className="text-sm font-serif uppercase tracking-widest">Are You A Brand / Store? Need Bulk?</p>
-          <p className="text-xs text-zinc-400">Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production. MOQ 25+ Units.</p>
-          <a href="/b2b" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300 mt-2">
-            Get Wholesale Quote →
-          </a>
+          <p className="text-sm font-serif uppercase tracking-widest">Retail + Wholesale Both Available</p>
+          <p className="text-xs text-zinc-400">Retail: 1 Piece - Shop Directly. Wholesale: 50+ Units - Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production.</p>
+          <div className="flex flex-wrap justify-center gap-3 pt-1">
+            <a href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300">
+              Shop Retail - 1 Piece
+            </a>
+            <a href="/b2b" className="inline-block border border-amber-400 text-amber-400 text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-400 hover:text-black">
+              Get Wholesale Quote →
+            </a>
+          </div>
         </div>
       </section>
     </main>

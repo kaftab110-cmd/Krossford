@@ -144,7 +144,7 @@ export default function CartPage() {
             {hasB2B && (
               <div className="bg-amber-400/10 border border-amber-400/30 rounded p-4 text-center">
                 <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">B2B Bulk Item In Cart</p>
-                <p className="text-[11px] text-zinc-300 mt-1">For best wholesale price, also fill B2B form - Sample before bulk.</p>
+                <p className="text-[11px] text-zinc-300 mt-1">Retail Checkout | For 50+ units, Get Wholesale Quote - Sample before bulk.</p>
                 <Link href="/b2b" className="inline-block mt-2 bg-amber-400 text-black text-[11px] font-bold uppercase px-4 py-2 rounded">Go To B2B Form →</Link>
               </div>
             )}
@@ -156,9 +156,10 @@ export default function CartPage() {
           </div>
           <div className="space-y-1 text-[11px] text-zinc-500">
             <p>✓ 100% Real Leather Guarantee • Sample Before Bulk</p>
+            <p>✓ Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided</p>
             <p>✓ Shipment + Delivery Charges - To Be Confirmed After Destination Check.</p>
             <p>✓ Customization extra charges bhi alag se confirm honge. No hidden charges.</p>
-            <p>✓ Payment: VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T - 50% Advance, 50% After Ready</p>
+            <p>✓ Payment: VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
           </div>
           <Link href="/checkout" className="w-full block text-center bg-amber-500 text-black py-3 rounded text-xs font-bold uppercase">Proceed to Checkout</Link>
           <Link href="/shop" className="w-full block text-center text-zinc-400 text-[11px] uppercase">← Continue Shopping</Link>
