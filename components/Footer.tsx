@@ -8,7 +8,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-zinc-950 border-t border-zinc-800 text-zinc-300">
-      <div className="max-w-7xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-4">
+      <div className="max-w-7xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-5">
         <div>
           <h3 className="text-amber-400 font-bold tracking-widest text-sm">KROSSFORD ENTERPRISES</h3>
           <p className="text-xs mt-3 leading-relaxed text-zinc-400">
@@ -28,6 +28,19 @@ export default function Footer() {
             <Link href="/b2b" className="hover:text-amber-400">Wholesale - 50+ Units</Link>
             <Link href="/our-story" className="hover:text-amber-400">About</Link>
             <Link href="/contact-us" className="hover:text-amber-400">Contact</Link>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-white font-bold text-xs uppercase tracking-widest">Customer Service</h4>
+          <div className="flex flex-col gap-2 mt-3 text-xs">
+            <Link href="/shipping" className="hover:text-amber-400">Shipping Policy</Link>
+            <Link href="/returns" className="hover:text-amber-400">Returns & Exchange</Link>
+            <Link href="/payment" className="hover:text-amber-400">Payment Methods</Link>
+            <Link href="/privacy-policy" className="hover:text-amber-400">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-amber-400">Terms & Conditions</Link>
+            <Link href="/faq" className="hover:text-amber-400">FAQ</Link>
+            <Link href="/track-order" className="hover:text-amber-400">Track Your Order</Link>
           </div>
         </div>
 
@@ -68,7 +81,7 @@ export default function Footer() {
           <span className="bg-white text-black px-6 py-2.5 rounded-full text-xs font-black tracking-wider">BANK TRANSFER / T/T</span>
         </div>
         <p className="text-zinc-300 text-xs mt-4">
-          Secure & Protected Payments | Pakistan Local Bank Transfer Available | Wholesale: 50% Advance - 50% Before Dispatch
+          Secure & Protected Payments | Retail: 100% Secure Advance Payment | Wholesale: 50% Advance - 50% Before Dispatch
         </p>
         <p className="text-zinc-500 text-[11px] mt-2">
           Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided • We aim to deliver earlier than estimated.

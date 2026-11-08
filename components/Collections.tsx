@@ -16,6 +16,7 @@ export default function Collections() {
     leather: p.description,
     image: p.image,
     badge: p.badge,
+    price: p.price || 0,
     // FIX: Asli colors data se lo, agar na ho to fallback
     colors: p.colors ? p.colors.map((c: any) => c.code || c) : ["#1c1917", "#78350f", "#b45309"],
     colorNames: p.colors ? p.colors.map((c: any) => c.name) : [],
@@ -90,8 +91,9 @@ export default function Collections() {
                 <p className="text-xs text-zinc-400">{product.leather}</p>
               </div>
 
+              {/* PRICE + DELIVERY - Ab Buyer Ko Price Pehle Hi Pata Chalega */}
               <div className="mt-4 pt-3 border-t border-zinc-900 flex items-center justify-between">
-                <span className="text-xs text-zinc-500 uppercase tracking-wider">Options</span>
+                <span className="text-lg font-mono text-amber-400 font-bold">${product.price}</span>
                 <div className="flex gap-1">
                   {product.colors.map((col: string, i: number) => (
                     <Link key={i} href={`/product/${product.id}`}>
@@ -100,14 +102,20 @@ export default function Collections() {
                   ))}
                 </div>
               </div>
+              <p className="text-[10px] text-zinc-500 mt-2">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
 
-              <div className="mt-4">
-                {/* FIX 3: SELECT OPTIONS ab Cart pe nahi, Product Page pe jayega */}
+              <div className="mt-4 flex gap-2">
                 <Link
                   href={`/product/${product.id}`}
-                  className="w-full block text-center rounded bg-zinc-900 hover:bg-yellow-500 hover:text-black border border-zinc-800 text-xs font-bold uppercase tracking-wider transition-all text-zinc-200 py-2.5"
+                  className="flex-1 block text-center rounded bg-yellow-500 hover:bg-amber-400 text-black text-xs font-bold uppercase tracking-wider transition-all py-2.5"
                 >
-                  Select Options
+                  Add to Cart →
+                </Link>
+                <Link
+                  href={`/product/${product.id}`}
+                  className="flex-1 block text-center rounded bg-zinc-900 hover:border-yellow-500 border border-zinc-800 text-xs font-bold uppercase tracking-wider transition-all text-zinc-200 py-2.5"
+                >
+                  View Details
                 </Link>
               </div>
             </div>

@@ -1,9 +1,9 @@
-// lib/data/homepage.ts - FINAL FIXED - IMAGES MATCHED TO REAL FILES
+// lib/data/homepage.ts - FINAL FIXED - RETAIL + WHOLESALE - Since 2025
 export const hero = {
   title: "KROSSFORD ENTERPRISES",
-  subtitle: "100% Full-Grain Leather | HD Images | Sample Before Bulk",
+  subtitle: "100% Full-Grain Leather | HD Images | Sample Before Bulk | Since 2025",
   image: "/images/leather-duffle-bag.jpg",
-  button: "GET WHOLESALE QUOTE",
+  button: "SHOP COLLECTION",
 };
 
 export const homepageProducts = [
@@ -15,10 +15,10 @@ export const homepageProducts = [
 
 export const brandStorySection = {
   title: "KROSSFORD ENTERPRISES",
-  subtitle: "Premium Full-Grain Leather Goods - Wholesale Only",
-  description: "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available",
+  subtitle: "Premium Full-Grain Leather Goods - Retail + Wholesale",
+  description: "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available | Since 2025",
   image: "/images/leather-duffle-bag.jpg",
-  button: "GET WHOLESALE QUOTE",
+  button: "SHOP RETAIL - 1 PIECE",
   stories: [
     { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee - No Split, No PU", image: "/images/leather-duffle-bag.jpg" },
     { id: 2, title: "Hand-Stitched", description: "Made in Pakistan - Strong Stitching, Long Life", image: "/images/wallet.jpg" },
@@ -47,7 +47,7 @@ export const craftsmanshipSection = {
 export const featuredProductsSection = {
   label: "Featured Collection",
   title: "KROSSFORD COLLECTION",
-  description: "Real Leather. Made Honestly. Sample Before Bulk.",
+  description: "Real Leather. Made Honestly. Sample Before Bulk. Retail + Wholesale Both Available.",
   subtitle: "100% Full-Grain Leather | HD Images",
   products: [
     { id: 1, title: "Vintage Leather Backpack", name: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", image: "/images/messenger-bag.jpg", imageUrl: "/images/messenger-bag.jpg", status: "Bestseller", href: "/shop", category: "Bags" },
@@ -65,6 +65,6 @@ export const featuredProductsSection = {
 
 export const footerInfo = {
   payments: "VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T",
-  paymentNote: "50% Advance - 50% After Order Ready",
+  paymentNote: "Retail: 100% Secure Advance Payment | Wholesale: 50% Advance - 50% After Order Ready",
   copyright: "© 2025 KROSSFORD ENTERPRISES",
 };

@@ -1,48 +1,54 @@
 export const privacyContent = {
   title: "Privacy Policy",
-  lastUpdated: "January 1, 2026",
+  lastUpdated: "October 30, 2025",
   sections: [
     {
-      heading: "Information We Collect",
+      heading: "1. What We Collect",
       paragraphs: [
-        "When you contact Krossford, we may collect your name, email address, phone number, and any information you include in your enquiry.",
-        "If you choose to place an order, we may also collect information required to process and fulfil your request.",
+        "When you order, enquire, or contact us, we collect: Name, Email, Phone / WhatsApp, Shipping Address, Order Details, and Payment Confirmation (receipt).",
+        "We do NOT collect or store your full card numbers, passwords, or bank PINs.",
       ],
     },
     {
-      heading: "How We Use Your Information",
+      heading: "2. How We Use Your Data",
       paragraphs: [
-        "We use your information to respond to enquiries, communicate with you, process orders, provide customer support, and improve our services.",
+        "To confirm your order, arrange production, shipping via DHL Express, tracking, and customer support.",
+        "To reply on WhatsApp / Email about your order.",
+        "We never sell your data to anyone.",
       ],
     },
     {
-      heading: "How We Protect Your Information",
+      heading: "3. WhatsApp & Email",
       paragraphs: [
-        "We use reasonable administrative and technical measures to help protect personal information from unauthorized access, loss, or misuse.",
+        "If you chat on WhatsApp +92303 0006759 or Email hello@krossford.com, your messages are used only to serve your order.",
+        "You can ask us to delete your chat history anytime.",
       ],
     },
     {
-      heading: "Third-Party Sharing",
+      heading: "4. Cookies & Website",
       paragraphs: [
-        "We do not sell your personal information. We may share information only with trusted service providers when necessary to fulfil services or where required by law.",
+        "Our website may use basic cookies to make shopping work (cart, login). No unnecessary tracking.",
       ],
     },
     {
-      heading: "Cookies",
+      heading: "5. Data Protection",
       paragraphs: [
-        "Our website may use cookies and basic analytics tools to improve performance, understand website usage, and enhance the browsing experience.",
+        "Your data is kept secure and shared only with necessary parties like DHL (for delivery) and payment provider (for payment verification) - as required to fulfill your order.",
       ],
     },
     {
-      heading: "Your Rights",
+      heading: "6. Your Rights",
       paragraphs: [
-        "You may request access to, correction of, or deletion of your personal information by contacting us using the details provided on our Contact Us page, subject to applicable laws.",
+        "You can ask us anytime to: See your data, Correct it, or Delete it.",
+        "Contact: hello@krossford.com or WhatsApp: +92303 0006759",
       ],
     },
     {
-      heading: "Contact Us",
+      heading: "7. Contact",
       paragraphs: [
-        "If you have any questions about this Privacy Policy or how your information is handled, please contact the Krossford team through our Contact Us page.",
+        "Email: hello@krossford.com",
+        "WhatsApp / Phone: +92303 0006759",
+        "© 2025 KROSSFORD ENTERPRISES. All Rights Reserved.",
       ],
     },
   ],

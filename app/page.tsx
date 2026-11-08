@@ -30,7 +30,7 @@ export default function Home() {
             Real Leather.<br />Made Honestly.
           </h1>
           <p className="mt-4 text-zinc-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            A New-Generation International Leather Brand, Since 2026.
+            A New-Generation International Leather Brand, Since 2025.
             Sample Before Bulk. 100% Real Leather Guarantee.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -56,18 +56,25 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {TOP3.map((p) => (
-            <a key={p.slug} href={`/product/${p.slug}`} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-amber-400 transition-colors flex items-center justify-between gap-4">
-              <div>
-                <span className="text-[9px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
-                <h3 className="text-sm font-semibold uppercase tracking-wider mt-1">{p.name}</h3>
-                <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Hand-Stitched</p>
-                <p className="text-[10px] text-zinc-500 mt-1">DHL Express • 18-24 Days Delivery</p>
+            <div key={p.slug} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-amber-400 transition-colors">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <span className="text-[9px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
+                  <h3 className="text-sm font-semibold uppercase tracking-wider mt-1">{p.name}</h3>
+                  <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Hand-Stitched</p>
+                </div>
+                <p className="text-lg font-mono text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <div className="text-right shrink-0">
-                <p className="text-lg font-mono text-amber-400 font-bold">${p.price}</p>
-                <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Shop Now →</p>
+              <p className="text-[10px] text-zinc-500 mt-2">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+              <div className="flex gap-2 mt-4">
+                <a href={`/product/${p.slug}`} className="flex-1 text-center bg-amber-400 text-black text-[11px] font-bold uppercase tracking-widest py-2.5 rounded hover:bg-amber-300">
+                  Add to Cart →
+                </a>
+                <a href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-[11px] uppercase tracking-widest py-2.5 rounded hover:border-amber-400 hover:text-amber-400">
+                  View Details
+                </a>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </section>

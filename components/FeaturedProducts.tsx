@@ -39,10 +39,11 @@ export default function FeaturedProducts() {
                 </Link>
                 <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400">${product.price}</p>
+                <p className="text-[10px] text-zinc-500">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
 
                 {/* Color Dots - Click karne pe bhi Product Page khulega */}
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-zinc-500 uppercase">Options:</span>
+                  <span className="text-[10px] text-zinc-500 uppercase">Colors:</span>
                   {product.colors?.map((c: any) => (
                     <Link key={c.name} href={`/product/${slug}`}>
                       <span title={c.name} style={{ background: c.code, width: 16, height: 16, borderRadius: "50%", display: "inline-block", border: "1px solid #fff", cursor: "pointer" }} />
@@ -50,10 +51,15 @@ export default function FeaturedProducts() {
                   ))}
                 </div>
 
-                {/* FIX: SELECT OPTIONS ab Cart pe nahi, Product Page pe jayega */}
-                <Link href={`/product/${slug}`} className="block w-full text-center bg-zinc-800 hover:bg-amber-400 hover:text-black text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
-                  Select Options
-                </Link>
+                {/* FIX: Add to Cart - Buyer Seedha Order Karega */}
+                <div className="flex gap-2">
+                  <Link href={`/product/${slug}`} className="flex-1 block text-center bg-amber-400 hover:bg-amber-300 text-black text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
+                    Add to Cart →
+                  </Link>
+                  <Link href={`/product/${slug}`} className="flex-1 block text-center bg-zinc-800 hover:border-amber-400 border border-zinc-700 text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
+                    Details
+                  </Link>
+                </div>
               </div>
             </div>
           );

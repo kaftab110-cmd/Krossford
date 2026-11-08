@@ -1,11 +1,13 @@
 export const shippingContent = {
   title: "Shipping Policy",
-  lastUpdated: "October 30, 2026",
+  lastUpdated: "October 30, 2025",
   sections: [
     {
       heading: "Processing Time",
       paragraphs: [
-        "Production and preparation times vary by product, customization level, and order quantity.",
+        "Processing Time: 7-10 Days - Production, Quality Check & Packing.",
+        "Retail Orders (1 Piece): 7-10 Days Processing + DHL Delivery.",
+        "Wholesale Orders (50+ Units): Processing time will be confirmed in written quotation before order confirmation. Depends on quantity & customization.",
         "KROSSFORD uses a combination of its own facilities and independent manufacturing partners, so exact production timelines depend on the specific product and current workload.",
         "Actual processing estimates will be communicated before order confirmation or production commencement."
       ]
@@ -20,6 +22,8 @@ export const shippingContent = {
     {
       heading: "Estimated Delivery Times",
       paragraphs: [
+        "Total Delivery Time: 18-24 Days = Processing: 7-10 Days + DHL Delivery: 7-10 Days.",
+        "We aim to deliver earlier than estimated.",
         "Delivery estimates depend on the destination, courier service, processing time, and customs procedures.",
         "Delivery dates are estimates and are not guaranteed unless explicitly agreed in writing for a specific transaction."
       ]
@@ -47,8 +51,10 @@ export const shippingContent = {
     {
       heading: "Tracking and Delivery Updates",
       paragraphs: [
+        "Ships via DHL Express - Tracking Provided.",
         "Tracking details will be shared when provided by the selected courier.",
-        "KROSSFORD will communicate material shipment updates and provide reasonable tracking assistance to customers."
+        "KROSSFORD will communicate material shipment updates and provide reasonable tracking assistance to customers.",
+        "For any tracking help, WhatsApp us: +92303 0006759"
       ]
     },
     {
@@ -67,9 +73,11 @@ export const shippingContent = {
       ]
     },
     {
-      heading: "B2B and Wholesale Shipments",
+      heading: "Retail + Wholesale Shipments",
       paragraphs: [
-        "Production timelines, packaging, shipping costs, insurance, customs responsibilities, and delivery arrangements will be confirmed in a written quotation or purchase order before accepting business orders.",
+        "Retail (1 Piece): Ships via DHL Express. Retail: 100% Secure Advance Payment.",
+        "Wholesale (50+ Units): Production timelines, packaging, shipping costs, insurance, customs responsibilities, and delivery arrangements will be confirmed in a written quotation or purchase order before accepting business orders.",
+        "Wholesale Payment: 50% Advance - 50% Before Dispatch.",
         "Commercial terms may vary according to the specific wholesale or bulk order."
       ]
     }

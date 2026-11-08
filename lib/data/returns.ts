@@ -1,11 +1,11 @@
 export const returnsContent = {
   title: "Returns & Refunds",
-  lastUpdated: "October 30, 2026",
+  lastUpdated: "October 30, 2025",
   sections: [
     {
       heading: "1. Return Policy Overview",
       paragraphs: [
-        "KROSSFORD Enterprises operates from Punjab, Pakistan and serves international B2B and B2C customers through its own facilities and independent manufacturing partners.",
+        "KROSSFORD Enterprises operates from Punjab, Pakistan and serves international Retail + Wholesale customers through its own facilities and independent manufacturing partners.",
         "Return and refund requests are assessed according to the order details, product condition, agreed commercial terms, and applicable law.",
         "KROSSFORD does not offer a universal voluntary return window across all purchases unless explicitly stated for a specific product or order. Nothing in this policy limits or excludes any mandatory consumer rights that cannot legally be excluded under applicable law."
       ]
@@ -14,6 +14,7 @@ export const returnsContent = {
       heading: "2. How to Request a Return",
       paragraphs: [
         "To initiate a return or refund enquiry, customers should visit the website's Contact Us page and submit a request.",
+        "Or WhatsApp us directly: +92303 0006759 - Fastest Response.",
         "Please provide your order reference, product details, and a clear description of the issue or reason for the return so our team can review the request promptly.",
         "Customers will receive guidance on the appropriate next steps. Prior return authorization or instructions are intended to facilitate a smooth process and do not restrict any mandatory customer rights provided by applicable law."
       ]
@@ -39,7 +40,8 @@ export const returnsContent = {
       paragraphs: [
         "Approved refunds will be processed in accordance with applicable law and the agreed transaction terms.",
         "Where practical and legally permitted, refunds will be issued using the original payment method.",
-        "Processing times may vary depending on the payment provider, banking system, and financial institution involved, and KROSSFORD will ensure any legally mandated refund requirements are respected."
+        "Processing times may vary depending on the payment provider, banking system, and financial institution involved, and KROSSFORD will ensure any legally mandated refund requirements are respected.",
+        "Retail: 100% Secure Advance Payment - Refund to original method. Wholesale: 50% Advance - 50% Before Dispatch - Refund as per agreed quotation."
       ]
     },
     {
@@ -54,6 +56,7 @@ export const returnsContent = {
       heading: "7. Faulty, Damaged or Incorrect Products",
       paragraphs: [
         "If a product arrives damaged, defective, incorrect, or materially different from its description, please contact KROSSFORD through the Contact Us page as soon as reasonably possible.",
+        "Or WhatsApp: +92303 0006759 with photos.",
         "Please include your order reference, a description of the issue, and supporting photographs where reasonably available.",
         "KROSSFORD will review the details and provide an appropriate resolution, such as repair, replacement, or refund, in accordance with applicable law and agreed order terms without imposing arbitrary reporting deadlines that exclude statutory rights."
       ]
@@ -67,10 +70,11 @@ export const returnsContent = {
       ]
     },
     {
-      heading: "9. B2B Orders and Contact",
+      heading: "9. Retail + Wholesale Orders and Contact",
       paragraphs: [
+        "Retail Orders (1 Piece): Return request via Contact Us or WhatsApp +92303 0006759.",
         "Business-to-business, wholesale, and bulk-order return arrangements should be defined in the written quotation, purchase order, or other agreed commercial terms, subject to applicable law.",
-        "For any return, refund, or general product enquiries, please reach out to our team directly through the website Contact Us page."
+        "For any return, refund, or general product enquiries, please reach out to our team directly through the website Contact Us page or Email: hello@krossford.com"
       ]
     }
   ]
