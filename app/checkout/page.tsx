@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   const [country, setCountry] = useState("United States");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
+  const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [phone, setPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
@@ -55,8 +56,8 @@ export default function CheckoutPage() {
   const WHATSAPP_NUMBER = "923030006759";
 
   const handlePlaceOrder = () => {
-    if (!name.trim() || !country.trim() || !address.trim() || !city.trim() || !postalCode.trim() || !phone.trim()) {
-      alert("Please fill Name, Country, Address, City, Postal Code and Phone");
+    if (!name.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
+      alert("Please fill Name, Country, Address, City, State, Postal Code and Phone");
       return;
     }
     if (cart.length === 0) {
@@ -68,7 +69,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\nCity: ${city}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -116,12 +117,14 @@ export default function CheckoutPage() {
               {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
-            {/* CITY + POSTAL CODE - DHL Ke Liye Lazmi Hai */}
+            {/* CITY + STATE - DHL Ke Liye Lazmi Hai */}
             <div className="grid grid-cols-2 gap-3">
               <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
-              <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+              <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State / Province *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
             </div>
-            <p className="text-[10px] text-zinc-500">Postal Code is required for DHL Express international delivery.</p>
+            {/* POSTAL CODE - DHL Ke Liye Lazmi Hai */}
+            <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <p className="text-[10px] text-zinc-500">City, State & Postal Code are required for DHL Express international delivery.</p>
           </div>
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
