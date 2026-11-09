@@ -14,7 +14,6 @@ const navLinks = [
 ];
 
 const tickerItems = [
-  "Card Holder $29 • Keychain $25 • Crossbody $119 - Honest Price",
   "100% Real Leather Guarantee - Sample Before Bulk",
   "Wholesale: Leather Jacket & Biker Suit - MOQ 25+ Units - Get Quote",
   "Ships to USA / UK / EU - VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
@@ -148,7 +147,6 @@ export default function Header() {
                 Cart {cartCount > 0 && `(${cartCount})`} / Enquiry
               </Link>
             </div>
-            <p className="text-[11px] text-zinc-500 pt-2">Card Holder $29 • Keychain $25 • Crossbody $119</p>
           </div>
         )}
       </div>

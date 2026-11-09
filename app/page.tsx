@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import BrandStory from "@/components/BrandStory";
 import Collections from "@/components/Collections";
@@ -8,20 +8,38 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
+import { products } from "@/lib/data/shop";
 
 const TOP3 = [
   { name: "Card Holder", price: 29, slug: "card-holder", tag: "BEST SELLER", image: "/images/card-holder.jpg" },
-  { name: "Keychain Set", price: 25, slug: "leather-tag-keychain-set", tag: "CUSTOM LOGO", image: "/images/leather-tag-keychain-set.jpg" },
-  { name: "Crossbody Bag", price: 119, slug: "crossbody-messenger-bag", tag: "BEST SELLER", image: "/images/crossbody-messenger-bag.jpg" },
+  { name: "Keychain Set", price: 25, slug: "leather-tag-keychain-set", tag: "CUSTOM LOGO", image: "/images/leather-tag-keychain-set1.jpg" },
+  { name: "Crossbody Bag", price: 119, slug: "crossbody-messenger-bag", tag: "BEST SELLER", image: "/images/crossbody-messenger-bag2.jpg" },
 ];
+
+const getTop3Images = (slug: string, fallback: string): string[] => {
+  const found = products.find((p) => p.slug === slug);
+  const all = [fallback, ...(found?.gallery || [])].filter(Boolean);
+  return [...new Set(all)];
+};
 
 export default function Home() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
+  const [hoverSlug, setHoverSlug] = useState<string | null>(null);
+  const [hoverIndex, setHoverIndex] = useState(0);
+  const hoverImages = hoverSlug ? getTop3Images(hoverSlug, TOP3.find((p) => p.slug === hoverSlug)?.image || "") : [];
+  const HOVER_SLIDE_DELAY = 1800;
+
+  useEffect(() => {
+    if (!hoverSlug || hoverImages.length <= 1) return;
+    const timer = setInterval(() => {
+      setHoverIndex((prev) => (prev + 1) % hoverImages.length);
+    }, HOVER_SLIDE_DELAY);
+    return () => clearInterval(timer);
+  }, [hoverSlug, hoverImages.length]);
 
   const handleAddToCart = (p: (typeof TOP3)[number]) => {
     const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
     const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "B2C");
-
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
     } else {
@@ -39,7 +57,6 @@ export default function Home() {
         uploadedFileName: "",
       });
     }
-
     localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
     window.dispatchEvent(new Event("cartUpdated"));
     setAddedSlug(p.slug);
@@ -48,38 +65,34 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* Hero - FINAL - LOCK - Isko Mat Chherna */}
-      <section className="relative w-full h-[calc(100svh-64px)] min-h-[540px] flex items-center justify-center text-center overflow-hidden">
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: "url('/images/leather-duffle-bag.jpg')",
-            backgroundPosition: "center"
-          }}
+      <section className="relative w-full h-[calc(100svh-64px)] min-h-[600px] flex items-center justify-center text-center overflow-hidden bg-black">
+        <img
+          src="/images/leather-duffle-bag.jpg"
+          alt="Leather Duffle Bag"
+          className="absolute inset-0 w-full h-full object-cover object-[50%_70%]"
         />
         <div className="absolute inset-0 bg-black/60"></div>
-
-        <div className="relative z-10 px-6 max-w-3xl mx-auto">
-          <p className="text-amber-400 tracking-[0.3em] text-xs font-bold">KROSSFORD ENTERPRISES</p>
-          <h1 className="mt-3 text-4xl sm:text-6xl font-bold leading-tight">
+        <div className="relative z-10 px-6 max-w-4xl mx-auto">
+          <p className="text-amber-400 tracking-[0.3em] text-sm font-bold">KROSSFORD ENTERPRISES</p>
+          <h1 className="mt-4 text-5xl sm:text-7xl font-bold leading-tight">
             Real Leather.<br />Made Honestly.
           </h1>
-          <p className="mt-3 text-zinc-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             A New-Generation International Leather Brand, Since 2025.
             Sample Before Bulk. 100% Real Leather Guarantee.
           </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <a href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded-md text-sm font-bold hover:bg-amber-300">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <a href="/shop" className="bg-amber-400 text-black px-7 py-3.5 rounded-md text-base font-bold hover:bg-amber-300">
               Shop Collection
             </a>
-            <a href="/b2b" className="border border-amber-400 text-amber-400 px-6 py-3 rounded-md text-sm font-medium hover:bg-amber-400 hover:text-black">
+            <a href="/b2b" className="border border-amber-400 text-amber-400 px-7 py-3.5 rounded-md text-base font-medium hover:bg-amber-400 hover:text-black">
               Retail + Wholesale
             </a>
-            <a href="/contact-us" className="border border-zinc-300 px-6 py-3 rounded-md text-sm font-medium hover:border-amber-400">
+            <a href="/contact-us" className="border border-zinc-300 px-7 py-3.5 rounded-md text-base font-medium hover:border-amber-400">
               Request Sample
             </a>
           </div>
-          <p className="mt-3 text-[11px] text-zinc-400 tracking-widest uppercase">Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</p>
+          <p className="mt-4 text-[13px] text-zinc-400 tracking-widest uppercase">Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</p>
         </div>
       </section>
 
@@ -89,16 +102,29 @@ export default function Home() {
           <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Honest Price • Handcrafted • Built To Last</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {TOP3.map((p) => (
+          {TOP3.map((p) => {
+            const cardImages = getTop3Images(p.slug, p.image);
+            const isHovering = hoverSlug === p.slug;
+            const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : p.image;
+            return (
             <div key={p.slug} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-amber-400 transition-colors overflow-hidden group">
-              {/* ✅ FIX: PHOTO PE CLICK KARO - TO BHI PRODUCT PAGE KHULEGA */}
               <Link href={`/product/${p.slug}`} className="block cursor-pointer">
-                <img src={p.image} alt={p.name} className="w-full h-48 object-cover rounded-md mb-4 group-hover:scale-[1.02] transition-transform" />
+                <div
+                  className="relative w-full h-48 rounded-md mb-4 overflow-hidden"
+                  onMouseEnter={() => { setHoverSlug(p.slug); setHoverIndex(0); }}
+                  onMouseLeave={() => { setHoverSlug(null); setHoverIndex(0); }}
+                  onTouchStart={() => { setHoverSlug(p.slug); setHoverIndex(0); }}
+                  onTouchEnd={() => { setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000); }}
+                >
+                  <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-[1.02] transition-transform" />
+                  {isHovering && cardImages.length > 1 && (
+                    <span className="absolute top-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                  )}
+                </div>
               </Link>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="text-[9px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
-                  {/* ✅ FIX: NAAM PE CLICK KARO - TO BHI PRODUCT PAGE KHULEGA */}
+                  <span className="text-[11px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
                   <Link href={`/product/${p.slug}`}>
                     <h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-amber-400 cursor-pointer">{p.name}</h3>
                   </Link>
@@ -106,21 +132,21 @@ export default function Home() {
                 </div>
                 <p className="text-lg font-mono text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <p className="text-[10px] text-zinc-500 mt-2">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+              <p className="text-[11px] text-zinc-500 mt-2">Ships in 18-24 Days • DHL Express • Tracking Provided</p>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
-                  className={`flex-1 text-center text-[11px] font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-amber-400 text-black hover:bg-amber-300"}`}
+                  className={`flex-1 text-center text-xs font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-amber-400 text-black hover:bg-amber-300"}`}
                 >
                   {addedSlug === p.slug ? "✓ Added!" : "Add to Cart →"}
                 </button>
-                {/* ✅ FIX: View Details Ab Next.js Link Hai - Pakka Khulega */}
-                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-[11px] uppercase tracking-widest py-2.5 rounded hover:border-amber-400 hover:text-amber-400">
+                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-xs uppercase tracking-widest py-2.5 rounded hover:border-amber-400 hover:text-amber-400">
                   View Details
                 </Link>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

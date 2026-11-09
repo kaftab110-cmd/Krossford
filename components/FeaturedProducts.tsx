@@ -1,18 +1,34 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { products } from "@/lib/data/shop";
 
 // FEATURED = Hamara Starting Plan + 1 Hero Product - Hamesha Yehi Dikhega
 const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
 
-// FIX: Keychain ki image ka naam yahan force kiya - data file me purana naam ho to bhi yehi chalegi
+// FIX: Keychain ki sahi photo - set1.jpg - set.jpg folder me hai hi nahi
+// Pehle set.jpg likha tha, is liye Featured me Keychain ki photo tooti dikhti thi
 const IMAGE_FIX: Record<string, string> = {
-  "leather-tag-keychain-set": "/images/leather-tag-keychain-set.jpg",
+  "leather-tag-keychain-set": "/images/leather-tag-keychain-set1.jpg",
 };
 
 export default function FeaturedProducts() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  // --- HOVER SLIDER - Featured ke box ke andar - SLOW ---
+  const [hoverSlug, setHoverSlug] = useState<string | null>(null);
+  const [hoverIndex, setHoverIndex] = useState(0);
+  const hoverProduct = hoverSlug ? products.find((p) => (p.slug || p.id) === hoverSlug) : undefined;
+  const hoverImages = hoverProduct ? [...new Set([(IMAGE_FIX[hoverProduct.slug] || hoverProduct.image), ...((hoverProduct as any).gallery || [])].filter(Boolean))] : [];
+  const HOVER_SLIDE_DELAY = 1800; // 1800ms = 1.8 second me 1 photo - slow
+
+  useEffect(() => {
+    if (!hoverSlug || hoverImages.length <= 1) return;
+    const timer = setInterval(() => {
+      setHoverIndex((prev) => (prev + 1) % hoverImages.length);
+    }, HOVER_SLIDE_DELAY);
+    return () => clearInterval(timer);
+  }, [hoverSlug, hoverImages.length]);
 
   const handleAddToCart = (product: any) => {
     const slug = product.slug || product.id;
@@ -48,7 +64,6 @@ export default function FeaturedProducts() {
     .map((slug) => products.find((p) => p.slug === slug))
     .filter(Boolean) as typeof products;
 
-  // Agar koi slug na mile to fallback - pehle 4
   const list = featured.length === 4 ? featured : products.slice(0, 4);
 
   return (
@@ -61,28 +76,39 @@ export default function FeaturedProducts() {
         {list.map((product: any) => {
           const slug = product.slug || product.id;
           const displayImage = IMAGE_FIX[slug] || product.image;
+          const cardImages = [...new Set([displayImage, ...(product.gallery || [])].filter(Boolean))];
+          const isHovering = hoverSlug === slug;
+          const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : displayImage;
           return (
             <div key={product.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group">
               <Link href={`/product/${slug}`}>
-                <div className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer">
-                  <img src={displayImage} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div
+                  className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer"
+                  onMouseEnter={() => { setHoverSlug(slug); setHoverIndex(0); }}
+                  onMouseLeave={() => { setHoverSlug(null); setHoverIndex(0); }}
+                  onTouchStart={() => { setHoverSlug(slug); setHoverIndex(0); }}
+                  onTouchEnd={() => { setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000); }}
+                >
+                  <img src={currentImage} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {product.badge && (
-                    <span className="absolute top-3 left-3 z-10 bg-amber-400 text-black text-[9px] font-bold px-2 py-1 uppercase">{product.badge}</span>
+                    <span className="absolute top-3 left-3 z-10 bg-amber-400 text-black text-[10px] font-bold px-2 py-1 uppercase">{product.badge}</span>
+                  )}
+                  {isHovering && cardImages.length > 1 && (
+                    <span className="absolute top-3 right-3 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
                   )}
                 </div>
               </Link>
               <div className="p-5 space-y-3">
-                <span className="text-[10px] text-amber-400 tracking-widest uppercase">{product.category}</span>
+                <span className="text-[11px] text-amber-400 tracking-widest uppercase">{product.category}</span>
                 <Link href={`/product/${slug}`}>
                   <h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{product.name}</h3>
                 </Link>
                 <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400">${product.price}</p>
-                <p className="text-[10px] text-zinc-500">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+                <p className="text-[11px] text-zinc-500">Ships in 18-24 Days • DHL Express • Tracking Provided</p>
 
-                {/* Color Dots - Click karne pe bhi Product Page khulega */}
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-zinc-500 uppercase">Colors:</span>
+                  <span className="text-[11px] text-zinc-500 uppercase">Colors:</span>
                   {product.colors?.map((c: any) => (
                     <Link key={c.name} href={`/product/${slug}`}>
                       <span title={c.name} style={{ background: c.code, width: 16, height: 16, borderRadius: "50%", display: "inline-block", border: "1px solid #fff", cursor: "pointer" }} />
@@ -90,15 +116,14 @@ export default function FeaturedProducts() {
                   ))}
                 </div>
 
-                {/* FIX: Add to Cart - Ab Page Nahi Badlega - Wahi Pe Add Hoga */}
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleAddToCart(product)}
-                    className={`flex-1 block text-center text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === slug ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                    className={`flex-1 block text-center text-xs font-bold tracking-widest uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === slug ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
                   >
                     {addedSlug === slug ? "✓ Added!" : "Add to Cart →"}
                   </button>
-                  <Link href={`/product/${slug}`} className="flex-1 block text-center bg-zinc-800 hover:border-amber-400 border border-zinc-700 text-[11px] font-bold tracking-widest uppercase py-3 rounded transition-colors">
+                  <Link href={`/product/${slug}`} className="flex-1 block text-center bg-zinc-800 hover:border-amber-400 border border-zinc-700 text-xs font-bold tracking-widest uppercase py-3 rounded transition-colors">
                     Details
                   </Link>
                 </div>

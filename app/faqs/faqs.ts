@@ -10,7 +10,7 @@ export const customerFaqs: Faq[] = [
   },
   {
     question: "How much is delivery for a customer?",
-    answer: "Delivery is via DHL Express. Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days. Tracking is provided. We aim to deliver earlier than estimated.",
+    answer: "Delivery is via DHL Express. Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days. Tracking is provided. We aim to deliver earlier than estimated.",
   },
   {
     question: "Can a customer return or exchange?",
@@ -41,7 +41,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What is delivery time for bulk orders?",
-    answer: "Bulk production time depends on quantity. After sample approval, production is 15-25 days + DHL Delivery 7-10 Days. Tracking is provided for buyers.",
+    answer: "Bulk production time depends on quantity. After sample approval, production is 15-25 days + DHL Delivery 7-10 Working Days. Tracking is provided for buyers.",
   },
 ];
 

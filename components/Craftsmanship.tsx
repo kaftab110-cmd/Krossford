@@ -10,7 +10,7 @@ export default function Craftsmanship() {
     >
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto mb-14 max-w-3xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.3em] text-yellow-500">
+          <span className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-400">
             {craftsmanshipSection.subtitle}
           </span>
 
@@ -30,7 +30,7 @@ export default function Craftsmanship() {
           {craftsmanshipSection.items.map((item, index) => (
             <article
               key={item.id}
-              className="overflow-hidden rounded-xl border border-yellow-500/20 bg-zinc-900"
+              className="overflow-hidden rounded-xl border border-amber-400/20 bg-zinc-900"
             >
               <SafeImage
                 src={`/images/craft-${index + 1}.jpg`}
@@ -41,7 +41,7 @@ export default function Craftsmanship() {
               />
 
               <div className="p-5">
-                <h3 className="text-xl font-semibold text-yellow-500">
+                <h3 className="text-xl font-semibold text-amber-400">
                   {item.title}
                 </h3>
 

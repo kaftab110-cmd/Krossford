@@ -20,7 +20,7 @@ const posts = [
   },
   {
     slug: "hand-stitched-vs-machine",
-    title: "Hand-Stitched vs Machine-Stitched Leather",
+    title: "Handicraft vs Machine-Stitched Leather",
     excerpt: "Why hand-stitching lasts longer and why we still do it at Krossford.",
     image: "/images/leather-duffle-bag.jpg",
     date: "Nov 2026",

@@ -19,7 +19,7 @@ const testimonials = [
     name: "Bilal Ahmed",
     role: "Verified Customer - Islamabad",
     text: "I was worried about online leather shopping, but Krossford delivered more than expected. Will definitely order again.",
-    image: "/images/crossbody-messenger-bag.jpg",
+    image: "/images/crossbody-messenger-bag2.jpg",
     rating: 5,
   },
 ];

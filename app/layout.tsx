@@ -3,6 +3,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AIChatbot from "@/components/AIChatbot";
 
+export const metadata = {
+  title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
+  description: "Krossford - 22 Handcrafted Full-Grain Leather Products. Wallets from $25, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via DHL Express.",
+};
+
 export default function RootLayout({
   children,
 }: {

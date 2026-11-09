@@ -21,27 +21,27 @@ export const brandStorySection = {
   button: "SHOP RETAIL - 1 PIECE",
   stories: [
     { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee - No Split, No PU", image: "/images/leather-duffle-bag.jpg" },
-    { id: 2, title: "Hand-Stitched", description: "Made in Pakistan - Strong Stitching, Long Life", image: "/images/wallet.jpg" },
+    { id: 2, title: "Handicraft", description: "Made in Pakistan - Strong Stitching, Long Life", image: "/images/wallet.jpg" },
     { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available - KROSSFORD", image: "/images/belt.jpg" },
   ],
   items: [
     { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee" },
-    { id: 2, title: "Hand-Stitched", description: "Made in Pakistan" },
+    { id: 2, title: "Handicraft", description: "Made in Pakistan" },
     { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available" },
   ],
 };
 
 export const craftsmanshipSection = {
   title: "Handcrafted Excellence",
-  subtitle: "Full-Grain Leather - Hand-Stitched",
-  description: "Vegetable-Tanned, Brass Buckle, Hand-Stitched - Made in Pakistan for Customers and Buyers Worldwide",
+  subtitle: "Full-Grain Leather - Handicraft",
+  description: "Vegetable-Tanned, Brass Buckle, Handicraft - Made in Pakistan for Customers and Buyers Worldwide",
   image: "/images/belt.jpg",
   items: [
     { id: 1, title: "Full-Grain Leather", description: "100% Real Leather, No Split, No PU", image: "/images/belt.jpg" },
-    { id: 2, title: "Hand-Stitched", description: "Strong Stitching, Long Life", image: "/images/wallet.jpg" },
+    { id: 2, title: "Handicraft", description: "Strong Stitching, Long Life", image: "/images/wallet.jpg" },
     { id: 3, title: "Custom Logo", description: "Name / Logo Engraving Available", image: "/images/belt.jpg" },
   ],
-  features: ["100% Full-Grain Leather", "Hand-Stitched", "Sample Before Bulk", "Custom Logo Available"],
+  features: ["100% Full-Grain Leather", "Handicraft", "Sample Before Bulk", "Custom Logo Available"],
 };
 
 export const featuredProductsSection = {

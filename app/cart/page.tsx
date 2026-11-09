@@ -17,29 +17,93 @@ type CartItem = {
   additionalOption?: string;
   customText?: string;
   uploadedFileName?: string;
+  addedAt?: number;
   extraChargesNote?: string;
   shipmentNote?: string;
+  customMade?: { enabled: boolean; type?: string; detail?: string; fileName?: string };
 };
 
+// FIX: key-holder.jpg folder me hai hi nahi - is liye tooti photo aa rahi thi
+// Sahi naam: leather-tag-keychain-set1.jpg (jo folder me maujood hai)
+// Crossbody ka base bhi missing tha, is liye 2 wali photo jo maujood hai wo lagai hai
 const SUGGESTED = [
-  { name: "Card Holder - Minimalist", price: 29, slug: "card-holder", img: "/images/card-holder.jpg", tag: "BEST SELLER" },
-  { name: "Leather Tag + Keychain Set", price: 25, slug: "leather-tag-keychain-set", img: "/images/key-holder.jpg", tag: "CUSTOM LOGO" },
-  { name: "Crossbody Messenger Bag", price: 119, slug: "crossbody-messenger-bag", img: "/images/crossbody-messenger-bag.jpg", tag: "BEST SELLER" },
+  { name: "Card Holder - Minimalist", price: 29, slug: "card-holder", img: "/images/card-holder.jpg", fallback: "/images/card-holder.jpg", tag: "BEST SELLER" },
+  { name: "Leather Tag + Keychain Set", price: 25, slug: "leather-tag-keychain-set", img: "/images/leather-tag-keychain-set1.jpg", fallback: "/images/leather-tag-keychain-set1.jpg", tag: "CUSTOM LOGO" },
+  { name: "Crossbody Messenger Bag", price: 119, slug: "crossbody-messenger-bag", img: "/images/crossbody-messenger-bag2.jpg", fallback: "/images/crossbody-messenger-bag2.jpg", tag: "BEST SELLER" },
 ];
+
+// 
+const CART_EXPIRY_MS = 45 * 60 * 1000;
+const WISHLIST_KEY = "krossford_wishlist";
+// CUSTOM MADE type ka label
+const customMadeLabel = (t?: string) => {
+  if (t === "full") return "Full Product - Mere Design Pe Banao";
+  if (t === "stitching") return "Stitching Only - Hand Stitched Chahiye";
+  if (t === "design") return "Design Change";
+  if (t === "size-colour") return "Size / Colour Change";
+  if (t === "logo-name") return "Logo / Name Add Karna Hai";
+  return t || "";
+};
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [wishlist, setWishlist] = useState<CartItem[]>([]);
+  // Agar koi purani cart item me key-holder.jpg jaisi galat photo hai to usko bhi fix karo
+  const fixImage = (src: string) => {
+    if (!src) return "/images/card-holder.jpg";
+    if (src.includes("key-holder")) return "/images/leather-tag-keychain-set1.jpg";
+    if (src.includes("crossbody-messenger-bag.jpg") && !src.includes("crossbody-messenger-bag2")) return "/images/crossbody-messenger-bag2.jpg";
+    return src;
+  };
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const markFailed = (src: string) => {
+    setFailedImages((prev) => {
+      if (prev.has(src)) return prev;
+      const next = new Set(prev);
+      next.add(src);
+      return next;
+    });
+  };
+  const loadWishlist = () => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]") as CartItem[];
+      setWishlist(raw.map((it) => ({ ...it, image: fixImage(it.image) })));
+    } catch { setWishlist([]); }
+  };
+  const saveWishlist = (list: CartItem[]) => {
+    setWishlist(list);
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+    window.dispatchEvent(new Event("wishlistUpdated"));
+  };
   const loadCart = () => {
-    try { setCart(JSON.parse(localStorage.getItem("krossford_cart") || "[]")); }
+    try {
+      const raw = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
+      const stamp = Date.now();
+      // Purani cart me galat photo ho to abhi fix kar do + addedAt nahi hai to ab se 45 min start karo
+      const withTime = raw.map((it) => ({ ...it, image: fixImage(it.image), addedAt: it.addedAt || stamp }));
+      // 45 min se zyada purane items auto remove
+      const alive = withTime.filter((it) => stamp - (it.addedAt || stamp) < CART_EXPIRY_MS);
+      if (alive.length !== raw.length) {
+        localStorage.setItem("krossford_cart", JSON.stringify(alive));
+        localStorage.setItem("cart", JSON.stringify(alive));
+      }
+      setCart(alive);
+    }
     catch { setCart([]); }
   };
   useEffect(() => {
     loadCart();
+    loadWishlist();
     window.addEventListener("cartUpdated", loadCart);
     window.addEventListener("storage", loadCart);
+    window.addEventListener("wishlistUpdated", loadWishlist);
+    // Check once per second so expired items are removed promptly.
+    const timer = setInterval(loadCart, 1000);
     return () => {
       window.removeEventListener("cartUpdated", loadCart);
       window.removeEventListener("storage", loadCart);
+      window.removeEventListener("wishlistUpdated", loadWishlist);
+      clearInterval(timer);
     };
   }, []);
   const updateCart = (newCart: CartItem[]) => {
@@ -52,6 +116,22 @@ export default function CartPage() {
     updateCart(cart.map(item => item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item));
   };
   const removeItem = (id: string) => updateCart(cart.filter(item => item.id !== id));
+  // LIKE / SAVE FOR LATER: Cart se nikal ke Wishlist me - ye kabhi expire nahi hoga
+  const saveForLater = (id: string) => {
+    const item = cart.find((i) => i.id === id);
+    if (!item) return;
+    if (!wishlist.some((w) => w.id === id)) saveWishlist([...wishlist, { ...item, addedAt: undefined }]);
+    updateCart(cart.filter((i) => i.id !== id));
+  };
+  const moveToCart = (id: string) => {
+    const item = wishlist.find((w) => w.id === id);
+    if (!item) return;
+    const fresh = { ...item, addedAt: Date.now() };
+    const next = [...cart, fresh];
+    updateCart(next);
+    saveWishlist(wishlist.filter((w) => w.id !== id));
+  };
+  const removeFromWishlist = (id: string) => saveWishlist(wishlist.filter((w) => w.id !== id));
   const total = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1), 0);
   const hasB2B = cart.some((i) => i.customerType === "B2B");
   const cartSlugs = cart.map((i) => String(i.slug || "").toLowerCase());
@@ -69,14 +149,13 @@ export default function CartPage() {
               Your cart is empty.
               <div className="mt-4"><Link href="/shop" className="bg-amber-400 text-black px-5 py-2 rounded text-xs font-bold uppercase inline-block">Go to Shop</Link></div>
             </div>
-            {/* Khali Cart Me Bhi Sale - Top 3 Dikhao */}
             <div>
               <h2 className="text-sm font-bold uppercase tracking-widest text-white mb-4">Start With Our Best Sellers</h2>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {SUGGESTED.map((s) => (
+                {SUGGESTED.filter((s) => !failedImages.has(s.img)).map((s) => (
                   <Link key={s.slug} href={`/product/${s.slug}`} className="bg-zinc-900 border border-zinc-800 rounded overflow-hidden group hover:border-amber-400 transition-colors">
                     <div className="h-32 bg-zinc-800 overflow-hidden">
-                      <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <img src={s.img} alt={s.name} onError={() => markFailed(s.img)} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     </div>
                     <div className="p-4">
                       <span className="text-[9px] text-amber-400 tracking-widest uppercase">{s.tag}</span>
@@ -93,7 +172,11 @@ export default function CartPage() {
           <div className="space-y-4">
             {cart.map((item) => (
               <div key={item.id} className="bg-zinc-900 border border-zinc-800 p-4 rounded flex gap-4 items-start">
-                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded shrink-0" />
+                {!failedImages.has(fixImage(item.image)) ? (
+                  <img src={fixImage(item.image)} alt={item.name} onError={() => markFailed(fixImage(item.image))} className="w-20 h-20 object-cover rounded shrink-0" />
+                ) : (
+                  <div className="w-20 h-20 bg-zinc-800 rounded shrink-0 flex items-center justify-center text-[10px] text-zinc-400 text-center px-1">Photo</div>
+                )}
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] text-amber-400 tracking-widest uppercase">{item.category}</p>
                   <h3 className="text-sm font-bold uppercase leading-tight line-clamp-2">{item.name}</h3>
@@ -111,26 +194,35 @@ export default function CartPage() {
                       <p className="text-[10px] text-amber-300">+ Extra Charges - To Be Confirmed</p>
                     </div>
                   )}
+                  {item.customMade?.enabled && (
+                    <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
+                      <p className="text-[11px] text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
+                      {item.customMade.type && <p className="text-[11px] text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.detail && <p className="text-[11px] text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
+                      {item.customMade.fileName && <p className="text-[10px] text-zinc-400">Design Image: {item.customMade.fileName}</p>}
+                      <p className="text-[10px] text-amber-300">{item.extraChargesNote || "Extra charges apply for customization - final price will be confirmed after order confirmation."}</p>
+                    </div>
+                  )}
                   <p className="text-xs text-zinc-400 mt-1">${item.price} each</p>
                   <div className="flex items-center gap-3 mt-2">
                     <button onClick={() => changeQty(item.id, -1)} className="w-7 h-7 border border-zinc-700 rounded">-</button>
                     <span className="text-sm font-bold">{item.quantity}</span>
                     <button onClick={() => changeQty(item.id, 1)} className="w-7 h-7 border border-zinc-700 rounded">+</button>
                     <button onClick={() => removeItem(item.id)} className="text-red-400 text-[11px] uppercase ml-2">Remove</button>
+                    <button onClick={() => saveForLater(item.id)} className="text-amber-400 text-[11px] uppercase ml-2">♡ Save For Later</button>
                   </div>
                 </div>
                 <p className="text-amber-400 font-bold text-sm shrink-0">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</p>
               </div>
             ))}
 
-            {/* Add More - Average Order Badhao */}
             {suggestions.length > 0 && (
               <div className="bg-zinc-900 border border-zinc-800 rounded p-4">
                 <h3 className="text-xs font-bold uppercase tracking-widest">Complete Your Set - Add More</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-                  {suggestions.map((s) => (
+                  {suggestions.filter((s) => !failedImages.has(s.img)).map((s) => (
                     <Link key={s.slug} href={`/product/${s.slug}`} className="border border-zinc-800 rounded p-3 hover:border-amber-400 transition-colors flex items-center gap-3">
-                      <img src={s.img} alt={s.name} className="w-12 h-12 object-cover rounded shrink-0" />
+                      <img src={s.img} alt={s.name} onError={() => markFailed(s.img)} className="w-12 h-12 object-cover rounded shrink-0" />
                       <div className="min-w-0">
                         <p className="text-[11px] font-bold uppercase truncate">{s.name}</p>
                         <p className="text-amber-400 text-xs font-bold">${s.price} • Add →</p>
@@ -150,15 +242,43 @@ export default function CartPage() {
             )}
           </div>
         )}
+        {wishlist.length > 0 && (
+          <div className="bg-zinc-900 border border-amber-400/30 rounded p-4 space-y-3">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-400">♡ Liked / Saved Products - Jab Chahe Buy Karo (Kabhi Expire Nahi Hoga)</h2>
+            {wishlist.map((item) => (
+              <div key={item.id} className="flex gap-4 items-start border border-zinc-800 rounded p-3">
+                <img src={fixImage(item.image)} alt={item.name} className="w-16 h-16 object-cover rounded shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-bold uppercase leading-tight line-clamp-2">{item.name}</h3>
+                  <p className="text-xs text-zinc-300 mt-1">Colour: {item.colorName || "Dark Brown"} • ${item.price} each • Qty: {item.quantity}</p>
+                  {item.customMade?.enabled && (
+                    <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
+                      <p className="text-[11px] text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
+                      {item.customMade.type && <p className="text-[11px] text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.detail && <p className="text-[11px] text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
+                      {item.customMade.fileName && <p className="text-[10px] text-zinc-400">Design Image: {item.customMade.fileName}</p>}
+                    </div>
+                  )}
+                  <div className="flex gap-3 mt-2 flex-wrap">
+                    <button onClick={() => moveToCart(item.id)} className="bg-amber-400 text-black text-[11px] font-bold uppercase px-3 py-1.5 rounded">Move to Cart →</button>
+                    <Link href={`/product/${item.slug}`} className="border border-zinc-700 text-[11px] uppercase px-3 py-1.5 rounded">View Product</Link>
+                    <button onClick={() => removeFromWishlist(item.id)} className="text-red-400 text-[11px] uppercase">Remove</button>
+                  </div>
+                </div>
+                <p className="text-amber-400 font-bold text-sm shrink-0">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</p>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
           <div className="flex justify-between text-xs font-bold border-b border-zinc-800 pb-3">
             <span className="text-zinc-400">Total (Product Only)</span><span className="text-amber-400">${total.toFixed(2)} USD</span>
           </div>
           <div className="space-y-1 text-[11px] text-zinc-500">
             <p>✓ 100% Real Leather Guarantee • Sample Before Bulk</p>
-            <p>✓ Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Days = Total 18-24 Days • Tracking Provided</p>
+            <p>✓ Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days • Tracking Provided</p>
             <p>✓ Shipment + Delivery Charges - To Be Confirmed After Destination Check.</p>
-            <p>✓ Customization extra charges bhi alag se confirm honge. No hidden charges.</p>
+            <p>✓ Extra charges apply for customization - final price will be confirmed after order confirmation.</p>
             <p>✓ Payment: VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
           </div>
           <Link href="/checkout" className="w-full block text-center bg-amber-500 text-black py-3 rounded text-xs font-bold uppercase">Proceed to Checkout</Link>

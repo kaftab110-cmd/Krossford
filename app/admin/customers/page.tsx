@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+export const dynamic = "force-dynamic";
 
-export default function AdminCustomersCRM() {
+import { useState, useEffect, Suspense } from "react";
+
+function AdminCustomersCRMInner() {
   const [auth, setAuth] = useState(false);
   const [pass, setPass] = useState("");
   const [customers, setCustomers] = useState<any[]>([]);
@@ -20,7 +22,6 @@ export default function AdminCustomersCRM() {
   };
 
   const fetchCustomers = async () => {
-    // Fetch mock/Supabase data
     const res = await fetch("/api/lead", { method: "GET" }).catch(() => null);
     const mockData = [
       { id: 1, name: "Kashif Aftab", email: "kaftab110@gmail.com", whatsapp: "+923001234567", total_orders: 3, total_quantity: 550, lead_status: "VIP", priority: "HIGH PRIORITY", country: "Australia" },
@@ -35,7 +36,7 @@ export default function AdminCustomersCRM() {
         <form onSubmit={handleLogin} className="bg-zinc-900 p-8 border border-zinc-800 rounded-lg space-y-4 w-80">
           <h2 className="text-amber-400 font-bold uppercase text-center">KROSSFORD CRM ACCESS</h2>
           <input type="password" placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
-          <button type="submit" className="w-full bg-amber-500 text-black py-2 rounded font-bold text-xs uppercase">Unlock Dashboard</button>
+          <button type="submit" className="w-full bg-amber-400 text-black py-2 rounded font-bold text-xs uppercase">Unlock Dashboard</button>
         </form>
       </div>
     );
@@ -55,7 +56,6 @@ export default function AdminCustomersCRM() {
           <span className="text-xs text-zinc-400">Total Records: {customers.length}</span>
         </div>
 
-        {/* Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
             <p className="text-zinc-400">TOTAL CUSTOMERS</p>
@@ -75,17 +75,15 @@ export default function AdminCustomersCRM() {
           </div>
         </div>
 
-        {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-zinc-900 p-4 rounded border border-zinc-800">
           <input type="text" placeholder="Search by Email or WhatsApp..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-zinc-950 border border-zinc-800 px-3 py-2 rounded text-xs w-full md:w-80 outline-none focus:border-amber-400" />
           <div className="flex gap-2">
             {["All", "New", "Repeat", "VIP"].map((f) => (
-              <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded text-xs font-bold uppercase transition-colors ${filter === f ? "bg-amber-500 text-black" : "bg-zinc-950 text-zinc-400 border border-zinc-800"}`}>{f}</button>
+              <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded text-xs font-bold uppercase transition-colors ${filter === f ? "bg-amber-400 text-black" : "bg-zinc-950 text-zinc-400 border border-zinc-800"}`}>{f}</button>
             ))}
           </div>
         </div>
 
-        {/* Customer Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map((c) => (
             <div key={c.id} className="bg-zinc-900 border border-zinc-800 p-4 rounded space-y-3">
@@ -94,7 +92,7 @@ export default function AdminCustomersCRM() {
                   <h3 className="text-sm font-bold text-white">{c.name || c.email}</h3>
                   <p className="text-[11px] text-zinc-400">{c.whatsapp} • {c.country}</p>
                 </div>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${c.lead_status === 'VIP' ? 'bg-amber-500 text-black' : c.total_orders > 1 ? 'bg-green-600 text-white' : 'bg-zinc-800 text-zinc-300'}`}>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${c.lead_status === 'VIP' ? 'bg-amber-400 text-black' : c.total_orders > 1 ? 'bg-green-600 text-white' : 'bg-zinc-800 text-zinc-300'}`}>
                   {c.lead_status === 'VIP' ? '🟢 VIP REPEAT' : c.total_orders > 1 ? '🟢 REPEAT' : '🔵 NEW'}
                 </span>
               </div>
@@ -105,12 +103,20 @@ export default function AdminCustomersCRM() {
               </div>
               <div className="flex gap-2 pt-2">
                 <a href={`https://wa.me/${c.whatsapp?.replace(/[^0-9]/g, '')}`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold text-[10px] uppercase">WhatsApp Chat</a>
-                <a href={`mailto:${c.email}`} className="flex-1 bg-amber-500 text-black text-center py-1.5 rounded font-bold text-[10px] uppercase">Email History</a>
+                <a href={`mailto:${c.email}`} className="flex-1 bg-amber-400 text-black text-center py-1.5 rounded font-bold text-[10px] uppercase">Email History</a>
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AdminCustomersCRM() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center font-mono text-xs">Loading CRM...</div>}>
+      <AdminCustomersCRMInner />
+    </Suspense>
   );
 }
