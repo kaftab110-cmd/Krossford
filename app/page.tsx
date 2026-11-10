@@ -76,8 +76,14 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full bg-black py-24 text-center overflow-hidden">
-        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full">
+      <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-black">
+        <img
+          src="/images/leather-duffle-bag.jpg"
+          alt="Leather Duffle Bag"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
             KROSSFORD
           </p>
@@ -103,11 +109,6 @@ export default function Home() {
             </a>
           </div>
           <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via Courier • Total Delivery: 18-24 Working Days • Tracking Provided • Secure Payments • Bank Transfer</p>
-          <img
-            src="/images/leather-duffle-bag.jpg"
-            alt="Leather Duffle Bag"
-            className="w-full max-w-4xl mx-auto mt-10 rounded-lg h-auto object-contain"
-          />
         </div>
       </section>
 
