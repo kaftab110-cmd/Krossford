@@ -81,7 +81,6 @@ export default function Header() {
       <div className="border-b border-yellow-500/20 bg-black/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 md:px-6 md:py-4 w-full">
           
-          {/* FIX MISTAKE 2: Logo bara kiya - pehle chota lag raha tha */}
           <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
             <Logo className="h-10 w-10 md:h-10 md:w-10 shrink-0" />
             <span className="text- md:text-xl font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
@@ -131,7 +130,6 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* FIX MISTAKE 2: Mobile Wishlist / Cart / Burger - TEENO SAME SIZE w-10 h-10 */}
           <div className="flex md:hidden items-center gap-1.5 shrink-0">
             <Link
               href="/wishlist"
