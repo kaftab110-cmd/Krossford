@@ -39,7 +39,7 @@ export const termsContent = {
       heading: "5. Shipping & Delivery",
       paragraphs: [
         "Ships via DHL Express. Tracking Provided.",
-        "Total Delivery Time: 18-24 Days = Processing: 7-10 Days + DHL Delivery: 7-10 Working Days. We aim to deliver earlier than estimated.",
+        "Total Delivery Time: 18-24 Days = Processing: 7-10 Days + DHL Delivery: 7-10 Working Days. Our aim to deliver earlier than estimated.",
         "Full details in our Shipping Policy page.",
       ],
     },

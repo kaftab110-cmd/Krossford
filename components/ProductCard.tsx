@@ -125,7 +125,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {product.description && <p className="text-xs text-zinc-400 leading-relaxed mt-2 line-clamp-2">{product.description}</p>}
         <p className="text-amber-400 font-bold text-lg mt-2">${product.price}</p>
         <p className="text-xs text-zinc-400 leading-relaxed mt-2">Ships via <span className="text-white font-bold">DHL Express</span><br />Processing: 7-10 Days After Order<br />DHL Delivery: 7-10 Working Days After Dispatch<br /><span className="text-amber-400/90">Total Delivery: 18-24 Days | Tracking Provided</span></p>
-        <p className="text-[11px] text-zinc-500 mt-2">We aim to deliver earlier than estimated.</p>
+        <p className="text-[11px] text-zinc-500 mt-2">Our aim to deliver earlier than estimated.</p>
         <button onClick={addToCart} className="mt-4 w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs tracking-widest py-3 rounded-lg transition-colors cursor-pointer">ADD TO CART</button>
       </div>
     </div>

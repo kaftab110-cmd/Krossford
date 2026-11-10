@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { COUNTRIES } from "../../lib/data/countries";
+import PhoneInput from "@/components/PhoneInput";
+import { buildFullPhone } from "@/lib/data/phone-codes";
 
 const WHATSAPP_NUMBER = "923030006759";
 
@@ -34,8 +37,6 @@ const B2B_PRODUCTS = [
   },
 ];
 
-const COUNTRIES = ["United States", "United Kingdom", "Canada", "Australia", "Germany", "France", "Italy", "Spain", "Netherlands", "United Arab Emirates", "Saudi Arabia", "Qatar", "Pakistan", "India", "Other"];
-
 export default function B2BPage() {
   const [submitted, setSubmitted] = useState(false);
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -44,6 +45,7 @@ export default function B2BPage() {
     companyName: "",
     businessEmail: "",
     phone: "",
+    altPhone: "",
     country: "United States",
     quantity: "100",
     productType: "Leather Jacket",
@@ -51,7 +53,13 @@ export default function B2BPage() {
     message: "",
   });
 
-  // UPDATED: Get Quote ab sirf type nahi badalta - form tak scroll bhi karta hai
+  // Country badle to dono numbers ka code bhi badle - local part wahi rahega, sirf +92 -> +91 hoga
+  useEffect(() => {
+    if (formData.phone) setFormData((prev) => ({ ...prev, phone: buildFullPhone(prev.country, prev.phone) }));
+    if (formData.altPhone) setFormData((prev) => ({ ...prev, altPhone: buildFullPhone(prev.country, prev.altPhone) }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.country]);
+
   const handleGetQuote = (p: (typeof B2B_PRODUCTS)[number]) => {
     setFormData((prev) => ({ ...prev, productType: p.productType, quantity: p.quantity }));
     setSubmitted(false);
@@ -60,8 +68,7 @@ export default function B2BPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // UPDATED: Pehle form kahin nahi jata tha. Ab poori inquiry WhatsApp par jayegi - Checkout jaisa flow.
-    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${formData.productType}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% After Order Ready\nSample: Paid Sample Available - Sample Before Bulk`;
+    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${formData.productType}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nDelivery: 18-24 Working Days via DHL Express\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
   };
@@ -73,6 +80,7 @@ export default function B2BPage() {
       companyName: "",
       businessEmail: "",
       phone: "",
+      altPhone: "",
       country: "United States",
       quantity: "100",
       productType: "Leather Jacket",
@@ -95,7 +103,7 @@ export default function B2BPage() {
             Direct manufacturer sourcing. Request a tailored wholesale quotation.
           </p>
           <p className="text-[11px] text-amber-400/90 tracking-wide">
-            Sample Before Bulk • 50% Advance - 50% After Order Ready • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
+            Sample Before Bulk • 50% Advance - 50% Before Dispatch • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
           </p>
           <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
             <p className="text-[11px] text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
@@ -159,8 +167,8 @@ export default function B2BPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Phone / WhatsApp</label>
-                <input type="tel" placeholder="+1 555 000 1234" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none" />
+                {/* PHONE FIX: Country select karte hi auto code - Pakistan +92, India +91, USA +1 ... */}
+                <PhoneInput country={formData.country} value={formData.phone} onChange={(v) => setFormData({ ...formData, phone: v })} label="Phone / WhatsApp" placeholder="3001234567" required={false} />
               </div>
               <div className="space-y-2">
                 <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Country / Target Market</label>
@@ -170,7 +178,11 @@ export default function B2BPage() {
               </div>
             </div>
 
+            {/* Alternate / Contact Number - agar pehla na lage to is pe call karenge */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <PhoneInput country={formData.country} value={formData.altPhone} onChange={(v) => setFormData({ ...formData, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
+              </div>
               <div className="space-y-2">
                 <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Estimated Quantity</label>
                 <select value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none">
@@ -181,6 +193,9 @@ export default function B2BPage() {
                   <option value="1000+">1000+ Units</option>
                 </select>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Product Type</label>
                 <select value={formData.productType} onChange={(e) => setFormData({ ...formData, productType: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none">
@@ -192,19 +207,18 @@ export default function B2BPage() {
                   <option value="Card Holder / Keychain">Card Holder / Keychain - Bulk</option>
                 </select>
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
-              <div className="flex items-center gap-6 pt-3 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
-                  <span>Yes</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
-                  <span>No</span>
-                </label>
+              <div className="space-y-2">
+                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
+                <div className="flex items-center gap-6 pt-3 text-xs">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
+                    <span>Yes</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
+                    <span>No</span>
+                  </label>
+                </div>
               </div>
             </div>
 
@@ -222,7 +236,7 @@ export default function B2BPage() {
             <button type="submit" className="w-full bg-amber-400 text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-amber-300 transition-colors shadow-md">
               Submit Wholesale Inquiry - Send On WhatsApp →
             </button>
-            <p className="text-center text-[11px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% After Order Ready</p>
+            <p className="text-center text-[11px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Delivery: 18-24 Working Days</p>
           </form>
         )}
       </div>

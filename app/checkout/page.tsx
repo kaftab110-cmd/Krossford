@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import PhoneInput from "@/components/PhoneInput";
+import { buildFullPhone } from "@/lib/data/phone-codes";
+import { COUNTRIES } from "@/lib/data/countries";
 
 type CartItem = {
   id: string;
@@ -19,7 +22,9 @@ type CartItem = {
   extraChargesNote?: string;
 };
 
-const COUNTRIES = ["United States", "United Kingdom", "Canada", "Australia", "Germany", "France", "Italy", "Spain", "Netherlands", "Belgium", "Sweden", "Denmark", "Norway", "Finland", "Ireland", "Portugal", "Austria", "Switzerland", "Greece", "Poland", "Czech Republic", "Slovakia", "Hungary", "Romania", "Bulgaria", "Croatia", "Slovenia", "Lithuania", "Latvia", "Estonia", "Malta", "Cyprus", "Luxembourg", "Iceland", "Albania", "Serbia", "Bosnia and Herzegovina", "Montenegro", "North Macedonia", "Moldova", "Ukraine", "Belarus", "United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman", "Jordan", "Lebanon", "Israel", "Turkey", "Iraq", "Iran", "Pakistan", "India", "Bangladesh", "Sri Lanka", "Nepal", "Afghanistan", "China", "Japan", "South Korea", "Taiwan", "Hong Kong", "Singapore", "Malaysia", "Thailand", "Vietnam", "Indonesia", "Philippines", "Cambodia", "Myanmar", "Laos", "Mongolia", "Kazakhstan", "Uzbekistan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Azerbaijan", "Georgia", "Armenia", "Russia", "Egypt", "Morocco", "Tunisia", "Algeria", "Libya", "Sudan", "Ethiopia", "Kenya", "Nigeria", "Ghana", "South Africa", "Angola", "Zimbabwe", "Zambia", "Tanzania", "Uganda", "Rwanda", "Senegal", "Ivory Coast", "Cameroon", "Mozambique", "Madagascar", "Mauritius", "Seychelles", "Mexico", "Brazil", "Argentina", "Chile", "Colombia", "Peru", "Venezuela", "Ecuador", "Bolivia", "Paraguay", "Uruguay", "Panama", "Costa Rica", "Guatemala", "Dominican Republic", "Puerto Rico", "Jamaica", "Trinidad and Tobago", "Bahamas", "Barbados", "New Zealand", "Fiji", "Papua New Guinea", "Other"];
+// SYNC FIX: COUNTRIES ab yahan hardcode nahi hai - lib/data/countries.ts se aayega (wahi list jo baaki forms me hai)
+// Sirf "Other" alag se add kiya hai taake purana behaviour na toote
+const CHECKOUT_COUNTRIES = [...COUNTRIES, "Other"];
 
 const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
@@ -28,7 +33,6 @@ const PAYMENTS = [
   { id: "VISA / Mastercard", title: "VISA / Mastercard", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
-// CUSTOM MADE type ka label
 const customMadeLabel = (t?: string) => {
   if (t === "full") return "Full Product - Mere Design Pe Banao";
   if (t === "stitching") return "Stitching Only - Hand Stitched Chahiye";
@@ -40,14 +44,19 @@ const customMadeLabel = (t?: string) => {
 
 export default function CheckoutPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState("United States");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  // PHONE FIX: Phone ab plain input nahi hai - PhoneInput component hai
+  // value me FULL number save hota hai - jaise Pakistan -> +923001234567, India -> +919876543210
   const [phone, setPhone] = useState("");
+  // Alternate / Contact Number (Optional) - agar pehla number na lage to is pe call karenge
+  const [altPhone, setAltPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
   const [orderSent, setOrderSent] = useState(false);
 
@@ -55,6 +64,14 @@ export default function CheckoutPage() {
     const saved = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
     setCart(saved);
   }, []);
+
+  // Country badle to dono numbers ka code bhi badle - local part wahi rahega, sirf +92 -> +91 hoga
+  // Example: +923001234567 + Country India -> +913001234567 (local 3001234567 same)
+  useEffect(() => {
+    if (phone) setPhone(buildFullPhone(country, phone));
+    if (altPhone) setAltPhone(buildFullPhone(country, altPhone));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country]);
 
   const total = cart.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
 
@@ -66,8 +83,9 @@ export default function CheckoutPage() {
   const WHATSAPP_NUMBER = "923030006759";
 
   const handlePlaceOrder = () => {
-    if (!name.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
-      alert("Please fill Name, Country, Address, City, State, Postal Code and Phone");
+    const fullName = `${firstName} ${lastName}`.trim();
+    if (!firstName.trim() || !lastName.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
+      alert("Please fill First Name, Last Name, Country, Address, City, State, Postal Code and Phone");
       return;
     }
     if (cart.length === 0) {
@@ -79,7 +97,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -119,11 +137,16 @@ export default function CheckoutPage() {
           <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
 
           <div className="mt-6 space-y-3">
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <div className="grid grid-cols-2 gap-3">
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            </div>
             <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Phone / WhatsApp *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            {/* PHONE + ALTERNATE - Country select karte hi auto code: Pakistan +92, India +91, USA +1 ... */}
+            <PhoneInput country={country} value={phone} onChange={setPhone} label="Mobile / WhatsApp *" placeholder="3001234567" />
+            <PhoneInput country={country} value={altPhone} onChange={setAltPhone} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
             <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 text-white">
-              {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              {CHECKOUT_COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
             <div className="grid grid-cols-2 gap-3">
@@ -140,7 +163,7 @@ export default function CheckoutPage() {
 
           <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3">
             <p className="text-xs text-amber-400 font-bold">Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days • Tracking Provided</p>
-            <p className="text-xs text-zinc-400 mt-1">We aim to deliver earlier than estimated.</p>
+            <p className="text-xs text-zinc-400 mt-1">Our aim to deliver earlier than estimated.</p>
           </div>
         </div>
 

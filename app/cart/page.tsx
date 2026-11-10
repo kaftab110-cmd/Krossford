@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { findProductBySlug } from "@/lib/data/shop";
 
 type CartItem = {
   id: string;
@@ -23,14 +24,21 @@ type CartItem = {
   customMade?: { enabled: boolean; type?: string; detail?: string; fileName?: string };
 };
 
-// FIX: key-holder.jpg folder me hai hi nahi - is liye tooti photo aa rahi thi
-// Sahi naam: leather-tag-keychain-set1.jpg (jo folder me maujood hai)
-// Crossbody ka base bhi missing tha, is liye 2 wali photo jo maujood hai wo lagai hai
-const SUGGESTED = [
-  { name: "Card Holder - Minimalist", price: 29, slug: "card-holder", img: "/images/card-holder.jpg", fallback: "/images/card-holder.jpg", tag: "BEST SELLER" },
-  { name: "Leather Tag + Keychain Set", price: 25, slug: "leather-tag-keychain-set", img: "/images/leather-tag-keychain-set1.jpg", fallback: "/images/leather-tag-keychain-set1.jpg", tag: "CUSTOM LOGO" },
-  { name: "Crossbody Messenger Bag", price: 119, slug: "crossbody-messenger-bag", img: "/images/crossbody-messenger-bag2.jpg", fallback: "/images/crossbody-messenger-bag2.jpg", tag: "BEST SELLER" },
-];
+// SYNC FIX: SUGGESTED ab hardcode nahi hai - sirf slug likha hai, naam / price / image / tag sab lib/data/shop.ts se aayega.
+// Is se shop.ts me price badlo to Cart Page khud hi same ho jayega, dobara repeat nahi karna parega.
+const SUGGESTED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag"] as const;
+
+const SUGGESTED = SUGGESTED_SLUGS.map((slug) => {
+  const p = findProductBySlug(slug);
+  return {
+    slug,
+    name: p?.name ?? slug,
+    price: p?.price ?? 0,
+    tag: p?.badge ?? "",
+    img: p?.image ?? "",
+    fallback: p?.image ?? "",
+  };
+});
 
 // 
 const CART_EXPIRY_MS = 45 * 60 * 1000;
@@ -48,11 +56,14 @@ const customMadeLabel = (t?: string) => {
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<CartItem[]>([]);
-  // Agar koi purani cart item me key-holder.jpg jaisi galat photo hai to usko bhi fix karo
+  // Purani cart (localStorage) me agar key-holder.jpg / crossbody-messenger-bag.jpg (bina 2 wali) jaisi galat photo hai to usko shop.ts wali sahi photo se fix karo
+  // FIX: key-holder.jpg folder me hai hi nahi - is liye tooti photo aa rahi thi
+  // Sahi naam: leather-tag-keychain-set1.jpg (jo folder me maujood hai)
+  // Crossbody ka base bhi missing tha, is liye 2 wali photo jo maujood hai wo lagai hai
   const fixImage = (src: string) => {
     if (!src) return "/images/card-holder.jpg";
-    if (src.includes("key-holder")) return "/images/leather-tag-keychain-set1.jpg";
-    if (src.includes("crossbody-messenger-bag.jpg") && !src.includes("crossbody-messenger-bag2")) return "/images/crossbody-messenger-bag2.jpg";
+    if (src.includes("key-holder")) return findProductBySlug("leather-tag-keychain-set")?.image || "/images/leather-tag-keychain-set1.jpg";
+    if (src.includes("crossbody-messenger-bag.jpg") && !src.includes("crossbody-messenger-bag2")) return findProductBySlug("crossbody-messenger-bag")?.image || "/images/crossbody-messenger-bag2.jpg";
     return src;
   };
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());

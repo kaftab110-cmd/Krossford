@@ -1,16 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { products } from "@/lib/data/shop";
+import { products, findProductBySlug, getCardSliderImages } from "@/lib/data/shop";
 
 // FEATURED = Hamara Starting Plan + 1 Hero Product - Hamesha Yehi Dikhega
+// SYNC FIX: Sirf slug likha hai, naam / price / image / badge sab lib/data/shop.ts se aayega.
+// IMAGE_FIX hataya - kyunki shop.ts me keychain ki image pehle se sahi hai (/images/leather-tag-keychain-set1.jpg)
+// Dobara yahan hardcode image likhne se phir mismatch hota tha.
 const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
-
-// FIX: Keychain ki sahi photo - set1.jpg - set.jpg folder me hai hi nahi
-// Pehle set.jpg likha tha, is liye Featured me Keychain ki photo tooti dikhti thi
-const IMAGE_FIX: Record<string, string> = {
-  "leather-tag-keychain-set": "/images/leather-tag-keychain-set1.jpg",
-};
 
 export default function FeaturedProducts() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
@@ -18,8 +15,8 @@ export default function FeaturedProducts() {
   // --- HOVER SLIDER - Featured ke box ke andar - SLOW ---
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);
-  const hoverProduct = hoverSlug ? products.find((p) => (p.slug || p.id) === hoverSlug) : undefined;
-  const hoverImages = hoverProduct ? [...new Set([(IMAGE_FIX[hoverProduct.slug] || hoverProduct.image), ...((hoverProduct as any).gallery || [])].filter(Boolean))] : [];
+  const hoverProduct = hoverSlug ? findProductBySlug(hoverSlug) : undefined;
+  const hoverImages = hoverProduct ? getCardSliderImages(hoverProduct) : [];
   const HOVER_SLIDE_DELAY = 1800; // 1800ms = 1.8 second me 1 photo - slow
 
   useEffect(() => {
@@ -30,9 +27,9 @@ export default function FeaturedProducts() {
     return () => clearInterval(timer);
   }, [hoverSlug, hoverImages.length]);
 
-  const handleAddToCart = (product: any) => {
-    const slug = product.slug || product.id;
-    const image = IMAGE_FIX[slug] || product.image;
+  const handleAddToCart = (product: (typeof products)[number]) => {
+    const slug = product.slug || String(product.id);
+    const image = product.image;
     const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
     const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
 
@@ -61,7 +58,7 @@ export default function FeaturedProducts() {
   };
 
   const featured = FEATURED_SLUGS
-    .map((slug) => products.find((p) => p.slug === slug))
+    .map((slug) => findProductBySlug(slug))
     .filter(Boolean) as typeof products;
 
   const list = featured.length === 4 ? featured : products.slice(0, 4);
@@ -73,10 +70,10 @@ export default function FeaturedProducts() {
         <p className="text-xs text-zinc-400 tracking-widest uppercase">Best Sellers • Starting From $25 • Honest Price</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {list.map((product: any) => {
-          const slug = product.slug || product.id;
-          const displayImage = IMAGE_FIX[slug] || product.image;
-          const cardImages = [...new Set([displayImage, ...(product.gallery || [])].filter(Boolean))];
+        {list.map((product) => {
+          const slug = product.slug || String(product.id);
+          const displayImage = product.image;
+          const cardImages = getCardSliderImages(product);
           const isHovering = hoverSlug === slug;
           const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : displayImage;
           return (
@@ -109,7 +106,7 @@ export default function FeaturedProducts() {
 
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] text-zinc-500 uppercase">Colors:</span>
-                  {product.colors?.map((c: any) => (
+                  {product.colors?.map((c) => (
                     <Link key={c.name} href={`/product/${slug}`}>
                       <span title={c.name} style={{ background: c.code, width: 16, height: 16, borderRadius: "50%", display: "inline-block", border: "1px solid #fff", cursor: "pointer" }} />
                     </Link>

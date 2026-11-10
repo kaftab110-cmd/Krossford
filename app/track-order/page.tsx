@@ -150,7 +150,7 @@ export default function TrackOrderPage() {
             <div className="border border-zinc-800 rounded-md px-5 py-4 bg-zinc-900">
               <p className="text-xs font-bold text-amber-400 uppercase">Step 3 - Delivery</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                Total Retail: 18-24 Days. We aim to deliver earlier than estimated. Customs delay ho to WhatsApp pe puchho.
+                Total Retail: 18-24 Days. Our aim to deliver earlier than estimated. Customs delay ho to WhatsApp pe puchho.
               </p>
             </div>
 

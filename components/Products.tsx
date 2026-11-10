@@ -154,7 +154,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <span className="text-amber-400/90">Total Delivery: 18-24 Days | Tracking Provided</span>
         </p>
 
-        <p className="text-[11px] text-zinc-500 mt-2">We aim to deliver earlier than estimated.</p>
+        <p className="text-[11px] text-zinc-500 mt-2">Our aim to deliver earlier than estimated.</p>
 
         <button
           onClick={addToCart}

@@ -8,17 +8,27 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
-import { products } from "@/lib/data/shop";
+import { products, findProductBySlug } from "@/lib/data/shop";
 
-const TOP3 = [
-  { name: "Card Holder", price: 29, slug: "card-holder", tag: "BEST SELLER", image: "/images/card-holder.jpg" },
-  { name: "Keychain Set", price: 25, slug: "leather-tag-keychain-set", tag: "CUSTOM LOGO", image: "/images/leather-tag-keychain-set1.jpg" },
-  { name: "Crossbody Bag", price: 119, slug: "crossbody-messenger-bag", tag: "BEST SELLER", image: "/images/crossbody-messenger-bag2.jpg" },
-];
+// SYNC FIX: TOP3 ab hardcode nahi hai - sirf slug likha hai, naam / price / image / tag sab lib/data/shop.ts se aayega.
+// Is se FILE 1 / FILE 2 me price badlo to Home Page khud hi same ho jayega, dobara repeat nahi karna parega.
+const TOP3_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag"] as const;
+
+const TOP3 = TOP3_SLUGS.map((slug) => {
+  const p = findProductBySlug(slug);
+  // Fallback sirf tab jab shop.ts me product na mile - warna shop.ts hi truth hai
+  return {
+    slug,
+    name: p?.name ?? slug,
+    price: p?.price ?? 0,
+    tag: p?.badge ?? "",
+    image: p?.image ?? "",
+  };
+});
 
 const getTop3Images = (slug: string, fallback: string): string[] => {
-  const found = products.find((p) => p.slug === slug);
-  const all = [fallback, ...(found?.gallery || [])].filter(Boolean);
+  const found = findProductBySlug(slug);
+  const all = [fallback, found?.image, ...(found?.gallery || [])].filter(Boolean);
   return [...new Set(all)];
 };
 
