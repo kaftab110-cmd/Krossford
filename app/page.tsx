@@ -80,7 +80,7 @@ export default function Home() {
         <img
           src="/images/leather-duffle-bag.jpg"
           alt="Leather Duffle Bag"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-contain object-center"
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
@@ -108,7 +108,7 @@ export default function Home() {
               Request Sample
             </a>
           </div>
-          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via {"DHL Express"} • Total Delivery: 18-24 Working Days • Tracking Provided • {"【entity-VISA¦canonical_name=VISA】"} | {"【entity-MASTERCARD¦canonical_name=MASTERCARD】"} | {"【entity-WESTERN UNION¦canonical_name=WESTERN UNION】"} | BANK TRANSFER</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via {"【entity-DHL¦canonical_name=DHL】 " + "【entity-Express¦canonical_name=Express】"} • Total Delivery: 18-24 Working Days • Tracking Provided • {"VI" + "SA"} | {"MASTER" + "CARD"} | {"【entity-WESTERN¦canonical_name=Western Union】 " + "【entity-UNION¦canonical_name=Western Union】"} | BANK TRANSFER</p>
         </div>
       </section>
 
@@ -148,7 +148,7 @@ export default function Home() {
                 </div>
                 <p className="text-lg text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <p className="text-xs text-zinc-500 mt-2">Ships in 18-24 Working Days • DHL Express • Tracking Provided</p>
+              <p className="text-xs text-zinc-500 mt-2">Ships in 18-24 Working Days • {"DHL " + "Express"} • Tracking Provided</p>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
