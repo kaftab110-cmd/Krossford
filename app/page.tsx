@@ -50,19 +50,19 @@ export default function Home() {
 
   const handleAddToCart = (p: (typeof TOP3)[number]) => {
     const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
-    const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "B2C");
+    const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "Single Piece");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
     } else {
       existingCart.push({
-        id: `${p.slug}-jet-black-b2c-${Date.now()}`,
+        id: `${p.slug}-jet-black-single-piece-${Date.now()}`,
         slug: p.slug,
         name: p.name,
         price: p.price,
         image: p.image,
         quantity: 1,
         colorName: "Jet Black",
-        customerType: "B2C",
+        customerType: "Single Piece",
         additionalOption: "none",
         customText: "",
         uploadedFileName: "",
@@ -76,40 +76,45 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full h-[calc(100svh-64px)] min-h-[600px] flex items-center justify-center text-center overflow-hidden bg-black">
+      <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-black">
         <img
           src="/images/leather-duffle-bag.jpg"
           alt="Leather Duffle Bag"
-          className="absolute inset-0 w-full h-full object-cover object-[50%_70%]"
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-6 max-w-4xl mx-auto">
-          <p className="text-amber-400 tracking-[0.3em] text-sm font-bold">KROSSFORD ENTERPRISES</p>
-          <h1 className="mt-4 text-5xl sm:text-7xl font-bold leading-tight">
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
+            KROSSFORD
+          </p>
+          <p className="mt-1 text-xs sm:text-sm font-medium tracking-widest text-amber-400 uppercase text-center leading-none">
+            ENTERPRISES
+          </p>
+          <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-center">
             Real Leather.<br />Made Honestly.
           </h1>
-          <p className="mt-4 text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-6 text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed text-center">
             A New-Generation International Leather Brand, Since 2025.
             Sample Before Bulk. 100% Real Leather Guarantee.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <a href="/shop" className="bg-amber-400 text-black px-7 py-3.5 rounded-md text-base font-bold hover:bg-amber-300">
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <a href="/shop" className="bg-amber-400 text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-300">
               Shop Collection
             </a>
-            <a href="/b2b" className="border border-amber-400 text-amber-400 px-7 py-3.5 rounded-md text-base font-medium hover:bg-amber-400 hover:text-black">
+            <a href="/b2b" className="border border-amber-400 text-amber-400 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-400 hover:text-black">
               Retail + Wholesale
             </a>
-            <a href="/contact" className="border border-zinc-300 px-7 py-3.5 rounded-md text-base font-medium hover:border-amber-400">
+            <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-amber-400">
               Request Sample
             </a>
           </div>
-          <p className="mt-4 text-[13px] text-zinc-400 tracking-widest uppercase">Ships via DHL Express • Total Delivery: 18-24 Days • Tracking Provided • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Total Delivery: 18-24 Working Days • Tracking Provided • 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER</p>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-10">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-serif uppercase tracking-[0.2em]">Start With Our Best Sellers</h2>
+          <h2 className="text-xl font-serif uppercase tracking-widest">Start With Our Best Sellers</h2>
           <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Honest Price • Handcrafted • Built To Last</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -127,23 +132,23 @@ export default function Home() {
                   onTouchStart={() => { setHoverSlug(p.slug); setHoverIndex(0); }}
                   onTouchEnd={() => { setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000); }}
                 >
-                  <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-[1.02] transition-transform" />
+                  <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform" />
                   {isHovering && cardImages.length > 1 && (
-                    <span className="absolute top-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                    <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
                   )}
                 </div>
               </Link>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="text-[11px] tracking-[0.2em] uppercase text-amber-400 font-bold">{p.tag}</span>
+                  <span className="text-xs tracking-widest uppercase text-amber-400 font-bold">{p.tag}</span>
                   <Link href={`/product/${p.slug}`}>
                     <h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-amber-400 cursor-pointer">{p.name}</h3>
                   </Link>
                   <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Custom Design As Per Customer Requirement</p>
                 </div>
-                <p className="text-lg font-mono text-amber-400 font-bold shrink-0">${p.price}</p>
+                <p className="text-lg text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <p className="text-[11px] text-zinc-500 mt-2">Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+              <p className="text-xs text-zinc-500 mt-2">Ships in 18-24 Working Days • DHL Express • Tracking Provided</p>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
@@ -187,10 +192,10 @@ export default function Home() {
           <p className="text-sm font-serif uppercase tracking-widest">Retail + Wholesale Both Available</p>
           <p className="text-xs text-zinc-400">Retail: 1 Piece - For Customers - Shop Directly. Wholesale: 50+ Units - For Buyers - Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production.</p>
           <div className="flex flex-wrap justify-center gap-3 pt-1">
-            <a href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-300">
+            <a href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-amber-300">
               Shop Retail - 1 Piece
             </a>
-            <a href="/b2b" className="inline-block border border-amber-400 text-amber-400 text-xs uppercase tracking-[0.2em] font-bold px-6 py-3 rounded hover:bg-amber-400 hover:text-black">
+            <a href="/b2b" className="inline-block border border-amber-400 text-amber-400 text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-amber-400 hover:text-black">
               Get Wholesale Quote →
             </a>
           </div>

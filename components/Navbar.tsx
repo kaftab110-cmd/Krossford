@@ -71,11 +71,11 @@ export default function Navbar() {
   return (
     <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden">
       <div className="px-3 md:px-4 py-2 flex justify-between items-center gap-2 w-full max-w-full">
-        <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
-          <Logo className="w-8 h-8 md:w-10 md:h-10 shrink-0" />
+        <Link href="/" className="flex items-center gap-3 min-w-0 flex-1">
+          <Logo className="h-14 w-14 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0">
-            <span className="text-white font-bold uppercase tracking-[0.08em] md:tracking-[0.15em] text- md:text-lg truncate whitespace-nowrap">KROSSFORD</span>
-            <span className="text- md:text- text-amber-400/80 tracking-[0.2em] md:tracking-[0.4em] uppercase mt-1 truncate">Enterprises</span>
+            <span className="text-white font-extrabold uppercase tracking-wide text-2xl md:text-3xl truncate whitespace-nowrap leading-none">KROSSFORD</span>
+            <span className="text-xs font-medium text-amber-400 tracking-widest uppercase mt-1 truncate leading-none">ENTERPRISES</span>
           </div>
         </Link>
         <nav className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider">
@@ -83,11 +83,11 @@ export default function Navbar() {
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <div className="relative group">
             <Link href="/shop?category=For Her" className={`${cls("/shop")} flex items-center gap-1 py-2`}>
-              FOR HER <span className="text-">▼</span>
+              FOR HER <span className="text-xs">▼</span>
             </Link>
             <div className="absolute left-0 top-full pt-1 hidden group-hover:block w-56 z-50">
               <div className="bg-zinc-950 border border-zinc-800 rounded-md shadow-2xl py-2 overflow-hidden">
-                <div className="px-4 py-2 text- tracking-[0.25em] text-amber-400 border-b border-zinc-800">FOR HER - CATEGORIES</div>
+                <div className="px-4 py-2 text-xs tracking-widest text-amber-400 border-b border-zinc-800">FOR HER - CATEGORIES</div>
                 {FOR_HER_CATS.map((c) => (
                   <Link key={c.label} href={c.href} className="block px-4 py-2.5 text-xs font-medium text-zinc-300 hover:text-amber-400 hover:bg-zinc-900 transition-colors">
                     {c.label}
@@ -107,21 +107,21 @@ export default function Navbar() {
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
         </div>
         <div className="flex lg:hidden items-center gap-1.5 shrink-0">
-          <Link href="/wishlist" className="text- text-white border border-white/40 px-1.5 py-2 rounded whitespace-nowrap leading-none">WISHLIST ({wishlistCount})</Link>
-          <Link href="/cart" className="text- text-white border border-white/40 px-1.5 py-2 rounded whitespace-nowrap leading-none">CART ({cartCount})</Link>
-          <button onClick={() => setOpen(true)} className="text-white p-2 shrink-0 w- h- flex items-center justify-center" aria-label="Open Menu" aria-expanded={open}>
+          <Link href="/wishlist" className="w-10 h-10 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">W {wishlistCount}</Link>
+          <Link href="/cart" className="w-10 h-10 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">C {cartCount}</Link>
+          <button onClick={() => setOpen(true)} className="text-white p-2 shrink-0 w-10 h-10 flex items-center justify-center border border-transparent" aria-label="Open Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           </button>
         </div>
       </div>
       <div className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 lg:hidden ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} aria-hidden={!open}>
         <div className="absolute inset-0 bg-black/80" onClick={() => setOpen(false)} />
-        <div className={`relative w-[85%] max-w-xs bg-zinc-950 h-full p-6 flex flex-col justify-between border-l border-zinc-800 text-white overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${open ? "translate-x-0" : "translate-x-full"}`} role="dialog" aria-modal="true" aria-label="Menu">
+        <div className={`relative w-4/5 max-w-xs bg-zinc-950 h-full p-6 flex flex-col justify-between border-l border-zinc-800 text-white overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${open ? "translate-x-0" : "translate-x-full"}`} role="dialog" aria-modal="true" aria-label="Menu">
           <div>
             <div className="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
               <div className="flex items-center gap-2 min-w-0">
                 <Logo className="w-8 h-8 shrink-0" />
-                <span className="text-white font-bold uppercase text-sm tracking-[0.1em] truncate">KROSSFORD</span>
+                <span className="text-white font-bold uppercase text-sm tracking-widest truncate">KROSSFORD</span>
               </div>
               <button onClick={() => setOpen(false)} className="text-zinc-400 hover:text-white p-2 text-lg font-bold shrink-0" aria-label="Close Menu">X</button>
             </div>
@@ -130,12 +130,12 @@ export default function Navbar() {
               <Link href="/shop" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">SHOP</Link>
               <div className="py-1 border-b border-zinc-900">
                 <button onClick={() => setForHerOpen(!forHerOpen)} className="w-full flex justify-between items-center py-1 text-left text-amber-400">
-                  FOR HER <span className="text-">{forHerOpen ? "UP" : "DOWN"}</span>
+                  FOR HER <span className="text-xs">{forHerOpen ? "UP" : "DOWN"}</span>
                 </button>
                 {forHerOpen && (
                   <div className="pl-3 mt-1 flex flex-col">
                     {FOR_HER_CATS.map((c) => (
-                      <Link key={c.label} href={c.href} onClick={() => setOpen(false)} className="py-2 text- font-medium text-zinc-400 hover:text-amber-400 border-b border-zinc-900/50">
+                      <Link key={c.label} href={c.href} onClick={() => setOpen(false)} className="py-2 text-xs font-medium text-zinc-400 hover:text-amber-400 border-b border-zinc-900/50">
                         {c.label}
                       </Link>
                     ))}
