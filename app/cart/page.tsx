@@ -92,9 +92,13 @@ export default function CartPage() {
       const stamp = Date.now();
       // Purani cart me galat photo ho to abhi fix kar do + addedAt nahi hai to ab se 45 min start karo
       const withTime = raw.map((it) => ({ ...it, image: fixImage(it.image), addedAt: it.addedAt || stamp }));
-      // 45 min se zyada purane items auto remove
+      // 45 min se zyada purane items auto remove - bina notice, sab ka
       const alive = withTime.filter((it) => stamp - (it.addedAt || stamp) < CART_EXPIRY_MS);
-      if (alive.length !== raw.length) {
+      // FIX: Sirf expired hone pe hi save karna kaafi nahi tha.
+      // Purani cart me addedAt nahi hota tha, to har second naya addedAt banta tha aur timer reset ho jata tha.
+      // Ab pehli baar hi addedAt + fixed image localStorage me pakka save ho jayega, phir 45 min sahi chalega.
+      const needsSave = alive.length !== raw.length || raw.some((it) => !it.addedAt || it.image !== fixImage(it.image));
+      if (needsSave) {
         localStorage.setItem("krossford_cart", JSON.stringify(alive));
         localStorage.setItem("cart", JSON.stringify(alive));
       }
