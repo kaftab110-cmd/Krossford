@@ -220,7 +220,7 @@ export default function ProductPage() {
             <p className="text-xs text-zinc-400 mt-2">{product.description}</p>
             {safeGallery.length > 1 && (
               <div className="mt-5">
-                <p className="text-sm font-bold">SELECT DESIGN: Design {safeDesign + 1} <span className="text-xs font-normal text-zinc-400">• Price Same Rahegi - ${finalPrice}</span></p>
+                <p className="text-sm font-bold">SELECT DESIGN: Design {safeDesign + 1}</p>
                 <div className="flex gap-3 mt-3 flex-wrap">
                   {safeGallery.map((g, i) => (
                     <button key={g} onClick={() => setSelectedDesign(i)} title={`Design ${i + 1}`}
@@ -229,7 +229,6 @@ export default function ProductPage() {
                     </button>
                   ))}
                 </div>
-                <p className="text-xs text-zinc-400 mt-2">Kisi Bhi Design Pe Click Karo - Upar Badi Photo Badal Jayegi - Price Wahi Rahegi!</p>
               </div>
             )}
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
@@ -243,7 +242,7 @@ export default function ProductPage() {
             <p className="text-xs tracking-widest text-amber-400 uppercase">{product.category}</p>
             <h1 className="text-2xl sm:text-3xl font-bold uppercase mt-2 break-words">{product.name}</h1>
             <p className="text-xl font-bold mt-2 text-amber-400">${finalPrice} <span className="text-xs font-normal text-zinc-400">• Total: ${finalPrice * quantity} for {quantity} {quantity > 1 ? "pcs" : "pc"}</span></p>
-            <p className="text-xs text-green-400 font-medium mt-1">Price Fixed Hai - Design / Colour Badalne Se Price Nahi Badlegi! • Selected: Design {safeDesign + 1} • Colour: {selectedColor.name}</p>
+            <p className="text-xs text-zinc-400 mt-1">Selected: Design {safeDesign + 1} • Colour: {selectedColor.name}</p>
             {product.badge && <span className="inline-block mt-2 bg-zinc-900 border border-amber-400/30 text-amber-400 text-xs px-2 py-1 uppercase">{product.badge}</span>}
 
             <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
@@ -291,7 +290,6 @@ export default function ProductPage() {
                     style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #fbbf24" : "1px solid #3f3f46", cursor: "pointer" }} />
                 ))}
               </div>
-              <p className="text-xs text-zinc-400 mt-2">Colour Badalne Se Bhi Price Same Rahegi!</p>
             </div>
 
             <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5">
