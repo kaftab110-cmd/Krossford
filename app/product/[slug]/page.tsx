@@ -108,7 +108,7 @@ export default function ProductPage() {
   const finalPrice = product.price;
 
   const handleSampleRequest = () => {
-    const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Design: Design ${safeDesign + 1}, Color: ${selectedColor.name}, Type: ${customerType}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
+    const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Design: Design ${safeDesign + 1}, Color: ${selectedColor.name}, Type: ${customerType === "B2C" ? "Single Piece" : "Bulk Order"}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
@@ -249,19 +249,19 @@ export default function ProductPage() {
               <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Order Type - International Only</p>
               <div className="flex flex-col gap-2 mt-3 w-full">
                 <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full ${customerType === "B2C" ? "border-amber-400 bg-zinc-900" : "border-zinc-800 bg-black"}`}>
-                  <span className="text-xs font-bold block">B2C - Single Piece</span>
+                  <span className="text-xs font-bold block">Single Piece</span>
                 </button>
                 <button onClick={() => setCustomerType("B2B")} className={`p-3 rounded border text-left w-full ${customerType === "B2B" ? "border-amber-400 bg-zinc-900" : "border-zinc-800 bg-black"}`}>
-                  <span className="text-xs font-bold block">B2B - Bulk Order</span>
+                  <span className="text-xs font-bold block">Bulk Order</span>
                 </button>
               </div>
               {customerType === "B2C" ? (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
-                  <p className="text-xs font-bold text-white">B2C - Simple Order</p>
+                  <p className="text-xs font-bold text-white">Simple Order</p>
                   <p className="text-xs text-zinc-300">Simple Order - 1</p>
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (DHL Courier)</p>
+                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (【entity-DHL¦canonical_name=DHL】 Courier)</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
