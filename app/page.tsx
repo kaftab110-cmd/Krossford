@@ -28,7 +28,8 @@ const TOP3 = TOP3_SLUGS.map((slug) => {
 
 const getTop3Images = (slug: string, fallback: string): string[] => {
   const found = findProductBySlug(slug);
-  const all = [fallback, found?.image, ...(found?.gallery || [])].filter(Boolean);
+  // FIX: .filter(Boolean) se TypeScript ko nahi pata chalta ke undefined nikal gaya - is liye type guard lagaya
+  const all = [fallback, found?.image, ...(found?.gallery || [])].filter((x): x is string => Boolean(x));
   return [...new Set(all)];
 };
 
@@ -98,7 +99,7 @@ export default function Home() {
             <a href="/b2b" className="border border-amber-400 text-amber-400 px-7 py-3.5 rounded-md text-base font-medium hover:bg-amber-400 hover:text-black">
               Retail + Wholesale
             </a>
-            <a href="/contact-us" className="border border-zinc-300 px-7 py-3.5 rounded-md text-base font-medium hover:border-amber-400">
+            <a href="/contact" className="border border-zinc-300 px-7 py-3.5 rounded-md text-base font-medium hover:border-amber-400">
               Request Sample
             </a>
           </div>
