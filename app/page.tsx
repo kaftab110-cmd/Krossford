@@ -80,7 +80,7 @@ export default function Home() {
         <img
           src="/images/leather-duffle-bag.jpg"
           alt="Leather Duffle Bag"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-bottom"
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
