@@ -79,7 +79,7 @@ export default function ImpressumPage() {
           EU Dispute Resolution
         </h2>
         <p>
-          The European Commission provides a platform for online dispute
+          The 【entity-European Commission¦canonical_name=European Commission】 provides a platform for online dispute
           resolution (ODR):{" "}
           <a
             href="https://ec.europa.eu/consumers/odr/"

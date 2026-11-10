@@ -48,8 +48,8 @@ export default function ContactPage() {
   };
 
   const buildMessage = () => {
-    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos WhatsApp / Email me manually attach kar dein)` : "";
-    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / WhatsApp: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos 【entity-WhatsApp¦canonical_name=WhatsApp】 / Email me manually attach kar dein)` : "";
+    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / 【entity-WhatsApp¦canonical_name=WhatsApp】: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
   const handleWhatsApp = (e: React.FormEvent) => {
@@ -101,7 +101,7 @@ export default function ContactPage() {
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
             <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
-              <span className="block text-xs text-zinc-400 uppercase">WhatsApp / Phone</span>
+              <span className="block text-xs text-zinc-400 uppercase">【entity-WhatsApp¦canonical_name=WhatsApp】 / Phone</span>
               <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
             </a>
             <div className="block rounded-md border border-zinc-800 px-5 py-4">
@@ -119,7 +119,6 @@ export default function ContactPage() {
             <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             <input required type="email" placeholder="Corporate Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
-            {/* COUNTRY + PHONE - Country select karte hi auto code: Pakistan +92, India +91, USA +1 ... */}
             <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
               {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
