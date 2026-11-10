@@ -81,10 +81,15 @@ export default function Header() {
       <div className="border-b border-yellow-500/20 bg-black/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 md:px-6 md:py-4 w-full">
           
-          <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
-            <Logo className="h-10 w-10 md:h-10 md:w-10 shrink-0" />
-            <span className="text- md:text- font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
-              KROSSFORD
+          <Link href="/" className="flex items-center gap-3 min-w-0 flex-1">
+            <Logo className="h-14 w-14 md:h-16 md:w-16 shrink-0" />
+            <span className="flex flex-col leading-none min-w-0">
+              <span className="text- md:text- font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
+                KROSSFORD
+              </span>
+              <span className="text- md:text- font-medium tracking-[0.42em] text-yellow-500/90 whitespace-nowrap leading-none mt-">
+                ENTERPRISES
+              </span>
             </span>
           </Link>
 
