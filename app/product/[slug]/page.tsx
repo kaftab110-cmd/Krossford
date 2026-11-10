@@ -199,10 +199,6 @@ export default function ProductPage() {
     window.location.href = "/cart";
   };
 
-  // UPDATED - LOW PRODUCTS / YOU MAY ALSO LIKE - LOW TO HIGH
-  // Pehle wala bug: same-category pehle aata tha, price baad me - is liye heading "Low To High" jhoothi lagti thi.
-  // Ab: pehle same-category wale, unke andar Low -> High. Agar same-category me 3 se kam hain, to baaki sab se cheapest wale fill honge.
-  // Result: heading hamesha sach hogi, aur card kabhi khaali nahi rahega.
   const sameCategory = [...products]
     .filter((p) => p.id !== product.id && p.category === product.category)
     .sort((a, b) => Number(a.price) - Number(b.price));
@@ -220,7 +216,7 @@ export default function ProductPage() {
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-10">
           <div className="min-w-0">
-            <img src={mainImage} alt={product.name} onError={() => markFailed(mainImage)} className="w-full h-auto max-h-[600px] object-cover rounded-lg border border-zinc-800" />
+            <img src={mainImage} alt={product.name} onError={() => markFailed(mainImage)} className="w-full h-auto max-h- object-cover rounded-lg border border-zinc-800" />
             <p className="text-xs text-zinc-400 mt-2">{product.description}</p>
             {safeGallery.length > 1 && (
               <div className="mt-5">
@@ -393,7 +389,7 @@ export default function ProductPage() {
                 <span className="px-2 font-bold">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2 text-white hover:text-amber-400">+</button>
               </div>
-              <button onClick={handleAddToCart} className="flex-1 min-w-[200px] bg-amber-400 text-black py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-amber-300">
+              <button onClick={handleAddToCart} className="flex-1 min-w- bg-amber-400 text-black py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-amber-300">
                 Add To Cart - {selectedColor.name} • Design {safeDesign + 1} • ${finalPrice * quantity}
               </button>
             </div>
@@ -405,8 +401,8 @@ export default function ProductPage() {
         </div>
 
         <div className="mt-14 border-t border-zinc-800 pt-8">
-          <h2 className="text-lg font-bold uppercase tracking-widest text-white">You May Also Like - Low To High</h2>
-          <p className="text-xs text-zinc-400 mt-1">Sab se sasta pehle - {related.length > 0 ? `$${related[0].price} se $${related[related.length - 1].price} tak` : ""}</p>
+          <h2 className="text-lg font-bold uppercase tracking-widest text-white">You May Also Like</h2>
+          <p className="text-xs text-zinc-400 mt-1">{related.length > 0 ? `$${related[0].price} - $${related[related.length - 1].price}` : ""}</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
             {related.map((p) => {
               const cardImagesRaw = [...new Set([p.image, ...(p.gallery || [])].filter(Boolean))];
