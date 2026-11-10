@@ -1,92 +1,64 @@
+"use client";
+
 import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative min-h- lg:min-h- flex items-center justify-center bg-black overflow-hidden px-4 sm:px-6 border-b border-zinc-800 w-full">
-      {/* Dark Overlay & New Full-Grain Leather Hides Background Image */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative w-full min-h- flex flex-col justify-center items-center text-center overflow-hidden bg-black pt-16">
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1920&q=90"
-          alt="Stacked Full-Grain Leather Hides"
-          className="w-full h-full object-cover"
-          style={{ filter: "brightness(0.38) contrast(1.2)", objectPosition: "center 35%" }}
+          src="/images/hero-bag.jpg"
+          alt="Krossford Leather Bag"
+          className="w-full h-full object-cover opacity-70"
         />
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.55))"
-          }}
-        />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      {/* FIX 1: pt-28 lagaya taake fixed Navbar heading ko na chupaye */}
-      {/* FIX 5: pb-28 lagaya taake WhatsApp / Ask AI button text ke upar na aaye */}
-      <div
-        className="relative z-10 max-w- w-full mx-auto text-center space-y-5 sm:space-y-6 mt-10 pt-16 sm:pt-20 pb-24 sm:pb-20"
-        style={{
-          background: "rgba(0, 0, 0, 0.45)",
-          paddingLeft: "16px",
-          paddingRight: "16px",
-          paddingTop: "20px",
-          paddingBottom: "20px",
-          backdropFilter: "blur(2px)",
-          borderRadius: "12px"
-        }}
-      >
-        {/* FIX 2: Heading - tracking kam + break-words + clamp theek kiya */}
-        <h1
-          className="font-serif uppercase font-bold text-white tracking-[0.04em] sm:tracking-[0.08em] break-words"
-          style={{
-            fontSize: "clamp(28px, 8vw, 64px)",
-            lineHeight: 1.1,
-            textAlign: "center",
-            maxWidth: "900px",
-            margin: "0 auto",
-            textShadow: "0px 4px 20px rgba(0,0,0,0.9)",
-            overflowWrap: "break-word"
-          }}
-        >
-          Custom Leather Jackets — Made For Your Brand
-        </h1>
-
-        {/* FIX 3: Sub-text - text-xs se text- kiya, parhne layak */}
-        <p
-          className="text- sm:text-base font-light max-w-2xl mx-auto tracking-wide leading-relaxed px-1"
-          style={{
-            color: "#E5E5E5",
-            textAlign: "center",
-            textShadow: "0px 2px 10px rgba(0,0,0,0.9)"
-          }}
-        >
-          Architectural craftsmanship built for global wholesale, white-label retail, and custom private-label production.
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-10 pb-24 w-full max-w-6xl mx-auto">
+        {/* SIRF KROSSFORD - BARA + CENTER */}
+        <p className="text- sm:text- md:text- font-bold tracking-[0.3em] text-amber-400 uppercase text-center leading-none">
+          KROSSFORD
         </p>
 
-        {/* FIX 4: Buttons - tracking kam + max-width + wrap fix */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4 relative z-10 w-full max-w- mx-auto">
+        <h1 className="mt-6 text- sm:text- md:text- leading-[0.95] font-bold text-white text-center">
+          Real Leather.
+          <br />
+          Made Honestly.
+        </h1>
+
+        <p className="mt-6 text- sm:text- md:text- text-zinc-200 max-w-2xl mx-auto text-center leading-relaxed">
+          A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Real Leather Guarantee.
+        </p>
+
+        <div className="mt-8 flex flex-wrap justify-center items-center gap-3 sm:gap-4">
           <Link
-            href="/b2b"
-            className="w-full sm:w-auto font-bold text- sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.15em] transition-all text-center rounded- whitespace-normal leading-relaxed"
-            style={{
-              backgroundColor: "#C9A227",
-              color: "#000000",
-              padding: "14px 20px"
-            }}
+            href="/shop"
+            className="bg-amber-400 text-black px-6 py-3 rounded text- font-bold tracking-[0.1em] hover:bg-amber-300"
           >
-            Request Custom Quote
+            Shop Collection
           </Link>
           <Link
             href="/b2b"
-            className="w-full sm:w-auto font-medium text- sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.15em] transition-all text-center rounded- whitespace-normal leading-relaxed"
-            style={{
-              backgroundColor: "transparent",
-              border: "2px solid #FFFFFF",
-              color: "#FFFFFF",
-              padding: "14px 20px"
-            }}
+            className="border border-amber-400 text-amber-400 px-6 py-3 rounded text- font-bold tracking-[0.1em] hover:bg-amber-400 hover:text-black"
           >
-            B2B Wholesale Portal
+            Retail + Wholesale
+          </Link>
+          <Link
+            href="/contact"
+            className="border border-white text-white px-6 py-3 rounded text- font-bold tracking-[0.1em] hover:bg-white hover:text-black"
+          >
+            Request Sample
           </Link>
         </div>
+      </div>
+
+      {/* Bottom Ticker */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/60 border-t border-white/10 py-2 overflow-hidden">
+        <p className="whitespace-nowrap text- sm:text- tracking-[0.2em] text-zinc-300 text-center uppercase">
+          Ships Via DHL Express &nbsp;•&nbsp; Total Delivery: 18-24 Working Days &nbsp;•&nbsp; Tracking Provided &nbsp;•&nbsp; VISA | MASTERCARD | WESTERN UNION
+        </p>
       </div>
     </section>
   );
