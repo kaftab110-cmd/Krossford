@@ -76,14 +76,8 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black py-24">
-        <img
-          src="/images/leather-duffle-bag.jpg"
-          alt="Leather Duffle Bag"
-          className="absolute inset-0 w-full h-full object-contain object-center"
-        />
-        <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
+      <section className="relative w-full bg-black py-24 text-center overflow-hidden">
+        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full">
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
             KROSSFORD
           </p>
@@ -108,7 +102,12 @@ export default function Home() {
               Request Sample
             </a>
           </div>
-          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via {"【entity-DHL¦canonical_name=DHL】 " + "【entity-Express¦canonical_name=Express】"} • Total Delivery: 18-24 Working Days • Tracking Provided • {"VI" + "SA"} | {"MASTER" + "CARD"} | {"【entity-WESTERN¦canonical_name=Western Union】 " + "【entity-UNION¦canonical_name=Western Union】"} | BANK TRANSFER</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via Courier • Total Delivery: 18-24 Working Days • Tracking Provided • Secure Payments • Bank Transfer</p>
+          <img
+            src="/images/leather-duffle-bag.jpg"
+            alt="Leather Duffle Bag"
+            className="w-full max-w-4xl mx-auto mt-10 rounded-lg h-auto object-contain"
+          />
         </div>
       </section>
 
@@ -148,7 +147,7 @@ export default function Home() {
                 </div>
                 <p className="text-lg text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <p className="text-xs text-zinc-500 mt-2">Ships in 18-24 Working Days • {"DHL " + "Express"} • Tracking Provided</p>
+              <p className="text-xs text-zinc-500 mt-2">Ships in 18-24 Working Days • Courier • Tracking Provided</p>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
