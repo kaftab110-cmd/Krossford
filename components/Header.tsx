@@ -83,7 +83,7 @@ export default function Header() {
           
           <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
             <Logo className="h-10 w-10 md:h-10 md:w-10 shrink-0" />
-            <span className="text- md:text-xl font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
+            <span className="text- md:text- font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
               KROSSFORD
             </span>
           </Link>
