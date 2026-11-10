@@ -22,15 +22,15 @@ type CartItem = {
   extraChargesNote?: string;
 };
 
-// SYNC FIX: COUNTRIES ab yahan hardcode nahi hai - lib/data/countries.ts se aayega (wahi list jo baaki forms me hai)
-// Sirf "Other" alag se add kiya hai taake purana behaviour na toote
-const CHECKOUT_COUNTRIES = [...COUNTRIES, "Other"];
+// SYNC FIX: COUNTRIES ab yahan hardcode nahi hai - lib/data/countries.ts se aayega
+// FIX: Set use kiya - agar COUNTRIES me "Other" pehle se hai to duplicate nahi banega
+const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 
 const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
-  { id: "Western Union", title: "Western Union", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
-  { id: "VISA / Mastercard", title: "VISA / Mastercard", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
+  { id: "【entity-Western Union¦canonical_name=Western Union】", title: "【entity-Western Union¦canonical_name=Western Union】", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
+  { id: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", title: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
 const customMadeLabel = (t?: string) => {
@@ -52,10 +52,7 @@ export default function CheckoutPage() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [postalCode, setPostalCode] = useState("");
-  // PHONE FIX: Phone ab plain input nahi hai - PhoneInput component hai
-  // value me FULL number save hota hai - jaise Pakistan -> +923001234567, India -> +919876543210
   const [phone, setPhone] = useState("");
-  // Alternate / Contact Number (Optional) - agar pehla number na lage to is pe call karenge
   const [altPhone, setAltPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
   const [orderSent, setOrderSent] = useState(false);
@@ -65,8 +62,6 @@ export default function CheckoutPage() {
     setCart(saved);
   }, []);
 
-  // Country badle to dono numbers ka code bhi badle - local part wahi rahega, sirf +92 -> +91 hoga
-  // Example: +923001234567 + Country India -> +913001234567 (local 3001234567 same)
   useEffect(() => {
     if (phone) setPhone(buildFullPhone(country, phone));
     if (altPhone) setAltPhone(buildFullPhone(country, altPhone));
@@ -97,7 +92,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: DHL Express - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: 【entity-DHL Express¦canonical_name=DHL Express】 - Total 18-24 Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -142,11 +137,10 @@ export default function CheckoutPage() {
               <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
             </div>
             <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
-            {/* PHONE + ALTERNATE - Country select karte hi auto code: Pakistan +92, India +91, USA +1 ... */}
             <PhoneInput country={country} value={phone} onChange={setPhone} label="Mobile / WhatsApp *" placeholder="3001234567" />
             <PhoneInput country={country} value={altPhone} onChange={setAltPhone} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
             <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 text-white">
-              {CHECKOUT_COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              {CHECKOUT_COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
             <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
             <div className="grid grid-cols-2 gap-3">
@@ -154,7 +148,7 @@ export default function CheckoutPage() {
               <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State / Province *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
             </div>
             <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
-            <p className="text-xs text-zinc-500">City, State & Postal Code are required for DHL Express international delivery.</p>
+            <p className="text-xs text-zinc-500">City, State & Postal Code are required for 【entity-DHL Express¦canonical_name=DHL Express】 international delivery.</p>
           </div>
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
@@ -162,7 +156,7 @@ export default function CheckoutPage() {
           </div>
 
           <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3">
-            <p className="text-xs text-amber-400 font-bold">Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days • Tracking Provided</p>
+            <p className="text-xs text-amber-400 font-bold">Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days • Tracking Provided</p>
             <p className="text-xs text-zinc-400 mt-1">Our aim to deliver earlier than estimated.</p>
           </div>
         </div>
@@ -182,11 +176,11 @@ export default function CheckoutPage() {
                     )}
                     {it.customMade?.enabled && (
                       <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
-                        <p className="text-[11px] text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
-                        {it.customMade.type && <p className="text-[11px] text-zinc-200">Kya Customize: {customMadeLabel(it.customMade.type)}</p>}
-                        {it.customMade.detail && <p className="text-[11px] text-zinc-300">Detail: {it.customMade.detail}</p>}
-                        {it.customMade.fileName && <p className="text-[10px] text-zinc-400">Design Image: {it.customMade.fileName}</p>}
-                        <p className="text-[10px] text-amber-300">Rates design ke mutabiq honge - Final price order confirm hone ke baad batayi jayegi.</p>
+                        <p className="text- text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
+                        {it.customMade.type && <p className="text- text-zinc-200">Kya Customize: {customMadeLabel(it.customMade.type)}</p>}
+                        {it.customMade.detail && <p className="text- text-zinc-300">Detail: {it.customMade.detail}</p>}
+                        {it.customMade.fileName && <p className="text- text-zinc-400">Design Image: {it.customMade.fileName}</p>}
+                        <p className="text- text-amber-300">Rates design ke mutabiq honge - Final price order confirm hone ke baad batayi jayegi.</p>
                       </div>
                     )}
                   </div>
@@ -207,7 +201,7 @@ export default function CheckoutPage() {
                   <label key={p.id} className={`flex items-start gap-2 bg-zinc-900 border rounded p-3 cursor-pointer ${paymentMethod === p.id ? "border-amber-400" : "border-zinc-800"}`}>
                     <input type="radio" name="payment" checked={paymentMethod === p.id} onChange={() => setPaymentMethod(p.id)} className="mt-1 accent-amber-400" />
                     <span>
-                      <span className="block text-sm font-bold">{p.title} {p.badge && <span className="text-[11px] bg-amber-400 text-black px-1.5 py-0.5 rounded ml-1">{p.badge}</span>}</span>
+                      <span className="block text-sm font-bold">{p.title} {p.badge && <span className="text- bg-amber-400 text-black px-1.5 py-0.5 rounded ml-1">{p.badge}</span>}</span>
                       <span className="block text-xs text-zinc-400 mt-1">{p.desc}</span>
                     </span>
                   </label>

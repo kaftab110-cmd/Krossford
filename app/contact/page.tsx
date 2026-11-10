@@ -110,7 +110,7 @@ export default function ContactPage() {
             </div>
             <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
               <span className="block text-xs text-zinc-400 uppercase">Payment</span>
-              <span className="text-xs text-zinc-300 mt-1 block">VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-300 mt-1 block">【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER</span>
               <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
             <input required type="email" placeholder="Corporate Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             {/* COUNTRY + PHONE - Country select karte hi auto code: Pakistan +92, India +91, USA +1 ... */}
             <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
-              {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
             <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label="Mobile / WhatsApp" placeholder="3001234567" required={false} />
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
