@@ -16,7 +16,7 @@ const navLinks = [
 const tickerItems = [
   "100% Real Leather Guarantee - Sample Before Bulk",
   "Wholesale: Leather Jacket & Biker Suit - MOQ 25+ Units - Get Quote",
-  "Ships to USA / UK / EU - 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER",
+  "Ships to USA / UK / EU - VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
 ];
 
 export default function Header() {
