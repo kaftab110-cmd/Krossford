@@ -16,7 +16,7 @@ const navLinks = [
 const tickerItems = [
   "100% Real Leather Guarantee - Sample Before Bulk",
   "Wholesale: Leather Jacket & Biker Suit - MOQ 25+ Units - Get Quote",
-  "Ships to USA / UK / EU - VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
+  "Ships to USA / UK / EU - 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER",
 ];
 
 export default function Header() {
@@ -67,7 +67,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full overflow-x-hidden">
-      <div className="relative bg-zinc-950 text-yellow-500/90 text- md:text-xs tracking-wide uppercase py-2 border-b border-yellow-500/20 overflow-hidden">
+      <div className="relative bg-zinc-950 text-yellow-500/90 text-xs tracking-wide uppercase py-2 border-b border-yellow-500/20 overflow-hidden">
         <div className="flex whitespace-nowrap animate-marquee w-max">
           {[...tickerItems, ...tickerItems, ...tickerItems].map((item, index) => (
             <span key={index} className="mx-8 flex items-center gap-4 font-medium">
@@ -84,10 +84,10 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-3 min-w-0 flex-1">
             <Logo className="h-14 w-14 md:h-16 md:w-16 shrink-0" />
             <span className="flex flex-col leading-none min-w-0">
-              <span className="text- md:text- font-extrabold tracking-[0.08em] md:tracking-[0.15em] text-yellow-500 truncate whitespace-nowrap leading-none">
+              <span className="text-2xl md:text-3xl font-extrabold tracking-wide text-yellow-500 truncate whitespace-nowrap leading-none">
                 KROSSFORD
               </span>
-              <span className="text- md:text- font-medium tracking-[0.42em] text-yellow-500/90 whitespace-nowrap leading-none mt-">
+              <span className="text-xs font-medium tracking-widest text-yellow-500/90 whitespace-nowrap leading-none mt-1">
                 ENTERPRISES
               </span>
             </span>
@@ -117,7 +117,7 @@ export default function Header() {
             >
               Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
               {wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-amber-400 text-black text- font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
@@ -128,7 +128,7 @@ export default function Header() {
             >
               Cart {cartCount > 0 && `(${cartCount})`}
               {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-amber-400 text-black text- font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-amber-400 text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -138,14 +138,14 @@ export default function Header() {
           <div className="flex md:hidden items-center gap-1.5 shrink-0">
             <Link
               href="/wishlist"
-              className="w-10 h-10 shrink-0 border border-yellow-500/50 rounded-md flex items-center justify-center text-yellow-500 text- leading-none whitespace-nowrap"
+              className="w-10 h-10 shrink-0 border border-yellow-500/50 rounded-md flex items-center justify-center text-yellow-500 text-xs leading-none whitespace-nowrap"
               aria-label="Wishlist"
             >
               <span className="flex items-center gap-0.5">♡ {wishlistCount}</span>
             </Link>
             <Link
               href="/cart"
-              className="w-10 h-10 shrink-0 border border-yellow-500/50 rounded-md flex items-center justify-center text-yellow-500 text- leading-none whitespace-nowrap"
+              className="w-10 h-10 shrink-0 border border-yellow-500/50 rounded-md flex items-center justify-center text-yellow-500 text-xs leading-none whitespace-nowrap"
               aria-label="Cart"
             >
               <span className="flex items-center gap-0.5">C {cartCount}</span>
