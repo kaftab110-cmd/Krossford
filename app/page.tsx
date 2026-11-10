@@ -76,14 +76,14 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-black">
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black py-24">
         <img
           src="/images/leather-duffle-bag.jpg"
           alt="Leather Duffle Bag"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-6 max-w-4xl mx-auto">
+        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
             KROSSFORD
           </p>
@@ -108,7 +108,7 @@ export default function Home() {
               Request Sample
             </a>
           </div>
-          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Total Delivery: 18-24 Working Days • Tracking Provided • 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships via {"DHL Express"} • Total Delivery: 18-24 Working Days • Tracking Provided • {"【entity-VISA¦canonical_name=VISA】"} | {"【entity-MASTERCARD¦canonical_name=MASTERCARD】"} | {"【entity-WESTERN UNION¦canonical_name=WESTERN UNION】"} | BANK TRANSFER</p>
         </div>
       </section>
 
