@@ -10,7 +10,7 @@ const navLinks = [
   { label: "Wholesale (B2B)", href: "/b2b" },
   { label: "Collections", href: "/collections" },
   { label: "About Us", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const tickerItems = [
