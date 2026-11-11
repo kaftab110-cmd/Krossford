@@ -40,7 +40,7 @@ export default function Footer() {
             TRACK YOUR ORDER →
           </a>
           <p className="text- text-zinc-500 text-center leading-relaxed px-2 break-words max-w-full">
-            Apna DHL Tracking Number yahan daal ke apna parcel track karein. Tracking Number dispatch ke baad WhatsApp pe milega.
+            Enter your DHL Tracking Number here to track your parcel. Your Tracking Number will be shared on WhatsApp after dispatch.
           </p>
         </div>
 
