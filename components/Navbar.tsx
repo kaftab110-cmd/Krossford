@@ -70,12 +70,12 @@ export default function Navbar() {
 
   return (
     <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden">
-      <div className="px-3 md:px-4 py-2 flex justify-between items-center gap-2 w-full max-w-full">
-        <Link href="/" className="flex items-center gap-3 min-w-0 flex-1">
-          <Logo className="h-14 w-14 md:h-16 md:w-16 shrink-0" />
+      <div className="px-2 md:px-4 py-2 flex justify-between items-center gap-1 w-full max-w-full">
+        <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
+          <Logo className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0">
-            <span className="text-white font-extrabold uppercase tracking-wide text-2xl md:text-3xl truncate whitespace-nowrap leading-none">KROSSFORD</span>
-            <span className="text-xs font-medium text-amber-400 tracking-widest uppercase mt-1 truncate leading-none">ENTERPRISES</span>
+            <span className="text-white font-extrabold uppercase tracking-wide text-lg sm:text-2xl md:text-3xl whitespace-nowrap leading-none">KROSSFORD</span>
+            <span className="text-xs font-medium text-amber-400 tracking-widest uppercase mt-1 leading-none">ENTERPRISES</span>
           </div>
         </Link>
         <nav className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider">
@@ -106,10 +106,10 @@ export default function Navbar() {
           <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({wishlistCount})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
         </div>
-        <div className="flex lg:hidden items-center gap-1.5 shrink-0">
-          <Link href="/wishlist" className="w-10 h-10 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">W {wishlistCount}</Link>
-          <Link href="/cart" className="w-10 h-10 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">C {cartCount}</Link>
-          <button onClick={() => setOpen(true)} className="text-white p-2 shrink-0 w-10 h-10 flex items-center justify-center border border-transparent" aria-label="Open Menu">
+        <div className="flex lg:hidden items-center gap-1 shrink-0">
+          <Link href="/wishlist" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">W {wishlistCount}</Link>
+          <Link href="/cart" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">C {cartCount}</Link>
+          <button onClick={() => setOpen(true)} className="text-white p-1 shrink-0 w-9 h-9 flex items-center justify-center border border-transparent" aria-label="Open Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           </button>
         </div>
