@@ -20,9 +20,11 @@ export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [forHerOpen, setForHerOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const updateCount = () => {
       try {
         const cart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
@@ -102,12 +104,12 @@ export default function Navbar() {
           <Link href="/contact" className={cls("/contact") + " whitespace-nowrap"}>CONTACT US</Link>
         </nav>
         <div className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider shrink-0 whitespace-nowrap ml-4">
-          <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({wishlistCount})</Link>
-          <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
+          <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({mounted ? wishlistCount : 0})</Link>
+          <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({mounted ? cartCount : 0})</Link>
         </div>
         <div className="flex lg:hidden items-center gap-1 shrink-0">
-          <Link href="/wishlist" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">W {wishlistCount}</Link>
-          <Link href="/cart" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">C {cartCount}</Link>
+          <Link href="/wishlist" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">W {mounted ? wishlistCount : 0}</Link>
+          <Link href="/cart" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">C {mounted ? cartCount : 0}</Link>
           <button onClick={() => setOpen(true)} className="text-white p-1 shrink-0 w-9 h-9 flex items-center justify-center border border-transparent" aria-label="Open Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           </button>
@@ -145,8 +147,8 @@ export default function Navbar() {
               <Link href="/b2b" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">B2B WHOLESALE</Link>
               <Link href="/about" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">ABOUT</Link>
               <Link href="/contact" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CONTACT US</Link>
-              <Link href="/wishlist" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">WISHLIST ({wishlistCount})</Link>
-              <Link href="/cart" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CART ({cartCount})</Link>
+              <Link href="/wishlist" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">WISHLIST ({mounted ? wishlistCount : 0})</Link>
+              <Link href="/cart" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CART ({mounted ? cartCount : 0})</Link>
             </nav>
           </div>
           <div className="text-xs text-zinc-500 text-center border-t border-zinc-900 pt-4">Crafted in Pakistan. Since 2025.</div>
