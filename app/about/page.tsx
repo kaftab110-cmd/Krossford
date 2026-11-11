@@ -32,7 +32,7 @@ export default function AboutUsPage() {
             <p className="text-zinc-400 text-xs mt-2">Pehle sample dekho, phir bulk ka faisla karo.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
-            <p className="text-amber-400 font-bold text-sm">【-DHL¦canonical_name=DHL】 Express</p>
+            <p className="text-amber-400 font-bold text-sm">【-DHL¦DHL Express</p>
             <p className="text-zinc-400 text-xs mt-2">Ships Worldwide • Tracking Provided.</p>
           </div>
         </div>
