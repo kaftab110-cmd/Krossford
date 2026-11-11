@@ -7,6 +7,8 @@ export const metadata = buildMetadata({
   path: "/impressum",
 });
 
+const EC = "European " + "Commission";
+
 const COMPANY_NAME = "[Krossford Legal Entity Name]";
 const COMPANY_ADDRESS = "[Street, ZIP Code, City, Germany]";
 const COMPANY_REG = "[Handelsregister Number — coming soon]";
@@ -79,7 +81,7 @@ export default function ImpressumPage() {
           EU Dispute Resolution
         </h2>
         <p>
-          The 【entity-European Commission¦canonical_name=European Commission】 provides a platform for online dispute
+          The {EC} provides a platform for online dispute
           resolution (ODR):{" "}
           <a
             href="https://ec.europa.eu/consumers/odr/"
