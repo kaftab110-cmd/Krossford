@@ -27,7 +27,17 @@ const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
-  { id: "|| "";
+  { id: "【entity-Western Union¦canonical_name=Western Union】", title: "【entity-Western Union¦canonical_name=Western Union】", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
+  { id: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", title: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
+];
+
+const customMadeLabel = (t?: string) => {
+  if (t === "full") return "Full Product - Mere Design Pe Banao";
+  if (t === "stitching") return "Stitching Only - Hand Stitched Chahiye";
+  if (t === "design") return "Design Change";
+  if (t === "size-colour") return "Size / Colour Change";
+  if (t === "logo-name") return "Logo / Name Add Karna Hai";
+  return t || "";
 };
 
 export default function CheckoutPage() {
@@ -80,7 +90,87 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: | {it.customerType} | Qty: {it.quantity}</p>
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: 【entity-DHL Express¦canonical_name=DHL Express】 - Crafting 7-10 Working Days + 【entity-DHL¦canonical_name=DHL】 Delivery 5-7 Working Days - Total 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+
+    localStorage.removeItem("krossford_cart");
+    localStorage.removeItem("cart");
+    window.dispatchEvent(new Event("cartUpdated"));
+    setOrderSent(true);
+  };
+
+  if (orderSent) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
+        <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
+        <p className="text-2xl font-bold">Order Sent!</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via DHL Express • Total Delivery: 12-17 Working Days • Ships from Pakistan • Tracking Provided.</p>
+        <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
+        <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
+      </div>
+    );
+  }
+
+  if (cart.length === 0) {
+    return (
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
+        <p className="text-2xl font-bold">Your cart is empty</p>
+        <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Go To Shop</Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6 md:p-12">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+        <div>
+          <h1 className="text-3xl font-bold uppercase">Checkout</h1>
+          <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
+          <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
+
+          <div className="mt-6 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            </div>
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <PhoneInput country={country} value={phone} onChange={setPhone} label="Mobile / WhatsApp *" placeholder="3001234567" />
+            <PhoneInput country={country} value={altPhone} onChange={setAltPhone} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
+            <select value={country} onChange={(e) => setCountry(e.target.value)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 text-white">
+              {CHECKOUT_COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
+            </select>
+            <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white resize-none" />
+            <div className="grid grid-cols-2 gap-3">
+              <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+              <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State / Province *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            </div>
+            <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
+            <p className="text-xs text-zinc-500">City, State & Postal Code are required for DHL Express international delivery.</p>
+          </div>
+
+          <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
+            <p className="text-xs text-zinc-400">Shipping & delivery charges, plus any extra customization charges, will be confirmed after your order is confirmed. They are not included in the product price.</p>
+          </div>
+
+          <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3 space-y-1">
+            <p className="text-xs text-amber-400 font-bold">Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】</p>
+            <p className="text-xs text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
+            <p className="text-xs text-amber-400 font-bold">Ships via DHL Express • Crafting: 7-10 Working Days + DHL Delivery: 5-7 Working Days = Total 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
+            <p className="text-xs text-zinc-400 mt-1">We Always Aim To Deliver Earlier.</p>
+          </div>
+        </div>
+
+        <div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+            <p className="text-xs font-bold tracking-widest uppercase text-zinc-300">Order Summary</p>
+            <div className="mt-4 space-y-4">
+              {cart.map((it) => (
+                <div key={it.id} className="flex gap-3">
+                  <img src={it.image} alt={it.name} className="w-16 h-16 object-cover rounded" />
+                  <div className="flex-1">
+                    <p className="text-sm font-bold leading-tight">{it.name}</p>
+                    <p className="text-xs text-zinc-400">Color: {it.colorName} | {it.customerType} | Qty: {it.quantity}</p>
                     {it.additionalOption !== "none" && (
                       <p className="text-xs text-amber-400">Custom: {it.additionalOption} {it.customText}</p>
                     )}
