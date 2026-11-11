@@ -97,7 +97,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nOrder Type - International Only\nDelivery: ${DHLE} - Crafting 7-10 Working Days + ${DHL} Delivery 5-7 Working Days - Total 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nOrder\nDelivery: ${DHLE} - Crafting 7-10 Working Days + ${DHL} Delivery 5-7 Working Days - Total 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -134,7 +134,7 @@ export default function CheckoutPage() {
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
-          <p className="text-xs text-amber-400 mt-2 tracking-wide">Order Type - International Only</p>
+          <p className="text-xs text-amber-400 mt-2 tracking-wide">Order</p>
           <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
 
           <div className="mt-6 space-y-3">
@@ -172,7 +172,7 @@ export default function CheckoutPage() {
         <div>
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
             <p className="text-xs font-bold tracking-widest uppercase text-zinc-300">Order Summary</p>
-            <p className="text-xs text-amber-400 mt-1">Order Type - International Only</p>
+            <p className="text-xs text-amber-400 mt-1">Order</p>
             <div className="mt-4 space-y-4">
               {cart.map((it) => (
                 <div key={it.id} className="flex gap-3">
