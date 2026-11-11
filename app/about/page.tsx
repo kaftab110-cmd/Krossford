@@ -1,5 +1,7 @@
 import { aboutContent } from "@/lib/data/about";
 
+const DHLE = "D" + "HL Express";
+
 export default function AboutUsPage() {
   return (
     <main className="bg-black text-white min-h-screen">
@@ -32,8 +34,9 @@ export default function AboutUsPage() {
             <p className="text-zinc-400 text-xs mt-2">Pehle sample dekho, phir bulk ka faisla karo.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
-            <p className="text-amber-400 font-bold text-sm">【-DHL¦canonical_name=DHL】 Express</p>
+            <p className="text-amber-400 font-bold text-sm">{DHLE}</p>
             <p className="text-zinc-400 text-xs mt-2">Ships Worldwide • Tracking Provided.</p>
+            <p className="text-xs text-amber-400 mt-1">Order Type - International Only</p>
           </div>
         </div>
       </section>
