@@ -36,7 +36,6 @@ export default function AboutUsPage() {
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
             <p className="text-amber-400 font-bold text-sm">{DHLE}</p>
             <p className="text-zinc-400 text-xs mt-2">Ships Worldwide • Tracking Provided.</p>
-            <p className="text-xs text-amber-400 mt-1">Order Type - International Only</p>
           </div>
         </div>
       </section>

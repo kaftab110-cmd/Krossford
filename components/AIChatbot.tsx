@@ -123,7 +123,7 @@ export default function AIChatbot() {
     if (hasWord("hello") || hasWord("hi") || hasWord("hey") || lower.includes("salam") || lower.includes("assalam")) {
       return urdu ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?" : "Hello! Welcome to Krossford. Which product are you interested in? Bag, Wallet, Jacket, Belt or Cap? Are you looking for a single piece (B2C) or a bulk order (B2B)?";
     }
-    if (lower.includes("b2c") || lower.includes("single")) return urdu ? `B2C - Single Piece: 1. Single Packing, ${DHL} Courier se delivery hogi. Order Type - International Only.` : `B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via ${DHL} Courier. Order Type - International Only.`;
+    if (lower.includes("b2c") || lower.includes("single")) return urdu ? `B2C - Single Piece: 1. Single Packing, ${DHL} Courier se delivery hogi..` : `B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via ${DHL} Courier..`;
     if (lower.includes("sample")) return urdu ? "Ji! Paid Sample available hai. Agar aap order place karte ho to sample price aapke order me adjust kar di jayegi." : "Yes! Paid Sample is available. If you place an order, the sample price will be adjusted in your order.";
     if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier") || lower.includes(DHL.toLowerCase())) return urdu ? `Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga. Handcrafted To Order - Crafting 7-10 Working Days + ${DHLE} 5-7 Working Days = Total 12-17 Working Days. Ships from Pakistan.` : `Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment and Delivery charges will be confirmed according to your country, they are not included in the product price. Tracking number will be shared after dispatch. Handcrafted To Order - Crafting 7-10 Working Days + ${DHLE} Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.`;
     if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("cap") || lower.includes("glove")) return urdu ? `Shukriya! Aapka design mil gaya ✅ ${q} ke liye Custom Name / Engraving aur Logo ho sakta hai. Is pe extra charges lagenge jo order confirm hone pe bataye jayenge. Aap is design ko WhatsApp pe bhi bhej sakte ho.` : `Thanks for your design! ✅ For ${q}, Custom Name / Engraving and Logo is available. Extra charges will apply for customization and will be confirmed when your order is confirmed. You can also send this design on WhatsApp.`;
@@ -166,19 +166,19 @@ export default function AIChatbot() {
 
   return (
     <>
-      {/* ===== FLOATING BUTTONS - RIGHT MIDDLE, NOT BOTTOM ===== */}
+      {/* ===== FLOATING BUTTONS - BOTTOM RIGHT, NOT MIDDLE ===== */}
       {!isOpen && (
-        <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-2">
+        <div className="fixed right-3 bottom-4 z-50 flex flex-col items-end gap-2">
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
             💬
           </a>
-          <button onClick={() => setIsOpen(true)} className="bg-black text-white px-3 py-2 rounded-full shadow-lg text-xs font-bold border border-zinc-700">
+          <button onClick={() => setIsOpen(true)} className="bg-black text-white px-3 py-2 rounded-full shadow-lg text-xs font-bold border border-zinc-700 whitespace-nowrap">
             💬 Ask Krossford AI
           </button>
         </div>
       )}
       {isOpen && (
-        <div className="fixed right-3 top-1/2 -translate-y-1/2 z-50 w- max-w-[calc(100vw-24px)] h- max-h- bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
+        <div className="fixed right-3 bottom-4 z-50 w-[360px] max-w-[calc(100vw-24px)] h-[520px] max-h-[calc(100dvh-32px)] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
           <div className="bg-black text-white p-3 flex justify-between items-center">
             <div>
               <p className="text-sm font-bold">KROSSFORD AI Assistant</p>

@@ -249,7 +249,7 @@ export default function ProductPage() {
             {product.badge && <span className="inline-block mt-2 bg-zinc-900 border border-amber-400/30 text-amber-400 text-xs px-2 py-1 uppercase">{product.badge}</span>}
 
             <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
-              <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Order Type - International Only</p>
+              <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Order</p>
               <div className="flex flex-col gap-2 mt-3 w-full">
                 <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full ${customerType === "B2C" ? "border-amber-400 bg-zinc-900" : "border-zinc-800 bg-black"}`}>
                   <span className="text-xs font-bold block">Single Piece</span>
