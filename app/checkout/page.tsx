@@ -25,10 +25,10 @@ type CartItem = {
 const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 
 const PAYMENTS = [
-  { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on 【entity-WhatsApp¦canonical_name=WhatsApp】 after order confirmation. Never share full bank details publicly." },
+  { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
-  { id: "Western Union", title: "Western Union", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
-  { id: "VISA / Mastercard", title: "VISA / Mastercard", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
+  { id: "【entity-Western Union¦canonical_name=Western Union】", title: "【entity-Western Union¦canonical_name=Western Union】", badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
+  { id: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", title: "【entity-VISA¦canonical_name=VISA】 / 【entity-Mastercard¦canonical_name=Mastercard】", badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
 const customMadeLabel = (t?: string) => {
@@ -90,7 +90,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: 【entity-DHL Express¦canonical_name=DHL Express】 - Total 18-24 Working Days - Tracking Provided\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nDelivery: 【entity-DHL Express¦canonical_name=DHL Express】 - Crafting 7-10 Working Days + 【entity-DHL¦canonical_name=DHL】 Delivery 5-7 Working Days - Total 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -105,7 +105,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold">Order Sent!</p>
-        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via DHL Express • Total Delivery: 18-24 Working Days • Tracking Provided.</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via DHL Express • Total Delivery: 12-17 Working Days • Ships from Pakistan • Tracking Provided.</p>
         <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
         <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
       </div>
@@ -146,16 +146,18 @@ export default function CheckoutPage() {
               <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State / Province *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
             </div>
             <input value={postalCode} onChange={(e) => setPostalCode(e.target.value)} placeholder="Postal / ZIP Code *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-amber-400 placeholder:text-zinc-500 text-white" />
-            <p className="text-xs text-zinc-500">City, State & Postal Code are required for 【entity-DHL Express¦canonical_name=DHL Express】 international delivery.</p>
+            <p className="text-xs text-zinc-500">City, State & Postal Code are required for DHL Express international delivery.</p>
           </div>
 
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3">
             <p className="text-xs text-zinc-400">Shipping & delivery charges, plus any extra customization charges, will be confirmed after your order is confirmed. They are not included in the product price.</p>
           </div>
 
-          <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3">
-            <p className="text-xs text-amber-400 font-bold">Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Processing: 7-10 Working Days + DHL Delivery: 7-10 Working Days = Total 18-24 Working Days • Tracking Provided</p>
-            <p className="text-xs text-zinc-400 mt-1">Our aim to deliver earlier than estimated.</p>
+          <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3 space-y-1">
+            <p className="text-xs text-amber-400 font-bold">Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】</p>
+            <p className="text-xs text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
+            <p className="text-xs text-amber-400 font-bold">Ships via DHL Express • Crafting: 7-10 Working Days + DHL Delivery: 5-7 Working Days = Total 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
+            <p className="text-xs text-zinc-400 mt-1">We Always Aim To Deliver Earlier.</p>
           </div>
         </div>
 
