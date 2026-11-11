@@ -121,14 +121,14 @@ export default function AIChatbot() {
     if (hasWord("hello") || hasWord("hi") || hasWord("hey") || lower.includes("salam") || lower.includes("assalam")) {
       return urdu ? "Hello! Krossford me Welcome. Aapko kaunsa product chahiye? Bag, Wallet, Jacket, Belt ya Cap? B2C single piece chahiye ya B2B bulk?" : "Hello! Welcome to Krossford. Which product are you interested in? Bag, Wallet, Jacket, Belt or Cap? Are you looking for a single piece (B2C) or a bulk order (B2B)?";
     }
-    if (lower.includes("b2c") || lower.includes("single")) return urdu ? "B2C - Single Piece: 1. Single Packing, DHL Courier se delivery hogi." : "B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via DHL Courier.";
+    if (lower.includes("b2c") || lower.includes("single")) return urdu ? "B2C - Single Piece: 1. Single Packing, 【entity-DHL¦canonical_name=DHL】 Courier se delivery hogi." : "B2C - Single Piece: Starts from 1 Piece. Single Packing, delivery via 【entity-DHL¦canonical_name=DHL】 Courier.";
     if (lower.includes("sample")) return urdu ? "Ji! Paid Sample available hai. Agar aap order place karte ho to sample price aapke order me adjust kar di jayegi." : "Yes! Paid Sample is available. If you place an order, the sample price will be adjusted in your order.";
-    if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier") || lower.includes("dhl")) return urdu ? "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga." : "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment and Delivery charges will be confirmed according to your country, they are not included in the product price. Tracking number will be shared after dispatch.";
+    if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier") || lower.includes("【entity-dhl¦canonical_name=DHL】")) return urdu ? "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment aur Delivery charges aapke country ke hisaab se confirm honge, wo product price me shamil nahi hain. Tracking number dispatch ke baad share hoga." : "Total Price = Product Price + Shipment (Packing) + Delivery (Courier). Shipment and Delivery charges will be confirmed according to your country, they are not included in the product price. Tracking number will be shared after dispatch.";
     if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("cap") || lower.includes("glove")) return urdu ? `Shukriya! Aapka design mil gaya ✅ ${q} ke liye Custom Name / Engraving aur Logo ho sakta hai. Is pe extra charges lagenge jo order confirm hone pe bataye jayenge. Aap is design ko WhatsApp pe bhi bhej sakte ho.` : `Thanks for your design! ✅ For ${q}, Custom Name / Engraving and Logo is available. Extra charges will apply for customization and will be confirmed when your order is confirmed. You can also send this design on WhatsApp.`;
     if (lower.includes("payment") || lower.includes("pay")) return urdu ? "Payment order confirm hone pe WhatsApp pe discuss hogi. Secure & Protected Payments hain." : "Payment will be discussed on WhatsApp after your order is confirmed. Secure & Protected Payments.";
     const found = products.find(p => lower.includes(p.name.toLowerCase().split(" ")[0]));
     if (found) return urdu ? `${found.name} - $${found.price} - ${found.description || found.category}. Colour select karke Add To Cart kar sakte ho.` : `${found.name} - $${found.price} - ${found.description || found.category}. Please select colour and Add To Cart.`;
-    return urdu ? "Aapka sawal samajh aa gaya. Aap Shop page se product select karke Checkout kar sakte ho, ya WhatsApp pe order kar sakte ho. Kya aapko Price, B2B, Sample ya Shipment ke baare me jaanna hai?" : "Got it. You can select a product from the Shop page and Checkout, or order on WhatsApp. Would you like to know about Price, B2B, Sample or Shipment?";
+    return urdu ? "Aapka sawal samajh aa gaya. Aap Shop page se product select karke Checkout kar sakte ho, ya WhatsApp pe order kar sakte ho. Kya aapko Price, B2B, Sample ya Shipment ke baare me jaanna hai?" : "Got it. You can select a product from the Shop page and Checkout, or order on 【entity-WhatsApp¦canonical_name=WhatsApp】. Would you like to know about Price, B2B, Sample or Shipment?";
   };
 
   const handleSend = async () => {
@@ -156,7 +156,6 @@ export default function AIChatbot() {
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
-  // WhatsApp pe order bhejne ka function - Last wale User Message ke saath
   const sendToWhatsApp = () => {
     const lastUserMsg = [...messages].reverse().find(m => m.sender === "user")?.text || "I want to order leather products";
     const text = `Hi KROSSFORD, I want to order:\n${lastUserMsg}\n\nPlease send me Bulk Quote / Sample details.`;
@@ -167,40 +166,39 @@ export default function AIChatbot() {
     <>
       {/* ===== FLOATING WHATSAPP BUTTON - HAMESHA DIKHEGA ===== */}
       {!isOpen && (
-        <div className="fixed bottom-24 right-5 z-50 flex flex-col items-center gap-2">
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-white animate-bounce" title="Chat on WhatsApp - +92303 0006759">
+        <div className="fixed bottom-5 right-4 z-50 flex flex-col items-center gap-2">
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-white animate-bounce" title="Chat on WhatsApp - +92303 0006759">
             💬
           </a>
-          <button onClick={() => setIsOpen(true)} className="bg-black text-white px-4 py-3 rounded-full shadow-lg text-sm font-bold border border-zinc-700">
+          <button onClick={() => setIsOpen(true)} className="bg-black text-white px-3 py-2 rounded-full shadow-lg text-xs font-bold border border-zinc-700">
             💬 Ask Krossford AI
           </button>
         </div>
       )}
       {isOpen && (
-        <div className="fixed bottom-5 right-3 z-50 w-[340px] max-w-[calc(100vw-24px)] h-[480px] max-h-[75vh] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
+        <div className="fixed bottom-5 right-3 z-50 w- max-w-[calc(100vw-24px)] h- max-h- bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
           <div className="bg-black text-white p-3 flex justify-between items-center">
             <div>
               <p className="text-sm font-bold">KROSSFORD AI Assistant</p>
-              <p className="text-[11px] text-zinc-400">Online • Replies in your language 🌍 • WhatsApp +92303 0006759</p>
+              <p className="text-xs text-zinc-400">Online • Replies in your language • WhatsApp +92303 0006759</p>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-xl leading-none px-2">×</button>
           </div>
           <div className="flex-1 overflow-y-auto p-3 space-y-3 bg-zinc-50">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] px-3 py-2 rounded-lg text-[13px] leading-relaxed whitespace-pre-line ${m.sender === "user" ? "bg-black text-white" : "bg-white border text-black"}`}>
+                <div className={`max-w-[80%] px-3 py-2 rounded-lg text-sm leading-relaxed whitespace-pre-line ${m.sender === "user" ? "bg-black text-white" : "bg-white border text-black"}`}>
                   {m.image && <img src={m.image} alt="design" className="w-full rounded mb-1" />}
                   {m.text}
                 </div>
               </div>
             ))}
-            {loading && <p className="text-[11px] text-zinc-500">Krossford Team is typing...</p>}
-            {/* ===== WHATSAPP BUTTON - CHAT KE ANDAR ===== */}
+            {loading && <p className="text-xs text-zinc-500">Krossford Team is typing...</p>}
             <div className="flex flex-col gap-2 pt-1">
-              <button onClick={sendToWhatsApp} className="w-full bg-[#25D366] text-white py-2 rounded-full text-[13px] font-bold shadow">
+              <button onClick={sendToWhatsApp} className="w-full bg-green-500 text-white py-2 rounded-full text-sm font-bold shadow">
                 💬 Continue on WhatsApp - +92303 0006759
               </button>
-              <p className="text-[11px] text-center text-zinc-500">Click karke apna order seedha WhatsApp pe bhejo</p>
+              <p className="text-xs text-center text-zinc-500">Click karke apna order seedha 【entity-WhatsApp¦canonical_name=WhatsApp】 pe bhejo</p>
             </div>
             <div ref={bottomRef} />
           </div>
@@ -210,7 +208,7 @@ export default function AIChatbot() {
                 <img src={pendingImage} alt="preview" className="w-20 h-20 object-cover rounded-lg border" />
                 <button onClick={() => setPendingImage(null)} className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">×</button>
               </div>
-              <p className="text-[11px] text-zinc-500 mt-1">Image ready ✅ Now write text below and press Send</p>
+              <p className="text-xs text-zinc-500 mt-1">Image ready ✅ Now write text below and press Send</p>
             </div>
           )}
           <div className="p-2 border-t flex gap-2 items-center bg-white">
