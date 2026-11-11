@@ -48,8 +48,8 @@ export default function ContactPage() {
   };
 
   const buildMessage = () => {
-    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos "";
-    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos 【entity-WhatsApp¦canonical_name=WhatsApp】 / Email me manually attach kar dein)` : "";
+    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / 【entity-WhatsApp¦canonical_name=WhatsApp】: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
   const handleWhatsApp = (e: React.FormEvent) => {
@@ -101,7 +101,7 @@ export default function ContactPage() {
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
             <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
-              <span className="block text-xs text-zinc-400 uppercase">Phone</span>
+              <span className="block text-xs text-zinc-400 uppercase">【entity-WhatsApp¦canonical_name=WhatsApp】 / Phone</span>
               <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
             </a>
             <div className="block rounded-md border border-zinc-800 px-5 py-4">
@@ -110,7 +110,7 @@ export default function ContactPage() {
             </div>
             <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
               <span className="block text-xs text-zinc-400 uppercase">Payment</span>
-              <span className="text-xs text-zinc-300 mt-1 block">| | | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-300 mt-1 block">【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER</span>
               <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
             </div>
           </div>
