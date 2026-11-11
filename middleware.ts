@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  // PINK FIX - purana pink link -> naya link
+  if (request.nextUrl.pathname.includes("ladies-wallet-pink")) {
+    return NextResponse.redirect(new URL("/product/ladies-wallet", request.url));
+  }
+
   // Safe casting to 'any' to bypass missing geo property type definition
   const country = (request as any).geo?.country || 'PK';
   
