@@ -99,10 +99,9 @@ export default function Navbar() {
           <Link href="/collections" className={cls("/collections")}>COLLECTIONS</Link>
           <Link href="/b2b" className={cls("/b2b")}>B2B WHOLESALE</Link>
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
-          <Link href="/contact" className={cls("/contact")}>CONTACT</Link>
+          <Link href="/contact" className={cls("/contact")}>CONTACT US</Link>
         </nav>
         <div className="hidden lg:flex items-center gap-5 text-xs font-bold tracking-wider shrink-0">
-          <Link href="/contact" className="text-zinc-300 hover:text-white">ENQUIRY</Link>
           <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({wishlistCount})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
         </div>
@@ -145,7 +144,7 @@ export default function Navbar() {
               <Link href="/collections" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">COLLECTIONS</Link>
               <Link href="/b2b" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">B2B WHOLESALE</Link>
               <Link href="/about" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">ABOUT</Link>
-              <Link href="/contact" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CONTACT</Link>
+              <Link href="/contact" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CONTACT US</Link>
               <Link href="/wishlist" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">WISHLIST ({wishlistCount})</Link>
               <Link href="/cart" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">CART ({cartCount})</Link>
             </nav>
