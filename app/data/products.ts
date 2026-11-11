@@ -18,11 +18,11 @@ export const products: Product[] = [
   { id: 2, name: "Custom-Engraved Belt Pouch", image: "/images/belt-pouch-1.jpg", description: "Dark Brown, Full-Grain, Custom Name Plate Available - KROSSFORD", category: "Custom", badge: "CUSTOM LOGO", slug: "custom-engraved-belt-pouch", price: 49 },
   { id: 3, name: "Vegetable-Tanned Belt", image: "/images/belt.jpg", description: "Dark Brown, Vegetable-Tanned, Brass Buckle, Handicraft", category: "Belts", badge: "", slug: "vegetable-tanned-belt", price: 59 },
   { id: 4, name: "Waist Bag / Fanny Pack", image: "/images/fanny-pack.jpg", description: "Vintage Brown, Functional Luxury, Belt Bag - Since 2025 Trending", category: "Bags", badge: "TRENDING", slug: "waist-bag-fanny-pack", price: 89 },
-  { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", description: "Full-Grain, RFID Blocking, Handicraft - Colour: Brown / Pink", category: "Wallets", badge: "BEST SELLER", slug: "minimalist-rfid-wallet", price: 49 },
+  { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", description: "Full-Grain, RFID Blocking, Handicraft - Full-Grain Leather", category: "Wallets", badge: "BEST SELLER", slug: "minimalist-rfid-wallet", price: 49 },
   { id: 6, name: "3-Piece Business Set", image: "/images/business-set.jpg", description: "Duffle Bag + Briefcase + Pouch - Vintage Brown, Gift Set / Combo", category: "Sets", badge: "GIFT SET", slug: "3-piece-business-set", price: 249 },
   { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", description: "Cognac Brown, Full-Grain Leather, Travel Duffel - HOME PAGE MAIN", category: "Bags", badge: "HOME MAIN", slug: "travel-duffle-bag", price: 189 },
   { id: 8, name: "Card Holder - Minimalist", image: "/images/card-holder.jpg", description: "Dark Brown, Full-Grain, 4 Card Slots, Handicraft - Premium Quality. Honest Price. Built To Last.", category: "Wallets", badge: "BEST SELLER", slug: "card-holder", price: 29 },
-  { id: 9, name: "Ladies Wallet", image: "/images/ladies-wallet-pink-1.jpg", description: "Same RFID Wallet, Ladies Colour, Soft Grain Leather", category: "Wallets", badge: "LADIES", slug: "ladies-wallet-pink", price: 49 },
+  { id: 9, name: "Ladies Wallet", image: "/images/ladies-wallet.jpg", description: "Same RFID Wallet, Soft Grain Leather", category: "Wallets", badge: "LADIES", slug: "ladies-wallet", price: 49 },
   { id: 10, name: "Leather Tag + Keychain Set", image: "/images/leather-tag-keychain-set1.jpg", description: "Custom Name / Logo Engraving Available - Small Gift, Long Life.", category: "Custom", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", price: 25 },
 ];
 
