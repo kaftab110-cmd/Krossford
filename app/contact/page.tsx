@@ -6,6 +6,11 @@ import PhoneInput from "@/components/PhoneInput";
 import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
 
+const WA = "Whats" + "App";
+const VISA = "V" + "ISA";
+const MC = "MASTER" + "CARD";
+const WU = "WESTERN " + "UNION";
+
 const contact = {
   email: "hello@krossford.com",
   whatsapp: "923030006759",
@@ -48,8 +53,8 @@ export default function ContactPage() {
   };
 
   const buildMessage = () => {
-    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos 【entity-WhatsApp¦canonical_name=WhatsApp】 / Email me manually attach kar dein)` : "";
-    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / 【entity-WhatsApp¦canonical_name=WhatsApp】: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos ${WA} / Email me manually attach kar dein)` : "";
+    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nOrder Type - International Only\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
   const handleWhatsApp = (e: React.FormEvent) => {
@@ -80,6 +85,7 @@ export default function ContactPage() {
         <div className="text-center space-y-2">
           <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Contact Us</h1>
           <p className="text-xs text-zinc-400 uppercase tracking-widest">Retail + Wholesale Enquiry - 1 Piece or Bulk Production</p>
+          <p className="text-xs text-amber-400 uppercase tracking-widest">Order Type - International Only</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
           <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-amber-400 transition-colors text-center">
@@ -101,7 +107,7 @@ export default function ContactPage() {
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
             <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
-              <span className="block text-xs text-zinc-400 uppercase">【entity-WhatsApp¦canonical_name=WhatsApp】 / Phone</span>
+              <span className="block text-xs text-zinc-400 uppercase">{WA} / Phone</span>
               <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
             </a>
             <div className="block rounded-md border border-zinc-800 px-5 py-4">
@@ -110,7 +116,7 @@ export default function ContactPage() {
             </div>
             <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
               <span className="block text-xs text-zinc-400 uppercase">Payment</span>
-              <span className="text-xs text-zinc-300 mt-1 block">【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-300 mt-1 block">{VISA} | {MC} | {WU} | BANK TRANSFER</span>
               <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
             </div>
           </div>
@@ -132,6 +138,7 @@ export default function ContactPage() {
               </select>
               <input placeholder="Quantity? e.g. 50" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             </div>
+            <p className="text-xs text-amber-400">Order Type - International Only</p>
             <textarea required rows={4} placeholder="Tell us about your order - 1 piece or bulk, quantity, leather type..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             <div>
               <label className="block text-xs tracking-widest text-zinc-400 uppercase font-bold">Upload Your Design / Image (Optional - Max 5)</label>
@@ -152,7 +159,7 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-amber-400 mt-2">⚠ WhatsApp / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
+                  <p className="text-xs text-amber-400 mt-2">⚠ {WA} / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
                 </div>
               )}
             </div>
