@@ -173,10 +173,10 @@ export default function CartPage() {
                       <img src={s.img} alt={s.name} onError={() => markFailed(s.img)} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     </div>
                     <div className="p-4">
-                      <span className="text-[9px] text-amber-400 tracking-widest uppercase">{s.tag}</span>
+                      <span className="text- text-amber-400 tracking-widest uppercase">{s.tag}</span>
                       <h3 className="text-xs font-bold uppercase mt-1">{s.name}</h3>
                       <p className="text-amber-400 font-bold text-sm mt-1">${s.price}</p>
-                      <p className="text-[10px] text-zinc-400 mt-1">View Product →</p>
+                      <p className="text- text-zinc-400 mt-1">View Product →</p>
                     </div>
                   </Link>
                 ))}
@@ -190,32 +190,32 @@ export default function CartPage() {
                 {!failedImages.has(fixImage(item.image)) ? (
                   <img src={fixImage(item.image)} alt={item.name} onError={() => markFailed(fixImage(item.image))} className="w-20 h-20 object-cover rounded shrink-0" />
                 ) : (
-                  <div className="w-20 h-20 bg-zinc-800 rounded shrink-0 flex items-center justify-center text-[10px] text-zinc-400 text-center px-1">Photo</div>
+                  <div className="w-20 h-20 bg-zinc-800 rounded shrink-0 flex items-center justify-center text- text-zinc-400 text-center px-1">Photo</div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-amber-400 tracking-widest uppercase">{item.category}</p>
+                  <p className="text- text-amber-400 tracking-widest uppercase">{item.category}</p>
                   <h3 className="text-sm font-bold uppercase leading-tight line-clamp-2">{item.name}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <span style={{ background: item.colorCode || "#3E2723", width: 16, height: 16, borderRadius: "50%", display: "inline-block", border: "1px solid #fff" }} />
                     <span className="text-xs text-zinc-300">Colour: {item.colorName || "Dark Brown"}</span>
                   </div>
                   {item.customerType && (
-                    <p className="text-[11px] text-zinc-300 mt-1">Type: <span className="text-white font-bold">{item.customerType}</span> {item.customerType === "B2C" ? "- Single Piece" : "- Bulk Order"}</p>
+                    <p className="text- text-zinc-300 mt-1">Type: <span className="text-white font-bold">{item.customerType}</span> {item.customerType === "B2C" ? "- Single Piece" : "- Bulk Order"}</p>
                   )}
                   {item.additionalOption && item.additionalOption !== "none" && (
                     <div className="mt-1 bg-amber-500/10 border border-amber-500/30 rounded px-2 py-1">
-                      <p className="text-[11px] text-amber-400">Custom: {item.additionalOption} {item.customText ? ` - ${item.customText}` : ""}</p>
-                      {item.uploadedFileName && <p className="text-[10px] text-zinc-400">File: {item.uploadedFileName}</p>}
-                      <p className="text-[10px] text-amber-300">+ Extra Charges - To Be Confirmed</p>
+                      <p className="text- text-amber-400">Custom: {item.additionalOption} {item.customText ? ` - ${item.customText}` : ""}</p>
+                      {item.uploadedFileName && <p className="text- text-zinc-400">File: {item.uploadedFileName}</p>}
+                      <p className="text- text-amber-300">+ Extra Charges - To Be Confirmed</p>
                     </div>
                   )}
                   {item.customMade?.enabled && (
                     <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
-                      <p className="text-[11px] text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
-                      {item.customMade.type && <p className="text-[11px] text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
-                      {item.customMade.detail && <p className="text-[11px] text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
-                      {item.customMade.fileName && <p className="text-[10px] text-zinc-400">Design Image: {item.customMade.fileName}</p>}
-                      <p className="text-[10px] text-amber-300">{item.extraChargesNote || "Extra charges apply for customization - final price will be confirmed after order confirmation."}</p>
+                      <p className="text- text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
+                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.detail && <p className="text- text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
+                      {item.customMade.fileName && <p className="text- text-zinc-400">Design Image: {item.customMade.fileName}</p>}
+                      <p className="text- text-amber-300">{item.extraChargesNote || "Extra charges apply for customization - final price will be confirmed after order confirmation."}</p>
                     </div>
                   )}
                   <p className="text-xs text-zinc-400 mt-1">${item.price} each</p>
@@ -223,8 +223,8 @@ export default function CartPage() {
                     <button onClick={() => changeQty(item.id, -1)} className="w-7 h-7 border border-zinc-700 rounded">-</button>
                     <span className="text-sm font-bold">{item.quantity}</span>
                     <button onClick={() => changeQty(item.id, 1)} className="w-7 h-7 border border-zinc-700 rounded">+</button>
-                    <button onClick={() => removeItem(item.id)} className="text-red-400 text-[11px] uppercase ml-2">Remove</button>
-                    <button onClick={() => saveForLater(item.id)} className="text-amber-400 text-[11px] uppercase ml-2">♡ Save For Later</button>
+                    <button onClick={() => removeItem(item.id)} className="text-red-400 text- uppercase ml-2">Remove</button>
+                    <button onClick={() => saveForLater(item.id)} className="text-amber-400 text- uppercase ml-2">♡ Save For Later</button>
                   </div>
                 </div>
                 <p className="text-amber-400 font-bold text-sm shrink-0">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</p>
@@ -239,7 +239,7 @@ export default function CartPage() {
                     <Link key={s.slug} href={`/product/${s.slug}`} className="border border-zinc-800 rounded p-3 hover:border-amber-400 transition-colors flex items-center gap-3">
                       <img src={s.img} alt={s.name} onError={() => markFailed(s.img)} className="w-12 h-12 object-cover rounded shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-[11px] font-bold uppercase truncate">{s.name}</p>
+                        <p className="text- font-bold uppercase truncate">{s.name}</p>
                         <p className="text-amber-400 text-xs font-bold">${s.price} • Add →</p>
                       </div>
                     </Link>
@@ -251,8 +251,8 @@ export default function CartPage() {
             {hasB2B && (
               <div className="bg-amber-400/10 border border-amber-400/30 rounded p-4 text-center">
                 <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">B2B Bulk Item In Cart</p>
-                <p className="text-[11px] text-zinc-300 mt-1">Retail Checkout | For 50+ units, Get Wholesale Quote - Sample before bulk.</p>
-                <Link href="/b2b" className="inline-block mt-2 bg-amber-400 text-black text-[11px] font-bold uppercase px-4 py-2 rounded">Go To B2B Form →</Link>
+                <p className="text- text-zinc-300 mt-1">Retail Checkout | For 50+ units, Get Wholesale Quote - Sample before bulk.</p>
+                <Link href="/b2b" className="inline-block mt-2 bg-amber-400 text-black text- font-bold uppercase px-4 py-2 rounded">Go To B2B Form →</Link>
               </div>
             )}
           </div>
@@ -268,16 +268,16 @@ export default function CartPage() {
                   <p className="text-xs text-zinc-300 mt-1">Colour: {item.colorName || "Dark Brown"} • ${item.price} each • Qty: {item.quantity}</p>
                   {item.customMade?.enabled && (
                     <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
-                      <p className="text-[11px] text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
-                      {item.customMade.type && <p className="text-[11px] text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
-                      {item.customMade.detail && <p className="text-[11px] text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
-                      {item.customMade.fileName && <p className="text-[10px] text-zinc-400">Design Image: {item.customMade.fileName}</p>}
+                      <p className="text- text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
+                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.detail && <p className="text- text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
+                      {item.customMade.fileName && <p className="text- text-zinc-400">Design Image: {item.customMade.fileName}</p>}
                     </div>
                   )}
                   <div className="flex gap-3 mt-2 flex-wrap">
-                    <button onClick={() => moveToCart(item.id)} className="bg-amber-400 text-black text-[11px] font-bold uppercase px-3 py-1.5 rounded">Move to Cart →</button>
-                    <Link href={`/product/${item.slug}`} className="border border-zinc-700 text-[11px] uppercase px-3 py-1.5 rounded">View Product</Link>
-                    <button onClick={() => removeFromWishlist(item.id)} className="text-red-400 text-[11px] uppercase">Remove</button>
+                    <button onClick={() => moveToCart(item.id)} className="bg-amber-400 text-black text- font-bold uppercase px-3 py-1.5 rounded">Move to Cart →</button>
+                    <Link href={`/product/${item.slug}`} className="border border-zinc-700 text- uppercase px-3 py-1.5 rounded">View Product</Link>
+                    <button onClick={() => removeFromWishlist(item.id)} className="text-red-400 text- uppercase">Remove</button>
                   </div>
                 </div>
                 <p className="text-amber-400 font-bold text-sm shrink-0">${(Number(item.price) * Number(item.quantity)).toFixed(2)}</p>
@@ -289,16 +289,18 @@ export default function CartPage() {
           <div className="flex justify-between text-xs font-bold border-b border-zinc-800 pb-3">
             <span className="text-zinc-400">Total (Product Only)</span><span className="text-amber-400">${total.toFixed(2)} USD</span>
           </div>
-          <div className="space-y-1 text-[11px] text-zinc-500">
+          <div className="space-y-1 text- text-zinc-500">
             <p>✓ 100% Real Leather Guarantee • Sample Before Bulk</p>
-            <p>✓ Ships via DHL Express • Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days • Tracking Provided</p>
+            <p>✓ Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Crafting: 7-10 Working Days + 【entity-DHL¦canonical_name=DHL】 Delivery: 5-7 Working Days = Total 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
+            <p>✓ We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
+            <p>✓ We Always Aim To Deliver Earlier.</p>
             <p>✓ Shipment + Delivery Charges - To Be Confirmed After Destination Check.</p>
             <p>✓ Extra charges apply for customization - final price will be confirmed after order confirmation.</p>
-            <p>✓ Payment: VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
+            <p>✓ Payment:  【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
           </div>
           <Link href="/checkout" className="w-full block text-center bg-amber-500 text-black py-3 rounded text-xs font-bold uppercase">Proceed to Checkout</Link>
-          <Link href="/shop" className="w-full block text-center text-zinc-400 text-[11px] uppercase">← Continue Shopping</Link>
-          {cart.length > 0 && <button onClick={() => updateCart([])} className="w-full text-center text-zinc-500 text-[11px] uppercase">Clear Cart</button>}
+          <Link href="/shop" className="w-full block text-center text-zinc-400 text- uppercase">← Continue Shopping</Link>
+          {cart.length > 0 && <button onClick={() => updateCart([])} className="w-full text-center text-zinc-500 text- uppercase">Clear Cart</button>}
         </div>
       </div>
     </div>
