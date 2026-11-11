@@ -261,8 +261,8 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300">Simple Order - 1</p>
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (DHL Courier)</p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - Crafting 7-10 Working Days + DHL Express Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
+                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (【entity-DHL¦canonical_name=DHL】 Courier)</p>
+                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + 【entity-DHL Express¦canonical_name=DHL Express】 Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
@@ -270,7 +270,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
                   <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
                   <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + DHL Express 5-7).</p>
+                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + DHL Express 5-7).</p>
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-800 mt-3">
                     <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
@@ -338,15 +338,15 @@ export default function ProductPage() {
 
             <div className="mt-6 bg-zinc-950 border border-amber-400/30 rounded-lg p-4 sm:p-5">
               <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Custom Made - Hand Stitched</p>
-              <p className="text-xs text-amber-400 font-medium mt-1">On Customer Demand - </p>
+              <p className="text-xs text-amber-400 font-medium mt-1">On Customer Demand - Extra charges apply, final price will be confirmed after order confirmation.</p>
               <label className="flex items-start gap-3 cursor-pointer mt-4">
                 <input type="checkbox" checked={customMadeEnabled} onChange={(e) => setCustomMadeEnabled(e.target.checked)} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                <span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want Custom Made Hand Stitched Product</span><span className="text-xs text-zinc-400"></span></span>
+                <span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want Custom Made Hand Stitched Product</span><span className="text-xs text-zinc-400">Tick karein agar apna design banwana hai</span></span>
               </label>
               {customMadeEnabled && (
                 <div className="mt-4 space-y-4">
                   <div>
-                    <p className="text-xs font-bold uppercase text-zinc-400"> *</p>
+                    <p className="text-xs font-bold uppercase text-zinc-400">Customer Kya Customize Karwana Chahta Hai *</p>
                     <div className="mt-2 space-y-2">
                       {[
                         { v: "full", l: "Full Product - Mere Design Pe Banao", d: "Poora product aapke design pe banega" },
