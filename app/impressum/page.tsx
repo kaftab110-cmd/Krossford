@@ -3,26 +3,29 @@ import LegalNav from "@/components/LegalNav";
 
 export const metadata = buildMetadata({
   title: "Impressum",
-  description: "Legal notice / Impressum for Krossford in accordance with German law (§5 DDG).",
+  description: "Legal notice / Impressum for Krossford - Operated from Pakistan, serving customers worldwide.",
   path: "/impressum",
 });
 
 const EC = "European " + "Commission";
 
 const COMPANY_NAME = "[Krossford Legal Entity Name]";
-const COMPANY_ADDRESS = "[Street, ZIP Code, City, Germany]";
-const COMPANY_REG = "[Handelsregister Number — coming soon]";
+const COMPANY_ADDRESS = "[Street, City, Pakistan]";
+const COMPANY_REG = "[Registration Number — coming soon]";
 const RESPONSIBLE_PERSON = "[Full Name of Responsible Person]";
 const CONTACT_EMAIL = "support@krossford.com";
-const CONTACT_PHONE = "[+49 Your Number]";
-const VAT_ID = "[VAT ID — coming soon]";
+const CONTACT_PHONE = "[+92 Your Number]";
+const VAT_ID = "[Tax ID — coming soon]";
 
 export default function ImpressumPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-16 text-gray-200">
       <h1 className="text-3xl font-bold text-white">Impressum</h1>
       <p className="mt-2 text-sm text-gray-500">
-        Legal notice in accordance with § 5 DDG (Digitale-Dienste-Gesetz)
+        Legal notice for Krossford Enterprises - Operated from Pakistan, serving customers worldwide.
+      </p>
+      <p className="mt-2 text-sm text-gray-400">
+        Handcrafted in Pakistan. Ships Worldwide via DHL Express. Future operations planned in Germany.
       </p>
 
       <section className="mt-10 space-y-2">
@@ -32,7 +35,7 @@ export default function ImpressumPage() {
           <br />
           {COMPANY_ADDRESS}
           <br />
-          Germany
+          Pakistan
         </p>
       </section>
 
@@ -59,15 +62,15 @@ export default function ImpressumPage() {
       </section>
 
       <section className="mt-10 space-y-2">
-        <h2 className="text-xl font-semibold text-white">VAT Identification Number</h2>
+        <h2 className="text-xl font-semibold text-white">Tax Identification Number</h2>
         <p>
-          VAT ID in accordance with §27a of the German VAT Act: {VAT_ID}
+          Tax ID: {VAT_ID}
         </p>
       </section>
 
       <section className="mt-10 space-y-2">
         <h2 className="text-xl font-semibold text-white">
-          Responsible for Content (§ 18 (2) MStV)
+          Responsible for Content
         </h2>
         <p>
           {RESPONSIBLE_PERSON}
