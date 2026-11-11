@@ -291,12 +291,7 @@ export default function CartPage() {
           </div>
           <div className="space-y-1 text- text-zinc-500">
             <p>✓ 100% Real Leather Guarantee • Sample Before Bulk</p>
-            <p>✓ Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Crafting: 7-10 Working Days + 【entity-DHL¦canonical_name=DHL】 Delivery: 5-7 Working Days = Total 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
-            <p>✓ We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
-            <p>✓ We Always Aim To Deliver Earlier.</p>
-            <p>✓ Shipment + Delivery Charges - To Be Confirmed After Destination Check.</p>
-            <p>✓ Extra charges apply for customization - final price will be confirmed after order confirmation.</p>
-            <p>✓ Payment:  【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
+            <p>✓ Handcrafted To Order • Ships via | | | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
           </div>
           <Link href="/checkout" className="w-full block text-center bg-amber-500 text-black py-3 rounded text-xs font-bold uppercase">Proceed to Checkout</Link>
           <Link href="/shop" className="w-full block text-center text-zinc-400 text- uppercase">← Continue Shopping</Link>

@@ -261,64 +261,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300">Simple Order - 1</p>
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (【entity-DHL¦canonical_name=DHL】 Courier)</p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + 【entity-DHL Express¦canonical_name=DHL Express】 Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
-                </div>
-              ) : (
-                <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
-                  <p className="text-xs text-zinc-300"><b className="text-white">Minimum Quantity:</b> Jacket 50 Pcs • Biker Suit 25 Sets • Small Items (Card Holder / Keychain / Wallet) 100 Pcs</p>
-                  <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
-                  <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
-                  <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + DHL Express 5-7).</p>
-                  <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
-                  <div className="pt-3 border-t border-zinc-800 mt-3">
-                    <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
-                    <p className="text-xs text-zinc-400 mt-1">Sample Price Will Be Paid By Buyer. Charges To Be Confirmed.</p>
-                    <p className="text-xs text-green-400 font-medium mt-1">If You Place Order, Sample Price Will Be Adjusted In Your Order.</p>
-                    <button onClick={handleSampleRequest} className="mt-3 w-full border border-amber-400 text-amber-400 text-xs uppercase font-bold py-2.5 rounded hover:bg-amber-400 hover:text-black transition-all">
-                      Request Paid Sample →
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-6">
-              <p className="text-sm font-bold">SELECT COLOUR: {selectedColor.name}</p>
-              <div className="flex gap-3 mt-3 flex-wrap">
-                {product.colors?.map((c) => (
-                  <button key={c.name} onClick={() => setSelectedColor(c)} title={c.name}
-                    style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #fbbf24" : "1px solid #3f3f46", cursor: "pointer" }} />
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5">
-              <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Additional Options</p>
-              <p className="text-xs text-amber-400 font-medium mt-1">Extra charges apply for customization - final price will be confirmed after order confirmation.</p>
-              <div className="mt-4 space-y-4">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="additional" checked={additionalOption === "none"} onChange={() => setAdditionalOption("none")} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                  <span className="flex-1 min-w-0"><span className="block text-sm font-medium">No Additional Option</span><span className="text-xs text-zinc-400">Simple order without customization</span></span>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="additional" checked={additionalOption === "engraving"} onChange={() => setAdditionalOption("engraving")} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                  <span className="flex-1 min-w-0"><span className="flex justify-between items-start gap-2 flex-wrap"><span className="block text-sm font-medium">Custom Name / Initials (Text Engraving)</span><span className="text-xs bg-amber-400/20 border border-amber-400/30 text-amber-400 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span></span><span className="text-xs text-zinc-400">Your name will be engraved</span></span>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="additional" checked={additionalOption === "image"} onChange={() => setAdditionalOption("image")} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                  <span className="flex-1 min-w-0"><span className="flex justify-between items-start gap-2 flex-wrap"><span className="block text-sm font-medium">Upload Your Own Image</span><span className="text-xs bg-amber-400/20 border border-amber-400/30 text-amber-400 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span></span><span className="text-xs text-zinc-400">Upload your logo / design</span></span>
-                </label>
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input type="radio" name="additional" checked={additionalOption === "both"} onChange={() => setAdditionalOption("both")} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                  <span className="flex-1 min-w-0"><span className="flex justify-between items-start gap-2 flex-wrap"><span className="block text-sm font-medium">Custom Text + Upload Image</span><span className="text-xs bg-amber-400/20 border border-amber-400/30 text-amber-400 px-2 py-0.5 rounded-full font-bold whitespace-nowrap">+ Extra Charges</span></span><span className="text-xs text-zinc-400">Both text and image</span></span>
-                </label>
-                {additionalOption !== "none" && (
-                  <button onClick={() => { setAdditionalOption("none"); setCustomText(""); setUploadedFile(null); }} className="text-xs underline text-zinc-400">Clear Selection</button>
-                )}
-              </div>
-              {(additionalOption === "engraving" || additionalOption === "both") && (
+                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (|| additionalOption === "both") && (
                 <div className="mt-4 bg-black border border-amber-400/30 rounded-md p-3">
                   <label className="text-xs font-bold uppercase text-zinc-400">Enter Your Name / Initials *</label>
                   <input type="text" value={customText} onChange={(e) => setCustomText(e.target.value)} placeholder="e.g. A. Khan / AK" maxLength={20} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-amber-400 bg-zinc-950 text-white" />
