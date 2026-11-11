@@ -216,7 +216,7 @@ export default function ProductPage() {
 
         <div className="grid md:grid-cols-2 gap-8 md:gap-10">
           <div className="min-w-0">
-            <img src={mainImage} alt={product.name} onError={() => markFailed(mainImage)} className="w-full h-auto max-h- object-cover rounded-lg border border-zinc-800" />
+            <img src={mainImage} alt={product.name} onError={() => markFailed(mainImage)} className="w-full h-auto object-cover rounded-lg border border-zinc-800" />
             <p className="text-xs text-zinc-400 mt-2">{product.description}</p>
             {safeGallery.length > 1 && (
               <div className="mt-5">
@@ -261,7 +261,8 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300">Simple Order - 1</p>
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (【entity-DHL¦canonical_name=DHL】 Courier)</p>
+                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (DHL Courier)</p>
+                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - Crafting 7-10 Working Days + DHL Express Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
@@ -269,6 +270,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
                   <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
                   <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
+                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + DHL Express 5-7).</p>
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-800 mt-3">
                     <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
@@ -387,7 +389,7 @@ export default function ProductPage() {
                 <span className="px-2 font-bold">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} className="px-3 py-2 text-white hover:text-amber-400">+</button>
               </div>
-              <button onClick={handleAddToCart} className="flex-1 min-w- bg-amber-400 text-black py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-amber-300">
+              <button onClick={handleAddToCart} className="flex-1 min-w-0 bg-amber-400 text-black py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-amber-300">
                 Add To Cart - {selectedColor.name} • Design {safeDesign + 1} • ${finalPrice * quantity}
               </button>
             </div>
