@@ -70,7 +70,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden">
-      <div className="px-2 md:px-4 py-2 flex justify-between items-center gap-1 w-full max-w-full">
+      <div className="px-3 md:px-6 py-2 flex justify-between items-center gap-6 w-full max-w-full">
         <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
           <Logo className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0">
@@ -78,7 +78,7 @@ export default function Navbar() {
             <span className="text-xs font-medium text-amber-400 tracking-widest uppercase mt-1 leading-none">ENTERPRISES</span>
           </div>
         </Link>
-        <nav className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-xs font-bold tracking-wider whitespace-nowrap">
           <Link href="/" className={pathname === "/" ? "text-amber-400" : "text-white hover:text-amber-400"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <div className="relative group">
@@ -99,9 +99,9 @@ export default function Navbar() {
           <Link href="/collections" className={cls("/collections")}>COLLECTIONS</Link>
           <Link href="/b2b" className={cls("/b2b")}>B2B WHOLESALE</Link>
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
-          <Link href="/contact" className={cls("/contact")}>CONTACT US</Link>
+          <Link href="/contact" className={cls("/contact") + " whitespace-nowrap"}>CONTACT US</Link>
         </nav>
-        <div className="hidden lg:flex items-center gap-5 text-xs font-bold tracking-wider shrink-0">
+        <div className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider shrink-0 whitespace-nowrap ml-4">
           <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({wishlistCount})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({cartCount})</Link>
         </div>
