@@ -25,11 +25,11 @@ export default function Footer() {
         </p>
 
         <p className="text-center text- leading-relaxed mt-2.5 break-words max-w- sm:max-w-2xl mx-auto px-1">
-          Handcrafted To Order • Ships via 【entity-DHL¦canonical_name=DHL】 Express • Crafting Time: 7-10 Working Days + 【entity-DHL¦canonical_name=DHL】 Express Delivery: 5-7 Working Days • Total:{" "}
+          Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Crafting Time: 7-10 Working Days + 【entity-DHL Express¦canonical_name=DHL Express】 Delivery: 5-7 Working Days • Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan
         </p>
 
-        {/* BUTTON YAHAN LAGAYA HAI - 【entity-DHL¦canonical_name=DHL】 line ke neeche, Copyright se upar */}
+        {/* BUTTON YAHAN LAGAYA HAI - DHL line ke neeche, Copyright se upar */}
         <div className="flex flex-col items-center mt-5 gap-2">
           <a
             href="https://www.dhl.com/global-en/home/tracking.html"
@@ -40,7 +40,7 @@ export default function Footer() {
             TRACK YOUR ORDER →
           </a>
           <p className="text- text-zinc-500 text-center leading-relaxed px-2 break-words max-w-">
-            Apna 【entity-DHL¦canonical_name=DHL】 Tracking Number yahan daal ke apna parcel track karein. Tracking Number dispatch ke baad 【entity-WhatsApp¦canonical_name=WhatsApp】 pe milega.
+            Apna DHL Tracking Number yahan daal ke apna parcel track karein. Tracking Number dispatch ke baad 【entity-WhatsApp¦canonical_name=WhatsApp】 pe milega.
           </p>
         </div>
 
