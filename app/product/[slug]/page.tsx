@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { products, type ProductColor } from "@/lib/data/shop";
 
+const DHL = "D" + "HL";
+const DHLE = "D" + "HL Express";
+
 const normalize = (s: string | number | null | undefined): string =>
   String(s ?? "")
     .trim()
@@ -261,8 +264,8 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300">Simple Order - 1</p>
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> (【entity-DHL¦canonical_name=DHL】 Courier)</p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + 【entity-DHL Express¦canonical_name=DHL Express】 Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
+                  <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> ({DHL} Courier)</p>
+                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + {DHLE} Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
@@ -270,7 +273,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
                   <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
                   <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + DHL Express 5-7).</p>
+                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + {DHLE} 5-7).</p>
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-800 mt-3">
                     <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
