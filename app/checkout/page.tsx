@@ -135,7 +135,7 @@ export default function CheckoutPage() {
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
           <p className="text-xs text-amber-400 mt-2 tracking-wide">Order</p>
-          <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Real Leather • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
+          <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
 
           <div className="mt-6 space-y-3">
             <div className="grid grid-cols-2 gap-3">

@@ -37,7 +37,7 @@ export default function ContactPage() {
     if (selected.length === 0) return;
     const remaining = 5 - files.length;
     if (selected.length > remaining) {
-      alert(`Sirf ${remaining} aur photo add kar sakte ho - Max 5 photos`);
+      alert(`You can add ${remaining} more photos (maximum 5).`);
     }
     const toAdd = selected.slice(0, remaining);
     const newPreviews = toAdd.map((f) => URL.createObjectURL(f));
@@ -53,7 +53,7 @@ export default function ContactPage() {
   };
 
   const buildMessage = () => {
-    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Photos ${WA} / Email me manually attach kar dein)` : "";
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Please attach the photos manually to WhatsApp or email)` : "";
     return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
@@ -142,7 +142,7 @@ export default function ContactPage() {
               <label className="block text-xs tracking-widest text-zinc-400 uppercase font-bold">Upload Your Design / Image (Optional - Max 5)</label>
               <label className="mt-2 w-full border-2 border-dashed border-zinc-700 rounded px-4 py-5 text-center block cursor-pointer hover:border-amber-400 bg-zinc-950">
                 <span className="text-sm text-zinc-300">Click to Upload Image / Design (JPG / PNG)</span>
-                <span className="block text-xs text-zinc-500 mt-1">Apna logo, design ya reference photo yahan add karo</span>
+                <span className="block text-xs text-zinc-500 mt-1">Add your logo, design, or reference photo here.</span>
                 <input type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
               </label>
               {previews.length > 0 && (

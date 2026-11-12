@@ -96,7 +96,7 @@ export default function Home() {
           </h1>
           <p className="mt-6 text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed text-center">
             A New-Generation International Leather Brand, Since 2025.
-            Sample Before Bulk. 100% Real Leather Guarantee.
+            Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a href="/shop" className="bg-amber-400 text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-300">
@@ -216,8 +216,8 @@ export default function Home() {
             <p className="text-zinc-400 text-xs mt-2">Order a sample first, then decide for bulk.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-amber-400 font-bold">100% Real Leather</p>
-            <p className="text-zinc-400 text-xs mt-2">Full-grain leather. No fake claims.</p>
+            <p className="text-amber-400 font-bold">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)</p>
+            <p className="text-zinc-400 text-xs mt-2">Hide type is confirmed in writing before production.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
             <p className="text-amber-400 font-bold">Direct From Maker</p>

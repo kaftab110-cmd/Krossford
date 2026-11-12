@@ -12,7 +12,7 @@ export const termsContent = {
     {
       heading: "2. Product Descriptions & Pricing",
       paragraphs: [
-        "We aim to present accurate product descriptions and images; however, slight variations may occur due to the handmade nature of our products. 100% Full-Grain Leather - No Split, No PU.",
+        "We aim to present accurate product descriptions and images; however, slight variations may occur due to the handmade nature of our products. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).",
         "Retail Prices (1 Piece): Shown on website. Wholesale Prices (50+ Units): Provided upon enquiry / quotation and may change without prior notice until an order is confirmed.",
         "All prices are in USD unless otherwise stated in written quotation.",
       ],

@@ -27,11 +27,11 @@ export default function AboutUsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mt-4">
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
             <p className="text-amber-400 font-bold text-sm">Real Leather</p>
-            <p className="text-zinc-400 text-xs mt-2">100% Full-Grain Leather Guarantee.</p>
+            <p className="text-zinc-400 text-xs mt-2">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
             <p className="text-amber-400 font-bold text-sm">Sample Before Bulk</p>
-            <p className="text-zinc-400 text-xs mt-2">Pehle sample dekho, phir bulk ka faisla karo.</p>
+            <p className="text-zinc-400 text-xs mt-2">Review a sample before deciding on a bulk order.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
             <p className="text-amber-400 font-bold text-sm">{DHLE}</p>

@@ -14,7 +14,7 @@ const navLinks = [
 ];
 
 const tickerItems = [
-  "100% Real Leather Guarantee - Sample Before Bulk",
+  "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) - Sample Before Bulk",
   "Wholesale: Leather Jacket & Biker Suit - MOQ 25+ Units - Get Quote",
   "Ships to USA / UK / EU - VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
 ];

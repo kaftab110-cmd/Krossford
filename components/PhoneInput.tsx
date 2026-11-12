@@ -45,7 +45,7 @@ export default function PhoneInput({ country, value, onChange, label = "Phone / 
       </div>
       {/* User ko dikhane ke liye full number - taake confirm ho jaye */}
       {value && (
-        <p className="mt-1 text-[11px] text-zinc-500">Full number: <span className="text-amber-400 font-bold">{value}</span> • WhatsApp isi number pe hoga</p>
+        <p className="mt-1 text-[11px] text-zinc-500">Full number: <span className="text-amber-400 font-bold">{value}</span> • This is the WhatsApp number associated with your order.</p>
       )}
     </div>
   );

@@ -225,7 +225,7 @@ export default function B2BPage() {
             <div className="space-y-2">
               <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Brand Logo Upload (Optional)</label>
               <input type="file" accept="image/*" onChange={(e) => setLogoFile(e.target.files?.[0] || null)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-2.5 text-xs text-zinc-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-amber-400 file:text-black hover:file:bg-amber-300" />
-              {logoFile && <p className="text-xs text-green-400">✅ {logoFile.name} - File ka naam WhatsApp inquiry me jayega</p>}
+              {logoFile && <p className="text-xs text-green-400">✅ {logoFile.name} - This filename will be included in the WhatsApp inquiry.</p>}
             </div>
 
             <div className="space-y-2">

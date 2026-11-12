@@ -179,7 +179,7 @@ export default function ProductPage() {
       return;
     }
     if (customMadeEnabled && !customMadeDetail.trim() && !customMadeFile) {
-      alert("Please apna design detail likhein ya apni image upload karein");
+      alert("Please describe your design or upload an image.");
       return;
     }
     const cartItem = {
@@ -252,7 +252,7 @@ export default function ProductPage() {
               </div>
             )}
             <div className="mt-4 flex flex-wrap gap-2 text-xs">
-              <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ 100% Real Leather</span>
+              <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)</span>
               <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Handicraft</span>
               <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Sample Before Bulk</span>
             </div>
@@ -342,7 +342,7 @@ export default function ProductPage() {
                 <div className="mt-4 bg-black border border-amber-400/30 rounded-md p-3">
                   <label className="text-xs font-bold uppercase text-zinc-400">Enter Your Name / Initials *</label>
                   <input type="text" value={customText} onChange={(e) => setCustomText(e.target.value)} placeholder="e.g. A. Khan / AK" maxLength={20} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-amber-400 bg-zinc-950 text-white" />
-                  <p className="text-xs text-zinc-400 mt-1">{customText.length} / 20 - Ye naam product pe engrave hoga</p>
+                  <p className="text-xs text-zinc-400 mt-1">{customText.length} / 20 - This name will be engraved on the product.</p>
                 </div>
               )}
               {(additionalOption === "image" || additionalOption === "both") && (

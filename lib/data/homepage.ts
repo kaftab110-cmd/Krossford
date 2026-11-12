@@ -1,7 +1,7 @@
 // lib/data/homepage.ts - FINAL FIXED - RETAIL + WHOLESALE - Since 2025
 export const hero = {
   title: "KROSSFORD ENTERPRISES",
-  subtitle: "100% Full-Grain Leather | HD Images | Sample Before Bulk | Since 2025",
+  subtitle: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | HD Images | Sample Before Bulk | Since 2025",
   image: "/images/leather-duffle-bag.jpg",
   button: "SHOP COLLECTION",
 };
@@ -16,16 +16,16 @@ export const homepageProducts = [
 export const brandStorySection = {
   title: "KROSSFORD ENTERPRISES",
   subtitle: "Premium Full-Grain Leather Goods - Retail + Wholesale",
-  description: "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available | Since 2025",
+  description: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | Sample Before Bulk | Custom Logo Available | Since 2025",
   image: "/images/leather-duffle-bag.jpg",
   button: "SHOP RETAIL - 1 PIECE",
   stories: [
-    { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee - No Split, No PU", image: "/images/leather-duffle-bag.jpg" },
+    { id: 1, title: "Genuine Leather", description: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)", image: "/images/leather-duffle-bag.jpg" },
     { id: 2, title: "Handicraft", description: "Made in Pakistan - Strong Stitching, Long Life", image: "/images/wallet.jpg" },
     { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available - KROSSFORD", image: "/images/belt.jpg" },
   ],
   items: [
-    { id: 1, title: "100% Full-Grain", description: "Real Leather Guarantee" },
+    { id: 1, title: "Genuine Leather", description: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)" },
     { id: 2, title: "Handicraft", description: "Made in Pakistan" },
     { id: 3, title: "Sample Before Bulk", description: "Custom Logo Available" },
   ],
@@ -37,18 +37,18 @@ export const craftsmanshipSection = {
   description: "Vegetable-Tanned, Brass Buckle, Handicraft - Made in Pakistan for Customers and Buyers Worldwide",
   image: "/images/belt.jpg",
   items: [
-    { id: 1, title: "Full-Grain Leather", description: "100% Real Leather, No Split, No PU", image: "/images/belt.jpg" },
+    { id: 1, title: "Full-Grain Leather", description: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)", image: "/images/belt.jpg" },
     { id: 2, title: "Handicraft", description: "Strong Stitching, Long Life", image: "/images/wallet.jpg" },
     { id: 3, title: "Custom Logo", description: "Name / Logo Engraving Available", image: "/images/belt.jpg" },
   ],
-  features: ["100% Full-Grain Leather", "Handicraft", "Sample Before Bulk", "Custom Logo Available"],
+  features: ["100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)", "Handicraft", "Sample Before Bulk", "Custom Logo Available"],
 };
 
 export const featuredProductsSection = {
   label: "Featured Collection",
   title: "KROSSFORD COLLECTION",
   description: "Real Leather. Made Honestly. Sample Before Bulk. Retail + Wholesale Both Available.",
-  subtitle: "100% Full-Grain Leather | HD Images",
+  subtitle: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | HD Images",
   products: [
     { id: 1, title: "Vintage Leather Backpack", name: "Vintage Leather Backpack", description: "Dark Brown, Full-Grain Leather", image: "/images/messenger-bag.jpg", imageUrl: "/images/messenger-bag.jpg", status: "Bestseller", href: "/shop", category: "Bags" },
     { id: 7, title: "Travel Duffle Bag", name: "Travel Duffle Bag", description: "Cognac Brown, Full-Grain Leather", image: "/images/leather-duffle-bag.jpg", imageUrl: "/images/leather-duffle-bag.jpg", status: "New", href: "/shop", category: "Bags" },

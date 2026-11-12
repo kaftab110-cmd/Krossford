@@ -290,7 +290,7 @@ export default function CartPage() {
             <span className="text-zinc-400">Total (Product Only)</span><span className="text-amber-400">${total.toFixed(2)} USD</span>
           </div>
           <div className="space-y-1 text- text-zinc-500">
-            <p>✓ 100% Real Leather Guarantee • Sample Before Bulk</p>
+            <p>✓ 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) • Sample Before Bulk</p>
             <p>✓ Handcrafted To Order • Ships via | | | BANK TRANSFER / T/T - Retail: 100% Advance | Wholesale: 50% Advance, 50% Before Dispatch</p>
           </div>
           <Link href="/checkout" className="w-full block text-center bg-amber-500 text-black py-3 rounded text-xs font-bold uppercase">Proceed to Checkout</Link>

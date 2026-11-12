@@ -67,7 +67,7 @@ export const privacyContent = {
     {
       heading: "Our Commitment",
       paragraphs: [
-        "100% Real Leather Guarantee | Sample Before Bulk | Custom Logo Available",
+        "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | Sample Before Bulk | Custom Logo Available",
         "If you ever feel your privacy was not respected, tell us directly. We will fix it. Because for KROSSFORD, a customer / buyer is not an order number - you are part of our story.",
         "Questions? hello@krossford.com - A real person will reply within 48 hours, not a robot.",
       ],

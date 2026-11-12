@@ -32,7 +32,7 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 text-sm sm:text-base md:text-lg text-zinc-200 max-w-2xl mx-auto text-center leading-relaxed">
-          A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Real Leather Guarantee.
+          A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).
         </p>
 
         <p className="mt-3 text-xs sm:text-sm text-amber-300/90 max-w-xl mx-auto text-center leading-relaxed">
