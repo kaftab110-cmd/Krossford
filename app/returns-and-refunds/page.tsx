@@ -6,9 +6,16 @@ export const metadata: Metadata = {
   description: "Review the privacy practices, data collection categories, and customer rights for KROSSFORD Enterprises, operating from Punjab, Pakistan.",
 };
 
+// PRIVACY POLICY - FINAL - ONE TIME ALL FIXES
+// 1. Purani galat lines HATA di - Pehle likha tha ke checkout / storage / payment / logistics kuch nahi hai - Ye galat tha
+//    Asal me site pe hai: Cart + Wishlist (localStorage), WhatsApp order, DHL Tracking, VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER
+// 2. LocalStorage saaf likh diya - krossford_cart + krossford_wishlist - Sirf browser me rehta hai, hamare server pe account nahi banta
+// 3. Payment / Logistics saaf likh diya - Payment ka data hamare paas save nahi hota, bank / Western Union / card provider ke paas hota hai
+// 4. Baaki structure same rakha - LegalNav + headings same hain
+
 const privacyContent = {
   title: "Privacy Policy",
-  lastUpdated: "October 30, 2026",
+  lastUpdated: "November 12, 2026",
   sections: [
     {
       heading: "1. Who We Are and How to Contact Us",
@@ -21,8 +28,10 @@ const privacyContent = {
       heading: "2. Personal Information We May Collect",
       paragraphs: [
         "We collect personal information that users voluntarily enter into enquiry or contact forms, such as names, contact details, and messages. Actual receipt and processing depend on the website's functioning and available communication arrangements.",
+        "When you place an order or enquiry through WhatsApp, the details you share on WhatsApp (name, address, order details) are processed to fulfil your order.",
         "Technical request information, such as IP address and browser information, may be processed by hosting infrastructure as part of standard web delivery.",
-        "We do not collect customer accounts, payment information, or order databases, as no active checkout or account system is implemented."
+        "Cart and Wishlist are saved in your own browser using local storage (krossford_cart and krossford_wishlist). This stays on your device. We do not create a customer account for you and we do not keep an order database on our server for this.",
+        "We do not collect or store your card numbers, bank passwords, or payment PINs on this website. Payment is completed through your bank, card provider, Western Union, or bank transfer - as per the payment method you choose."
       ]
     },
     {
@@ -32,6 +41,7 @@ const privacyContent = {
       ],
       bullets: [
         "Handling enquiries where received and communicating with prospective customers.",
+        "Confirming orders, crafting details, delivery address, and dispatch updates on WhatsApp.",
         "Operating the website and troubleshooting technical issues.",
         "Maintaining infrastructure security and supporting basic site functionality.",
         "Meeting applicable legal obligations."
@@ -46,15 +56,16 @@ const privacyContent = {
     {
       heading: "5. Cookies and Similar Technologies",
       paragraphs: [
-        "A codebase audit did not identify custom application cookies, browser-storage management, analytics trackers, or a cookie-consent banner. We do not claim that the website uses a specific cookie unless verified.",
-        "Hosting infrastructure or browser technologies may involve technical mechanisms necessary to deliver the website, subject to the relevant provider's practices."
+        "We do not use a cookie-consent banner or analytics trackers in our own code. Your Cart and Wishlist use browser local storage (not cookies) so your cart does not disappear when you change pages.",
+        "You can clear your Cart and Wishlist anytime by clearing your browser storage / site data. Hosting infrastructure or browser technologies may involve technical mechanisms necessary to deliver the website, subject to the relevant provider's practices."
       ]
     },
     {
       heading: "6. Sharing Personal Information",
       paragraphs: [
-        "We share personal information only as reasonably necessary with hosting and infrastructure providers—such as Vercel, the provider used for actual deployment—or when required to meet applicable legal obligations.",
-        "We do not claim active payment, analytics, advertising, or logistics integrations, and we do not sell personal information."
+        "We share personal information only as reasonably necessary with hosting and infrastructure providers - such as Vercel, the provider used for actual deployment - or when required to meet applicable legal obligations.",
+        "For delivery, we share your name, address, phone number, and order details with DHL Express so your parcel can be shipped and tracked. For payment, your payment details go to your chosen payment provider (bank / card provider / Western Union) - not to us.",
+        "We do not sell personal information."
       ]
     },
     {
@@ -66,7 +77,7 @@ const privacyContent = {
     {
       heading: "8. Data Retention and Security",
       paragraphs: [
-        "Information should be retained only as long as reasonably necessary for its purpose and applicable legal requirements. We do not invent fixed retention periods.",
+        "Information should be retained only as long as reasonably necessary for its purpose and applicable legal requirements. We do not invent fixed retention periods. WhatsApp chats are kept as per WhatsApp's own system.",
         "We rely on the security measures provided by our hosting infrastructure and take reasonable care when operating the website. However, no method of electronic transmission or storage can be guaranteed to be completely secure."
       ]
     },
