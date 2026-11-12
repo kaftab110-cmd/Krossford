@@ -1,13 +1,12 @@
 export const shippingContent = {
   title: "Shipping Policy",
-  lastUpdated: "October 30, 2025",
+  lastUpdated: "November 12, 2026",
   sections: [
     {
       heading: "Processing Time",
       paragraphs: [
-        "Processing Time: 7-10 Days - Production, Quality Check & Packing.",
-        "Retail Orders (1 Piece): 7-10 Days Processing + DHL Delivery.",
-        "Wholesale Orders (50+ Units): Processing time will be confirmed in written quotation before order confirmation. Depends on quantity & customization.",
+        "Retail Orders (1 Piece): Estimated Total: 12-17 Working Days.",
+        "Wholesale Orders: Estimated Bulk Production: 30-45 days after Sample Approval. Exact production time depends on quantity, hide type, material, and design, and is confirmed in the agreement before you sign the contract.",
         "KROSSFORD uses a combination of its own facilities and independent manufacturing partners, so exact production timelines depend on the specific product and current workload.",
         "Actual processing estimates will be communicated before order confirmation or production commencement."
       ]
@@ -22,7 +21,7 @@ export const shippingContent = {
     {
       heading: "Estimated Delivery Times",
       paragraphs: [
-        "Total Delivery Time: 12-17 Working Days = Processing: 7-10 Working Days + DHL Delivery: 5-7 Working Days.",
+        "Estimated Total: 12-17 Working Days.",
         "We will try our best to deliver as soon as possible, even before this time.",
         "Delivery estimates depend on the destination, courier service, processing time, and customs procedures.",
         "Delivery dates are estimates and are not guaranteed unless explicitly agreed in writing for a specific transaction."
@@ -38,14 +37,16 @@ export const shippingContent = {
         "• Packaging requirements.",
         "• Insurance, where applicable.",
         "• Remote-area surcharges and other known logistical costs.",
-        "Customers (Retail) and buyers (Wholesale) must receive the applicable shipping quotation and known additional charges before order confirmation or final payment. We do not promise that every possible future charge can be predicted in advance."
+        "Customers (Retail) and buyers (Wholesale) must receive the applicable shipping quotation and known additional charges before order confirmation or final payment. We do not promise that every possible future charge can be predicted in advance.",
+        "Shipment Charges are paid by the Buyer - Freight + Insurance + Customs Clearance + Duty in your country are Buyer's responsibility. For FOB Karachi shipments, our responsibility is up to Pakistan - up to loading onto the vessel at Karachi Port. After loading, Buyer is responsible."
       ]
     },
     {
       heading: "Customs, Import Duties and Taxes",
       paragraphs: [
         "International shipments may be subject to customs duties, import taxes, clearance fees, and other destination-related charges.",
-        "Responsibility for these charges must follow applicable law and the delivery arrangement agreed with the customer (Retail) / buyer (Wholesale). We do not state that buyers are always responsible for every tax, nor do we attempt to exclude KROSSFORD's own statutory tax obligations."
+        "Responsibility for these charges must follow applicable law and the delivery arrangement agreed with the customer (Retail) / buyer (Wholesale). We do not state that buyers are always responsible for every tax, nor do we attempt to exclude KROSSFORD's own statutory tax obligations.",
+        "Buyer should check Duty / Tax with their own Customs before order. We do not guarantee Duty exemption."
       ]
     },
     {
@@ -75,10 +76,11 @@ export const shippingContent = {
     {
       heading: "Retail + Wholesale Shipments",
       paragraphs: [
-        "Retail (1 Piece): Ships via DHL Express. Retail: 100% Secure Advance Payment.",
-        "Wholesale (50+ Units): Production timelines, packaging, shipping costs, insurance, customs responsibilities, and delivery arrangements will be confirmed in a written quotation or purchase order before accepting business orders.",
-        "Wholesale Payment: 50% Advance - 50% Before Dispatch.",
-        "Commercial terms may vary according to the specific wholesale or bulk order."
+        "Retail (1 Piece): Ships via DHL Express. Retail: 100% Advance Payment.",
+        "Wholesale: Production timelines, packaging, shipping costs, insurance, customs responsibilities, and delivery arrangements will be confirmed in a written quotation or purchase order before accepting business orders.",
+        "Wholesale Payment: 50% Advance - 50% After Goods Are Ready, Before Dispatch.",
+        "Commercial terms may vary according to the specific wholesale or bulk order.",
+        "Final terms are those confirmed in writing in your Quotation / Agreement. If there is any difference between this Policy and your Agreement, your Agreement will apply."
       ]
     }
   ]
