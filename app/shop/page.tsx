@@ -111,25 +111,7 @@ function ShopPageInner() {
         <h1 className="text-3xl font-bold uppercase tracking-widest">{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p>
       </section>
-
-      {/* FOR HER BUTTON - Sirf SHOP page pe dikhega, FOR HER page pe NAHI - kyunki wahan pehle se For Her pe ho */}
-      {activeCategory !== "For Her" && (
-        <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
-          <Link href="/for-her" className="inline-block bg-pink-500 text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded">Go to For Her Page →</Link>
-        </div>
-      )}
-
-      <div className="flex flex-wrap justify-center gap-2 px-6 pb-6">
-        {CATEGORIES.map((cat) => {
-          const count = getProductsByCategory(cat).length;
-          return (
-            <button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400" : "bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-amber-400"}`}>
-              {cat} ({count})
-            </button>
-          );
-        })}
-      </div>
+</div>
 
       {/* SEARCH + SORT */}
       <div className="mx-auto max-w-7xl px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">

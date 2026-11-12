@@ -99,7 +99,7 @@ function ForHerPageInner() {
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
         <p className="text-xs uppercase tracking-widest text-amber-400 mb-2">Curated For Her • Handcrafted • Real Leather</p>
         <h1 className="text-3xl font-bold uppercase tracking-widest">For Her Collection</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • For Her Only • B2B Se Alag Page</p>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • Handcrafted • Real Leather</p>
       </section>
 
       <div className="mx-auto max-w-7xl px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
