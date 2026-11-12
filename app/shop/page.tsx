@@ -11,11 +11,10 @@ function ShopPageInner() {
   const urlCategory = searchParams.get("category") || "All";
   const [activeCategory, setActiveCategory] = useState(urlCategory);
 
-  // FIX: SHOP click pe hamesha ALL hona chahiye - For Her auto-select nahi hona chahiye
-  // Jab URL me ?category= nahi hai (matlab Shop dabaya hai) to force ALL karo
   useEffect(() => {
+    if (urlCategory === 'For Her') { window.location.href = '/for-her'; return; }
     setActiveCategory(urlCategory);
-    setSearchQuery("");
+    setSearchQuery('');
   }, [urlCategory]);
 
   // --- SEARCH + SORT - Shop SEO / Usability ---
@@ -113,14 +112,26 @@ function ShopPageInner() {
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
         <h1 className="text-3xl font-bold uppercase tracking-widest">{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p>
-        {/* FOR HER BUTTON - Sirf SHOP page pe dikhega (ALL ya baaki category pe), FOR HER pe nahi - kyunki wahan pehle se ho */}
-        {activeCategory !== "For Her" && (
-          <div className="mt-4">
-            <Link href="/for-her" className="inline-block bg-pink-500 hover:bg-pink-400 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded">Go to For Her Page →</Link>
-          </div>
-        )}
       </section>
-</div>
+
+      {/* FOR HER BUTTON - Sirf SHOP pe dikhega, FOR HER pe nahi - Badi websites jaisa: Shop pills me For Her ka pill nahi hota, sirf button hota hai */}
+      {activeCategory !== "For Her" && (
+        <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
+          <Link href="/for-her" className="inline-block bg-pink-500 hover:bg-pink-400 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded">Go to For Her Page →</Link>
+        </div>
+      )}
+
+      <div className="flex flex-wrap justify-center gap-2 px-6 pb-6">
+        {CATEGORIES.filter((cat) => cat !== 'For Her').map((cat) => {
+          const count = getProductsByCategory(cat).length;
+          return (
+            <button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }}
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400" : "bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-amber-400"}`}>
+              {cat} ({count})
+            </button>
+          );
+        })}
+      </div>
 
       {/* SEARCH + SORT */}
       <div className="mx-auto max-w-7xl px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
