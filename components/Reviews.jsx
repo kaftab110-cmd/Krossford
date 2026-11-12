@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 
-// REVIEW FORM - FINAL - JS VERSION - components/Reviews.jsx
-// ZAROORI: Ye file .jsx hai, .tsx NAHI hai - Is liye isme TypeScript wali cheezain NAHI chalengi
-// Pehli wali file me TypeScript wala type tha - .jsx me ye error deta hai - Ab wo hata diya
-// 1. Encode fix - User ka text encodeURIComponent se jayega - & ya ? se link nahi tootega
-// 2. Order Ref add kiya - Real order verify karne ke liye
-// 3. Product list barhaya - Card Holder, Keychain bhi add kiye
-// 4. Alert hataya - Ab andar hi Shukriya message dikhega
+// REVIEW FORM - FINAL - ENGLISH ONLY - components/Reviews.jsx
+// This file is .jsx, not .tsx - No TypeScript allowed
+// All user-facing text is in English only - No Roman Urdu
+// 1. Encode fix - encodeURIComponent so & or ? does not break the link
+// 2. Order Ref added - To verify real orders
+// 3. Product list - 7 products
+// 4. No alert popup - Success message shows inside the form
 
 const PRODUCTS = [
   "Classic Tote Bag",
@@ -52,9 +52,9 @@ export default function ReviewForm() {
   if (sent) {
     return (
       <div className="max-w-lg mx-auto bg-zinc-900 border border-amber-500/30 rounded-xl p-6 mt-8 text-center">
-        <p className="font-bold text-lg">Shukriya! ✅</p>
+        <p className="font-bold text-lg">Thank You! ✅</p>
         <p className="text-sm text-zinc-400 mt-2">
-          Tumhara review approval ke liye bhej diya gaya hai. Approve hone ke baad website pe dikhega. Sirf real orders wale reviews approve honge.
+          Your review has been sent for approval. It will appear on the website after approval. Only reviews from real orders will be approved.
         </p>
         <button
           onClick={() => {
@@ -63,7 +63,7 @@ export default function ReviewForm() {
           }}
           className="mt-4 text-sm underline text-zinc-300 hover:text-amber-400"
         >
-          Ek aur review likhein
+          Write another review
         </button>
       </div>
     );
@@ -85,11 +85,11 @@ export default function ReviewForm() {
   return (
     <div className="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-xl p-6 mt-8">
       <h3 className="font-bold text-lg">Share Your Experience</h3>
-      <p className="text-xs text-zinc-400 mt-1">Sirf real orders wale reviews approve honge.</p>
+      <p className="text-xs text-zinc-400 mt-1">Only reviews from real orders will be approved.</p>
       <form onSubmit={handleSubmit} className="space-y-3 mt-5">
         <input
           required
-          placeholder="Tumhara Naam *"
+          placeholder="Your Name *"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm outline-none focus:border-amber-500"
@@ -124,7 +124,7 @@ export default function ReviewForm() {
           <option value={1}>★☆☆☆☆ - 1 - Poor</option>
         </select>
         <input
-          placeholder="Order Ref / Tracking No. (optional - verification ke liye)"
+          placeholder="Order Ref / Tracking No. (optional - for verification)"
           value={form.orderRef}
           onChange={(e) => setForm({ ...form, orderRef: e.target.value })}
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm outline-none focus:border-amber-500"
@@ -132,7 +132,7 @@ export default function ReviewForm() {
         <textarea
           required
           rows={4}
-          placeholder="Apna honest review likhein..."
+          placeholder="Write your honest review..."
           value={form.text}
           onChange={(e) => setForm({ ...form, text: e.target.value })}
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm outline-none focus:border-amber-500"
