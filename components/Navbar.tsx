@@ -4,15 +4,20 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 
+// FOR HER - ALAG PAGE - /for-her
+// RULE: B2B aur FOR HER hamesha alag rakhne hain - Shop ke andar mix nahi karne
+// FIX: Pehle sab links /shop?category=... pe ja rahe the, is liye click karne pe Shop page khulta tha aur pink button aata tha
+// Ab: Main FOR HER link /for-her pe jayega - seedha naye alag page pe
+// NOTE: Dropdown wale categories abhi /for-her pe jayenge - For Her page ke andar category filter baad me add karenge
 const FOR_HER_CATS = [
-  { label: "All For Her", href: "/shop?category=For Her" },
-  { label: "Handbags & Tote Bags", href: "/shop?category=Bags" },
-  { label: "Crossbody Bags", href: "/shop?category=Crossbody" },
-  { label: "Wallets For Her", href: "/shop?category=Wallets" },
-  { label: "Card Holders", href: "/shop?category=Card Holders" },
-  { label: "Belts For Her", href: "/shop?category=Belts" },
-  { label: "Accessories & Gifts", href: "/shop?category=Accessories" },
-  { label: "Custom & Gifts For Her", href: "/shop?category=Custom & Gifts" },
+  { label: "All For Her", href: "/for-her" },
+  { label: "Handbags & Tote Bags", href: "/for-her" },
+  { label: "Crossbody Bags", href: "/for-her" },
+  { label: "Wallets For Her", href: "/for-her" },
+  { label: "Card Holders", href: "/for-her" },
+  { label: "Belts For Her", href: "/for-her" },
+  { label: "Accessories & Gifts", href: "/for-her" },
+  { label: "Custom & Gifts For Her", href: "/for-her" },
 ];
 
 export default function Navbar() {
@@ -84,7 +89,7 @@ export default function Navbar() {
           <Link href="/" className={pathname === "/" ? "text-amber-400" : "text-white hover:text-amber-400"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <div className="relative group">
-            <Link href="/shop?category=For Her" className={`${cls("/shop")} flex items-center gap-1 py-2`}>
+            <Link href="/for-her" className={`${pathname === "/for-her" ? "text-amber-400" : "text-zinc-300 hover:text-amber-400 transition-colors"} flex items-center gap-1 py-2`}>
               FOR HER <span className="text-xs">▼</span>
             </Link>
             <div className="absolute left-0 top-full pt-1 hidden group-hover:block w-56 z-50">
@@ -130,9 +135,12 @@ export default function Navbar() {
               <Link href="/" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">HOME</Link>
               <Link href="/shop" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">SHOP</Link>
               <div className="py-1 border-b border-zinc-900">
-                <button onClick={() => setForHerOpen(!forHerOpen)} className="w-full flex justify-between items-center py-1 text-left text-amber-400">
-                  FOR HER <span className="text-xs">{forHerOpen ? "UP" : "DOWN"}</span>
-                </button>
+                <div className="flex justify-between items-center">
+                  <Link href="/for-her" onClick={() => setOpen(false)} className="py-1 text-left text-amber-400 flex-1">FOR HER</Link>
+                  <button onClick={() => setForHerOpen(!forHerOpen)} className="p-1 text-amber-400" aria-label="Toggle For Her menu">
+                    <span className="text-xs">{forHerOpen ? "UP" : "DOWN"}</span>
+                  </button>
+                </div>
                 {forHerOpen && (
                   <div className="pl-3 mt-1 flex flex-col">
                     {FOR_HER_CATS.map((c) => (

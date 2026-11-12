@@ -112,11 +112,10 @@ function ShopPageInner() {
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p>
       </section>
 
-      {/* FOR HER ALAG HAI - Shop se mix nahi - /for-her pe jao */}
-      {activeCategory === "For Her" && (
+      {/* FOR HER BUTTON - Sirf SHOP page pe dikhega, FOR HER page pe NAHI - kyunki wahan pehle se For Her pe ho */}
+      {activeCategory !== "For Her" && (
         <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
-          <p className="text-xs text-zinc-400">For Her ab alag page pe hai — B2B aur Shop se alag.</p>
-          <Link href="/for-her" className="inline-block mt-2 bg-pink-500 text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded">Go to For Her Page →</Link>
+          <Link href="/for-her" className="inline-block bg-pink-500 text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded">Go to For Her Page →</Link>
         </div>
       )}
 
