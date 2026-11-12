@@ -117,7 +117,7 @@ function ShopPageInner() {
       {/* FOR HER BUTTON - Sirf SHOP pe dikhega, FOR HER pe nahi - Badi websites jaisa: Shop pills me For Her ka pill nahi hota, sirf button hota hai */}
       {activeCategory !== "For Her" && (
         <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
-          <Link href="/for-her" className="inline-block bg-pink-500 hover:bg-pink-400 text-white text-xs font-bold uppercase tracking-widest px-6 py-3 rounded">Go to For Her Page →</Link>
+          <Link href="/for-her" className="inline-block bg-pink-600 hover:bg-pink-500 text-white text-sm font-black uppercase tracking-widest px-8 py-3.5 rounded-full border-2 border-white shadow-lg shadow-pink-600/40">Go to For Her Page →</Link>
         </div>
       )}
 
@@ -126,7 +126,7 @@ function ShopPageInner() {
           const count = getProductsByCategory(cat).length;
           return (
             <button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400" : "bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-amber-400"}`}>
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400 font-black shadow-lg" : "bg-zinc-950 text-zinc-100 border-zinc-700 hover:border-amber-400"}`}>
               {cat} ({count})
             </button>
           );
