@@ -21,6 +21,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const [index, setIndex] = useState(0);
   const [broken, setBroken] = useState<string[]>([]);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const images = uniqueImages.filter((img) => !broken.includes(img));
   const safeIndex = images.length === 0 ? 0 : Math.min(index, images.length - 1);
@@ -89,8 +90,16 @@ export default function ProductCard({ product }: { product: Product }) {
         className="relative w-full h-64 overflow-hidden bg-zinc-950 group/slider"
         onMouseEnter={startHoverSlide}
         onMouseLeave={stopHoverSlide}
-        onTouchStart={startHoverSlide}
-        onTouchEnd={() => { setTimeout(stopHoverSlide, 6000); }}
+        onTouchStart={(e) => { setTouchStartX(e.touches[0].clientX); startHoverSlide(); }}
+        onTouchEnd={(e) => {
+          if (touchStartX !== null && images.length > 1) {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (diff < -30) setIndex((prev) => (prev + 1) % images.length);
+            if (diff > 30) setIndex((prev) => (prev - 1 + images.length) % images.length);
+          }
+          setTouchStartX(null);
+          setTimeout(stopHoverSlide, 6000);
+        }}
       >
         <Link href={href} className="block w-full h-full cursor-pointer">
           <img
@@ -103,8 +112,8 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {images.length > 1 && (
           <>
-            <button onClick={prev} aria-label="Previous Image" className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-0 group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">‹</button>
-            <button onClick={next} aria-label="Next Image" className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-0 group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">›</button>
+            <button onClick={prev} aria-label="Previous Image" className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">‹</button>
+            <button onClick={next} aria-label="Next Image" className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">›</button>
 
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
               {images.map((_, i) => (
