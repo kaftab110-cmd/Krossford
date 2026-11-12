@@ -200,7 +200,7 @@ export default function AIChatbot() {
               <button onClick={sendToWhatsApp} className="w-full bg-green-500 text-white py-2 rounded-full text-sm font-bold shadow">
                 💬 Continue on WhatsApp - +92303 0006759
               </button>
-              <p className="text-xs text-center text-zinc-500">Click karke apna order seedha WhatsApp pe bhejo</p>
+              {/* Urdu wali line yahan se hata di - User ne remove karne ko bola tha */}
             </div>
             <div ref={bottomRef} />
           </div>
