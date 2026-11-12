@@ -39,11 +39,11 @@ const PAYMENTS = [
 ];
 
 const customMadeLabel = (t?: string) => {
-  if (t === "full") return "Full Product - Mere Design Pe Banao";
-  if (t === "stitching") return "Stitching Only - Hand Stitched Chahiye";
+  if (t === "full") return "Full Product - Make As Per My Design";
+  if (t === "stitching") return "Stitching Only - Hand Stitched Required";
   if (t === "design") return "Design Change";
   if (t === "size-colour") return "Size / Colour Change";
-  if (t === "logo-name") return "Logo / Name Add Karna Hai";
+  if (t === "logo-name") return "Logo / Name To Be Added";
   return t || "";
 };
 
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nOrder\nDelivery: ${DHLE} - Crafting 7-10 Working Days + ${DHL} Delivery 5-7 Working Days - Estimated Total: 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nOrder\nDelivery: ${DHLE} - Estimated Total: 12-17 Working Days - Ships from Pakistan - Full Tracking Provided - We Always Aim To Deliver Earlier\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
 
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
 
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold">Order Sent!</p>
-        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via {DHLE} • Total Delivery:Estimated Total: 12-17 Working Days • Ships from Pakistan • Tracking Provided.</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via {DHLE} • Estimated Total: 12-17 Working Days • Ships from Pakistan • Tracking Provided.</p>
         <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
         <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
       </div>
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
           <div className="mt-3 bg-amber-400/10 border border-amber-400/30 rounded p-3 space-y-1">
             <p className="text-xs text-amber-400 font-bold">Handcrafted To Order • Ships via {DHLE}</p>
             <p className="text-xs text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
-            <p className="text-xs text-amber-400 font-bold">Ships via {DHLE} • Crafting: 7-10 Working Days + {DHL} Delivery: 5-7 Working Days = Estimated Total: 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
+            <p className="text-xs text-amber-400 font-bold">Ships via {DHLE} • Estimated Total: 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
             <p className="text-xs text-zinc-400 mt-1">We Always Aim To Deliver Earlier.</p>
           </div>
         </div>
@@ -186,10 +186,10 @@ export default function CheckoutPage() {
                     {it.customMade?.enabled && (
                       <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
                         <p className="text- text-amber-400 font-bold">Custom Made - Hand Stitched - On Customer Demand</p>
-                        {it.customMade.type && <p className="text- text-zinc-200">Kya Customize: {customMadeLabel(it.customMade.type)}</p>}
+                        {it.customMade.type && <p className="text- text-zinc-200">What To Customize: {customMadeLabel(it.customMade.type)}</p>}
                         {it.customMade.detail && <p className="text- text-zinc-300">Detail: {it.customMade.detail}</p>}
                         {it.customMade.fileName && <p className="text- text-zinc-400">Design Image: {it.customMade.fileName}</p>}
-                        <p className="text- text-amber-300">Rates design ke mutabiq honge - Final price order confirm hone ke baad batayi jayegi.</p>
+                        <p className="text- text-amber-300">Rates will depend on design - Final price will be confirmed after order confirmation.</p>
                       </div>
                     )}
                   </div>
