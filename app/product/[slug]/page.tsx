@@ -52,10 +52,27 @@ export default function ProductPage() {
 
   const [hoverId, setHoverId] = useState<number | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const hoverProduct = hoverId !== null ? products.find((p) => p.id === hoverId) : undefined;
   const hoverImagesRaw = hoverProduct ? [...new Set([hoverProduct.image, ...(hoverProduct.gallery || [])].filter(Boolean))] : [];
   const hoverImages = hoverImagesRaw.filter((img) => !failedImages.has(img));
   const HOVER_SLIDE_DELAY = 1800;
+
+  // SEO FIX: File "use client" hai, is liye generateMetadata yahan nahi chalega.
+  // Is liye title / description browser me set kar rahe hain - har product ka alag title aayega.
+  useEffect(() => {
+    if (!product) return;
+    const title = `${product.name} - Handmade Full-Grain Leather | Krossford`;
+    const desc = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Total Delivery 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time. Ships from Pakistan via DHL Express.`;
+    document.title = title;
+    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = desc;
+  }, [product?.slug]);
 
   useEffect(() => {
     if (hoverId === null || hoverImages.length <= 1) return;
@@ -416,15 +433,32 @@ export default function ProductPage() {
               return (
               <Link key={p.id} href={`/product/${p.slug}`} className="border border-zinc-800 bg-zinc-950 rounded-lg overflow-hidden group hover:border-amber-400 transition-colors">
                 <div
-                  className="relative h-48 bg-zinc-900 overflow-hidden"
+                  className="relative h-48 bg-zinc-900 overflow-hidden group/slider"
                   onMouseEnter={() => { setHoverId(p.id); setHoverIndex(0); }}
                   onMouseLeave={() => { setHoverId(null); setHoverIndex(0); }}
-                  onTouchStart={() => { setHoverId(p.id); setHoverIndex(0); }}
-                  onTouchEnd={() => { setTimeout(() => { setHoverId(null); setHoverIndex(0); }, 6000); }}
+                  onTouchStart={(e) => { setHoverId(p.id); setTouchStartX(e.touches[0].clientX); }}
+                  onTouchEnd={(e) => {
+                    if (touchStartX !== null && safeCardImages.length > 1) {
+                      const diff = e.changedTouches[0].clientX - touchStartX;
+                      if (diff < -30) setHoverIndex((prev) => (prev + 1) % safeCardImages.length);
+                      if (diff > 30) setHoverIndex((prev) => (prev - 1 + safeCardImages.length) % safeCardImages.length);
+                    }
+                    setTouchStartX(null);
+                    setTimeout(() => { setHoverId(null); setHoverIndex(0); }, 6000);
+                  }}
                 >
                   <img src={currentImage} alt={p.name} onError={() => markFailed(currentImage)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  {isHovering && safeCardImages.length > 1 && (
-                    <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % safeCardImages.length) + 1} / {safeCardImages.length}</span>
+                  {safeCardImages.length > 1 && (
+                    <>
+                      <button aria-label="Previous Image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverId(p.id); setHoverIndex((prev) => (prev - 1 + safeCardImages.length) % safeCardImages.length); }} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">‹</button>
+                      <button aria-label="Next Image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverId(p.id); setHoverIndex((prev) => (prev + 1) % safeCardImages.length); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">›</button>
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                        {safeCardImages.map((_, i) => (
+                          <button key={i} aria-label={`Go to image ${i + 1}`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverId(p.id); setHoverIndex(i); }} className={`h-2 rounded-full cursor-pointer transition-all ${i === (hoverIndex % safeCardImages.length) ? "bg-amber-400 w-4" : "bg-white/60 w-2"}`} />
+                        ))}
+                      </div>
+                      <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % safeCardImages.length) + 1} / {safeCardImages.length}</span>
+                    </>
                   )}
                 </div>
                 <div className="p-4">
