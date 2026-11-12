@@ -4,14 +4,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shipping Policy | KROSSFORD Enterprises",
-  description: "Shipping policy for KROSSFORD Enterprises - handcrafted to order, DHL Express delivery, 12-17 working days worldwide.",
+  description: "Shipping policy for KROSSFORD Enterprises - handcrafted to order, DHL Express delivery,Estimated Total: 12-17 Working Days worldwide.",
 };
 
 // SHIPPING - FINAL - ONE TIME ALL FIXES - app/shipping/page.tsx
 // 1. Self-contained kar diya - Pehle content lib/data/shipping se aa raha tha, ab isi file me hai
 //    Taake 18-24 / galat delivery time kahin aur chhupa hua na reh jaye
 // 2. LegalNav slug fix - Pehle "shipping-policy" tha jo route se match nahi karta - Ab "shipping" kiya jo asal route /shipping hai
-// 3. Delivery saaf likha - 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Purana 18-24 kahin nahi hai
+// 3. Delivery saaf likha -Estimated Total: 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Purana 18-24 kahin nahi hai
 // 4. Payment saaf likha - Sirf VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER
 // 5. Retail 100% / Wholesale 50-50 saaf likha
 
@@ -30,9 +30,9 @@ export default function ShippingPolicyPage() {
 
         <div className="mt-8 space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">1. Total Delivery Time - 12-17 Working Days</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">1. Total Delivery Time -Estimated Total: 12-17 Working Days</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Total delivery time is 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full DHL tracking is provided. We will try our best to deliver as soon as possible - our aim is to deliver earlier than estimated.
+              Total delivery time isEstimated Total: 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full DHL tracking is provided. We will try our best to deliver as soon as possible - our aim is to deliver earlier than estimated.
             </p>
           </section>
 

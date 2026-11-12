@@ -10,7 +10,7 @@ export const customerFaqs: Faq[] = [
   },
   {
     question: "How much is delivery for a customer?",
-    answer: "Delivery is via DHL Express. Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by DHL or Customs is outside our control.",
+    answer: "Delivery is via DHL Express. Estimated Total:Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by DHL or Customs is outside our control.",
   },
   {
     question: "Can a customer return or exchange?",

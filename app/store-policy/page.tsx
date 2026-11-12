@@ -4,12 +4,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Store Policy | KROSSFORD Enterprises",
-  description: "Store Policy for KROSSFORD Enterprises - handcrafted to order leather goods, delivery 12-17 Working Days.",
+  description: "Store Policy for KROSSFORD Enterprises - handcrafted to order leather goods, deliveryEstimated Total: 12-17 Working Days.",
 };
 
 // STORE POLICY - FINAL - ONE TIME ALL FIXES - ENGLISH ONLY - app/store-policy/page.tsx
 // 1. Self-contained kar diya - Pehle content lib/data/storePolicy se aa raha tha, ab isi file me hai
-// 2. Delivery simple rakha - Sirf 12-17 Working Days likha, zyada detail nahi likhi - Jaisa user ne bola
+// 2. Delivery simple rakha - SirfEstimated Total: 12-17 Working Days likha, zyada detail nahi likhi - Jaisa user ne bola
 // 3. Payment - Only VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER
 // 4. Retail 100% / Wholesale 50-50 - Simple likha
 // 5. All text English only - No Roman Urdu
@@ -51,7 +51,7 @@ export default function StorePolicyPage() {
               3. Delivery
             </h2>
             <div className="space-y-4 leading-[1.7] text-[14px] sm:text-[15px] text-zinc-300">
-              <p className="break-words">Total delivery time is 12-17 Working Days.</p>
+              <p className="break-words">Total delivery time isEstimated Total: 12-17 Working Days.</p>
             </div>
           </section>
 

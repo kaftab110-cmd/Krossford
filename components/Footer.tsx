@@ -1,8 +1,8 @@
-// Footer.tsx - FINAL - ONE TIME ALL FIXES - AUTO YEAR
+// Footer.tsx - FINAL - ONE TIME ALL FIXES - AUTO YEAR + ESTIMATED TOTAL
 // 1. Gemini wala 404 khatam - Purane Western icons HATA diye - Sirf 4 pills hain: VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER - Koi missing file nahi dhoondhega
 // 2. classname bug fix - Sab className hai, lowercase classname kahin nahi
 // 3. Font-size bug fix - Har jagah adhoora font class tha, usko text-xs kar diya - Font size ab sahi lagega
-// 4. Delivery simple rakha - Sirf 12-17 Working Days likha, zyada detail nahi likhi - Jaisa user ne bola
+// 4. Delivery simple rakha - Sirf Estimated Total:Estimated Total: 12-17 Working Days likha, zyada detail nahi likhi - Jaisa user ne bola
 // 5. Payment plan: Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch - sahi hai
 // 6. Copyright AUTO YEAR - Pehle 2025 likha tha, ab new Date().getFullYear() hai - Ab 2026 dikhega, agle saal khud 2027 ho jayega, dobara file nahi kholni padegi
 
@@ -31,7 +31,7 @@ export default function Footer() {
         </p>
 
         <p className="text-center text-xs leading-relaxed mt-2.5 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          Handcrafted To Order • Ships via DHL Express • Total:{" "}
+          Handcrafted To Order • Ships via DHL Express • Estimated Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • Ships from Pakistan
         </p>
 

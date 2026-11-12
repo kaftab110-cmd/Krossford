@@ -235,7 +235,7 @@ function ShopPageInner() {
               <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{p.name}</h3></Link>
               <p className="text-xs text-zinc-400 line-clamp-2">{p.description}</p>
               <p className="text-sm text-amber-400 font-mono">${p.price}</p>
-              <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery in 12-17 Working Days • DHL Express</p>
+              <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery inEstimated Total: 12-17 Working Days • DHL Express</p>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleAddToCart(p)}

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Returns and Refunds | KROSSFORD Enterprises",
-  description: "Returns and refunds policy for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery, 12-17 working days.",
+  description: "Returns and refunds policy for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery,Estimated Total: 12-17 Working Days.",
 };
 
 // RETURNS AND REFUNDS - FINAL - ONE TIME ALL FIXES
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 // 2. Rule saaf likh diya - Handcrafted To Order hai, ready stock nahi hai, is liye change-of-mind return nahi hoga
 // 3. Custom / Personalized orders - Return nahi honge - Sirf defect pe remake / repair / refund
 // 4. Defect ka process - Delivery ke 48 hours ke andar WhatsApp pe photo / video bhejo
-// 5. Delivery 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Late delivery return ki wajah nahi hai, tracking diya jayega
+// 5. DeliveryEstimated Total: 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Late delivery return ki wajah nahi hai, tracking diya jayega
 // 6. Payment - Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch - Refund usi method se hoga jisse payment hua tha (Bank Transfer / Western Union / Card)
 // 7. B2B alag likh diya - Bulk me defect wale pieces alag se handle honge, poora bulk return nahi hoga
 
@@ -62,7 +62,7 @@ const returnsContent = {
     {
       heading: "5. Delivery Delays Are Not a Return Reason",
       paragraphs: [
-        "Total delivery time is 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full tracking is provided.",
+        "Total delivery time isEstimated Total: 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full tracking is provided.",
         "We always aim to deliver earlier than estimated. A small delay due to crafting, customs, or DHL does not qualify for a return or refund. If your parcel is stuck, message us on WhatsApp with your tracking number and we will check with DHL.",
       ],
     },

@@ -63,7 +63,7 @@ export default function ProductPage() {
   useEffect(() => {
     if (!product) return;
     const title = `${product.name} - Handmade Full-Grain Leather | Krossford`;
-    const desc = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Total Delivery 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time. Ships from Pakistan via DHL Express.`;
+    const desc = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Total DeliveryEstimated Total: 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time. Ships from Pakistan via DHL Express.`;
     document.title = title;
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
@@ -282,7 +282,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
                   <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> ({DHL} Courier)</p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + {DHLE} Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
+                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + {DHLE} Delivery 5-7 Working Days = TotalEstimated Total: 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
@@ -290,7 +290,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
                   <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
                   <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + {DHLE} 5-7).</p>
+                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece TotalEstimated Total: 12-17 Working Days (Crafting 7-10 + {DHLE} 5-7).</p>
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-800 mt-3">
                     <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
