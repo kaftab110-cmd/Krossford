@@ -18,6 +18,35 @@ function ShopPageInner() {
   // --- SEARCH + SORT - Shop SEO / Usability ---
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "price-low" | "price-high" | "name">("featured");
+  const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  // ADD TO CART - Shop me pehle tha hi nahi, sirf View Designs tha - is liye add kiya
+  const handleAddToCart = (product: any) => {
+    const slug = product.slug || String(product.id);
+    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
+    if (existingIndex >= 0) {
+      existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
+    } else {
+      existingCart.push({
+        id: `${slug}-jet-black-b2c-${Date.now()}`,
+        slug: slug,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+        colorName: "Jet Black",
+        customerType: "B2C",
+        additionalOption: "none",
+        customText: "",
+        uploadedFileName: "",
+      });
+    }
+    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+    setAddedSlug(slug);
+    setTimeout(() => setAddedSlug(null), 2000);
+  };
 
   const filtered = useMemo(() => {
     let list = [...getProductsByCategory(activeCategory)];
@@ -82,6 +111,14 @@ function ShopPageInner() {
         <h1 className="text-3xl font-bold uppercase tracking-widest">{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p>
       </section>
+
+      {/* FOR HER ALAG HAI - Shop se mix nahi - /for-her pe jao */}
+      {activeCategory === "For Her" && (
+        <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
+          <p className="text-xs text-zinc-400">For Her ab alag page pe hai — B2B aur Shop se alag.</p>
+          <Link href="/for-her" className="inline-block mt-2 bg-pink-500 text-white text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded">Go to For Her Page →</Link>
+        </div>
+      )}
 
       <div className="flex flex-wrap justify-center gap-2 px-6 pb-6">
         {CATEGORIES.map((cat) => {
@@ -193,9 +230,15 @@ function ShopPageInner() {
               <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery in 12-17 Working Days • DHL Express</p>
               <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
               <div className="flex gap-2">
-                <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-amber-400 text-black text-xs font-bold uppercase py-3 rounded">View Designs →</Link>
+                <button
+                  onClick={() => handleAddToCart(p)}
+                  className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                >
+                  {addedSlug === (p.slug || String(p.id)) ? "✓ Added!" : "Add to Cart →"}
+                </button>
                 <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
               </div>
+              <Link href={`/product/${p.slug}`} className="block text-center text-[11px] text-zinc-400 hover:text-amber-400 uppercase tracking-widest">View Designs →</Link>
             </div>
           </div>
           );
