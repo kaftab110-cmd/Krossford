@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { products, CATEGORIES } from "@/lib/data/shop";
 
@@ -23,8 +23,14 @@ export default function Collections() {
     colorNames: p.colors ? p.colors.map((c: any) => c.name) : [],
   }));
 
+  // SLIDER FORMULA (ProductCard wala - har folder/file me same):
+  // - Arrows mobile pe hamesha visible, desktop pe hover pe
+  // - Dots + Counter (1 / 5)
+  // - Swipe left/right mobile pe
+  // - Slider sirf tab jab 1 se zyada photo ho
+  const [slideIndex, setSlideIndex] = useState<Record<string, number>>({});
   const [hoverId, setHoverId] = useState<string | null>(null);
-  const [hoverIndex, setHoverIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
   const hoverProduct = hoverId ? allProducts.find((p) => String(p.id) === String(hoverId)) : undefined;
   const hoverImages = hoverProduct ? [...new Set([hoverProduct.image, ...(hoverProduct.gallery || [])].filter(Boolean))] : [];
   const HOVER_SLIDE_DELAY = 1800;
@@ -32,10 +38,24 @@ export default function Collections() {
   useEffect(() => {
     if (!hoverId || hoverImages.length <= 1) return;
     const timer = setInterval(() => {
-      setHoverIndex((prev) => (prev + 1) % hoverImages.length);
+      setSlideIndex((prev) => {
+        const cur = prev[hoverId] ?? 0;
+        return { ...prev, [hoverId]: (cur + 1) % hoverImages.length };
+      });
     }, HOVER_SLIDE_DELAY);
     return () => clearInterval(timer);
   }, [hoverId, hoverImages.length]);
+
+  const goTo = (id: string, total: number, dir: 1 | -1) => {
+    setSlideIndex((prev) => {
+      const cur = prev[id] ?? 0;
+      return { ...prev, [id]: (cur + dir + total) % total };
+    });
+  };
+
+  const goToIndex = (id: string, idx: number) => {
+    setSlideIndex((prev) => ({ ...prev, [id]: idx }));
+  };
 
   const filteredProducts =
     selectedCategory === "All"
@@ -75,8 +95,9 @@ export default function Collections() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {filteredProducts.map((product) => {
             const cardImages = [...new Set([product.image, ...(product.gallery || [])].filter(Boolean))];
-            const isHovering = String(hoverId) === String(product.id);
-            const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : product.image;
+            const hasSlider = cardImages.length > 1;
+            const curIdx = slideIndex[String(product.id)] ?? 0;
+            const currentImage = hasSlider ? cardImages[curIdx % cardImages.length] : product.image;
             return (
             <div
               key={product.id}
@@ -91,18 +112,56 @@ export default function Collections() {
               <Link href={`/product/${product.id}`} className="block">
                 <div
                   className="relative w-full h-64 rounded-lg bg-zinc-900 overflow-hidden border border-zinc-800/60"
-                  onMouseEnter={() => { setHoverId(String(product.id)); setHoverIndex(0); }}
-                  onMouseLeave={() => { setHoverId(null); setHoverIndex(0); }}
-                  onTouchStart={() => { setHoverId(String(product.id)); setHoverIndex(0); }}
-                  onTouchEnd={() => { setTimeout(() => { setHoverId(null); setHoverIndex(0); }, 6000); }}
+                  onMouseEnter={() => { setHoverId(String(product.id)); }}
+                  onMouseLeave={() => { setHoverId(null); }}
+                  onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+                  onTouchEnd={(e) => {
+                    if (touchStartX.current === null || !hasSlider) return;
+                    const dx = e.changedTouches[0].clientX - touchStartX.current;
+                    if (dx < -50) goTo(String(product.id), cardImages.length, 1);
+                    if (dx > 50) goTo(String(product.id), cardImages.length, -1);
+                    touchStartX.current = null;
+                  }}
                 >
                   <img
                     src={currentImage}
                     alt={product.name}
                     className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
-                  {isHovering && cardImages.length > 1 && (
-                    <span className="absolute top-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                  {/* COUNTER */}
+                  {hasSlider && (
+                    <span className="absolute top-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full z-10">{(curIdx % cardImages.length) + 1} / {cardImages.length}</span>
+                  )}
+                  {/* ARROWS - Mobile pe hamesha visible, Desktop pe hover pe */}
+                  {hasSlider && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label="Previous photo"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(String(product.id), cardImages.length, -1); }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      >‹</button>
+                      <button
+                        type="button"
+                        aria-label="Next photo"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(String(product.id), cardImages.length, 1); }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      >›</button>
+                    </>
+                  )}
+                  {/* DOTS */}
+                  {hasSlider && (
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                      {cardImages.map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          aria-label={`Go to photo ${i + 1}`}
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(String(product.id), i); }}
+                          className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-amber-400" : "w-2 h-2 bg-white/70"}`}
+                        />
+                      ))}
+                    </div>
                   )}
                 </div>
               </Link>
@@ -129,7 +188,8 @@ export default function Collections() {
                   ))}
                 </div>
               </div>
-              <p className="text-[11px] text-zinc-500 mt-2">🚚 Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+              <p className="text-[11px] text-zinc-500 mt-2">🚚 Delivery in 12-17 Working Days • DHL Express • Tracking Provided</p>
+              <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
 
               <div className="mt-4 flex gap-2">
                 <Link

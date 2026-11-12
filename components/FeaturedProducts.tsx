@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { products, findProductBySlug, getCardSliderImages } from "@/lib/data/shop";
 
@@ -7,25 +7,49 @@ import { products, findProductBySlug, getCardSliderImages } from "@/lib/data/sho
 // SYNC FIX: Sirf slug likha hai, naam / price / image / badge sab lib/data/shop.ts se aayega.
 // IMAGE_FIX hataya - kyunki shop.ts me keychain ki image pehle se sahi hai (/images/leather-tag-keychain-set1.jpg)
 // Dobara yahan hardcode image likhne se phir mismatch hota tha.
+// SLIDER FORMULA (ProductCard wala - har folder/file me same):
+// - Arrows mobile pe hamesha visible, desktop pe hover pe
+// - Dots + Counter (1 / 5)
+// - Swipe left/right mobile pe
+// - Slider sirf tab jab gallery me 1 se zyada photo ho
+// - Delivery: 12-17 Working Days (Processing 7-10 + DHL 5-7)
 const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
 
 export default function FeaturedProducts() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
 
-  // --- HOVER SLIDER - Featured ke box ke andar - SLOW ---
+  // --- SLIDER STATE - Har card ka apna index ---
+  const [slideIndex, setSlideIndex] = useState<Record<string, number>>({});
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
-  const [hoverIndex, setHoverIndex] = useState(0);
-  const hoverProduct = hoverSlug ? findProductBySlug(hoverSlug) : undefined;
-  const hoverImages = hoverProduct ? getCardSliderImages(hoverProduct) : [];
+  const touchStartX = useRef<number | null>(null);
   const HOVER_SLIDE_DELAY = 1800; // 1800ms = 1.8 second me 1 photo - slow
 
+  const hoverProduct = hoverSlug ? findProductBySlug(hoverSlug) : undefined;
+  const hoverImages = hoverProduct ? getCardSliderImages(hoverProduct) : [];
+
+  // HOVER AUTO-SLIDE - Desktop hover pe auto, mobile pe manual arrows/swipe
   useEffect(() => {
     if (!hoverSlug || hoverImages.length <= 1) return;
     const timer = setInterval(() => {
-      setHoverIndex((prev) => (prev + 1) % hoverImages.length);
+      setSlideIndex((prev) => {
+        const cur = prev[hoverSlug] ?? 0;
+        return { ...prev, [hoverSlug]: (cur + 1) % hoverImages.length };
+      });
     }, HOVER_SLIDE_DELAY);
     return () => clearInterval(timer);
   }, [hoverSlug, hoverImages.length]);
+
+  const goTo = (slug: string, total: number, dir: 1 | -1) => {
+    setSlideIndex((prev) => {
+      const cur = prev[slug] ?? 0;
+      const next = (cur + dir + total) % total;
+      return { ...prev, [slug]: next };
+    });
+  };
+
+  const goToIndex = (slug: string, idx: number) => {
+    setSlideIndex((prev) => ({ ...prev, [slug]: idx }));
+  };
 
   const handleAddToCart = (product: (typeof products)[number]) => {
     const slug = product.slug || String(product.id);
@@ -72,26 +96,64 @@ export default function FeaturedProducts() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {list.map((product) => {
           const slug = product.slug || String(product.id);
-          const displayImage = product.image;
           const cardImages = getCardSliderImages(product);
-          const isHovering = hoverSlug === slug;
-          const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : displayImage;
+          const hasSlider = cardImages.length > 1;
+          const curIdx = slideIndex[slug] ?? 0;
+          const currentImage = hasSlider ? cardImages[curIdx % cardImages.length] : product.image;
           return (
             <div key={product.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group">
               <Link href={`/product/${slug}`}>
                 <div
                   className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer"
-                  onMouseEnter={() => { setHoverSlug(slug); setHoverIndex(0); }}
-                  onMouseLeave={() => { setHoverSlug(null); setHoverIndex(0); }}
-                  onTouchStart={() => { setHoverSlug(slug); setHoverIndex(0); }}
-                  onTouchEnd={() => { setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000); }}
+                  onMouseEnter={() => { setHoverSlug(slug); }}
+                  onMouseLeave={() => { setHoverSlug(null); }}
+                  onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+                  onTouchEnd={(e) => {
+                    if (touchStartX.current === null || !hasSlider) return;
+                    const dx = e.changedTouches[0].clientX - touchStartX.current;
+                    if (dx < -50) goTo(slug, cardImages.length, 1);
+                    if (dx > 50) goTo(slug, cardImages.length, -1);
+                    touchStartX.current = null;
+                  }}
                 >
                   <img src={currentImage} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {product.badge && (
                     <span className="absolute top-3 left-3 z-10 bg-amber-400 text-black text-[10px] font-bold px-2 py-1 uppercase">{product.badge}</span>
                   )}
-                  {isHovering && cardImages.length > 1 && (
-                    <span className="absolute top-3 right-3 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                  {/* COUNTER - Sirf jab 1 se zyada photo ho */}
+                  {hasSlider && (
+                    <span className="absolute top-3 right-3 bg-black/70 text-white text-[10px] px-2 py-1 rounded-full z-10">{(curIdx % cardImages.length) + 1} / {cardImages.length}</span>
+                  )}
+                  {/* ARROWS - Mobile pe hamesha visible, Desktop pe hover pe */}
+                  {hasSlider && (
+                    <>
+                      <button
+                        type="button"
+                        aria-label="Previous photo"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(slug, cardImages.length, -1); }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      >‹</button>
+                      <button
+                        type="button"
+                        aria-label="Next photo"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(slug, cardImages.length, 1); }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                      >›</button>
+                    </>
+                  )}
+                  {/* DOTS - Sirf jab 1 se zyada photo ho */}
+                  {hasSlider && (
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
+                      {cardImages.map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          aria-label={`Go to photo ${i + 1}`}
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(slug, i); }}
+                          className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-amber-400" : "w-2 h-2 bg-white/70"}`}
+                        />
+                      ))}
+                    </div>
                   )}
                 </div>
               </Link>
@@ -102,7 +164,8 @@ export default function FeaturedProducts() {
                 </Link>
                 <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400">${product.price}</p>
-                <p className="text-[11px] text-zinc-500">Ships in 18-24 Days • DHL Express • Tracking Provided</p>
+                <p className="text-[11px] text-zinc-500">Delivery in 12-17 Working Days • DHL Express • Tracking Provided</p>
+                <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
 
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] text-zinc-500 uppercase">Colors:</span>
