@@ -33,6 +33,7 @@ export default function Home() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const hoverImages = hoverSlug ? getTop3Images(hoverSlug, TOP3.find((p) => p.slug === hoverSlug)?.image || "") : [];
   const HOVER_SLIDE_DELAY = 1800;
 
@@ -132,15 +133,40 @@ export default function Home() {
             <div key={p.slug} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-amber-400 transition-colors overflow-hidden group">
               <Link href={`/product/${p.slug}`} className="block cursor-pointer">
                 <div
-                  className="relative w-full h-48 rounded-md mb-4 overflow-hidden"
+                  className="relative w-full h-48 rounded-md mb-4 overflow-hidden group/slider"
                   onMouseEnter={() => { setHoverSlug(p.slug); setHoverIndex(0); }}
                   onMouseLeave={() => { setHoverSlug(null); setHoverIndex(0); }}
-                  onTouchStart={() => { setHoverSlug(p.slug); setHoverIndex(0); }}
-                  onTouchEnd={() => { setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000); }}
+                  onTouchStart={(e) => { setHoverSlug(p.slug); setTouchStartX(e.touches[0].clientX); }}
+                  onTouchEnd={(e) => {
+                    if (touchStartX !== null && cardImages.length > 1) {
+                      const diff = e.changedTouches[0].clientX - touchStartX;
+                      if (diff < -30) setHoverIndex((prev) => (prev + 1) % cardImages.length);
+                      if (diff > 30) setHoverIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length);
+                    }
+                    setTouchStartX(null);
+                    setTimeout(() => { setHoverSlug(null); setHoverIndex(0); }, 6000);
+                  }}
                 >
                   <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform" />
-                  {isHovering && cardImages.length > 1 && (
-                    <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                  {cardImages.length > 1 && (
+                    <>
+                      <button
+                        aria-label="Previous Image"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length); }}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
+                      >‹</button>
+                      <button
+                        aria-label="Next Image"
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev + 1) % cardImages.length); }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
+                      >›</button>
+                      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                        {cardImages.map((_, i) => (
+                          <button key={i} aria-label={`Go to image ${i + 1}`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex(i); }} className={`h-2 rounded-full cursor-pointer transition-all ${i === (hoverIndex % cardImages.length) ? "bg-amber-400 w-4" : "bg-white/60 w-2"}`} />
+                        ))}
+                      </div>
+                      <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
+                    </>
                   )}
                 </div>
               </Link>

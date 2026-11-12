@@ -4,8 +4,31 @@ import Footer from "@/components/Footer";
 import AIChatbot from "@/components/AIChatbot";
 
 export const metadata = {
+  metadataBase: new URL("https://www.krossford.com"),
   title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
   description: "Krossford - 22 Handcrafted Full-Grain Leather Products. Wallets from $25, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via DHL Express.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://www.krossford.com",
+    siteName: "Krossford Enterprises",
+    title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
+    description: "Krossford - 22 Handcrafted Full-Grain Leather Products. Wallets from $25, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via DHL Express.",
+    images: [
+      {
+        url: "/images/leather-duffle-bag.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Krossford Handcrafted Full-Grain Leather Duffle Bag",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
+    description: "Krossford - 22 Handcrafted Full-Grain Leather Products. Wallets from $25, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via DHL Express.",
+    images: ["/images/leather-duffle-bag.jpg"],
+  },
 };
 
 export default function RootLayout({
