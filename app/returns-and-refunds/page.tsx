@@ -2,128 +2,112 @@ import LegalNav from "@/components/LegalNav";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | KROSSFORD Enterprises",
-  description: "Review the privacy practices, data collection categories, and customer rights for KROSSFORD Enterprises, operating from Punjab, Pakistan.",
+  title: "Returns and Refunds | KROSSFORD Enterprises",
+  description: "Returns and refunds policy for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery, 12-17 working days.",
 };
 
-// PRIVACY POLICY - FINAL - ONE TIME ALL FIXES
-// 1. Purani galat lines HATA di - Pehle likha tha ke checkout / storage / payment / logistics kuch nahi hai - Ye galat tha
-//    Asal me site pe hai: Cart + Wishlist (localStorage), WhatsApp order, DHL Tracking, VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER
-// 2. LocalStorage saaf likh diya - krossford_cart + krossford_wishlist - Sirf browser me rehta hai, hamare server pe account nahi banta
-// 3. Payment / Logistics saaf likh diya - Payment ka data hamare paas save nahi hota, bank / Western Union / card provider ke paas hota hai
-// 4. Baaki structure same rakha - LegalNav + headings same hain
+// RETURNS AND REFUNDS - FINAL - ONE TIME ALL FIXES
+// 1. Ye file pehle galat thi - Iske andar galat page ka content tha - Ab isme asli Returns and Refunds ka content hai
+// 2. Rule saaf likh diya - Handcrafted To Order hai, ready stock nahi hai, is liye change-of-mind return nahi hoga
+// 3. Custom / Personalized orders - Return nahi honge - Sirf defect pe remake / repair / refund
+// 4. Defect ka process - Delivery ke 48 hours ke andar WhatsApp pe photo / video bhejo
+// 5. Delivery 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Late delivery return ki wajah nahi hai, tracking diya jayega
+// 6. Payment - Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch - Refund usi method se hoga jisse payment hua tha (Bank Transfer / Western Union / Card)
+// 7. B2B alag likh diya - Bulk me defect wale pieces alag se handle honge, poora bulk return nahi hoga
 
-const privacyContent = {
-  title: "Privacy Policy",
+const returnsContent = {
+  title: "Returns and Refunds",
   lastUpdated: "November 12, 2026",
   sections: [
     {
-      heading: "1. Who We Are and How to Contact Us",
+      heading: "1. Handcrafted To Order - Please Read First",
       paragraphs: [
-        "KROSSFORD Enterprises operates as a business from Punjab, Pakistan, serving domestic and international B2B and B2C customers.",
-        "For any privacy enquiries, questions regarding our data practices, or to exercise your privacy rights, please contact KROSSFORD directly through the website's Contact Us page."
-      ]
+        "Every KROSSFORD bag is made only after your order. We do not keep ready-made stock.",
+        "Because each piece is cut, stitched, and finished for you, we cannot resell a returned piece to another customer. Please check size, colour, design, and custom text carefully before you confirm your order on WhatsApp.",
+      ],
     },
     {
-      heading: "2. Personal Information We May Collect",
+      heading: "2. Change of Mind - No Return",
       paragraphs: [
-        "We collect personal information that users voluntarily enter into enquiry or contact forms, such as names, contact details, and messages. Actual receipt and processing depend on the website's functioning and available communication arrangements.",
-        "When you place an order or enquiry through WhatsApp, the details you share on WhatsApp (name, address, order details) are processed to fulfil your order.",
-        "Technical request information, such as IP address and browser information, may be processed by hosting infrastructure as part of standard web delivery.",
-        "Cart and Wishlist are saved in your own browser using local storage (krossford_cart and krossford_wishlist). This stays on your device. We do not create a customer account for you and we do not keep an order database on our server for this.",
-        "We do not collect or store your card numbers, bank passwords, or payment PINs on this website. Payment is completed through your bank, card provider, Western Union, or bank transfer - as per the payment method you choose."
-      ]
+        "We do not accept returns or exchanges for change of mind - including colour change, size change, design change, or you no longer want the order.",
+        "Once crafting has started, your order cannot be cancelled. If crafting has not started yet, contact us on WhatsApp as soon as possible - we will try our best to help, but we cannot promise cancellation.",
+      ],
     },
     {
-      heading: "3. How We Use Personal Information",
+      heading: "3. Defective or Wrong Item - We Will Fix It",
       paragraphs: [
-        "We use personal information for purposes reasonably necessary to operate our business and provide our services, including:"
+        "If your item arrives damaged, defective, or completely wrong (wrong design / wrong custom text), we will fix it. This is our promise.",
+        "What to do:",
       ],
       bullets: [
-        "Handling enquiries where received and communicating with prospective customers.",
-        "Confirming orders, crafting details, delivery address, and dispatch updates on WhatsApp.",
-        "Operating the website and troubleshooting technical issues.",
-        "Maintaining infrastructure security and supporting basic site functionality.",
-        "Meeting applicable legal obligations."
-      ]
+        "Contact us on WhatsApp within 48 hours of delivery.",
+        "Send clear photos and a short video of the issue, plus your order details.",
+        "Do not use, wash, or alter the item after you find the defect.",
+        "Keep the original DHL packaging until your case is closed.",
+      ],
     },
     {
-      heading: "4. Legal Grounds for Processing",
+      heading: "4. How We Resolve Defects",
       paragraphs: [
-        "Where required by applicable privacy law, appropriate legal grounds will depend on the specific processing activity and the legal framework applicable to the individual. We do not make blanket GDPR or other jurisdiction-specific compliance claims."
-      ]
+        "After we check your photos / video, we will offer one of these - depending on the issue:",
+      ],
+      bullets: [
+        "Remake - We make the same piece again, free of cost.",
+        "Repair - If the issue is small and repairable, we guide you or arrange repair.",
+        "Partial refund - If remake or repair is not reasonable, we agree a partial refund.",
+        "Full refund - Only if the item is completely unusable and remake is not possible.",
+        "You do not need to ship the defective item back to Pakistan unless we specifically ask you to. Return shipping for a defect case will be discussed on WhatsApp - we will not ask you to pay high return shipping without agreement.",
+      ],
     },
     {
-      heading: "5. Cookies and Similar Technologies",
+      heading: "5. Delivery Delays Are Not a Return Reason",
       paragraphs: [
-        "We do not use a cookie-consent banner or analytics trackers in our own code. Your Cart and Wishlist use browser local storage (not cookies) so your cart does not disappear when you change pages.",
-        "You can clear your Cart and Wishlist anytime by clearing your browser storage / site data. Hosting infrastructure or browser technologies may involve technical mechanisms necessary to deliver the website, subject to the relevant provider's practices."
-      ]
+        "Total delivery time is 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full tracking is provided.",
+        "We always aim to deliver earlier than estimated. A small delay due to crafting, customs, or DHL does not qualify for a return or refund. If your parcel is stuck, message us on WhatsApp with your tracking number and we will check with DHL.",
+      ],
     },
     {
-      heading: "6. Sharing Personal Information",
+      heading: "6. How Refunds Work",
       paragraphs: [
-        "We share personal information only as reasonably necessary with hosting and infrastructure providers - such as Vercel, the provider used for actual deployment - or when required to meet applicable legal obligations.",
-        "For delivery, we share your name, address, phone number, and order details with DHL Express so your parcel can be shipped and tracked. For payment, your payment details go to your chosen payment provider (bank / card provider / Western Union) - not to us.",
-        "We do not sell personal information."
-      ]
+        "If a refund is approved, it will be sent by the same method you paid with - Bank Transfer, Western Union, or Card (VISA / MASTERCARD) - wherever possible.",
+        "Refund timing depends on your bank / provider. Bank transfers and Western Union usually take a few working days after we send it. Card refunds can take longer as per your bank.",
+        "Retail orders: 100% advance payment. Wholesale orders: 50% advance - 50% before dispatch. Refund is only for the amount actually paid to us, not for any bank / transfer charges charged by your provider.",
+      ],
     },
     {
-      heading: "7. International Data Transfers",
+      heading: "7. Wholesale / B2B Orders",
       paragraphs: [
-        "Hosting infrastructure may process or route technical information across jurisdictions depending on network routing. We do not promise specific locations, Standard Contractual Clauses, adequacy decisions, or safeguards that have not been verified, nor do we imply that all customer data is necessarily transferred internationally."
-      ]
+        "Wholesale orders (50+ units) are custom production. Bulk orders cannot be returned for change of mind.",
+        "If any pieces in bulk are defective, report them with photos within 7 days of delivery. We will remake or adjust only the defective pieces - not the full bulk order. Sample approval before bulk is strongly recommended - order a sample first, then decide for bulk.",
+      ],
     },
     {
-      heading: "8. Data Retention and Security",
+      heading: "8. How to Start a Return / Refund Request",
       paragraphs: [
-        "Information should be retained only as long as reasonably necessary for its purpose and applicable legal requirements. We do not invent fixed retention periods. WhatsApp chats are kept as per WhatsApp's own system.",
-        "We rely on the security measures provided by our hosting infrastructure and take reasonable care when operating the website. However, no method of electronic transmission or storage can be guaranteed to be completely secure."
-      ]
+        "Contact us through the Contact Us page or on WhatsApp with your order details, photos / video, and tracking number. We will reply with the next step.",
+        "Please do not ship anything back to us without our written confirmation on WhatsApp.",
+      ],
     },
-    {
-      heading: "9. Privacy Rights and Choices",
-      paragraphs: [
-        "Available privacy rights depend on applicable law and individual circumstances. You may submit privacy requests through our website's Contact Us page.",
-        "We do not promise universal rights or unverified response deadlines."
-      ]
-    },
-    {
-      heading: "10. Children's Privacy",
-      paragraphs: [
-        "The website is not intended for children, and KROSSFORD does not knowingly seek to collect children's personal information. If you believe a child has provided personal information through the website, please contact us through the Contact Us page."
-      ]
-    },
-    {
-      heading: "11. Changes to This Privacy Policy",
-      paragraphs: [
-        "We may update this Privacy Policy from time to time to reflect operational, legal, or regulatory changes. The revised policy will be posted on this page with the latest revision date."
-      ]
-    }
-  ]
+  ],
 };
 
-export default function PrivacyPolicyPage() {
+export default function ReturnsAndRefundsPage() {
   return (
     <div className="min-h-screen bg-black text-gray-300 px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
       <div className="max-w-4xl mx-auto space-y-12">
-        
-        {/* Header Section */}
         <div className="space-y-4 border-b border-gray-800 pb-8">
           <h1 className="font-serif text-3xl sm:text-4xl text-[#d4af37] tracking-wide">
-            {privacyContent.title}
+            {returnsContent.title}
           </h1>
           <p className="text-xs text-gray-500 uppercase tracking-widest">
-            Last Updated: {privacyContent.lastUpdated}
+            Last Updated: {returnsContent.lastUpdated}
           </p>
         </div>
 
-        {/* Legal Navigation Bar */}
-        <LegalNav currentSlug="privacy-policy" />
+        <LegalNav currentSlug="returns-and-refunds" />
 
-        {/* Policy Content Sections */}
         <div className="space-y-10">
-          {privacyContent.sections.map((section) => (
+          {returnsContent.sections.map((section) => (
             <div key={section.heading} className="space-y-4">
               <h2 className="text-xl sm:text-2xl font-semibold text-white tracking-wide">
                 {section.heading}
@@ -143,7 +127,6 @@ export default function PrivacyPolicyPage() {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );
