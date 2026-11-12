@@ -4,7 +4,7 @@ import Link from "next/link";
 import { products, getForHerProducts } from "@/lib/data/shop";
 
 // FOR HER - ALAG FOLDER / ALAG PAGE
-// RULE: B2B aur FOR HER hamesha alag rakhne hain - Shop ke andar mix nahi karne
+// FOR HER - ALAG PAGE - Sirf forHer: true wale products
 // RULE: Sirf wo product jisme forHer: true hai wo yahan dikhega
 // SLIDER FORMULA (ProductCard wala - har folder/file me same):
 // - Arrows mobile pe hamesha visible, desktop pe hover pe
