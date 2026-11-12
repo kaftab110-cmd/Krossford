@@ -4,27 +4,17 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 
-// FOR HER - ALAG PAGE - /for-her
-// RULE: B2B aur FOR HER hamesha alag rakhne hain - Shop ke andar mix nahi karne
-// FIX: Pehle sab links /shop?category=... pe ja rahe the, is liye click karne pe Shop page khulta tha aur pink button aata tha
-// Ab: Main FOR HER link /for-her pe jayega - seedha naye alag page pe
-// NOTE: Dropdown wale categories abhi /for-her pe jayenge - For Her page ke andar category filter baad me add karenge
-const FOR_HER_CATS = [
-  { label: "All For Her", href: "/for-her" },
-  { label: "Handbags & Tote Bags", href: "/for-her" },
-  { label: "Crossbody Bags", href: "/for-her" },
-  { label: "Wallets For Her", href: "/for-her" },
-  { label: "Card Holders", href: "/for-her" },
-  { label: "Belts For Her", href: "/for-her" },
-  { label: "Accessories & Gifts", href: "/for-her" },
-  { label: "Custom & Gifts For Her", href: "/for-her" },
-];
+// NAVBAR - FINAL - ONE TIME ALL FIXES
+// 1. FOR HER dropdown HATAYA - Desktop + Mobile dono se - Arrow ke neeche kata hua dabba isi dropdown se aa raha tha
+// 2. FOR HER ab simple link hai - seedha /for-her pe jayega, koi dropdown nahi
+// 3. B2B / SHOP / FOR HER alag alag hain - mix nahi
+// 4. CONTACT US / WISHLIST gap fix rakha hua hai
+// 5. Hydration mounted guard rakha hua hai
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
-  const [forHerOpen, setForHerOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
@@ -88,21 +78,7 @@ export default function Navbar() {
         <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-xs font-bold tracking-wider whitespace-nowrap">
           <Link href="/" className={pathname === "/" ? "text-amber-400" : "text-white hover:text-amber-400"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
-          <div className="relative group">
-            <Link href="/for-her" className={`${pathname === "/for-her" ? "text-amber-400" : "text-zinc-300 hover:text-amber-400 transition-colors"} flex items-center gap-1 py-2`}>
-              FOR HER <span className="text-xs">▼</span>
-            </Link>
-            <div className="absolute left-0 top-full pt-1 hidden group-hover:block w-56 z-50">
-              <div className="bg-zinc-950 border border-zinc-800 rounded-md shadow-2xl py-2 overflow-hidden">
-                <div className="px-4 py-2 text-xs tracking-widest text-amber-400 border-b border-zinc-800">FOR HER - CATEGORIES</div>
-                {FOR_HER_CATS.map((c) => (
-                  <Link key={c.label} href={c.href} className="block px-4 py-2.5 text-xs font-medium text-zinc-300 hover:text-amber-400 hover:bg-zinc-900 transition-colors">
-                    {c.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+          <Link href="/for-her" className={pathname === "/for-her" ? "text-amber-400" : "text-zinc-300 hover:text-amber-400 transition-colors"}>FOR HER</Link>
           <Link href="/collections" className={cls("/collections")}>COLLECTIONS</Link>
           <Link href="/b2b" className={cls("/b2b")}>B2B WHOLESALE</Link>
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
@@ -134,23 +110,7 @@ export default function Navbar() {
             <nav className="flex flex-col space-y-1 text-xs font-bold tracking-wider">
               <Link href="/" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">HOME</Link>
               <Link href="/shop" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">SHOP</Link>
-              <div className="py-1 border-b border-zinc-900">
-                <div className="flex justify-between items-center">
-                  <Link href="/for-her" onClick={() => setOpen(false)} className="py-1 text-left text-amber-400 flex-1">FOR HER</Link>
-                  <button onClick={() => setForHerOpen(!forHerOpen)} className="p-1 text-amber-400" aria-label="Toggle For Her menu">
-                    <span className="text-xs">{forHerOpen ? "UP" : "DOWN"}</span>
-                  </button>
-                </div>
-                {forHerOpen && (
-                  <div className="pl-3 mt-1 flex flex-col">
-                    {FOR_HER_CATS.map((c) => (
-                      <Link key={c.label} href={c.href} onClick={() => setOpen(false)} className="py-2 text-xs font-medium text-zinc-400 hover:text-amber-400 border-b border-zinc-900/50">
-                        {c.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link href="/for-her" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900 text-amber-400">FOR HER</Link>
               <Link href="/collections" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">COLLECTIONS</Link>
               <Link href="/b2b" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">B2B WHOLESALE</Link>
               <Link href="/about" onClick={() => setOpen(false)} className="py-2 border-b border-zinc-900">ABOUT</Link>
