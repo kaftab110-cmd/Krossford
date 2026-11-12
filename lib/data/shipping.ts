@@ -5,7 +5,7 @@ export const shippingContent = {
     {
       heading: "Processing Time",
       paragraphs: [
-        "Retail Orders (1 Piece): Estimated Total:Estimated Total: 12-17 Working Days.",
+        "Retail Orders (1 Piece): Estimated Total: 12-17 Working Days.",
         "Wholesale Orders: Estimated Bulk Production: 30-45 days after Sample Approval. Exact production time depends on quantity, hide type, material, and design, and is confirmed in the agreement before you sign the contract.",
         "KROSSFORD uses a combination of its own facilities and independent manufacturing partners, so exact production timelines depend on the specific product and current workload.",
         "Actual processing estimates will be communicated before order confirmation or production commencement."
@@ -21,7 +21,7 @@ export const shippingContent = {
     {
       heading: "Estimated Delivery Times",
       paragraphs: [
-        "Estimated Total:Estimated Total: 12-17 Working Days.",
+        "Estimated Total: 12-17 Working Days.",
         "We will try our best to deliver as soon as possible, even before this time.",
         "Delivery estimates depend on the destination, courier service, processing time, and customs procedures.",
         "Delivery dates are estimates and are not guaranteed unless explicitly agreed in writing for a specific transaction."

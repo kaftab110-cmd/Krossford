@@ -67,7 +67,7 @@ export default function PaymentPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time -Estimated Total: 12-17 Working Days</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Total delivery time is Estimated Total:Estimated Total: 12-17 Working Days.
+              Total delivery time is Estimated Total: 12-17 Working Days.
             </p>
           </section>
 
