@@ -128,9 +128,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <p className="text-amber-400 font-bold text-lg mt-2">${product.price}</p>
         <p className="text-xs text-zinc-400 leading-relaxed mt-2">
           🚚 Ships via <span className="text-white font-bold">{"\u0044\u0048\u004C Express"}</span><br />
-          Crafting Time: 7-10 Working Days<br />
-          {"\u0044\u0048\u004C Express"} Delivery: 5-7 Working Days<br />
-          <span className="text-amber-400/90">Total Delivery:Estimated Total: 12-17 Working Days | Tracking Provided • Ships from Pakistan</span>
+          <span className="text-amber-400/90">Estimated Total: 12-17 Working Days | Tracking Provided • Ships from Pakistan</span>
         </p>
         <p className="text-xs text-zinc-500 mt-2">Our aim to deliver earlier than estimated.</p>
         <button

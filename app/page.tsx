@@ -117,7 +117,6 @@ export default function Home() {
         <div className="border border-amber-400/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
           <p className="text-sm font-bold text-amber-400 uppercase tracking-widest">Handcrafted To Order • Ships via DHL Express</p>
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
-          <p className="text-xs text-zinc-400">Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days</p>
           <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
         </div>
       </section>

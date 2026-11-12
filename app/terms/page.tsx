@@ -4,16 +4,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions | KROSSFORD Enterprises",
-  description: "Terms and Conditions for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery,Estimated Total: 12-17 Working Days.",
+  description: "Terms and Conditions for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery. Estimated Total: 12-17 Working Days.",
 };
 
-// TERMS AND CONDITIONS - FINAL - ONE TIME ALL FIXES - app/terms/page.tsx
-// 1. Delivery saaf likha -Estimated Total: 12-17 Working Days - Crafting 7-10 + DHL 5-7 - Purana 18-24 kahin nahi hai
-// 2. Payment saaf likha - Sirf VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER - PayPal / Stripe / Apple Pay / Klarna nahi hai
-// 3. Retail 100% Advance / Wholesale 50% Advance - 50% Before Dispatch - Saaf likha
-// 4. Handcrafted To Order - Change of Mind No Return / No Cancel After Crafting Started - Saaf likha
-// 5. Defect - 48 hours ke andar WhatsApp pe photo / video - Saaf likha
-// 6. LegalNav + Metadata add kiya - Baaki Legal pages jaisa hi lagega
+// Terms cover orders, payments, delivery, cancellations, and returns.
 
 export default function TermsPage() {
   return (
@@ -65,9 +59,9 @@ export default function TermsPage() {
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time -Estimated Total: 12-17 Working Days</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Total delivery time isEstimated Total: 12-17 Working Days - Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days. Full DHL tracking is provided. We will try our best to deliver as soon as possible - our aim is to deliver earlier than estimated. A small delay due to crafting, customs, or DHL does not qualify for a return, refund, or cancellation. If your parcel is stuck, message us on WhatsApp with your tracking number and we will check with DHL.
+              Estimated Total: 12-17 Working Days. Full DHL tracking is provided. We will try our best to deliver as soon as possible and aim to deliver earlier than estimated. A small delay due to crafting, customs, or DHL does not qualify for a return, refund, or cancellation. If your parcel is stuck, message us on WhatsApp with your tracking number and we will check with DHL.
             </p>
           </section>
 

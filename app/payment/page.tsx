@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 // 2. Payment methods - Only VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER - No PayPal / Stripe / Apple Pay / Klarna
 // 3. Retail 100% Advance / Wholesale 50% Advance - 50% Before Dispatch - Clear likha
 // 4. All text English only - No Roman Urdu
-// 5. Delivery simple rakha - SirfEstimated Total: 12-17 Working Days likha, zyada detail nahi likhi
+// 5. Display the estimated total delivery time without a breakdown.
 
 export default function PaymentPage() {
   return (
@@ -65,9 +65,9 @@ export default function PaymentPage() {
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time -Estimated Total: 12-17 Working Days</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Total delivery time is Estimated Total: 12-17 Working Days.
+              Estimated Total: 12-17 Working Days.
             </p>
           </section>
 

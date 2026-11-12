@@ -40,22 +40,20 @@ export default function TrackOrderPage() {
             <div className="flex flex-col items-center gap-1 text-center flex-1">
               <span className="w-10 h-10 rounded-full bg-amber-400 text-black flex items-center justify-center text-lg font-bold">📦</span>
               <span className="text-[10px] font-bold uppercase">Processing</span>
-              <span className="text-[10px] text-zinc-400">7-10 Days</span>
             </div>
             <div className="h-1 flex-1 bg-amber-400/40 rounded mx-2 mb-5" />
             <div className="flex flex-col items-center gap-1 text-center flex-1">
               <span className="w-10 h-10 rounded-full border-2 border-amber-400 text-amber-400 flex items-center justify-center text-lg">✈️</span>
               <span className="text-[10px] font-bold uppercase">DHL Express</span>
-              <span className="text-[10px] text-zinc-400">7-10 Working Days</span>
             </div>
             <div className="h-1 flex-1 bg-zinc-700 rounded mx-2 mb-5" />
             <div className="flex flex-col items-center gap-1 text-center flex-1">
               <span className="w-10 h-10 rounded-full border-2 border-zinc-700 text-zinc-400 flex items-center justify-center text-lg">✅</span>
               <span className="text-[10px] font-bold uppercase">Delivered</span>
-              <span className="text-[10px] text-zinc-400">Total 18-24 Days</span>
+              <span className="text-[10px] text-zinc-400">Estimated Total: 12-17 Working Days</span>
             </div>
           </div>
-          <p className="text-[11px] text-zinc-500 text-center mt-3">Tracking ID milne ke baad neeche DHL Website pe bhi track kar sakte ho.</p>
+          <p className="text-[11px] text-zinc-500 text-center mt-3">Once you receive your tracking ID, you can also track your order on the DHL website below.</p>
         </div>
 
         {/* 2 Raste */}
@@ -63,16 +61,15 @@ export default function TrackOrderPage() {
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 text-center">
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">Retail Customer - 1 Piece</p>
             <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-              Total: 18-24 Days<br />
-              Processing: 7-10 Days + DHL: 7-10 Working Days<br />
+              Estimated Total: 12-17 Working Days<br />
               Payment: 100% Advance
             </p>
           </div>
           <div className="border border-amber-400/50 rounded-lg p-5 bg-amber-400/5 text-center">
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">Wholesale Buyer - 50+ Units</p>
             <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-              Production: As Per Quotation<br />
-              + DHL Delivery: 7-10 Working Days<br />
+              Estimated Bulk Production: 30-45 days after Sample Approval<br />
+              Estimated Total: 12-17 Working Days<br />
               Payment: 50% Advance - 50% Before Dispatch
             </p>
           </div>
@@ -123,8 +120,8 @@ export default function TrackOrderPage() {
             </a>
 
             <p className="text-[11px] text-zinc-500 text-center leading-relaxed">
-              DHL Tracking ID Milne Ke Baad Us Ko Direct DHL Website Pe Bhi Track Kar Sakte Ho.
-              Agar Tracking ID Nahi Mila To Neeche WhatsApp Karo.
+              After you receive your DHL tracking ID, you can track it directly on the DHL website.
+              If you have not received a tracking ID, contact us on WhatsApp below.
             </p>
           </form>
 
@@ -135,22 +132,22 @@ export default function TrackOrderPage() {
             <div className="border border-zinc-800 rounded-md px-5 py-4 bg-zinc-900">
               <p className="text-xs font-bold text-amber-400 uppercase">Step 1 - Processing</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                Retail: 7-10 Days - Production, Quality Check & Packing.<br />
-                Wholesale: As Per Written Quotation - Depends On Quantity & Custom Logo.
+                Retail: Production, quality check, and packing.<br />
+                Wholesale: Estimated Bulk Production: 30-45 days after Sample Approval.
               </p>
             </div>
 
             <div className="border border-zinc-800 rounded-md px-5 py-4 bg-zinc-900">
               <p className="text-xs font-bold text-amber-400 uppercase">Step 2 - DHL Express</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                Ships via DHL Express. Tracking ID WhatsApp / Email Pe Bheja Jata Hai. DHL Delivery: 7-10 Working Days.
+                Ships via DHL Express. Your tracking ID will be shared by WhatsApp or email after dispatch.
               </p>
             </div>
 
             <div className="border border-zinc-800 rounded-md px-5 py-4 bg-zinc-900">
               <p className="text-xs font-bold text-amber-400 uppercase">Step 3 - Delivery</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                Total Retail: 18-24 Days. Our aim to deliver earlier than estimated. Customs delay ho to WhatsApp pe puchho.
+                Estimated Total: 12-17 Working Days. We always aim to deliver earlier. Contact us on WhatsApp if customs delay your order.
               </p>
             </div>
 

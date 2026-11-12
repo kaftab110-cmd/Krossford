@@ -45,11 +45,11 @@ const CART_EXPIRY_MS = 45 * 60 * 1000;
 const WISHLIST_KEY = "krossford_wishlist";
 // CUSTOM MADE type ka label
 const customMadeLabel = (t?: string) => {
-  if (t === "full") return "Full Product - Mere Design Pe Banao";
-  if (t === "stitching") return "Stitching Only - Hand Stitched Chahiye";
+  if (t === "full") return "Full Product - Use My Design";
+  if (t === "stitching") return "Stitching Only - Hand Stitching";
   if (t === "design") return "Design Change";
   if (t === "size-colour") return "Size / Colour Change";
-  if (t === "logo-name") return "Logo / Name Add Karna Hai";
+  if (t === "logo-name") return "Add Logo / Name";
   return t || "";
 };
 
@@ -212,7 +212,7 @@ export default function CartPage() {
                   {item.customMade?.enabled && (
                     <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
                       <p className="text- text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
-                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Customization: {customMadeLabel(item.customMade.type)}</p>}
                       {item.customMade.detail && <p className="text- text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
                       {item.customMade.fileName && <p className="text- text-zinc-400">Design Image: {item.customMade.fileName}</p>}
                       <p className="text- text-amber-300">{item.extraChargesNote || "Extra charges apply for customization - final price will be confirmed after order confirmation."}</p>
@@ -259,7 +259,7 @@ export default function CartPage() {
         )}
         {wishlist.length > 0 && (
           <div className="bg-zinc-900 border border-amber-400/30 rounded p-4 space-y-3">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-400">♡ Liked / Saved Products - Jab Chahe Buy Karo (Kabhi Expire Nahi Hoga)</h2>
+            <h2 className="text-sm font-bold uppercase tracking-widest text-amber-400">♡ Saved Products - Available Whenever You Are Ready (They Never Expire)</h2>
             {wishlist.map((item) => (
               <div key={item.id} className="flex gap-4 items-start border border-zinc-800 rounded p-3">
                 <img src={fixImage(item.image)} alt={item.name} className="w-16 h-16 object-cover rounded shrink-0" />
@@ -269,7 +269,7 @@ export default function CartPage() {
                   {item.customMade?.enabled && (
                     <div className="mt-1 bg-amber-400/10 border border-amber-400/40 rounded px-2 py-1">
                       <p className="text- text-amber-400 font-bold">🧵 Custom Made - Hand Stitched - On Customer Demand</p>
-                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Kya Customize: {customMadeLabel(item.customMade.type)}</p>}
+                      {item.customMade.type && <p className="text- text-zinc-200 mt-0.5">Customization: {customMadeLabel(item.customMade.type)}</p>}
                       {item.customMade.detail && <p className="text- text-zinc-300 mt-0.5">Detail: {item.customMade.detail}</p>}
                       {item.customMade.fileName && <p className="text- text-zinc-400">Design Image: {item.customMade.fileName}</p>}
                     </div>

@@ -1,7 +1,7 @@
 // lib/data/phone-codes.ts - KROSSFORD FINAL - SINGLE SOURCE FOR COUNTRY DIAL CODES
 // RULE: Koi bhi form me phone code hardcode nahi karna - sab yahan se aayega
 // Country select karte hi PhoneInput khud hi +92 / +91 / +1 ... laga dega
-// Jahan Jahan Require Hai: Checkout, B2B, Contact-Us, Bespoke / Custom, Product Enquiry - sab me yehi PhoneInput use karna hai
+// Reuse this phone input for Checkout, B2B, Contact, Bespoke / Custom, and Product Enquiry forms.
 
 export const COUNTRY_DIAL_CODES: Record<string, string> = {
   "Afghanistan": "+93", "Albania": "+355", "Algeria": "+213", "Andorra": "+376", "Angola": "+244",

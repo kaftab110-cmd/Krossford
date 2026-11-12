@@ -1,16 +1,15 @@
 "use client";
 // components/PhoneInput.tsx - KROSSFORD FINAL - SINGLE PHONE INPUT FOR ALL FORMS
-// Jahan Jahan Require Hai: Checkout, B2B, Contact-Us, Bespoke / Custom, Product Enquiry - sab me YEHI component use karna hai
-// Country select karte hi left me auto code aa jayega: Pakistan -> +92, India -> +91, USA -> +1, UAE -> +971 ...
-// User ko sirf local number likhna hai: 3001234567 - aage +92 khud lag jayega
-// Agar user 03001234567 likhe to 0 khud hat jayega -> +923001234567
-// Agar user +923001234567 paste kare to dobara +92 nahi lagega
+// Reuse this phone input for Checkout, B2B, Contact, Bespoke / Custom, and Product Enquiry forms.
+// Selecting a country automatically adds its calling code.
+// Enter a local number such as 3001234567; the country calling code is added automatically.
+// A leading zero is removed from local numbers, and pasted international numbers are not prefixed twice.
 
 import { getDialCode, buildFullPhone, getLocalPart } from "@/lib/data/phone-codes";
 
 type Props = {
   country: string;
-  value: string; // FULL phone - jaise "+923001234567" - isi ko DB / order me save karna hai
+  value: string; // Full phone number such as "+923001234567", saved with the order.
   onChange: (fullPhone: string) => void;
   label?: string;
   placeholder?: string;

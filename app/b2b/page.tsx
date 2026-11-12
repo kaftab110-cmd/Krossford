@@ -68,7 +68,7 @@ export default function B2BPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${formData.productType}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nDelivery: 18-24 Working Days via DHL Express\nSample: Paid Sample Available - Sample Before Bulk`;
+    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${formData.productType}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
   };
@@ -236,7 +236,7 @@ export default function B2BPage() {
             <button type="submit" className="w-full bg-amber-400 text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-amber-300 transition-colors shadow-md">
               Submit Wholesale Inquiry - Send On WhatsApp →
             </button>
-            <p className="text-center text-[11px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Delivery: 18-24 Working Days</p>
+            <p className="text-center text-[11px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
           </form>
         )}
       </div>

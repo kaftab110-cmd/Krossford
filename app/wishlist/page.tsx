@@ -14,7 +14,7 @@ export default function WishlistPage() {
     return (
       <div className="min-h-screen bg-zinc-950 text-white p-6 text-center">
         <h1 className="text-2xl font-bold text-amber-400 mt-20">Your Wishlist is Empty</h1>
-        <p className="text-zinc-400 mt-2">Abhi tumne koi product heart nahi kiya.</p>
+        <p className="text-zinc-400 mt-2">You have not saved any products yet.</p>
         <Link href="/shop" className="inline-block mt-6 bg-amber-400 text-black px-6 py-3 rounded font-bold">
           Go To Shop →
         </Link>

@@ -63,7 +63,7 @@ export default function ProductPage() {
   useEffect(() => {
     if (!product) return;
     const title = `${product.name} - Handmade Full-Grain Leather | Krossford`;
-    const desc = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Total DeliveryEstimated Total: 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time. Ships from Pakistan via DHL Express.`;
+    const desc = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Estimated Total: 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time. Ships from Pakistan via DHL Express.`;
     document.title = title;
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
@@ -175,7 +175,7 @@ export default function ProductPage() {
       return;
     }
     if (customMadeEnabled && !customMadeType) {
-      alert("Please select - Customer kya customize karwana chahta hai?");
+      alert("Please select a customization option.");
       return;
     }
     if (customMadeEnabled && !customMadeDetail.trim() && !customMadeFile) {
@@ -282,7 +282,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
                   <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-amber-400 font-bold">To Be Confirmed</span> (Single Packing)</p>
                   <p className="text-xs text-zinc-400">Delivery (Courier): <span className="text-amber-400 font-bold">To Be Confirmed</span> ({DHL} Courier)</p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + {DHLE} Delivery 5-7 Working Days = Estimated Total: 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
+                  <p className="text-xs text-zinc-300 mt-2">Estimated Total: 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
                 </div>
               ) : (
                 <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
@@ -290,7 +290,7 @@ export default function ProductPage() {
                   <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
                   <p className="text-xs text-zinc-300"><b className="text-white">Delivery (Courier / Freight):</b> <span className="text-amber-400 font-bold">To Be Confirmed</span> (Freight Insured)</p>
                   <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Estimated Total: 12-17 Working Days (Crafting 7-10 + {DHLE} 5-7).</p>
+                  <p className="text-xs text-zinc-300 mt-1">Estimated Total: 12-17 Working Days.</p>
                   <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-amber-400 hover:text-amber-300">Go To B2B Wholesale Form →</Link>
                   <div className="pt-3 border-t border-zinc-800 mt-3">
                     <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
@@ -358,22 +358,22 @@ export default function ProductPage() {
 
             <div className="mt-6 bg-zinc-950 border border-amber-400/30 rounded-lg p-4 sm:p-5">
               <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Custom Made - Hand Stitched</p>
-              <p className="text-xs text-amber-400 font-medium mt-1">On Customer Demand - Extra charges apply, final price will be confirmed after order confirmation.</p>
+              <p className="text-xs text-amber-400 font-medium mt-1">Custom requests may incur extra charges. The final price will be confirmed after order confirmation.</p>
               <label className="flex items-start gap-3 cursor-pointer mt-4">
                 <input type="checkbox" checked={customMadeEnabled} onChange={(e) => setCustomMadeEnabled(e.target.checked)} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
-                <span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want Custom Made Hand Stitched Product</span><span className="text-xs text-zinc-400">Tick karein agar apna design banwana hai</span></span>
+                <span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want a Custom-Made Hand-Stitched Product</span><span className="text-xs text-zinc-400">Select this option to request a product made with your design.</span></span>
               </label>
               {customMadeEnabled && (
                 <div className="mt-4 space-y-4">
                   <div>
-                    <p className="text-xs font-bold uppercase text-zinc-400">Customer Kya Customize Karwana Chahta Hai *</p>
+                    <p className="text-xs font-bold uppercase text-zinc-400">How Would You Like to Customize This Product? *</p>
                     <div className="mt-2 space-y-2">
                       {[
-                        { v: "full", l: "Full Product - Mere Design Pe Banao", d: "Poora product aapke design pe banega" },
-                        { v: "stitching", l: "Stitching Only - Hand Stitched Chahiye", d: "Sirf hand stitching hogi, design same rahega" },
-                        { v: "design", l: "Design Change", d: "Is product ka design badalna hai" },
-                        { v: "size-colour", l: "Size / Colour Change", d: "Size ya colour apne hisaab se" },
-                        { v: "logo-name", l: "Logo / Name Add Karna Hai", d: "Logo, naam ya initials add karne hain" },
+                        { v: "full", l: "Full Product - Use My Design", d: "The product will be made using your design." },
+                        { v: "stitching", l: "Stitching Only - Hand Stitching", d: "Add hand stitching while keeping the same design." },
+                        { v: "design", l: "Design Change", d: "Change this product's design." },
+                        { v: "size-colour", l: "Size / Colour Change", d: "Choose a different size or colour." },
+                        { v: "logo-name", l: "Add Logo / Name", d: "Add a logo, name, or initials." },
                       ].map((o) => (
                         <label key={o.v} className="flex items-start gap-3 cursor-pointer">
                           <input type="radio" name="customMadeType" checked={customMadeType === o.v} onChange={() => setCustomMadeType(o.v)} className="mt-1 w-4 h-4 accent-amber-400 shrink-0" />
@@ -383,17 +383,17 @@ export default function ProductPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-xs font-bold uppercase text-zinc-400">Apna Design / Image Upload Karein</label>
+                    <label className="text-xs font-bold uppercase text-zinc-400">Upload Your Design / Image</label>
                     <label className="mt-1 w-full border-2 border-dashed border-zinc-700 rounded-md px-3 py-5 text-center block cursor-pointer hover:border-amber-400 bg-black">
                       <span className="text-sm text-zinc-400">{customMadeFile ? `✅ ${customMadeFile.name}` : "Click to Upload Design Image (JPG / PNG)"}</span>
                       <input type="file" accept="image/*" className="hidden" onChange={(e) => setCustomMadeFile(e.target.files?.[0] || null)} />
                     </label>
-                    <p className="text-xs text-zinc-400 mt-1">Apna design, photo ya reference image yahan lagayein</p>
+                    <p className="text-xs text-zinc-400 mt-1">Upload your design, photo, or reference image here.</p>
                   </div>
                   <div>
-                    <label className="text-xs font-bold uppercase text-zinc-400">Detail Likhein *</label>
-                    <textarea value={customMadeDetail} onChange={(e) => setCustomMadeDetail(e.target.value)} placeholder="e.g. Mujhe is wallet pe hand stitching chahiye, thread colour black ho, mera naam A. Khan likha ho..." maxLength={500} rows={4} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-amber-400 bg-black text-white" />
-                    <p className="text-xs text-zinc-400 mt-1">{customMadeDetail.length} / 500 - Apna design detail yahan likhein</p>
+                    <label className="text-xs font-bold uppercase text-zinc-400">Customization Details *</label>
+                    <textarea value={customMadeDetail} onChange={(e) => setCustomMadeDetail(e.target.value)} placeholder="e.g. Add hand stitching to this wallet with black thread and engrave the initials A.K." maxLength={500} rows={4} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-amber-400 bg-black text-white" />
+                    <p className="text-xs text-zinc-400 mt-1">{customMadeDetail.length} / 500 - Describe your customization here.</p>
                   </div>
                   <div className="bg-black border border-amber-400/30 rounded-md p-3">
                     <p className="text-xs text-amber-400 font-medium">Extra charges apply for customization - final price will be confirmed after order confirmation.</p>

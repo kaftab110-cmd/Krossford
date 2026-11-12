@@ -66,7 +66,7 @@ export default function HidesWeWorkWith() {
         <div className="bg-amber-400/10 border border-amber-400/30 rounded-2xl p-6 sm:p-8 text-center space-y-3">
           <h3 className="text-lg sm:text-xl font-serif tracking-widest text-amber-400 uppercase">Need Any Other Hide?</h3>
           <p className="text-[13px] sm:text-sm text-zinc-300 leading-relaxed max-w-2xl mx-auto">
-            Pakistan Me Available Kisi Bhi Kisam Ki Hide Ya Customer Ki Demand Ke Mutabiq Hum Sourcing Kar Sakte Hain. Apni Requirement Batayein, Hum Apke Liye Best Quality Hide Arrange Karenge.
+            We can source any type of hide available in Pakistan to meet your requirements. Tell us what you need, and we will arrange the best quality hide for you.
           </p>
           <p className="text-[11px] text-zinc-500 tracking-widest uppercase">Custom Sourcing Available On Demand</p>
         </div>

@@ -12,7 +12,7 @@ import { products, findProductBySlug, getCardSliderImages } from "@/lib/data/sho
 // - Dots + Counter (1 / 5)
 // - Swipe left/right mobile pe
 // - Slider sirf tab jab gallery me 1 se zyada photo ho
-// - Delivery:Estimated Total: 12-17 Working Days (Processing 7-10 + DHL 5-7)
+// - Delivery estimate: Estimated Total: 12-17 Working Days
 const FEATURED_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag", "travel-duffle-bag"];
 
 export default function FeaturedProducts() {
@@ -164,7 +164,7 @@ export default function FeaturedProducts() {
                 </Link>
                 <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400">${product.price}</p>
-                <p className="text-[11px] text-zinc-500">Delivery inEstimated Total: 12-17 Working Days • DHL Express • Tracking Provided</p>
+                <p className="text-[11px] text-zinc-500">Estimated Total: 12-17 Working Days • DHL Express • Tracking Provided</p>
                 <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
 
                 <div className="flex items-center gap-2">

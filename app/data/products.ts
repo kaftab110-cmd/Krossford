@@ -27,7 +27,7 @@ export const products: Product[] = [
   { id: 10, name: "Leather Tag + Keychain Set", image: "/images/leather-tag-keychain-set1.jpg", description: "Custom Name / Logo Engraving Available - Small Gift, Long Life.", category: "Custom", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", price: 25, forHer: false },
 ];
 
-// Helper - product page / cart ko yahi use karna hai, dobara hardcode nahi karna
+// Shared helper for product and cart pages to avoid duplicating product data.
 export function getProductBySlug(slug: string) {
   return products.find((p) => p.slug === slug);
 }

@@ -13,7 +13,7 @@ export const paymentContent = {
       heading: "2. Retail Payment - 1 Piece",
       paragraphs: [
         "Retail: 100% Secure Advance Payment.",
-        "Add to Cart -> Checkout -> Pay Full Amount -> Order Confirmed -> Processing: 7-10 Days Starts.",
+        "Add to Cart -> Checkout -> Pay Full Amount -> Order Confirmed -> Production Begins.",
         "We do not ship Retail orders without full payment confirmation.",
       ],
     },
