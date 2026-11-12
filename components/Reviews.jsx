@@ -8,6 +8,7 @@ import { useState } from "react";
 // 2. Order Ref added - To verify real orders
 // 3. Product list - 7 products
 // 4. No alert popup - Success message shows inside the form
+// 5. City placeholder fix - Pehle example tha, ab sirf "City, Country *" hai - Example hataya, jaisa user ne bola
 
 const PRODUCTS = [
   "Classic Tote Bag",
@@ -96,7 +97,7 @@ export default function ReviewForm() {
         />
         <input
           required
-          placeholder="City, Country - e.g. Lahore, Pakistan"
+          placeholder="City, Country *"
           value={form.city}
           onChange={(e) => setForm({ ...form, city: e.target.value })}
           className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-sm outline-none focus:border-amber-500"
