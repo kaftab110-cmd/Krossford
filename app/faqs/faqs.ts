@@ -6,11 +6,11 @@ export type Faq = {
 export const customerFaqs: Faq[] = [
   {
     question: "How do I order as a customer?",
-    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers order 1 piece at a time. Payment is 100% Advance - VISA, Mastercard, Western Union or Bank Transfer.",
+    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers order 1 piece at a time. Payment is 100% Advance - VISA, MASTERCARD, WESTERN UNION or BANK TRANSFER.",
   },
   {
     question: "How much is delivery for a customer?",
-    answer: "Delivery is via DHL Express. Processing: 7-10 Days + DHL Delivery: 7-10 Working Days = Total 18-24 Days. Tracking is provided. Our aim to deliver earlier than estimated.",
+    answer: "Delivery is via DHL Express. Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier.",
   },
   {
     question: "Can a customer return or exchange?",
@@ -18,7 +18,7 @@ export const customerFaqs: Faq[] = [
   },
   {
     question: "Is the leather 100% real?",
-    answer: "Yes. 100% Real Leather Guarantee. We use vegetable-tanned full-grain leather. Every piece is handcrafted in Gujrat, Pakistan. Sample Before Bulk is available for wholesale buyers.",
+    answer: "Yes. 100% Real Leather Guarantee. We use vegetable-tanned full-grain leather. Every piece is handcrafted in Pakistan. Sample Before Bulk is available for wholesale buyers.",
   },
 ];
 
@@ -33,7 +33,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What is payment for wholesale buyers?",
-    answer: "For wholesale buyers: 50% Advance - 50% Before Dispatch. Payment via Western Union or Bank Transfer / T/T. Sample Before Bulk is available so you can check quality first.",
+    answer: "For wholesale buyers: 50% Advance - 50% Before Dispatch. Payment via WESTERN UNION or BANK TRANSFER. Sample Before Bulk is available so you can check quality first.",
   },
   {
     question: "Can buyers add Custom Logo / Private Label?",
@@ -41,7 +41,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What is delivery time for bulk orders?",
-    answer: "Bulk production time depends on quantity. After sample approval, production is 15-25 days + DHL Delivery 7-10 Working Days. Tracking is provided for buyers.",
+    answer: "Bulk production time depends on quantity. After sample approval, we confirm the production time in your Wholesale Quotation. Delivery is via DHL Express. Tracking is provided for buyers.",
   },
 ];
 
