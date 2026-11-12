@@ -22,8 +22,8 @@ export const shippingContent = {
     {
       heading: "Estimated Delivery Times",
       paragraphs: [
-        "Total Delivery Time: 18-24 Days = Processing: 7-10 Days + DHL Delivery: 7-10 Working Days.",
-        "Our aim to deliver earlier than estimated.",
+        "Total Delivery Time: 12-17 Working Days = Processing: 7-10 Working Days + DHL Delivery: 5-7 Working Days.",
+        "We will try our best to deliver as soon as possible, even before this time.",
         "Delivery estimates depend on the destination, courier service, processing time, and customs procedures.",
         "Delivery dates are estimates and are not guaranteed unless explicitly agreed in writing for a specific transaction."
       ]

@@ -35,6 +35,10 @@ export default function Hero() {
           A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Real Leather Guarantee.
         </p>
 
+        <p className="mt-3 text-xs sm:text-sm text-amber-300/90 max-w-xl mx-auto text-center leading-relaxed">
+          Total Delivery: 12-17 Working Days. We will try our best to deliver as soon as possible, even before this time.
+        </p>
+
         <div className="mt-8 flex flex-wrap justify-center items-center gap-3 sm:gap-4">
           <Link
             href="/shop"
@@ -60,7 +64,7 @@ export default function Hero() {
       {/* Bottom Ticker */}
       <div className="absolute bottom-0 left-0 right-0 z-10 bg-black/60 border-t border-white/10 py-2 overflow-hidden">
         <p className="whitespace-nowrap text-xs sm:text-sm tracking-widest text-zinc-300 text-center uppercase">
-          Ships Via DHL Express &nbsp;•&nbsp; Total Delivery: 18-24 Working Days &nbsp;•&nbsp; Tracking Provided &nbsp;•&nbsp; VISA | MASTERCARD | WESTERN UNION
+          Ships Via DHL Express &nbsp;•&nbsp; Total Delivery: 12-17 Working Days &nbsp;•&nbsp; Tracking Provided &nbsp;•&nbsp; We Always Aim To Deliver Earlier &nbsp;•&nbsp; VISA | MASTERCARD | WESTERN UNION
         </p>
       </div>
     </section>

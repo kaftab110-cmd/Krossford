@@ -10,13 +10,10 @@ import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
 import { products, findProductBySlug } from "@/lib/data/shop";
 
-// SYNC FIX: TOP3 ab hardcode nahi hai - sirf slug likha hai, naam / price / image / tag sab lib/data/shop.ts se aayega.
-// Is se FILE 1 / FILE 2 me price badlo to Home Page khud hi same ho jayega, dobara repeat nahi karna parega.
 const TOP3_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag"] as const;
 
 const TOP3 = TOP3_SLUGS.map((slug) => {
   const p = findProductBySlug(slug);
-  // Fallback sirf tab jab shop.ts me product na mile - warna shop.ts hi truth hai
   return {
     slug,
     name: p?.name ?? slug,
@@ -28,7 +25,6 @@ const TOP3 = TOP3_SLUGS.map((slug) => {
 
 const getTop3Images = (slug: string, fallback: string): string[] => {
   const found = findProductBySlug(slug);
-  // FIX: .filter(Boolean) se TypeScript ko nahi pata chalta ke undefined nikal gaya - is liye type guard lagaya
   const all = [fallback, found?.image, ...(found?.gallery || [])].filter((x): x is string => Boolean(x));
   return [...new Set(all)];
 };
@@ -118,6 +114,7 @@ export default function Home() {
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
           <p className="text-xs text-zinc-400">Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days</p>
           <p className="text-xs text-zinc-400">Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
+          <p className="text-xs text-amber-300/90">We will try our best to deliver as soon as possible, even before this time.</p>
         </div>
       </section>
 
