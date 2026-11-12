@@ -10,20 +10,24 @@ import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
 import { products, findProductBySlug } from "@/lib/data/shop";
 
-const TOP3_SLUGS = ["card-holder", "leather-tag-keychain-set", "crossbody-messenger-bag"] as const;
+// HOME PAGE - FINAL - ONE TIME ALL FIXES
+// 1. Home ke apne Best Sellers 3 se 8 kiye - TOP8 = products ke pehle 8 (featured order) - Hardcoded galat slugs nahi lagaye taake khaali image na aaye
+// 2. View All button add kiya - 8 ke baad Shop pe jayega - Home pe 22 products ka bheed khatam karne ka pehla step (Featured + Collections alag files hain, wo alag se honge)
+// 3. Delivery lines DE-DUPLICATE ki - Pehle 4 jagah delivery thi (Hero + Info box 3 lines + Card) - Ab delivery ki DETAIL sirf 1 jagah: Info box me
+//    - Hero se "Total: 12-17" hataya - sirf Ships + Handcrafted + Secure rakha
+//    - Info box se "We will try our best..." wali duplicate aim line hatayi
+//    - Card se "Ships from Pakistan - 12-17 - DHL" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
+// 4. Slider formula + Add to Cart same rakha
 
-const TOP3 = TOP3_SLUGS.map((slug) => {
-  const p = findProductBySlug(slug);
-  return {
-    slug,
-    name: p?.name ?? slug,
-    price: p?.price ?? 0,
-    tag: p?.badge ?? "",
-    image: p?.image ?? "",
-  };
-});
+const TOP8 = products.slice(0, 8).map((p) => ({
+  slug: p.slug,
+  name: p.name,
+  price: p.price,
+  tag: (p as any).badge ?? "",
+  image: p.image ?? "",
+}));
 
-const getTop3Images = (slug: string, fallback: string): string[] => {
+const getTop8Images = (slug: string, fallback: string): string[] => {
   const found = findProductBySlug(slug);
   const all = [fallback, found?.image, ...(found?.gallery || [])].filter((x): x is string => Boolean(x));
   return [...new Set(all)];
@@ -34,7 +38,7 @@ export default function Home() {
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const hoverImages = hoverSlug ? getTop3Images(hoverSlug, TOP3.find((p) => p.slug === hoverSlug)?.image || "") : [];
+  const hoverImages = hoverSlug ? getTop8Images(hoverSlug, TOP8.find((p) => p.slug === hoverSlug)?.image || "") : [];
   const HOVER_SLIDE_DELAY = 1800;
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [hoverSlug, hoverImages.length]);
 
-  const handleAddToCart = (p: (typeof TOP3)[number]) => {
+  const handleAddToCart = (p: (typeof TOP8)[number]) => {
     const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
     const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "Single Piece");
     if (existingIndex >= 0) {
@@ -105,7 +109,7 @@ export default function Home() {
               Request Sample
             </a>
           </div>
-          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships from Pakistan • Handcrafted To Order • Total: 12-17 Working Days • Tracking Provided • Secure Payments • Bank Transfer</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships from Pakistan • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
@@ -115,7 +119,6 @@ export default function Home() {
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
           <p className="text-xs text-zinc-400">Crafting Time: 7-10 Working Days + DHL Express Delivery: 5-7 Working Days</p>
           <p className="text-xs text-zinc-400">Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
-          <p className="text-xs text-amber-300/90">We will try our best to deliver as soon as possible, even before this time.</p>
         </div>
       </section>
 
@@ -124,9 +127,9 @@ export default function Home() {
           <h2 className="text-xl font-serif uppercase tracking-widest">Start With Our Best Sellers</h2>
           <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Honest Price • Handcrafted • Built To Last</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {TOP3.map((p) => {
-            const cardImages = getTop3Images(p.slug, p.image);
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {TOP8.map((p) => {
+            const cardImages = getTop8Images(p.slug, p.image);
             const isHovering = hoverSlug === p.slug;
             const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : p.image;
             return (
@@ -180,7 +183,6 @@ export default function Home() {
                 </div>
                 <p className="text-lg text-amber-400 font-bold shrink-0">${p.price}</p>
               </div>
-              <p className="text-xs text-zinc-500 mt-2">Ships from Pakistan • 12-17 Working Days • DHL Express • Tracking Provided</p>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
@@ -195,6 +197,9 @@ export default function Home() {
             </div>
             );
           })}
+        </div>
+        <div className="text-center mt-8">
+          <Link href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded hover:bg-amber-300">View All Products →</Link>
         </div>
       </section>
 
