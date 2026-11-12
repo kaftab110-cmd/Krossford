@@ -6,6 +6,16 @@ import { products, CATEGORIES, getProductsByCategory } from "@/lib/data/shop";
 
 export const dynamic = "force-dynamic";
 
+// SHOP PAGE - FINAL - ONE TIME ALL FIXES
+// 1. Shop click defaults to All - ?category nahi hai to All dikhega
+// 2. For Her pill HATAYA - Shop pills me For Her ka pill nahi hota (Badi websites jaisa) - For Her ke liye sirf pink button hai
+// 3. Card se For Her label HATAYA - Shop me For Her items dikhenge par label nahi lagega - For Her ka apna alag page hai
+// 4. For Her button SIRF Shop pe - For Her page pe nahi (ye file Shop ki hai, is liye yahan hamesha dikhega)
+// 5. Banner line NAHI hai - koi banner nahi
+// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + DHL
+// 7. Slider formula same (ProductCard wala) + Add to Cart + Search + Sort sab rakha hua hai
+// 8. ?category=For Her aaye to seedha /for-her pe redirect - Shop me For Her category nahi khulegi
+
 function ShopPageInner() {
   const searchParams = useSearchParams();
   const urlCategory = searchParams.get("category") || "All";
@@ -110,16 +120,14 @@ function ShopPageInner() {
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
-        <h1 className="text-3xl font-bold uppercase tracking-widest">{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p>
+        <h1 className="text-3xl font-bold uppercase tracking-widest">Shop Collection</h1>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • Handcrafted • Real Leather</p>
       </section>
 
       {/* FOR HER BUTTON - Sirf SHOP pe dikhega, FOR HER pe nahi - Badi websites jaisa: Shop pills me For Her ka pill nahi hota, sirf button hota hai */}
-      {activeCategory !== "For Her" && (
-        <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
-          <Link href="/for-her" className="inline-block bg-pink-600 hover:bg-pink-500 text-white text-sm font-black uppercase tracking-widest px-8 py-3.5 rounded-full border-2 border-white shadow-lg shadow-pink-600/40">Go to For Her Page →</Link>
-        </div>
-      )}
+      <div className="mx-auto max-w-7xl px-6 pb-4 text-center">
+        <Link href="/for-her" className="inline-block bg-pink-600 hover:bg-pink-500 text-white text-sm font-black uppercase tracking-widest px-8 py-3.5 rounded-full border-2 border-white shadow-lg shadow-pink-600/40">Go to For Her Page →</Link>
+      </div>
 
       <div className="flex flex-wrap justify-center gap-2 px-6 pb-6">
         {CATEGORIES.filter((cat) => cat !== 'For Her').map((cat) => {
@@ -184,7 +192,6 @@ function ShopPageInner() {
               >
                 <img src={currentImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                 {p.badge && <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
-                {p.forHer && <span className="absolute top-3 right-3 bg-pink-500 text-white text-xs font-bold px-2 py-1 uppercase rounded">For Her</span>}
                 <span className="absolute bottom-3 left-3 bg-black/80 text-white text-xs px-2 py-1">Click To View Designs</span>
                 {/* COUNTER - Sirf jab 1 se zyada photo ho */}
                 {hasSlider && (
@@ -224,12 +231,11 @@ function ShopPageInner() {
               </div>
             </Link>
             <div className="p-5 space-y-3">
-              <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category}{p.forHer ? " • For Her" : ""}</span>
+              <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category}</span>
               <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{p.name}</h3></Link>
               <p className="text-xs text-zinc-400 line-clamp-2">{p.description}</p>
               <p className="text-sm text-amber-400 font-mono">${p.price}</p>
               <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery in 12-17 Working Days • DHL Express</p>
-              <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleAddToCart(p)}
