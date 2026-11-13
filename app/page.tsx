@@ -3,23 +3,21 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import BrandStory from "@/components/BrandStory";
-import Collections from "@/components/Collections";
-import FeaturedProducts from "@/components/FeaturedProducts";
 import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
 import { products, findProductBySlug } from "@/lib/data/shop";
 
 // HOME PAGE - FINAL - ONE TIME ALL FIXES
-// 1. Home ke apne Best Sellers 3 se 8 kiye - TOP8 = products ke pehle 8 (featured order) - Hardcoded galat slugs nahi lagaye taake khaali image na aaye
-// 2. View All button add kiya - 8 ke baad Shop pe jayega - Home pe 22 products ka bheed khatam karne ka pehla step (Featured + Collections alag files hain, wo alag se honge)
+// 1. Home Best Sellers uses up to 8 products flagged BEST SELLER.
+// 2. View All Products links to Shop; catalog and featured grids are not rendered on the homepage.
 // 3. Delivery lines DE-DUPLICATE ki - Pehle 4 jagah delivery thi (Hero + Info box 3 lines + Card) - Ab delivery ki DETAIL sirf 1 jagah: Info box me
 //    - Hero se "Total: 12-17" hataya - sirf Ships + Handcrafted + Secure rakha
 //    - Info box se "We will try our best..." wali duplicate aim line hatayi
 //    - Card se "Ships from Pakistan - 12-17 - DHL" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
 // 4. Slider formula + Add to Cart same rakha
 
-const TOP8 = products.slice(0, 8).map((p) => ({
+const TOP8 = products.filter((p) => p.badge === "BEST SELLER").slice(0, 8).map((p) => ({
   slug: p.slug,
   name: p.name,
   price: p.price,
@@ -202,8 +200,6 @@ export default function Home() {
         </div>
       </section>
 
-      <Collections />
-      <FeaturedProducts />
       <Craftsmanship />
       <Reviews />
       <BrandStory />
