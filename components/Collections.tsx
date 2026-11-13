@@ -189,7 +189,6 @@ export default function Collections() {
                 </div>
               </div>
               <p className="text-[11px] text-zinc-500 mt-2">🚚 Estimated Total: 12-17 Working Days • DHL Express • Tracking Provided</p>
-              <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
 
               <div className="mt-4 flex gap-2">
                 <Link

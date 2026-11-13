@@ -165,7 +165,6 @@ export default function FeaturedProducts() {
                 <p className="text-xs text-zinc-400 line-clamp-2">{product.description}</p>
                 <p className="text-sm font-mono text-amber-400">${product.price}</p>
                 <p className="text-[11px] text-zinc-500">Estimated Total: 12-17 Working Days • DHL Express • Tracking Provided</p>
-                <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
 
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] text-zinc-500 uppercase">Colors:</span>

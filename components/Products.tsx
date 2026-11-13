@@ -130,7 +130,6 @@ export default function ProductCard({ product }: { product: Product }) {
           🚚 Ships via <span className="text-white font-bold">{"\u0044\u0048\u004C Express"}</span><br />
           <span className="text-amber-400/90">Estimated Total: 12-17 Working Days | Tracking Provided • Ships from Pakistan</span>
         </p>
-        <p className="text-xs text-zinc-500 mt-2">Our aim to deliver earlier than estimated.</p>
         <button
           onClick={addToCart}
           className="mt-4 w-full bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs tracking-widest py-3 rounded-lg transition-colors cursor-pointer"
