@@ -201,7 +201,10 @@ export default function Home() {
       </section>
 
       <Craftsmanship />
-      <Reviews />
+      <section className="mx-auto max-w-7xl px-6 py-12 text-center">
+        <p className="text-sm text-zinc-400">No Reviews Yet — Be The First To Review</p>
+        <Reviews />
+      </section>
       <BrandStory />
       <Bespoke />
 
