@@ -99,26 +99,6 @@ export default function ContactPage() {
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-white mb-4">Direct Touchpoints</h2>
-            <a href={`mailto:${contact.email}`} className="block rounded-md border border-amber-400/20 px-5 py-4 text-amber-400 transition hover:border-amber-400/60">
-              <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
-              <span className="text-sm font-bold">{contact.email}</span>
-            </a>
-            <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
-              <span className="block text-xs text-zinc-400 uppercase">{WA} / Phone</span>
-              <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
-            </a>
-            <div className="block rounded-md border border-zinc-800 px-5 py-4">
-              <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
-              <span className="text-sm font-bold text-zinc-300">{contact.location}</span>
-            </div>
-            <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
-              <span className="block text-xs text-zinc-400 uppercase">Payment</span>
-              <span className="text-xs text-zinc-300 mt-1 block">{VISA} | {MC} | {WU} | BANK TRANSFER</span>
-              <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
-            </div>
-          </div>
           <form onSubmit={handleWhatsApp} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">Send Enquiry</h2>
             <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
@@ -165,6 +145,26 @@ export default function ContactPage() {
             <button type="button" onClick={handleEmail} className="w-full border border-zinc-700 py-3 rounded text-xs font-bold uppercase tracking-wider hover:border-amber-400">Send Via Email</button>
             {sent && <p className="text-xs text-green-400 text-center">Opening WhatsApp / Email... Thank you!</p>}
           </form>
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-white mb-4">Direct Touchpoints</h2>
+            <a href={`mailto:${contact.email}`} className="block rounded-md border border-amber-400/20 px-5 py-4 text-amber-400 transition hover:border-amber-400/60">
+              <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
+              <span className="text-sm font-bold">{contact.email}</span>
+            </a>
+            <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
+              <span className="block text-xs text-zinc-400 uppercase">{WA} / Phone</span>
+              <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
+            </a>
+            <div className="block rounded-md border border-zinc-800 px-5 py-4">
+              <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
+              <span className="text-sm font-bold text-zinc-300">{contact.location}</span>
+            </div>
+            <div className="block rounded-md border border-zinc-800 px-5 py-4 bg-zinc-900">
+              <span className="block text-xs text-zinc-400 uppercase">Payment</span>
+              <span className="text-xs text-zinc-300 mt-1 block">{VISA} | {MC} | {WU} | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-400 mt-1 block">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
