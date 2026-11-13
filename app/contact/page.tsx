@@ -21,7 +21,7 @@ const contact = {
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "", company: "", orderType: "Single Piece - B2C", quantity: "", phone: "", altPhone: "", country: "United States" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", company: "", orderType: "Sample Piece - B2B", quantity: "", phone: "", altPhone: "", country: "United States" });
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
@@ -73,7 +73,7 @@ export default function ContactPage() {
       alert("Please fill Name, Email and Message");
       return;
     }
-    const enquiryType = form.orderType.includes("B2B") ? "Wholesale Enquiry" : form.orderType.includes("Sample") ? "Sample Enquiry" : "Retail Enquiry";
+    const enquiryType = form.orderType.includes("B2B") ? "Wholesale / Bulk Enquiry" : form.orderType.includes("Sample") ? "Sample Enquiry" : "Wholesale / Bulk Enquiry";
     const subject = `${enquiryType} from ${form.name} - ${form.company}`;
     window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(buildMessage())}`;
     setSent(true);
@@ -84,18 +84,18 @@ export default function ContactPage() {
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Contact Us</h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest">Retail + Wholesale Enquiry - 1 Piece or Bulk Production</p>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest">Wholesale / Bulk Enquiries Only</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
-          <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-amber-400 transition-colors text-center">
-            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want To Buy 1 Piece</p>
-            <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Handcrafted • Honest Price</p>
-            <p className="text-xs font-bold mt-2 underline">Go To Shop →</p>
-          </Link>
           <Link href="/b2b" className="border border-amber-400/50 rounded-lg p-5 bg-amber-400/5 hover:border-amber-400 transition-colors text-center">
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want Bulk / Wholesale</p>
             <p className="text-xs text-zinc-400 mt-1">Jacket 50+ • Biker Suit 25+ • Small Items 100+</p>
             <p className="text-xs font-bold mt-2 underline">Go To B2B Form →</p>
+          </Link>
+          <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-amber-400 transition-colors text-center">
+            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want To Buy 1 Piece</p>
+            <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Handcrafted • Honest Price</p>
+            <p className="text-xs font-bold mt-2 underline">Go To Shop →</p>
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
@@ -111,13 +111,13 @@ export default function ContactPage() {
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
             <div className="grid grid-cols-2 gap-3">
               <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
-                <option>Single Piece - B2C</option>
+                <option>Sample Piece - B2B</option>
                 <option>Bulk Order - B2B</option>
                 <option>Sample Request</option>
               </select>
               <input placeholder="Quantity? e.g. 50" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             </div>
-            <textarea required rows={4} placeholder="Tell us about your order - 1 piece or bulk, quantity, leather type..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
+            <textarea required rows={4} placeholder="Tell us about your bulk order or sample request - quantity, leather type..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             <div>
               <label className="block text-xs tracking-widest text-zinc-400 uppercase font-bold">Upload Your Design / Image (Optional - Max 5)</label>
               <label className="mt-2 w-full border-2 border-dashed border-zinc-700 rounded px-4 py-5 text-center block cursor-pointer hover:border-amber-400 bg-zinc-950">
