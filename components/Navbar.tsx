@@ -72,7 +72,6 @@ export default function Navbar() {
           <Logo className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0">
             <span className="text-white font-extrabold uppercase tracking-wide text-lg sm:text-2xl md:text-3xl whitespace-nowrap leading-none">KROSSFORD</span>
-            <span className="text-xs font-medium text-amber-400 tracking-widest uppercase mt-1 leading-none">ENTERPRISES</span>
           </div>
         </Link>
         <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-xs font-bold tracking-wider whitespace-nowrap">

@@ -1,6 +1,6 @@
 // lib/data/homepage.ts - FINAL FIXED - RETAIL + WHOLESALE - Since 2025
 export const hero = {
-  title: "KROSSFORD ENTERPRISES",
+  title: "KROSSFORD",
   subtitle: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | HD Images | Sample Before Bulk | Since 2025",
   image: "/images/leather-duffle-bag.jpg",
   button: "SHOP COLLECTION",
@@ -14,7 +14,7 @@ export const homepageProducts = [
 ];
 
 export const brandStorySection = {
-  title: "KROSSFORD ENTERPRISES",
+  title: "KROSSFORD",
   subtitle: "Premium Full-Grain Leather Goods - Retail + Wholesale",
   description: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | Sample Before Bulk | Custom Logo Available | Since 2025",
   image: "/images/leather-duffle-bag.jpg",

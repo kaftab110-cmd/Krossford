@@ -11,7 +11,7 @@ export const metadata = {
     type: "website",
     locale: "en_US",
     url: "https://www.krossford.com",
-    siteName: "Krossford Enterprises",
+    siteName: "KROSSFORD",
     title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
     description: "Krossford - 22 Handcrafted Full-Grain Leather Products. Wallets from $25, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via DHL Express.",
     images: [

@@ -87,9 +87,6 @@ export default function Header() {
               <span className="text-2xl md:text-3xl font-extrabold tracking-wide text-yellow-500 truncate whitespace-nowrap leading-none">
                 KROSSFORD
               </span>
-              <span className="text-xs font-medium tracking-widest text-yellow-500/90 whitespace-nowrap leading-none mt-1">
-                ENTERPRISES
-              </span>
             </span>
           </Link>
 

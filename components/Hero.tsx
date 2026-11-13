@@ -17,12 +17,9 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-10 pb-24 w-full max-w-6xl mx-auto">
-        {/* KROSSFORD BARA, ENTERPRISES CHOTA - CENTER */}
+        {/* KROSSFORD - CENTER */}
         <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
           KROSSFORD
-        </p>
-        <p className="mt-1 text-xs sm:text-sm font-medium tracking-widest text-amber-400/90 uppercase text-center leading-none">
-          ENTERPRISES
         </p>
 
         <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl leading-none font-bold text-white text-center">

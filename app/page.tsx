@@ -86,9 +86,6 @@ export default function Home() {
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
             KROSSFORD
           </p>
-          <p className="mt-1 text-xs sm:text-sm font-medium tracking-widest text-amber-400 uppercase text-center leading-none">
-            ENTERPRISES
-          </p>
           <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-center">
             Real Leather.<br />Made Honestly.
           </h1>
