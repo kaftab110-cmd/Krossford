@@ -21,6 +21,8 @@ const contact = {
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", message: "", company: "", orderType: "Sample Piece - B2B", quantity: "", phone: "", altPhone: "", country: "United States" });
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -57,26 +59,45 @@ export default function ContactPage() {
     return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
-  const handleWhatsApp = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       alert("Please fill Name, Email and Message");
       return;
     }
-    window.open(`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(buildMessage())}`, "_blank");
-    setSent(true);
-  };
+    setSubmitting(true);
+    setSubmissionError(null);
+    const message = buildMessage();
 
-  const handleEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      alert("Please fill Name, Email and Message");
-      return;
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "submit",
+          lead: {
+            source: "b2b-contact",
+            customerName: form.name,
+            email: form.email,
+            contact: form.phone || form.altPhone,
+            product: form.orderType,
+            quantity: form.quantity,
+            message,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Contact enquiry submission failed.");
+      }
+
+      setSent(true);
+    } catch (error) {
+      console.error("Contact enquiry submission failed:", error);
+      setSubmissionError("We could not submit your enquiry. Please try again or use the direct contact options.");
+    } finally {
+      setSubmitting(false);
     }
-    const enquiryType = form.orderType.includes("B2B") ? "Wholesale / Bulk Enquiry" : form.orderType.includes("Sample") ? "Sample Enquiry" : "Wholesale / Bulk Enquiry";
-    const subject = `${enquiryType} from ${form.name} - ${form.company}`;
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(buildMessage())}`;
-    setSent(true);
   };
 
   return (
@@ -99,7 +120,7 @@ export default function ContactPage() {
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
-          <form onSubmit={handleWhatsApp} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
+          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">Send Enquiry</h2>
             <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
             <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
@@ -141,9 +162,11 @@ export default function ContactPage() {
                 </div>
               )}
             </div>
-            <button type="submit" className="w-full bg-[#25D366] text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:brightness-110">Send Via WhatsApp (Fast) →</button>
-            <button type="button" onClick={handleEmail} className="w-full border border-zinc-700 py-3 rounded text-xs font-bold uppercase tracking-wider hover:border-amber-400">Send Via Email</button>
-            {sent && <p className="text-xs text-green-400 text-center">Opening WhatsApp / Email... Thank you!</p>}
+            <button type="submit" disabled={submitting} className="w-full bg-[#25D366] text-black py-3 rounded text-xs font-bold uppercase tracking-wider hover:brightness-110 disabled:opacity-60">
+              {submitting ? "Sending..." : "SEND ENQUIRY"}
+            </button>
+            {submissionError && <p role="alert" className="text-xs text-red-400 text-center">{submissionError}</p>}
+            {sent && <p className="text-xs text-green-400 text-center">Enquiry sent to our team. Thank you!</p>}
           </form>
           <div className="space-y-4">
             <h2 className="text-xl font-semibold text-white mb-4">Direct Touchpoints</h2>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { findProductBySlug } from "@/lib/data/shop";
+import { formatCartCountdown, readCart, saveCart } from "@/lib/cart";
 
 type CartItem = {
   id: string;
@@ -40,8 +41,6 @@ const SUGGESTED = SUGGESTED_SLUGS.map((slug) => {
   };
 });
 
-// 
-const CART_EXPIRY_MS = 45 * 60 * 1000;
 const WISHLIST_KEY = "krossford_wishlist";
 // CUSTOM MADE type ka label
 const customMadeLabel = (t?: string) => {
@@ -55,6 +54,8 @@ const customMadeLabel = (t?: string) => {
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartExpired, setCartExpired] = useState(false);
+  const [cartCountdown, setCartCountdown] = useState(0);
   const [wishlist, setWishlist] = useState<CartItem[]>([]);
   // Purani cart (localStorage) me agar key-holder.jpg / crossbody-messenger-bag.jpg (bina 2 wali) jaisi galat photo hai to usko shop.ts wali sahi photo se fix karo
   // FIX: key-holder.jpg folder me hai hi nahi - is liye tooti photo aa rahi thi
@@ -88,21 +89,15 @@ export default function CartPage() {
   };
   const loadCart = () => {
     try {
-      const raw = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
-      const stamp = Date.now();
-      // Purani cart me galat photo ho to abhi fix kar do + addedAt nahi hai to ab se 45 min start karo
-      const withTime = raw.map((it) => ({ ...it, image: fixImage(it.image), addedAt: it.addedAt || stamp }));
-      // 45 min se zyada purane items auto remove - bina notice, sab ka
-      const alive = withTime.filter((it) => stamp - (it.addedAt || stamp) < CART_EXPIRY_MS);
-      // FIX: Sirf expired hone pe hi save karna kaafi nahi tha.
-      // Purani cart me addedAt nahi hota tha, to har second naya addedAt banta tha aur timer reset ho jata tha.
-      // Ab pehli baar hi addedAt + fixed image localStorage me pakka save ho jayega, phir 45 min sahi chalega.
-      const needsSave = alive.length !== raw.length || raw.some((it) => !it.addedAt || it.image !== fixImage(it.image));
-      if (needsSave) {
-        localStorage.setItem("krossford_cart", JSON.stringify(alive));
-        localStorage.setItem("cart", JSON.stringify(alive));
+      const snapshot = readCart<CartItem>();
+      const items = snapshot.items.map((item) => ({ ...item, image: fixImage(item.image) }));
+      if (items.some((item, index) => item.image !== snapshot.items[index].image)) {
+        saveCart(items);
       }
-      setCart(alive);
+      setCart(items);
+      setCartCountdown(snapshot.expiresAt ? Math.max(0, snapshot.expiresAt - Date.now()) : 0);
+      if (snapshot.expired) setCartExpired(true);
+      if (items.length > 0) setCartExpired(false);
     }
     catch { setCart([]); }
   };
@@ -122,10 +117,16 @@ export default function CartPage() {
     };
   }, []);
   const updateCart = (newCart: CartItem[]) => {
+    const snapshot = readCart<CartItem>();
+    if (snapshot.expired) {
+      setCart([]);
+      setCartExpired(true);
+      setCartCountdown(0);
+      return;
+    }
     setCart(newCart);
-    localStorage.setItem("krossford_cart", JSON.stringify(newCart));
-    localStorage.setItem("cart", JSON.stringify(newCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(newCart);
+    if (newCart.length > 0) setCartExpired(false);
   };
   const changeQty = (id: string, delta: number) => {
     updateCart(cart.map(item => item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item));
@@ -158,10 +159,15 @@ export default function CartPage() {
         <h1 className="text-xl font-bold uppercase text-amber-400 border-b border-zinc-800 pb-4">
           Your Shopping Cart {cart.length > 0 && `(${cart.reduce((s,i)=>s+i.quantity,0)})`}
         </h1>
+        {cart.length > 0 && (
+          <p className="text-xs text-amber-400" role="timer">
+            Cart expires in {formatCartCountdown(cartCountdown)}
+          </p>
+        )}
         {cart.length === 0 ? (
           <div className="space-y-6">
             <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-zinc-400 text-xs">
-              Your cart is empty.
+              {cartExpired ? <p role="status" className="text-amber-400 font-bold">Cart Expired</p> : "Your cart is empty."}
               <div className="mt-4"><Link href="/shop" className="bg-amber-400 text-black px-5 py-2 rounded text-xs font-bold uppercase inline-block">Go to Shop</Link></div>
             </div>
             <div>

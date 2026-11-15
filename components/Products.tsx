@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 type Product = {
   id: string;
@@ -58,15 +59,14 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const addToCart = () => {
     try {
-      const cart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+      const cart = readCartItems<any>();
       const existing = cart.find((i: any) => i.id === product.id);
       if (existing) {
         existing.quantity = (existing.quantity || 1) + 1;
       } else {
         cart.push({ ...product, quantity: 1 });
       }
-      localStorage.setItem("krossford_cart", JSON.stringify(cart));
-      window.dispatchEvent(new Event("cartUpdated"));
+      saveCart(cart);
       alert(`${product.name} Added to Cart!`);
     } catch {}
   };

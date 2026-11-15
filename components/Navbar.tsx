@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import { readCartItems } from "@/lib/cart";
 
 // NAVBAR - FINAL - ONE TIME ALL FIXES
 // 1. FOR HER dropdown HATAYA - Desktop + Mobile dono se - Arrow ke neeche kata hua dabba isi dropdown se aa raha tha
@@ -22,8 +23,8 @@ export default function Navbar() {
     setMounted(true);
     const updateCount = () => {
       try {
-        const cart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
-        setCartCount(cart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0));
+        const cart = readCartItems<{ quantity?: number }>();
+        setCartCount(cart.reduce((sum, item) => sum + (item.quantity || 1), 0));
       } catch { setCartCount(0); }
     };
     const updateWishlist = () => {
@@ -38,7 +39,9 @@ export default function Navbar() {
     window.addEventListener("wishlistUpdated", updateWishlist);
     window.addEventListener("storage", updateCount);
     window.addEventListener("storage", updateWishlist);
+    const cartExpiryTimer = setInterval(updateCount, 1000);
     return () => {
+      clearInterval(cartExpiryTimer);
       window.removeEventListener("cartUpdated", updateCount);
       window.removeEventListener("wishlistUpdated", updateWishlist);
       window.removeEventListener("storage", updateCount);

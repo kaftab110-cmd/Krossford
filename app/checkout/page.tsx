@@ -14,6 +14,7 @@ type CartItem = {
   image: string;
   quantity: number;
   colorName: string;
+  size?: string;
   customerType: string;
   additionalOption: string;
   customText: string;
@@ -49,6 +50,7 @@ const customMadeLabel = (t?: string) => {
 
 export default function CheckoutPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartLoading, setIsCartLoading] = useState(true);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -61,10 +63,12 @@ export default function CheckoutPage() {
   const [altPhone, setAltPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
   const [orderSent, setOrderSent] = useState(false);
+  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
     setCart(saved);
+    setIsCartLoading(false);
   }, []);
 
   useEffect(() => {
@@ -80,12 +84,10 @@ export default function CheckoutPage() {
     ? "Wholesale: 50% Advance - 50% Before Dispatch"
     : "Retail: 100% Secure Advance Payment";
 
-  const WHATSAPP_NUMBER = "923030006759";
-
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const fullName = `${firstName} ${lastName}`.trim();
-    if (!firstName.trim() || !lastName.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
-      alert("Please fill First Name, Last Name, Country, Address, City, State, Postal Code and Phone");
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
+      alert("Please fill First Name, Last Name, Email, Country, Address, City, State, Postal Code and Phone");
       return;
     }
     if (cart.length === 0) {
@@ -97,14 +99,74 @@ export default function CheckoutPage() {
       `${i + 1}. ${it.name} - Color: ${it.colorName} - Type: ${it.customerType} - Qty: ${it.quantity} - $${it.price} - Custom: ${it.additionalOption}${it.customText ? ` (${it.customText})` : ""}${it.uploadedFileName ? ` - File: ${it.uploadedFileName}` : ""}${it.customMade?.enabled ? ` - CUSTOM MADE HAND STITCHED: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - Detail: ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}` : ""}${it.extraChargesNote ? ` - ${it.extraChargesNote}` : ""}`
     ).join("\n");
 
-    const msg = `Hello Krossford! NEW ORDER\n\nName: ${fullName}\nEmail: ${email}\nCountry: ${country}\nPhone: ${phone}${altPhone ? `\nAlternate / Contact Number: ${altPhone}` : ""}\nAddress: ${address}\nCity: ${city}\nState / Province: ${state}\nPostal / ZIP Code: ${postalCode}\n\nITEMS:\n${itemsText}\n\nTOTAL (Product Only): $${total}\nPayment Method: ${paymentMethod}${paymentTerms ? `\nPayment Terms: ${paymentTerms}` : ""}\nEstimated Total: 12-17 Working Days\nShipment + Delivery: To Be Confirmed\nExtra Customization Charges: To Be Confirmed`;
+    const items = cart.map((it) => ({
+      name: it.name,
+      image: it.image,
+      color: it.colorName || "Not specified",
+      size: it.size || "Not specified",
+      quantity: Number(it.quantity || 1),
+      unitPrice: Number(it.price || 0),
+      customization: [
+        it.additionalOption !== "none" ? it.additionalOption : "",
+        it.customText,
+        it.uploadedFileName ? `File: ${it.uploadedFileName}` : "",
+        it.customMade?.enabled
+          ? `Custom Made: ${customMadeLabel(it.customMade.type)}${it.customMade.detail ? ` - ${it.customMade.detail}` : ""}${it.customMade.fileName ? ` - Design Image: ${it.customMade.fileName}` : ""}`
+          : "",
+        it.extraChargesNote || "",
+      ].filter(Boolean).join("; "),
+    }));
 
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+    const message = [
+      `Country: ${country}`,
+      `Address: ${address}`,
+      `City: ${city}`,
+      `State / Province: ${state}`,
+      `Postal / ZIP Code: ${postalCode}`,
+      altPhone ? `Alternate / Contact Number: ${altPhone}` : "",
+      `Payment Method: ${paymentMethod}`,
+      `Payment Terms: ${paymentTerms}`,
+      "Estimated Total: 12-17 Working Days",
+      "Shipment + Delivery: To Be Confirmed",
+      "Extra Customization Charges: To Be Confirmed",
+      "",
+      `ITEMS:\n${itemsText}`,
+    ].filter(Boolean).join("\n");
 
-    localStorage.removeItem("krossford_cart");
-    localStorage.removeItem("cart");
-    window.dispatchEvent(new Event("cartUpdated"));
-    setOrderSent(true);
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "submit",
+          lead: {
+            source: "b2c-checkout",
+            customerName: fullName,
+            email: email.trim(),
+            contact: phone,
+            product: cart.map((it) => it.name).join(", "),
+            quantity: String(items.reduce((sum, item) => sum + item.quantity, 0)),
+            total,
+            items,
+            message,
+          },
+        }),
+      });
+      const result: { success?: boolean; orderId?: string; error?: string } = await response.json();
+
+      if (!response.ok || !result.success || !result.orderId) {
+        alert(result.error || "We couldn't submit your order. Please try again.");
+        return;
+      }
+
+      setOrderId(result.orderId);
+      localStorage.removeItem("krossford_cart");
+      localStorage.removeItem("cart");
+      window.dispatchEvent(new Event("cartUpdated"));
+      setOrderSent(true);
+    } catch {
+      alert("We couldn't submit your order. Please try again.");
+    }
   };
 
   if (orderSent) {
@@ -112,11 +174,16 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center font-mono">
         <div className="w-14 h-14 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold">Order Sent!</p>
-        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order has been opened in WhatsApp. Please press Send there. Our team will confirm Shipment + Payment details in 24 hours. {paymentTerms ? `${paymentTerms} • ` : ""}Ships via {DHLE} • Estimated Total: 12-17 Working Days • Ships from Pakistan • Tracking Provided.</p>
+        <p className="text-xs text-zinc-400 max-w-md leading-relaxed">Your order confirmation was sent to {email}.</p>
+        <p className="text-sm font-bold">Order ID: {orderId}</p>
         <Link href="/shop" className="bg-amber-400 text-black px-6 py-3 rounded text-sm font-bold">Continue Shopping</Link>
         <Link href="/b2b" className="text-xs underline text-zinc-400">Need Bulk? Go To B2B →</Link>
       </div>
     );
+  }
+
+  if (isCartLoading) {
+    return <div>Loading Checkout...</div>;
   }
 
   if (cart.length === 0) {
@@ -133,7 +200,7 @@ export default function CheckoutPage() {
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
         <div>
           <h1 className="text-3xl font-bold uppercase">Checkout</h1>
-          <p className="text-xs text-zinc-400 mt-1">Fill details - Your order will be sent via WhatsApp</p>
+          <p className="text-xs text-zinc-400 mt-1">Fill in your details to submit your order.</p>
           <p className="text-xs text-amber-400 mt-2 tracking-wide">Order</p>
           <p className="text-xs text-amber-400 mt-2 tracking-wide">✓ 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) • Sample Before Bulk {isWholesale ? `• ${paymentTerms}` : `• ${paymentTerms}`}</p>
 
@@ -220,7 +287,7 @@ export default function CheckoutPage() {
             </div>
 
             <button onClick={handlePlaceOrder} className="mt-5 w-full bg-amber-400 text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-amber-300">
-              Place Order on WhatsApp →
+              Place Order →
             </button>
             <Link href="/cart" className="block text-center mt-3 text-xs underline text-zinc-500">Back to Cart</Link>
           </div>

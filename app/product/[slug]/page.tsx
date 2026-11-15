@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { products, type ProductColor } from "@/lib/data/shop";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 const DHL = "D" + "HL";
 const DHLE = "D" + "HL Express";
@@ -205,16 +206,14 @@ export default function ProductPage() {
         : "",
       shipmentNote: "Shipment + Delivery Charges To Be Confirmed After Destination Check",
     };
-    const existing = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as typeof cartItem[];
+    const existing = readCartItems<typeof cartItem>();
     const foundIndex = existing.findIndex((it) => it.id === cartItem.id);
     if (foundIndex > -1) {
       existing[foundIndex].quantity = Number(existing[foundIndex].quantity || 1) + Number(quantity);
     } else {
       existing.push(cartItem);
     }
-    localStorage.setItem("krossford_cart", JSON.stringify(existing));
-    localStorage.setItem("cart", JSON.stringify(existing));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(existing);
     window.dispatchEvent(new Event("storage"));
     window.location.href = "/cart";
   };

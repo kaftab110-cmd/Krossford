@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { products, findProductBySlug, getCardSliderImages } from "@/lib/data/shop";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 // FEATURED = Hamara Starting Plan + 1 Hero Product - Hamesha Yehi Dikhega
 // SYNC FIX: Sirf slug likha hai, naam / price / image / badge sab lib/data/shop.ts se aayega.
@@ -54,7 +55,7 @@ export default function FeaturedProducts() {
   const handleAddToCart = (product: (typeof products)[number]) => {
     const slug = product.slug || String(product.id);
     const image = product.image;
-    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingCart = readCartItems<any>();
     const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
 
     if (existingIndex >= 0) {
@@ -75,8 +76,7 @@ export default function FeaturedProducts() {
       });
     }
 
-    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(existingCart);
     setAddedSlug(slug);
     setTimeout(() => setAddedSlug(null), 2000);
   };

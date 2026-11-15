@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { products, getForHerProducts } from "@/lib/data/shop";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 // FOR HER - FINAL - ONE TIME ALL FIXES
 // 1. ALAG PAGE - /for-her - Sirf forHer: true wale products - B2B / Shop se alag
@@ -22,7 +23,7 @@ function ForHerPageInner() {
   // ADD TO CART - For Her page me pehle tha hi nahi, is liye add kiya - warna customer ko product page pe jana padta tha
   const handleAddToCart = (product: any) => {
     const slug = product.slug || String(product.id);
-    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingCart = readCartItems<any>();
     const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
@@ -41,8 +42,7 @@ function ForHerPageInner() {
         uploadedFileName: "",
       });
     }
-    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(existingCart);
     setAddedSlug(slug);
     setTimeout(() => setAddedSlug(null), 2000);
   };

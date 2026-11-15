@@ -7,6 +7,7 @@ import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
 import { products, findProductBySlug } from "@/lib/data/shop";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 // HOME PAGE - FINAL - ONE TIME ALL FIXES
 // 1. Home Best Sellers uses up to 8 products flagged BEST SELLER.
@@ -48,7 +49,7 @@ export default function Home() {
   }, [hoverSlug, hoverImages.length]);
 
   const handleAddToCart = (p: (typeof TOP8)[number]) => {
-    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingCart = readCartItems<any>();
     const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "Single Piece");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
@@ -67,8 +68,7 @@ export default function Home() {
         uploadedFileName: "",
       });
     }
-    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(existingCart);
     setAddedSlug(p.slug);
     setTimeout(() => setAddedSlug(null), 2000);
   };

@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { products, CATEGORIES, getProductsByCategory } from "@/lib/data/shop";
+import { readCartItems, saveCart } from "@/lib/cart";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +36,7 @@ function ShopPageInner() {
   // ADD TO CART - Shop me pehle tha hi nahi, sirf View Designs tha - is liye add kiya
   const handleAddToCart = (product: any) => {
     const slug = product.slug || String(product.id);
-    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingCart = readCartItems<any>();
     const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
@@ -54,8 +55,7 @@ function ShopPageInner() {
         uploadedFileName: "",
       });
     }
-    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+    saveCart(existingCart);
     setAddedSlug(slug);
     setTimeout(() => setAddedSlug(null), 2000);
   };
