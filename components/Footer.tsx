@@ -1,5 +1,5 @@
 // Footer.tsx - FINAL - ONE TIME ALL FIXES - AUTO YEAR + ESTIMATED TOTAL
-// 1. Gemini wala 404 khatam - Purane Western icons HATA diye - Sirf 4 pills hain: VISA / MASTERCARD / WESTERN UNION / BANK TRANSFER - Koi missing file nahi dhoondhega
+// 1. 404 khatam - Purane icons HATA diye - Sirf 4 pills hain: 【entity-VISA¦canonical_name=VISA】 / 【entity-MASTERCARD¦canonical_name=MASTERCARD】 / 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 / BANK TRANSFER - Koi missing file nahi dhoondhega
 // 2. classname bug fix - Sab className hai, lowercase classname kahin nahi
 // 3. Font-size bug fix - Har jagah adhoora font class tha, usko text-xs kar diya - Font size ab sahi lagega
 // 4. Delivery simple rakha - Sirf Estimated Total: 12-17 Working Days likha, zyada detail nahi likhi - Jaisa user ne bola
@@ -11,13 +11,13 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-950 border-t border-zinc-800 text-zinc-400 text-xs w-full overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 pt-8 pb-8">
-        <div className="text-center tracking-[0.15em] sm:tracking-[0.25em] text-white font-bold mb-4 text-xs sm:text-xs">
+        <div className="text-center tracking-[0.15em] sm:tracking-[0.25em] text-white font-bold mb-4 text-xs sm:text-xs" style={{ fontFamily: "var(--font-brand)" }}>
           WE ACCEPT:
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-5 max-w-full sm:max-w-none mx-auto">
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">VISA</span>
-          <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">MASTERCARD</span>
+          <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">【entity-MASTERCARD¦canonical_name=MASTERCARD】</span>
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">WESTERN UNION</span>
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">BANK TRANSFER</span>
         </div>
@@ -31,7 +31,7 @@ export default function Footer() {
         </p>
 
         <p className="text-center text-xs leading-relaxed mt-2.5 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          Handcrafted To Order • Ships via DHL Express • Estimated Total:{" "}
+          Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Estimated Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • Ships from Pakistan
         </p>
 
@@ -41,7 +41,7 @@ export default function Footer() {
             href="https://www.dhl.com/global-en/home/tracking.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-amber-400 text-black font-bold text-xs px-6 py-2.5 rounded-full whitespace-nowrap hover:bg-amber-300 transition-colors"
+            className="bg-[#D4AF37] text-black font-bold text-xs px-6 py-2.5 rounded-full whitespace-nowrap hover:bg-[#E8C15A] transition-colors"
           >
             TRACK YOUR ORDER →
           </a>
@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         <p className="text-center text-xs leading-relaxed mt-4 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          © {currentYear} KROSSFORD ENTERPRISES. All Rights Reserved. | Retail + Wholesale Both Available
+          © {currentYear} <span style={{ fontFamily: "var(--font-brand)" }} className="font-bold text-white">KROSSFORD ENTERPRISES</span>. All Rights Reserved. | Retail + Wholesale Both Available
         </p>
       </div>
     </footer>
