@@ -6,7 +6,7 @@ import { Pool } from "pg";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const WHATSAPP_ENABLED = false;
+const WHATSAPP_ENABLED = true;
 
 type OrderEmailItem = {
   name: string;
