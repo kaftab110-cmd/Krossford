@@ -15,7 +15,7 @@ import { readCartItems, saveCart } from "@/lib/cart";
 // 3. Delivery lines DE-DUPLICATE ki - Pehle 4 jagah delivery thi (Hero + Info box 3 lines + Card) - Ab delivery ki DETAIL sirf 1 jagah: Info box me
 //    - Hero se "Total: 12-17" hataya - sirf Ships + Handcrafted + Secure rakha
 //    - Info box se "We will try our best..." wali duplicate aim line hatayi
-//    - Card se "Ships from Pakistan - 12-17 - 【entity-DHL¦canonical_name=DHL】" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
+//    - Card se "Ships from Pakistan - 12-17 - DHL" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
 // 4. Slider formula + Add to Cart same rakha
 
 const TOP8 = products.filter((p) => p.badge === "BEST SELLER").slice(0, 8).map((p) => ({
@@ -110,7 +110,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-6 pt-10 pb-2">
         <div className="border border-[#D4AF37]/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
-          <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL】</p>
+          <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted To Order • Ships via DHL</p>
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
           <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
         </div>

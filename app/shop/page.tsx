@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 // 3. Card se For Her label HATAYA - Shop me For Her items dikhenge par label nahi lagega - For Her ka apna alag page hai
 // 4. For Her button SIRF Shop pe - For Her page pe nahi (ye file Shop ki hai, is liye yahan hamesha dikhega)
 // 5. Banner line NAHI hai - koi banner nahi
-// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + 【entity-DHL¦canonical_name=DHL】
+// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + DHL
 // 7. Slider formula same (ProductCard wala) + Add to Cart + Search + Sort sab rakha hua hai
 // 8. ?category=For Her aaye to seedha /for-her pe redirect - Shop me For Her category nahi khulegi
 

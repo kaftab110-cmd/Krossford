@@ -13,7 +13,7 @@ const WU = "WESTERN " + "UNION";
 
 const contact = {
   email: "hello@krossford.com",
-  【entity-whatsapp¦canonical_name=WhatsApp】: "923030006759",
+  WhatsApp: "923030006759",
   whatsappDisplay: "+92303 0006759",
   phone: "+92303 0006759",
   location: "Gujrat, Punjab, Pakistan",

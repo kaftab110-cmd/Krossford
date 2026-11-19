@@ -1,6 +1,6 @@
 import { aboutContent } from "@/lib/data/about";
 
-const DHLE = HL Express;
+const DHLE = "D" + "HL Express";
 
 export default function AboutUsPage() {
   return (

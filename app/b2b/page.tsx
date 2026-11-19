@@ -103,7 +103,7 @@ export default function B2BPage() {
             Direct manufacturer sourcing. Request a tailored wholesale quotation.
           </p>
           <p className="text- text-[#D4AF37]/90 tracking-wide">
-            Sample Before Bulk • 50% Advance - 50% Before Dispatch • 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER / T/T
+            Sample Before Bulk • 50% Advance - 50% Before Dispatch • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
           </p>
           <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
             <p className="text- text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>

@@ -36,7 +36,7 @@ const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
   { id: WU, title: WU, badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
-  { id: 【entity-VISA¦canonical_name=VISA】 + " / " + MC, title: 【entity-VISA¦canonical_name=VISA】 + " / " + MC, badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
+  { id: VISA + " / " + MC, title: VISA + " / " + MC, badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
 const customMadeLabel = (t?: string) => {
