@@ -83,7 +83,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
-          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#D4AF37] uppercase text-center leading-none">
             KROSSFORD
           </p>
           <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-center">
@@ -94,17 +94,17 @@ export default function Home() {
             Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="/shop" className="bg-amber-400 text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-300">
+            <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-300">
               Shop Collection
             </a>
-            <a href="/b2b" className="border border-amber-400 text-amber-400 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-400 hover:text-black">
+            <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#D4AF37] hover:text-black">
               Retail + Wholesale
             </a>
             <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-amber-400">
               Request Sample
             </a>
           </div>
-          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center">Ships from Pakistan • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 

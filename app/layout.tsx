@@ -1,7 +1,15 @@
 import "./globals.css";
+import { Playfair_Display } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AIChatbot from "@/components/AIChatbot";
+
+const brandFont = Playfair_Display({
+  weight: ["500", "600", "700"],
+  display: "swap",
+  variable: "--font-brand",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   metadataBase: new URL("https://www.krossford.com"),
@@ -37,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="overflow-x-hidden max-w-full">
+    <html lang="en" className={`${brandFont.variable} overflow-x-hidden max-w-full`}>
       <body className="bg-black text-white min-h-screen overflow-x-hidden max-w-full antialiased font-mono flex flex-col justify-between selection:bg-amber-500 selection:text-black">
         <div>
           <Navbar />

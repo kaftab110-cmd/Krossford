@@ -74,7 +74,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
           <Logo className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0">
-            <span className="text-white font-extrabold uppercase tracking-wide text-lg sm:text-2xl md:text-3xl whitespace-nowrap leading-none">KROSSFORD</span>
+            <span className="text-[#D4AF37] uppercase text-lg sm:text-2xl md:text-3xl whitespace-nowrap leading-none" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.18em" }}>KROSSFORD</span>
           </div>
         </Link>
         <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-xs font-bold tracking-wider whitespace-nowrap">
@@ -105,7 +105,7 @@ export default function Navbar() {
             <div className="flex justify-between items-center border-b border-zinc-800 pb-4 mb-6">
               <div className="flex items-center gap-2 min-w-0">
                 <Logo className="w-8 h-8 shrink-0" />
-                <span className="text-white font-bold uppercase text-sm tracking-widest truncate">KROSSFORD</span>
+                <span className="text-[#D4AF37] uppercase text-sm truncate" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.18em" }}>KROSSFORD</span>
               </div>
               <button onClick={() => setOpen(false)} className="text-zinc-400 hover:text-white p-2 text-lg font-bold shrink-0" aria-label="Close Menu">X</button>
             </div>

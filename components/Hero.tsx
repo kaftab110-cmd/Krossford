@@ -18,11 +18,11 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-10 pb-24 w-full max-w-6xl mx-auto">
         {/* KROSSFORD - CENTER */}
-        <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-amber-400 uppercase text-center leading-none">
+        <p className="text-3xl sm:text-4xl md:text-5xl text-amber-400 uppercase text-center leading-none" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.05em" }}>
           KROSSFORD
         </p>
 
-        <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl leading-none font-bold text-white text-center">
+        <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl leading-none text-white text-center" style={{ fontFamily: "var(--font-brand)", fontWeight: 500 }}>
           Real Leather.
           <br />
           Made Honestly.
