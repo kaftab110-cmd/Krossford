@@ -27,9 +27,9 @@ const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 
 // Brand names split so chat does not re-tag them - JS joins them at runtime
 const WU = "Western " + "Union";
-const 【entity-VISA¦canonical_name=VISA】 = "V" + "ISA";
+const VISA = "V" + "ISA";
 const MC = "Master" + "card";
-const 【entity-DHL¦canonical_name=DHL】 = "D" + "HL";
+const DHL = "D" + "HL";
 const DHLE = "D" + "HL Express";
 
 const PAYMENTS = [

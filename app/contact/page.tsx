@@ -7,7 +7,7 @@ import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
 
 const WA = "Whats" + "App";
-const 【entity-VISA¦canonical_name=VISA】 = "VI" + "SA";
+const VISA = "VI" + "SA";
 const MC = "MASTER" + "CARD";
 const WU = "WESTERN " + "UNION";
 

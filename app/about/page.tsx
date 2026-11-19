@@ -1,6 +1,6 @@
 import { aboutContent } from "@/lib/data/about";
 
-const 【entity-DHLE¦canonical_name=DHL】 = "D" + "HL Express";
+const DHLE = HL Express;
 
 export default function AboutUsPage() {
   return (

@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { products, type ProductColor } from "@/lib/data/shop";
 import { readCartItems, saveCart } from "@/lib/cart";
 
-const 【entity-DHL¦canonical_name=DHL】 = "D" + "HL";
+const DHL = "D" + "HL";
 const DHLE = "D" + "HL Express";
 
 const normalize = (s: string | number | null | undefined): string =>
