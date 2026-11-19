@@ -93,21 +93,21 @@ export default function B2BPage() {
     <main className="bg-black text-white min-h-screen py-16 px-6 sm:px-12">
       <div className="max-w-5xl mx-auto space-y-10">
         <div className="text-center space-y-3 border-b border-zinc-800 pb-8">
-          <span className="text-[11px] tracking-[0.3em] uppercase text-amber-400 font-mono">
+          <span className="text- tracking-[0.3em] uppercase text-[#D4AF37] font-bold">
             Krossford Enterprises B2B Export Portal
           </span>
-          <h1 className="text-3xl sm:text-4xl font-serif tracking-[0.1em] uppercase">
+          <h1 className="text-3xl sm:text-4xl tracking-[0.1em] uppercase" style={{ fontFamily: "var(--font-brand)" }}>
             Wholesale &amp; Custom Production
           </h1>
           <p className="text-xs text-zinc-400 tracking-widest uppercase font-light max-w-xl mx-auto">
             Direct manufacturer sourcing. Request a tailored wholesale quotation.
           </p>
-          <p className="text-[11px] text-amber-400/90 tracking-wide">
-            Sample Before Bulk • 50% Advance - 50% Before Dispatch • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
+          <p className="text- text-[#D4AF37]/90 tracking-wide">
+            Sample Before Bulk • 50% Advance - 50% Before Dispatch • 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER / T/T
           </p>
           <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
-            <p className="text-[11px] text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
-            <a href="/shop" className="inline-block mt-2 bg-amber-400 text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded hover:bg-amber-300">
+            <p className="text- text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
+            <a href="/shop" className="inline-block mt-2 bg-[#D4AF37] text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded hover:bg-[#E8C15A]">
               Shop Retail - 1 Piece →
             </a>
           </div>
@@ -120,13 +120,13 @@ export default function B2BPage() {
                 <img src={p.img} alt={p.name} className="w-full h-full object-cover" />
               </div>
               <div className="p-5 space-y-2">
-                <span className="text-[10px] tracking-[0.2em] uppercase text-amber-400 font-semibold">{p.tag}</span>
-                <h3 className="text-sm font-serif uppercase tracking-wider">{p.name}</h3>
+                <span className="text- tracking-[0.2em] uppercase text-[#D4AF37] font-semibold">{p.tag}</span>
+                <h3 className="text-sm uppercase tracking-wider" style={{ fontFamily: "var(--font-brand)" }}>{p.name}</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">{p.desc}</p>
-                <p className="text-[11px] text-white font-semibold tracking-wider">{p.moq}</p>
+                <p className="text- text-white font-semibold tracking-wider">{p.moq}</p>
                 <button
                   onClick={() => handleGetQuote(p)}
-                  className="text-[11px] uppercase tracking-[0.2em] text-amber-400 border border-amber-400/40 rounded px-3 py-2 hover:bg-amber-400 hover:text-black transition-colors"
+                  className="text- uppercase tracking-[0.2em] text-[#D4AF37] border border-[#D4AF37]/40 rounded px-3 py-2 hover:bg-[#D4AF37] hover:text-black transition-colors"
                 >
                   Get Quote For This →
                 </button>
@@ -136,18 +136,18 @@ export default function B2BPage() {
         </div>
 
         {submitted ? (
-          <div className="bg-zinc-950 border border-amber-400/40 rounded-xl p-10 text-center space-y-6">
-            <div className="w-12 h-12 bg-amber-400/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl">✓</div>
+          <div className="bg-zinc-950 border border-[#D4AF37]/40 rounded-xl p-10 text-center space-y-6">
+            <div className="w-12 h-12 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full flex items-center justify-center mx-auto text-xl">✓</div>
             <div className="space-y-2">
-              <h3 className="text-lg font-serif uppercase tracking-widest text-white">Request Received</h3>
+              <h3 className="text-lg uppercase tracking-widest text-white" style={{ fontFamily: "var(--font-brand)" }}>Request Received</h3>
               <p className="text-xs text-zinc-300 font-light tracking-wide max-w-md mx-auto leading-relaxed">
                 Your inquiry has been opened in WhatsApp. Please press Send there. Our team will share quote in 24 hours on WhatsApp/Email. Sample available before bulk order.
               </p>
-              <p className="text-[11px] text-amber-400">Company: {formData.companyName} • Product: {formData.productType} • Qty: {formData.quantity}</p>
+              <p className="text- text-[#D4AF37]">Company: {formData.companyName} • Product: {formData.productType} • Qty: {formData.quantity}</p>
             </div>
             <button
               onClick={handleReset}
-              className="bg-amber-400 text-black text-xs uppercase tracking-[0.2em] font-semibold px-6 py-3 hover:bg-amber-300 transition-colors"
+              className="bg-[#D4AF37] text-black text-xs uppercase tracking-[0.2em] font-semibold px-6 py-3 hover:bg-[#E8C15A] transition-colors"
             >
               Submit Another Inquiry
             </button>
@@ -156,12 +156,12 @@ export default function B2BPage() {
           <form ref={formRef} onSubmit={handleSubmit} className="bg-zinc-950 border border-zinc-800 rounded-xl p-8 space-y-6 scroll-mt-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Company Name *</label>
-                <input type="text" required placeholder="Your Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none" />
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">Company Name *</label>
+                <input type="text" required placeholder="Your Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Business Email *</label>
-                <input type="email" required placeholder="you@company.com" value={formData.businessEmail} onChange={(e) => setFormData({ ...formData, businessEmail: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none" />
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">Business Email *</label>
+                <input type="email" required placeholder="you@company.com" value={formData.businessEmail} onChange={(e) => setFormData({ ...formData, businessEmail: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
               </div>
             </div>
 
@@ -171,8 +171,8 @@ export default function B2BPage() {
                 <PhoneInput country={formData.country} value={formData.phone} onChange={(v) => setFormData({ ...formData, phone: v })} label="Phone / WhatsApp" placeholder="3001234567" required={false} />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Country / Target Market</label>
-                <select value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none">
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">Country / Target Market</label>
+                <select value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
                   {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
                 </select>
               </div>
@@ -184,8 +184,8 @@ export default function B2BPage() {
                 <PhoneInput country={formData.country} value={formData.altPhone} onChange={(v) => setFormData({ ...formData, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Estimated Quantity</label>
-                <select value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none">
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">Estimated Quantity</label>
+                <select value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
                   <option value="25">25 Units - Biker Suit</option>
                   <option value="50">50 Units</option>
                   <option value="100">100 Units</option>
@@ -197,8 +197,8 @@ export default function B2BPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Product Type</label>
-                <select value={formData.productType} onChange={(e) => setFormData({ ...formData, productType: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-amber-400 focus:outline-none">
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">Product Type</label>
+                <select value={formData.productType} onChange={(e) => setFormData({ ...formData, productType: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
                   <option value="Leather Jacket">Leather Jacket</option>
                   <option value="Biker Suit">Biker Suit - 2 Piece</option>
                   <option value="Belt">Belt</option>
@@ -208,14 +208,14 @@ export default function B2BPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
+                <label className="text- uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
                 <div className="flex items-center gap-6 pt-3 text-xs">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
+                    <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
                     <span>Yes</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-amber-400" />
+                    <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
                     <span>No</span>
                   </label>
                 </div>
@@ -223,20 +223,20 @@ export default function B2BPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Brand Logo Upload (Optional)</label>
-              <input type="file" accept="image/*" onChange={(e) => setLogoFile(e.target.files?.[0] || null)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-2.5 text-xs text-zinc-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-[11px] file:font-semibold file:bg-amber-400 file:text-black hover:file:bg-amber-300" />
+              <label className="text- uppercase tracking-widest text-zinc-300 font-light">Brand Logo Upload (Optional)</label>
+              <input type="file" accept="image/*" onChange={(e) => setLogoFile(e.target.files?.[0] || null)} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-2.5 text-xs text-zinc-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text- file:font-semibold file:bg-[#D4AF37] file:text-black hover:file:bg-[#E8C15A]" />
               {logoFile && <p className="text-xs text-green-400">✅ {logoFile.name} - This filename will be included in the WhatsApp inquiry.</p>}
             </div>
 
             <div className="space-y-2">
-              <label className="text-[11px] uppercase tracking-widest text-zinc-300 font-light">Project Specifications &amp; Message</label>
-              <textarea rows={4} placeholder="Mention sizing breakdown, custom leather finish, or target delivery timeline..." value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded p-4 text-xs text-white focus:border-amber-400 focus:outline-none" />
+              <label className="text- uppercase tracking-widest text-zinc-300 font-light">Project Specifications &amp; Message</label>
+              <textarea rows={4} placeholder="Mention sizing breakdown, custom leather finish, or target delivery timeline..." value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded p-4 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
             </div>
 
-            <button type="submit" className="w-full bg-amber-400 text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-amber-300 transition-colors shadow-md">
+            <button type="submit" className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-[#E8C15A] transition-colors shadow-md">
               Submit Wholesale Inquiry - Send On WhatsApp →
             </button>
-            <p className="text-center text-[11px] text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
+            <p className="text-center text- text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
           </form>
         )}
       </div>

@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 // 3. Card se For Her label HATAYA - Shop me For Her items dikhenge par label nahi lagega - For Her ka apna alag page hai
 // 4. For Her button SIRF Shop pe - For Her page pe nahi (ye file Shop ki hai, is liye yahan hamesha dikhega)
 // 5. Banner line NAHI hai - koi banner nahi
-// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + DHL
+// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + 【entity-DHL¦canonical_name=DHL】
 // 7. Slider formula same (ProductCard wala) + Add to Cart + Search + Sort sab rakha hua hai
 // 8. ?category=For Her aaye to seedha /for-her pe redirect - Shop me For Her category nahi khulegi
 
@@ -120,7 +120,7 @@ function ShopPageInner() {
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
-        <h1 className="text-3xl font-bold uppercase tracking-widest">Shop Collection</h1>
+        <h1 className="text-3xl font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Shop Collection</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • Handcrafted • Real Leather</p>
       </section>
 
@@ -134,7 +134,7 @@ function ShopPageInner() {
           const count = getProductsByCategory(cat).length;
           return (
             <button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }}
-              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400 font-black shadow-lg" : "bg-zinc-950 text-zinc-100 border-zinc-700 hover:border-amber-400"}`}>
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-[#D4AF37] text-black border-[#D4AF37] font-black shadow-lg" : "bg-zinc-950 text-zinc-100 border-zinc-700 hover:border-[#D4AF37]"}`}>
               {cat} ({count})
             </button>
           );
@@ -148,14 +148,14 @@ function ShopPageInner() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search products - wallet, tote, crossbody..."
-          className="flex-1 bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500"
+          className="flex-1 bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500"
         />
         <label className="flex items-center gap-2 text-xs text-zinc-400 uppercase tracking-widest">
           Sort:
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"
+            className="bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"
           >
             <option value="featured">Featured</option>
             <option value="price-low">Price: Low to High</option>
@@ -175,7 +175,7 @@ function ShopPageInner() {
           const curIdx = slideIndex[p.id] ?? 0;
           const currentImage = hasSlider ? cardImages[curIdx % cardImages.length] : p.image;
           return (
-          <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-amber-400">
+          <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-[#D4AF37]">
             <Link href={`/product/${p.slug}`}>
               <div
                 className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer"
@@ -191,13 +191,11 @@ function ShopPageInner() {
                 }}
               >
                 <img src={currentImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                {p.badge && <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
+                {p.badge && <span className="absolute top-3 left-3 bg-[#D4AF37] text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
                 <span className="absolute bottom-3 left-3 bg-black/80 text-white text-xs px-2 py-1">Click To View Designs</span>
-                {/* COUNTER - Sirf jab 1 se zyada photo ho */}
                 {hasSlider && (
                   <span className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">{(curIdx % cardImages.length) + 1} / {cardImages.length}</span>
                 )}
-                {/* ARROWS - Mobile pe hamesha visible, Desktop pe hover pe */}
                 {hasSlider && (
                   <>
                     <button
@@ -214,7 +212,6 @@ function ShopPageInner() {
                     >›</button>
                   </>
                 )}
-                {/* DOTS - Sirf jab 1 se zyada photo ho */}
                 {hasSlider && (
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
                     {cardImages.map((_, i) => (
@@ -223,7 +220,7 @@ function ShopPageInner() {
                         type="button"
                         aria-label={`Go to photo ${i + 1}`}
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(p.id, i); }}
-                        className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-amber-400" : "w-2 h-2 bg-white/70"}`}
+                        className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-[#D4AF37]" : "w-2 h-2 bg-white/70"}`}
                       />
                     ))}
                   </div>
@@ -231,21 +228,21 @@ function ShopPageInner() {
               </div>
             </Link>
             <div className="p-5 space-y-3">
-              <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category}</span>
-              <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{p.name}</h3></Link>
+              <span className="text-xs text-[#D4AF37] uppercase tracking-widest">{p.category}</span>
+              <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-[#D4AF37] cursor-pointer">{p.name}</h3></Link>
               <p className="text-xs text-zinc-400 line-clamp-2">{p.description}</p>
-              <p className="text-sm text-amber-400 font-mono">${p.price}</p>
+              <p className="text-sm text-[#D4AF37] font-bold">${p.price}</p>
               <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Estimated Total: 12-17 Working Days • DHL Express</p>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleAddToCart(p)}
-                  className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                  className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-[#D4AF37] hover:bg-[#E8C15A] text-black"}`}
                 >
                   {addedSlug === (p.slug || String(p.id)) ? "✓ Added!" : "Add to Cart →"}
                 </button>
                 <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
               </div>
-              <Link href={`/product/${p.slug}`} className="block text-center text-[11px] text-zinc-400 hover:text-amber-400 uppercase tracking-widest">View Designs →</Link>
+              <Link href={`/product/${p.slug}`} className="block text-center text- text-zinc-400 hover:text-[#D4AF37] uppercase tracking-widest">View Designs →</Link>
             </div>
           </div>
           );
@@ -258,7 +255,7 @@ function ShopPageInner() {
 
 export default function ShopPage() {
   return (
-    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3"><p className="text-3xl font-bold uppercase tracking-widest">Shop Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase">Loading products - Handcrafted • Real Leather</p></main>}>
+    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3"><p className="text-3xl font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Shop Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase">Loading products - Handcrafted • Real Leather</p></main>}>
       <ShopPageInner />
     </Suspense>
   );

@@ -7,13 +7,13 @@ import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
 
 const WA = "Whats" + "App";
-const VISA = "VI" + "SA";
+const 【entity-VISA¦canonical_name=VISA】 = "VI" + "SA";
 const MC = "MASTER" + "CARD";
 const WU = "WESTERN " + "UNION";
 
 const contact = {
   email: "hello@krossford.com",
-  whatsapp: "923030006759",
+  【entity-whatsapp¦canonical_name=WhatsApp】: "923030006759",
   whatsappDisplay: "+92303 0006759",
   phone: "+92303 0006759",
   location: "Gujrat, Punjab, Pakistan",
@@ -101,47 +101,47 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6 md:p-12">
+    <div className="min-h-screen bg-zinc-950 text-white p-6 md:p-12">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400">Contact Us</h1>
+          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#D4AF37]" style={{ fontFamily: "var(--font-brand)" }}>Contact Us</h1>
           <p className="text-xs text-zinc-400 uppercase tracking-widest">Wholesale / Bulk Enquiries Only</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
-          <Link href="/b2b" className="border border-amber-400/50 rounded-lg p-5 bg-amber-400/5 hover:border-amber-400 transition-colors text-center">
-            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want Bulk / Wholesale</p>
+          <Link href="/b2b" className="border border-[#D4AF37]/50 rounded-lg p-5 bg-[#D4AF37]/5 hover:border-[#D4AF37] transition-colors text-center">
+            <p className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest">I Want Bulk / Wholesale</p>
             <p className="text-xs text-zinc-400 mt-1">Jacket 50+ • Biker Suit 25+ • Small Items 100+</p>
             <p className="text-xs font-bold mt-2 underline">Go To B2B Form →</p>
           </Link>
-          <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-amber-400 transition-colors text-center">
-            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest">I Want To Buy 1 Piece</p>
+          <Link href="/shop" className="border border-zinc-800 rounded-lg p-5 bg-zinc-900 hover:border-[#D4AF37] transition-colors text-center">
+            <p className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest">I Want To Buy 1 Piece</p>
             <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Handcrafted • Honest Price</p>
             <p className="text-xs font-bold mt-2 underline">Go To Shop →</p>
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-6">
           <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-6 rounded space-y-4">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400">Send Enquiry</h2>
-            <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
-            <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
-            <input required type="email" placeholder="Corporate Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
-            <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-[#D4AF37]">Send Enquiry</h2>
+            <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
+            <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
+            <input required type="email" placeholder="Corporate Email *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
+            <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
               {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
             <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label="Mobile / WhatsApp" placeholder="3001234567" required={false} />
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
             <div className="grid grid-cols-2 gap-3">
-              <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
+              <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
                 <option>Sample Piece - B2B</option>
                 <option>Bulk Order - B2B</option>
                 <option>Sample Request</option>
               </select>
-              <input placeholder="Quantity? e.g. 50" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
+              <input placeholder="Quantity? e.g. 50" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
             </div>
-            <textarea required rows={4} placeholder="Tell us about your bulk order or sample request - quantity, leather type..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
+            <textarea required rows={4} placeholder="Tell us about your bulk order or sample request - quantity, leather type..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
             <div>
               <label className="block text-xs tracking-widest text-zinc-400 uppercase font-bold">Upload Your Design / Image (Optional - Max 5)</label>
-              <label className="mt-2 w-full border-2 border-dashed border-zinc-700 rounded px-4 py-5 text-center block cursor-pointer hover:border-amber-400 bg-zinc-950">
+              <label className="mt-2 w-full border-2 border-dashed border-zinc-700 rounded px-4 py-5 text-center block cursor-pointer hover:border-[#D4AF37] bg-zinc-950">
                 <span className="text-sm text-zinc-300">Click to Upload Image / Design (JPG / PNG)</span>
                 <span className="block text-xs text-zinc-500 mt-1">Add your logo, design, or reference photo here.</span>
                 <input type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
@@ -158,7 +158,7 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-amber-400 mt-2">⚠ WhatsApp / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
+                  <p className="text-xs text-[#D4AF37] mt-2">⚠ WhatsApp / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
                 </div>
               )}
             </div>
@@ -169,8 +169,8 @@ export default function ContactPage() {
             {sent && <p className="text-xs text-green-400 text-center">Enquiry sent to our team. Thank you!</p>}
           </form>
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-white mb-4">Direct Touchpoints</h2>
-            <a href={`mailto:${contact.email}`} className="block rounded-md border border-amber-400/20 px-5 py-4 text-amber-400 transition hover:border-amber-400/60">
+            <h2 className="text-xl font-semibold text-white mb-4" style={{ fontFamily: "var(--font-brand)" }}>Direct Touchpoints</h2>
+            <a href={`mailto:${contact.email}`} className="block rounded-md border border-[#D4AF37]/20 px-5 py-4 text-[#D4AF37] transition hover:border-[#D4AF37]/60">
               <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
               <span className="text-sm font-bold">{contact.email}</span>
             </a>

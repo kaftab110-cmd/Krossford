@@ -96,7 +96,7 @@ function ForHerPageInner() {
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
-        <h1 className="text-3xl font-bold uppercase tracking-widest">For Her Collection</h1>
+        <h1 className="text-3xl font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>For Her Collection</h1>
         <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • Handcrafted • Real Leather</p>
       </section>
 
@@ -106,14 +106,14 @@ function ForHerPageInner() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search For Her - wallet, tote, crossbody..."
-          className="flex-1 bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500"
+          className="flex-1 bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500"
         />
         <label className="flex items-center gap-2 text-xs text-zinc-400 uppercase tracking-widest">
           Sort:
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"
+            className="bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"
           >
             <option value="featured">Featured</option>
             <option value="price-low">Price: Low to High</option>
@@ -133,7 +133,7 @@ function ForHerPageInner() {
             const curIdx = slideIndex[p.id] ?? 0;
             const currentImage = hasSlider ? cardImages[curIdx % cardImages.length] : p.image;
             return (
-              <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-amber-400">
+              <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-[#D4AF37]">
                 <Link href={`/product/${p.slug}`}>
                   <div
                     className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer"
@@ -149,7 +149,7 @@ function ForHerPageInner() {
                     }}
                   >
                     <img src={currentImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                    {p.badge && <span className="absolute top-3 left-3 bg-amber-400 text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
+                    {p.badge && <span className="absolute top-3 left-3 bg-[#D4AF37] text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
                     <span className="absolute top-3 right-3 bg-pink-500 text-white text-xs font-bold px-2 py-1 uppercase rounded">For Her</span>
                     <span className="absolute bottom-3 left-3 bg-black/80 text-white text-xs px-2 py-1">Click To View Designs</span>
                     {hasSlider && (
@@ -179,7 +179,7 @@ function ForHerPageInner() {
                             type="button"
                             aria-label={`Go to photo ${i + 1}`}
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(p.id, i); }}
-                            className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-amber-400" : "w-2 h-2 bg-white/70"}`}
+                            className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-[#D4AF37]" : "w-2 h-2 bg-white/70"}`}
                           />
                         ))}
                       </div>
@@ -187,21 +187,21 @@ function ForHerPageInner() {
                   </div>
                 </Link>
                 <div className="p-5 space-y-3">
-                  <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category}</span>
-                  <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{p.name}</h3></Link>
+                  <span className="text-xs text-[#D4AF37] uppercase tracking-widest">{p.category}</span>
+                  <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-[#D4AF37] cursor-pointer">{p.name}</h3></Link>
                   <p className="text-xs text-zinc-400 line-clamp-2">{p.description}</p>
-                  <p className="text-sm text-amber-400 font-mono">${p.price}</p>
+                  <p className="text-sm text-[#D4AF37] font-bold">${p.price}</p>
                   <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Estimated Total: 12-17 Working Days • DHL Express</p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleAddToCart(p)}
-                      className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                      className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-[#D4AF37] hover:bg-[#E8C15A] text-black"}`}
                     >
                       {addedSlug === (p.slug || String(p.id)) ? "✓ Added!" : "Add to Cart →"}
                     </button>
                     <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
                   </div>
-                  <Link href={`/product/${p.slug}`} className="block text-center text-[11px] text-zinc-400 hover:text-amber-400 uppercase tracking-widest">View Designs →</Link>
+                  <Link href={`/product/${p.slug}`} className="block text-center text- text-zinc-400 hover:text-[#D4AF37] uppercase tracking-widest">View Designs →</Link>
                 </div>
               </div>
             );
@@ -214,7 +214,7 @@ function ForHerPageInner() {
 
 export default function ForHerPage() {
   return (
-    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3"><p className="text-3xl font-bold uppercase tracking-widest">For Her Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase">Loading products - Handcrafted • Real Leather</p></main>}>
+    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3"><p className="text-3xl font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>For Her Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase">Loading products - Handcrafted • Real Leather</p></main>}>
       <ForHerPageInner />
     </Suspense>
   );

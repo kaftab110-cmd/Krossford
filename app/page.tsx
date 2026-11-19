@@ -15,7 +15,7 @@ import { readCartItems, saveCart } from "@/lib/cart";
 // 3. Delivery lines DE-DUPLICATE ki - Pehle 4 jagah delivery thi (Hero + Info box 3 lines + Card) - Ab delivery ki DETAIL sirf 1 jagah: Info box me
 //    - Hero se "Total: 12-17" hataya - sirf Ships + Handcrafted + Secure rakha
 //    - Info box se "We will try our best..." wali duplicate aim line hatayi
-//    - Card se "Ships from Pakistan - 12-17 - DHL" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
+//    - Card se "Ships from Pakistan - 12-17 - 【entity-DHL¦canonical_name=DHL】" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
 // 4. Slider formula + Add to Cart same rakha
 
 const TOP8 = products.filter((p) => p.badge === "BEST SELLER").slice(0, 8).map((p) => ({
@@ -83,10 +83,10 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
-          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#D4AF37] uppercase text-center leading-none">
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#D4AF37] uppercase text-center leading-none" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
-          <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-center">
+          <h1 className="mt-6 text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-center" style={{ fontFamily: "var(--font-brand)" }}>
             Real Leather.<br />Made Honestly.
           </h1>
           <p className="mt-6 text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed text-center">
@@ -94,13 +94,13 @@ export default function Home() {
             Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-amber-300">
+            <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A]">
               Shop Collection
             </a>
             <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#D4AF37] hover:text-black">
               Retail + Wholesale
             </a>
-            <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-amber-400">
+            <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37]">
               Request Sample
             </a>
           </div>
@@ -109,8 +109,8 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pt-10 pb-2">
-        <div className="border border-amber-400/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
-          <p className="text-sm font-bold text-amber-400 uppercase tracking-widest">Handcrafted To Order • Ships via DHL Express</p>
+        <div className="border border-[#D4AF37]/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
+          <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL】</p>
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
           <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
         </div>
@@ -118,7 +118,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-6 py-10">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-serif uppercase tracking-widest">Start With Our Best Sellers</h2>
+          <h2 className="text-xl uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Start With Our Best Sellers</h2>
           <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Honest Price • Handcrafted • Built To Last</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -127,7 +127,7 @@ export default function Home() {
             const isHovering = hoverSlug === p.slug;
             const currentImage = isHovering && cardImages.length > 1 ? cardImages[hoverIndex % cardImages.length] : p.image;
             return (
-            <div key={p.slug} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-amber-400 transition-colors overflow-hidden group">
+            <div key={p.slug} className="border border-zinc-800 rounded-lg p-5 bg-zinc-950 hover:border-[#D4AF37] transition-colors overflow-hidden group">
               <Link href={`/product/${p.slug}`} className="block cursor-pointer">
                 <div
                   className="relative w-full h-48 rounded-md mb-4 overflow-hidden group/slider"
@@ -150,16 +150,16 @@ export default function Home() {
                       <button
                         aria-label="Previous Image"
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length); }}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
                       >‹</button>
                       <button
                         aria-label="Next Image"
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev + 1) % cardImages.length); }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-amber-400 hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
                       >›</button>
                       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                         {cardImages.map((_, i) => (
-                          <button key={i} aria-label={`Go to image ${i + 1}`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex(i); }} className={`h-2 rounded-full cursor-pointer transition-all ${i === (hoverIndex % cardImages.length) ? "bg-amber-400 w-4" : "bg-white/60 w-2"}`} />
+                          <button key={i} aria-label={`Go to image ${i + 1}`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex(i); }} className={`h-2 rounded-full cursor-pointer transition-all ${i === (hoverIndex % cardImages.length) ? "bg-[#D4AF37] w-4" : "bg-white/60 w-2"}`} />
                         ))}
                       </div>
                       <span className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">{(hoverIndex % cardImages.length) + 1} / {cardImages.length}</span>
@@ -169,22 +169,22 @@ export default function Home() {
               </Link>
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <span className="text-xs tracking-widest uppercase text-amber-400 font-bold">{p.tag}</span>
+                  <span className="text-xs tracking-widest uppercase text-[#D4AF37] font-bold">{p.tag}</span>
                   <Link href={`/product/${p.slug}`}>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-amber-400 cursor-pointer">{p.name}</h3>
+                    <h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-[#D4AF37] cursor-pointer">{p.name}</h3>
                   </Link>
                   <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Custom Design As Per Customer Requirement</p>
                 </div>
-                <p className="text-lg text-amber-400 font-bold shrink-0">${p.price}</p>
+                <p className="text-lg text-[#D4AF37] font-bold shrink-0">${p.price}</p>
               </div>
               <div className="flex gap-2 mt-4">
                 <button
                   onClick={() => handleAddToCart(p)}
-                  className={`flex-1 text-center text-xs font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-amber-400 text-black hover:bg-amber-300"}`}
+                  className={`flex-1 text-center text-xs font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-[#D4AF37] text-black hover:bg-[#E8C15A]"}`}
                 >
                   {addedSlug === p.slug ? "✓ Added!" : "Add to Cart →"}
                 </button>
-                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-xs uppercase tracking-widest py-2.5 rounded hover:border-amber-400 hover:text-amber-400">
+                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-xs uppercase tracking-widest py-2.5 rounded hover:border-[#D4AF37] hover:text-[#D4AF37]">
                   View Details
                 </Link>
               </div>
@@ -193,7 +193,7 @@ export default function Home() {
           })}
         </div>
         <div className="text-center mt-8">
-          <Link href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded hover:bg-amber-300">View All Products →</Link>
+          <Link href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded hover:bg-[#E8C15A]">View All Products →</Link>
         </div>
       </section>
 
@@ -208,26 +208,26 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-amber-400 font-bold">Sample Before Bulk</p>
+            <p className="text-[#D4AF37] font-bold">Sample Before Bulk</p>
             <p className="text-zinc-400 text-xs mt-2">Order a sample first, then decide for bulk.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-amber-400 font-bold">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)</p>
+            <p className="text-[#D4AF37] font-bold">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)</p>
             <p className="text-zinc-400 text-xs mt-2">Hide type is confirmed in writing before production.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-amber-400 font-bold">Direct From Maker</p>
+            <p className="text-[#D4AF37] font-bold">Direct From Maker</p>
             <p className="text-zinc-400 text-xs mt-2">Email us at hello@krossford.com</p>
           </div>
         </div>
-        <div className="mt-6 border border-amber-400/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
-          <p className="text-sm font-serif uppercase tracking-widest">Retail + Wholesale Both Available</p>
+        <div className="mt-6 border border-[#D4AF37]/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
+          <p className="text-sm uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Retail + Wholesale Both Available</p>
           <p className="text-xs text-zinc-400">Retail: 1 Piece - For Customers - Shop Directly. Wholesale: 50+ Units - For Buyers - Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production.</p>
           <div className="flex flex-wrap justify-center gap-3 pt-1">
-            <a href="/shop" className="inline-block bg-amber-400 text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-amber-300">
+            <a href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#E8C15A]">
               Shop Retail - 1 Piece
             </a>
-            <a href="/b2b" className="inline-block border border-amber-400 text-amber-400 text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-amber-400 hover:text-black">
+            <a href="/b2b" className="inline-block border border-[#D4AF37] text-[#D4AF37] text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#D4AF37] hover:text-black">
               Get Wholesale Quote →
             </a>
           </div>
