@@ -2,57 +2,24 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect } from "react";
 
-function AdminCustomersCRMInner() {
-  const [auth, setAuth] = useState(false);
-  const [pass, setPass] = useState("");
+export default function AdminCustomersCRM() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    const saved = typeof window !== "undefined" ? localStorage.getItem("krossford_admin_pass") || "krossford2026" : "krossford2026";
-    if (pass === saved) {
-      setAuth(true);
-      fetchCustomers();
-    } else {
-      alert("Invalid Security Password!");
-    }
-  };
-
-  const fetchCustomers = async () => {
+  useEffect(() => {
     const mockData = [
       { id: 1, name: "Kashif Aftab", email: "kaftab110@gmail.com", whatsapp: "+923001234567", total_orders: 3, total_quantity: 550, lead_status: "VIP", priority: "HIGH PRIORITY", country: "Australia" },
       { id: 2, name: "Global Buyer", email: "newcustomer@gmail.com", whatsapp: "+14155552671", total_orders: 1, total_quantity: 50, lead_status: "New", priority: "Normal", country: "Germany" }
     ];
-    try {
-      const res = await fetch("/api/lead", { method: "GET" });
-      const data = await res.json().catch(() => null);
-      if (Array.isArray(data) && data.length > 0) {
-        setCustomers(data);
-        return;
-      }
-      if (data?.leads && Array.isArray(data.leads) && data.leads.length > 0) {
-        setCustomers(data.leads);
-        return;
-      }
-    } catch {}
-    setCustomers(mockData);
-  };
-
-  if (!auth) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">
-        <form onSubmit={handleLogin} className="bg-zinc-900 p-8 border border-zinc-800 rounded-lg space-y-4 w-80">
-          <h2 className="text-amber-400 font-bold uppercase text-center">KROSSFORD CRM ACCESS</h2>
-          <input type="password" placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
-          <button type="submit" className="w-full bg-amber-400 text-black py-2 rounded font-bold text-xs uppercase">Unlock Dashboard</button>
-        </form>
-      </div>
-    );
-  }
+    fetch("/api/lead").then(r => r.json()).then((data: any) => {
+      if (Array.isArray(data) && data.length > 0) setCustomers(data);
+      else if (data?.leads && data.leads.length > 0) setCustomers(data.leads);
+      else setCustomers(mockData);
+    }).catch(() => setCustomers(mockData));
+  }, []);
 
   const filtered = customers.filter(c => {
     const s = search.toLowerCase();
@@ -123,13 +90,5 @@ function AdminCustomersCRMInner() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function AdminCustomersCRM() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-black text-white flex items-center justify-center font-mono text-xs">Loading CRM...</div>}>
-      <AdminCustomersCRMInner />
-    </Suspense>
   );
 }
