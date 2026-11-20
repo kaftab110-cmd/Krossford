@@ -181,7 +181,7 @@ async function sendWhatsAppNotification(
     `Total: ${total}`,
   ].join("\n");
 
-  const response = await fetch(`https://graph.facebook.com/v27.0/${phoneNumberId}/messages`, {
+  const response = await fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -189,16 +189,22 @@ async function sendWhatsAppNotification(
     },
     body: JSON.stringify({
       messaging_product: "whatsapp",
-      recipient_type: "individual",
       to: ownerNumber,
       type: "text",
       text: { body: whatsappMessage },
     }),
-    signal: AbortSignal.timeout(10000),
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!response.ok) {
-    throw new Error(`WhatsApp API returned status ${response.status}.`);
+    let detail = "";
+    try {
+      detail = await response.text();
+    } catch {
+      detail = "No response body from WhatsApp API.";
+    }
+    // Token kabhi print nahi karna — sirf status aur Meta ka error
+    throw new Error(`WhatsApp API returned status ${response.status}. Detail: ${detail.slice(0, 500)}`);
   }
 }
 
@@ -363,7 +369,7 @@ export async function POST(req: Request) {
             totalText
           ).then(
             () => ({ status: "fulfilled" as const }),
-            () => ({ status: "rejected" as const })
+            (error) => ({ status: "rejected" as const, reason: error })
           )
         : Promise.resolve({ status: "skipped" as const }),
     ]);
@@ -371,18 +377,20 @@ export async function POST(req: Request) {
     const [primaryResult, backupResult] = ownerEmailResults;
 
     if (whatsappResult.status === "rejected") {
-      console.error("WhatsApp order notification failed.");
+      console.error("WhatsApp order notification failed.", whatsappResult.reason instanceof Error ? whatsappResult.reason.message : whatsappResult.reason);
+    } else if (whatsappResult.status === "fulfilled") {
+      console.log("WhatsApp order notification sent.");
     }
 
-    const emailFailed = primaryResult?.status === "rejected" ||
-      backupResult?.status === "rejected";
-    if (emailFailed) {
-      if (primaryResult?.status === "rejected") {
-        console.error("Primary order notification email failed.");
-      }
-      if (backupResult?.status === "rejected") {
-        console.error("Backup order notification email failed.");
-      }
+    // FIX: Sirf tab fail karo jab DONO emails fail hon — ek fail hone se order fail nahi hoga
+    const bothEmailsFailed = primaryResult?.status === "rejected" && backupResult?.status === "rejected";
+    if (primaryResult?.status === "rejected") {
+      console.error("Primary order notification email failed.", primaryResult.reason instanceof Error ? primaryResult.reason.message : primaryResult.reason);
+    }
+    if (backupResult?.status === "rejected") {
+      console.error("Backup order notification email failed.", backupResult.reason instanceof Error ? backupResult.reason.message : backupResult.reason);
+    }
+    if (bothEmailsFailed) {
       return NextResponse.json({ error: "The enquiry could not be sent. Please try again." }, { status: 502 });
     }
 
@@ -399,9 +407,9 @@ export async function POST(req: Request) {
             <h3>Order details</h3>${renderOrderItemsHtml(orderItems || [])}
             <p>KROSSFORD team aap se order details ke hawale se rabta karegi.</p>`,
         });
-      } catch {
-        console.error("Customer confirmation email failed.");
-        return NextResponse.json({ error: "The enquiry could not be sent. Please try again." }, { status: 502 });
+      } catch (error) {
+        // Customer confirmation fail hone se order fail nahi hoga — sirf log hoga
+        console.error("Customer confirmation email failed.", error instanceof Error ? error.message : error);
       }
     }
 
