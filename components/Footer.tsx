@@ -16,7 +16,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-5 max-w-full sm:max-w-none mx-auto">
-          <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">VISA</span>
+          <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">【entity-VISA¦canonical_name=VISA】</span>
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">【entity-MASTERCARD¦canonical_name=MASTERCARD】</span>
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">WESTERN UNION</span>
           <span className="bg-white text-black px-3 sm:px-4 py-2 rounded-full font-bold text-xs sm:text-xs whitespace-nowrap">BANK TRANSFER</span>
@@ -31,11 +31,11 @@ export default function Footer() {
         </p>
 
         <p className="text-center text-xs leading-relaxed mt-2.5 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          Handcrafted To Order • Ships via 【entity-DHL Express¦canonical_name=DHL Express】 • Estimated Total:{" "}
+          Handcrafted To Order • Ships via DHL Express • Estimated Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • Ships from Pakistan
         </p>
 
-        {/* TRACK YOUR ORDER BUTTON - DHL line ke neeche, Copyright se upar */}
+        {/* TRACK YOUR ORDER BUTTON - 【entity-DHL¦canonical_name=DHL】 line ke neeche, Copyright se upar */}
         <div className="flex flex-col items-center mt-5 gap-2">
           <a
             href="https://www.dhl.com/global-en/home/tracking.html"
@@ -46,7 +46,7 @@ export default function Footer() {
             TRACK YOUR ORDER →
           </a>
           <p className="text-xs text-zinc-500 text-center leading-relaxed px-2 break-words max-w-full">
-            Enter your DHL Tracking Number here to track your parcel. Your Tracking Number will be shared on WhatsApp after dispatch.
+            Enter your 【entity-DHL¦canonical_name=DHL】 Tracking Number here to track your parcel. Your Tracking Number will be shared on 【entity-WhatsApp¦canonical_name=WhatsApp】 after dispatch.
           </p>
         </div>
 
