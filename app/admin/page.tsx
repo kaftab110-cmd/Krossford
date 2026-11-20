@@ -12,12 +12,14 @@ const CARDS = [
 
 export default function AdminDashboard() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6">
+    <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-          <h1 className="text-xl font-bold text-amber-400 uppercase">KROSSFORD Admin Dashboard</h1>
-          <span className="text-xs text-zinc-400">All in one admin folder</span>
+          <Link href="/" className="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-xs font-bold hover:border-amber-400">← Back to Website</Link>
+          <span className="text-xs text-zinc-400">Dashboard</span>
         </div>
+
+        <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Admin Dashboard</h1>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
@@ -47,8 +49,6 @@ export default function AdminDashboard() {
             </Link>
           ))}
         </div>
-
-        <p className="text- text-zinc-500 text-center">Sab kuch sirf admin folder me hai. Bahar koi file nahi.</p>
       </div>
     </div>
   );

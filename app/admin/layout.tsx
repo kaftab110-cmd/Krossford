@@ -85,13 +85,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     window.location.href = "/admin";
   };
 
-  if (!checked) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono text-xs">Loading...</div>;
+  if (!checked) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-serif text-xs">Loading...</div>;
 
   if (!auth) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <form onSubmit={login} className="bg-zinc-900 p-8 border border-zinc-800 rounded-lg space-y-4 w-80">
-          <h2 className="text-amber-400 font-bold uppercase text-center">KROSSFORD ADMIN ACCESS</h2>
+          <h2 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-lg">KROSSFORD</h2>
+          <p className="font-serif tracking-[0.3em] text- text-zinc-400 text-center uppercase -mt-2">Admin Access</p>
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
           <input type="password" placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
           <button type="submit" className="w-full bg-amber-400 text-black py-2 rounded font-bold text-xs uppercase">Unlock Dashboard</button>
@@ -102,8 +103,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div>
-      <div className="bg-zinc-950 border-b border-zinc-800 p-3 flex justify-between items-center font-mono sticky top-0 z-50">
-        <span className="text-amber-400 font-bold text-xs uppercase">KROSSFORD Admin</span>
+      <div className="bg-zinc-950 border-b border-zinc-800 p-3 flex justify-between items-center sticky top-0 z-50">
+        <span className="font-serif tracking-[0.25em] font-bold text-amber-400 text-base uppercase">KROSSFORD <span className="text- tracking-[0.3em] text-zinc-400">Admin</span></span>
         <button onClick={logout} className="bg-red-600 text-white px-3 py-1 rounded text- font-bold uppercase">Logout</button>
       </div>
       <div>{children}</div>

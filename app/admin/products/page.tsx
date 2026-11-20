@@ -30,12 +30,14 @@ export default function AdminProducts() {
   const del = (id: number) => save(products.filter((p) => p.id !== id));
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6">
+    <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-          <h1 className="text-xl font-bold text-amber-400 uppercase">Products — Dashboard Se Hi</h1>
-          <Link href="/admin" className="text-xs text-zinc-400">Back to Dashboard -&gt;</Link>
+          <Link href="/admin" className="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-xs font-bold hover:border-amber-400">← Back to Dashboard</Link>
+          <span className="text-xs text-zinc-400">Total: {products.length}</span>
         </div>
+
+        <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Products</h1>
 
         <form onSubmit={addProduct} className="bg-zinc-900 border border-zinc-800 p-4 rounded flex flex-col md:flex-row gap-3">
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Naam" className="flex-1 bg-zinc-950 border border-zinc-800 px-3 py-2 rounded text-xs outline-none focus:border-amber-400" />
@@ -48,7 +50,7 @@ export default function AdminProducts() {
         </form>
 
         {products.length === 0 ? (
-          <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-xs text-zinc-400">Abhi koi product nahi hai. Upar se add karo — VS Code ki zaroorat nahi.</div>
+          <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-xs text-zinc-400">No products yet.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {products.map((p) => (

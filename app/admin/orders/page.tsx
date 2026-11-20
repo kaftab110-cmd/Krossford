@@ -15,12 +15,14 @@ export default function AdminOrders() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6">
+    <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-          <h1 className="text-xl font-bold text-amber-400 uppercase">Orders</h1>
-          <Link href="/admin" className="text-xs text-zinc-400">Back to Dashboard -&gt;</Link>
+          <Link href="/admin" className="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-xs font-bold hover:border-amber-400">← Back to Dashboard</Link>
+          <span className="text-xs text-zinc-400">Total: {orders.length}</span>
         </div>
+
+        <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Orders</h1>
 
         <div className="bg-zinc-900 border border-zinc-800 p-4 rounded text-xs">
           <p className="text-zinc-400">TOTAL ORDERS</p>
@@ -29,7 +31,7 @@ export default function AdminOrders() {
 
         {orders.length === 0 ? (
           <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-xs text-zinc-400">
-            Abhi koi order data nahi mila. Jaise hi naya order aayega, yahan nazar aayega.
+            No orders yet.
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3">

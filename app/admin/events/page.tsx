@@ -71,7 +71,6 @@ export default function AdminEvents() {
     setViewMonth(m); setViewYear(y);
   };
 
-  // Is month ke saare events - sab religions ke, ek hi calendar me
   const allItems: any[] = [
     ...FIXED.map((f) => ({ ...f, date: new Date(viewYear, f.month, f.day), approx: false })),
     ...APPROX.map((a) => ({ ...a, date: getDateForYear(a, viewYear), approx: true })),
@@ -80,7 +79,6 @@ export default function AdminEvents() {
 
   const monthEvents = allItems.filter((e) => e.date.getMonth() === viewMonth && e.date.getFullYear() === viewYear).sort((a, b) => a.date.getDate() - b.date.getDate());
 
-  // Calendar grid
   const firstDay = new Date(viewYear, viewMonth, 1).getDay();
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const cells: any[] = [];
@@ -89,7 +87,6 @@ export default function AdminEvents() {
 
   const monthName = new Date(viewYear, viewMonth, 1).toLocaleString("en-US", { month: "long" });
 
-  // Aane wale reminders - agle 100 din ke
   const upcoming = [...FIXED.map((f) => ({ ...f, date: (() => { let d = new Date(today.getFullYear(), f.month, f.day); if (d.getTime() < today.getTime()) d = new Date(today.getFullYear() + 1, f.month, f.day); return d; })(), approx: false })),
     ...APPROX.map((a) => ({ ...a, date: getDateForYear(a, today.getFullYear()), approx: true })),
   ].map((e: any) => {
@@ -99,12 +96,14 @@ export default function AdminEvents() {
   }).filter((e) => daysLeft(e.date) >= 0 && daysLeft(e.date) <= 100).sort((a, b) => a.date.getTime() - b.date.getTime());
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono p-6">
+    <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
-          <h1 className="text-xl font-bold text-amber-400 uppercase">Worldwide Calendar + Reminder</h1>
-          <Link href="/admin" className="text-xs text-zinc-400">Back to Dashboard -&gt;</Link>
+          <Link href="/admin" className="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-xs font-bold hover:border-amber-400">← Back to Dashboard</Link>
+          <span className="text-xs text-zinc-400">{monthName} {viewYear}</span>
         </div>
+
+        <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Worldwide Calendar</h1>
 
         <div className="bg-zinc-900 border border-zinc-800 p-4 rounded text-xs flex flex-wrap gap-2">
           <span className="bg-green-600 px-2 py-1 rounded">Muslim</span>
@@ -116,7 +115,6 @@ export default function AdminEvents() {
           <span className="text-zinc-400 ml-2">APPROX = Month/Week fix, Date +/- 2-3 din</span>
         </div>
 
-        {/* CALENDAR */}
         <div className="bg-zinc-900 border border-zinc-800 rounded p-4">
           <div className="flex justify-between items-center mb-4">
             <button onClick={() => changeMonth(-1)} className="bg-zinc-950 border border-zinc-800 px-3 py-1 rounded text-xs">{"< Prev"}</button>
@@ -147,7 +145,6 @@ export default function AdminEvents() {
           <p className="text- text-zinc-500 mt-3">Is month me {monthEvents.length} events hain — Sab religions ke ek hi calendar me.</p>
         </div>
 
-        {/* REMINDERS */}
         <div className="bg-zinc-900 border border-zinc-800 rounded p-4 space-y-3">
           <h3 className="font-bold text-amber-400 text-sm">AANE WALE REMINDERS — System Khud Bata Raha Hai</h3>
           {upcoming.length === 0 && <p className="text-xs text-zinc-400">Agle 100 din me koi bara event nahi hai.</p>}
