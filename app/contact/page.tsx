@@ -13,8 +13,8 @@ const WU = "WESTERN " + "UNION";
 
 const contact = {
   email: "hello@krossford.com",
-  WhatsApp: "923030006759",
-  whatsappDisplay: "+92303 0006759",
+  waNumber: "923030006759",
+  waDisplay: "+92303 0006759",
   phone: "+92303 0006759",
   location: "Gujrat, Punjab, Pakistan",
 };
@@ -27,7 +27,6 @@ export default function ContactPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
-  // Country badle to dono numbers ka code bhi badle - Pakistan +92, India +91, USA +1 ...
   useEffect(() => {
     if (form.phone) setForm((prev) => ({ ...prev, phone: buildFullPhone(prev.country, prev.phone) }));
     if (form.altPhone) setForm((prev) => ({ ...prev, altPhone: buildFullPhone(prev.country, prev.altPhone) }));
@@ -55,7 +54,7 @@ export default function ContactPage() {
   };
 
   const buildMessage = () => {
-    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Please attach the photos manually to WhatsApp or email)` : "";
+    const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Please attach the photos manually to ${WA} or email)` : "";
     return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
@@ -128,7 +127,7 @@ export default function ContactPage() {
             <select value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
               {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
-            <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label="Mobile / WhatsApp" placeholder="3001234567" required={false} />
+            <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label={"Mobile / " + WA} placeholder="3001234567" required={false} />
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
             <div className="grid grid-cols-2 gap-3">
               <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
@@ -154,11 +153,11 @@ export default function ContactPage() {
                       <div key={i} className="relative w-20 h-20 rounded overflow-hidden border border-zinc-700">
                         <img src={src} alt={files[i]?.name} className="w-full h-full object-cover" />
                         <button type="button" onClick={() => removeFile(i)} className="absolute top-0 right-0 bg-black/80 text-white text-xs w-5 h-5 leading-none">✕</button>
-                        <span className="absolute bottom-0 left-0 right-0 bg-black/70 text- px-1 truncate">{files[i]?.name}</span>
+                        <span className="absolute bottom-0 left-0 right-0 bg-black/70 text-xs px-1 truncate">{files[i]?.name}</span>
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-[#D4AF37] mt-2">⚠ WhatsApp / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
+                  <p className="text-xs text-[#D4AF37] mt-2">⚠ {WA} / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
                 </div>
               )}
             </div>
@@ -174,9 +173,9 @@ export default function ContactPage() {
               <span className="block text-xs text-zinc-400 uppercase">Email Us</span>
               <span className="text-sm font-bold">{contact.email}</span>
             </a>
-            <a href={`https://wa.me/${contact.whatsapp}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
+            <a href={`https://wa.me/${contact.waNumber}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-5 py-4 transition hover:border-[#25D366]">
               <span className="block text-xs text-zinc-400 uppercase">{WA} / Phone</span>
-              <span className="text-sm font-bold text-[#25D366]">{contact.whatsappDisplay} 💬 Chat Now</span>
+              <span className="text-sm font-bold text-[#25D366]">{contact.waDisplay} 💬 Chat Now</span>
             </a>
             <div className="block rounded-md border border-zinc-800 px-5 py-4">
               <span className="block text-xs text-zinc-400 uppercase">Workshop</span>
