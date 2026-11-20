@@ -24,6 +24,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
+  const logout = () => {
+    sessionStorage.removeItem("krossford_admin_ok");
+    window.location.href = "/admin";
+  };
+
   if (!checked) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono text-xs">Loading...</div>;
 
   if (!auth) {
@@ -39,5 +44,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  return <div>{children}</div>;
+  return (
+    <div>
+      <div className="bg-zinc-950 border-b border-zinc-800 p-3 flex justify-between items-center font-mono sticky top-0 z-50">
+        <span className="text-amber-400 font-bold text-xs uppercase">KROSSFORD Admin</span>
+        <button
+          onClick={logout}
+          className="bg-red-600 text-white px-3 py-1 rounded text- font-bold uppercase"
+        >
+          Logout
+        </button>
+      </div>
+      <div>{children}</div>
+    </div>
+  );
 }
