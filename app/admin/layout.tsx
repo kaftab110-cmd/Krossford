@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-// ===== TUM APNE USERNAME YAHAN BADAL SAKTE HO — SAMJHO =====
-const PERMANENT_USER = "kaftab110"; // Apni device ke liye — Permanent
-const TEMP_USER = "krossford-guest"; // Dusri device ke liye — Sirf 30 Minute
+const PERMANENT_USER = "kaftab110";
+const TEMP_USER = "krossford-guest";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [auth, setAuth] = useState(false);
@@ -62,14 +61,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     if (u === PERMANENT_USER) {
-      // Apni device — Permanent — 30 din
       localStorage.setItem("krossford_admin_perm", "yes");
       localStorage.setItem("krossford_admin_perm_time", String(Date.now()));
       sessionStorage.setItem("krossford_admin_ok", "yes");
       sessionStorage.setItem("krossford_admin_time", String(Date.now()));
       setAuth(true);
     } else if (u === TEMP_USER) {
-      // Dusri device — Temporary — Sirf 30 minute
       localStorage.removeItem("krossford_admin_perm");
       localStorage.removeItem("krossford_admin_perm_time");
       sessionStorage.setItem("krossford_admin_ok", "yes");
@@ -98,7 +95,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
           <input type="password" placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
           <button type="submit" className="w-full bg-amber-400 text-black py-2 rounded font-bold text-xs uppercase">Unlock Dashboard</button>
-          <p className="text- text-zinc-500 text-center leading-relaxed">Boss = Permanent • Guest = 30 Minute Baad Auto Logout<br />Password Dono Ka Same Hai</p>
         </form>
       </div>
     );
