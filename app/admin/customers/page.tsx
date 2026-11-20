@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 
 function AdminCustomersCRMInner() {
   const [auth, setAuth] = useState(false);
@@ -13,7 +13,8 @@ function AdminCustomersCRMInner() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pass === "krossford2026" || pass === process.env.NEXT_PUBLIC_ADMIN_PASS) {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("krossford_admin_pass") || "krossford2026" : "krossford2026";
+    if (pass === saved) {
       setAuth(true);
       fetchCustomers();
     } else {
@@ -22,11 +23,22 @@ function AdminCustomersCRMInner() {
   };
 
   const fetchCustomers = async () => {
-    const res = await fetch("/api/lead", { method: "GET" }).catch(() => null);
     const mockData = [
       { id: 1, name: "Kashif Aftab", email: "kaftab110@gmail.com", whatsapp: "+923001234567", total_orders: 3, total_quantity: 550, lead_status: "VIP", priority: "HIGH PRIORITY", country: "Australia" },
       { id: 2, name: "Global Buyer", email: "newcustomer@gmail.com", whatsapp: "+14155552671", total_orders: 1, total_quantity: 50, lead_status: "New", priority: "Normal", country: "Germany" }
     ];
+    try {
+      const res = await fetch("/api/lead", { method: "GET" });
+      const data = await res.json().catch(() => null);
+      if (Array.isArray(data) && data.length > 0) {
+        setCustomers(data);
+        return;
+      }
+      if (data?.leads && Array.isArray(data.leads) && data.leads.length > 0) {
+        setCustomers(data.leads);
+        return;
+      }
+    } catch {}
     setCustomers(mockData);
   };
 
@@ -43,7 +55,8 @@ function AdminCustomersCRMInner() {
   }
 
   const filtered = customers.filter(c => {
-    const matchesSearch = c.email.toLowerCase().includes(search.toLowerCase()) || c.whatsapp.includes(search);
+    const s = search.toLowerCase();
+    const matchesSearch = (c.name || "").toLowerCase().includes(s) || (c.email || "").toLowerCase().includes(s) || (c.whatsapp || "").includes(search);
     if (filter === "All") return matchesSearch;
     return matchesSearch && c.lead_status === filter;
   });
@@ -76,7 +89,7 @@ function AdminCustomersCRMInner() {
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-zinc-900 p-4 rounded border border-zinc-800">
-          <input type="text" placeholder="Search by Email or WhatsApp..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-zinc-950 border border-zinc-800 px-3 py-2 rounded text-xs w-full md:w-80 outline-none focus:border-amber-400" />
+          <input type="text" placeholder="Search by Name, Email or WhatsApp..." value={search} onChange={(e) => setSearch(e.target.value)} className="bg-zinc-950 border border-zinc-800 px-3 py-2 rounded text-xs w-full md:w-80 outline-none focus:border-amber-400" />
           <div className="flex gap-2">
             {["All", "New", "Repeat", "VIP"].map((f) => (
               <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded text-xs font-bold uppercase transition-colors ${filter === f ? "bg-amber-400 text-black" : "bg-zinc-950 text-zinc-400 border border-zinc-800"}`}>{f}</button>
@@ -90,9 +103,9 @@ function AdminCustomersCRMInner() {
               <div className="flex justify-between items-start border-b border-zinc-800 pb-2">
                 <div>
                   <h3 className="text-sm font-bold text-white">{c.name || c.email}</h3>
-                  <p className="text-[11px] text-zinc-400">{c.whatsapp} • {c.country}</p>
+                  <p className="text- text-zinc-400">{c.whatsapp} • {c.country}</p>
                 </div>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${c.lead_status === 'VIP' ? 'bg-amber-400 text-black' : c.total_orders > 1 ? 'bg-green-600 text-white' : 'bg-zinc-800 text-zinc-300'}`}>
+                <span className={`px-2 py-0.5 rounded text- font-bold uppercase ${c.lead_status === 'VIP' ? 'bg-amber-400 text-black' : c.total_orders > 1 ? 'bg-green-600 text-white' : 'bg-zinc-800 text-zinc-300'}`}>
                   {c.lead_status === 'VIP' ? '🟢 VIP REPEAT' : c.total_orders > 1 ? '🟢 REPEAT' : '🔵 NEW'}
                 </span>
               </div>
@@ -102,8 +115,8 @@ function AdminCustomersCRMInner() {
                 <p><span className="text-zinc-500">Priority Level:</span> <span className={c.priority === 'HIGH PRIORITY' ? 'text-red-400 font-bold' : 'text-zinc-400'}>{c.priority}</span></p>
               </div>
               <div className="flex gap-2 pt-2">
-                <a href={`https://wa.me/${c.whatsapp?.replace(/[^0-9]/g, '')}`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold text-[10px] uppercase">WhatsApp Chat</a>
-                <a href={`mailto:${c.email}`} className="flex-1 bg-amber-400 text-black text-center py-1.5 rounded font-bold text-[10px] uppercase">Email History</a>
+                <a href={`https://wa.me/${c.whatsapp?.replace(/[^0-9]/g, '')}`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold text- uppercase">WhatsApp Chat</a>
+                <a href={`mailto:${c.email}`} className="flex-1 bg-amber-400 text-black text-center py-1.5 rounded font-bold text- uppercase">Email History</a>
               </div>
             </div>
           ))}
