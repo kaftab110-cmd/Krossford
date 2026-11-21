@@ -25,17 +25,18 @@ type CartItem = {
 
 const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 
+// Brand names split so chat does not re-tag them - JS joins them at runtime
 const WU = "Western " + "Union";
-const 【entity-VISA¦canonical_name=VISA】 = "V" + "ISA";
+const VISA = "V" + "ISA";
 const MC = "Master" + "card";
-const 【entity-DHL¦canonical_name=DHL】 = "D" + "HL";
+const DHL = "D" + "HL";
 const DHLE = "D" + "HL Express";
 
 const PAYMENTS = [
   { id: "Bank Wire Transfer - Bank Alfalah", title: "Bank Wire Transfer - Bank Alfalah", badge: "RECOMMENDED FOR BULK", desc: "Account details will be shared securely on WhatsApp after order confirmation. Never share full bank details publicly." },
   { id: "Wise Transfer", title: "Wise Transfer - Fast & Low Fee", badge: "", desc: "Send via Wise to KROSSFORD ENTERPRISES. Details will be shared on WhatsApp after order confirmation." },
   { id: WU, title: WU, badge: "", desc: "Available for international customers and buyers. Details will be shared on WhatsApp after order confirmation." },
-  { id: 【entity-VISA¦canonical_name=VISA】 + " / " + MC, title: VISA + " / " + MC, badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
+  { id: VISA + " / " + MC, title: VISA + " / " + MC, badge: "", desc: "Card payment link will be shared on WhatsApp after order confirmation." },
 ];
 
 const customMadeLabel = (t?: string) => {
@@ -63,8 +64,6 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("Bank Wire Transfer - Bank Alfalah");
   const [orderSent, setOrderSent] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
@@ -72,9 +71,11 @@ export default function CheckoutPage() {
     setIsCartLoading(false);
   }, []);
 
-  // FIX 1: Country change pe phone ko dobara prefix mat lagao
-  // PhoneInput khud hi country code handle karta hai, is liye yahan kuch mat karo
-  // Pehle wala useEffect delete kar diya hai jo +92 ko double kar deta tha
+  useEffect(() => {
+    if (phone) setPhone(buildFullPhone(country, phone));
+    if (altPhone) setAltPhone(buildFullPhone(country, altPhone));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country]);
 
   const total = cart.reduce((sum, it) => sum + Number(it.price || 0) * Number(it.quantity || 1), 0);
 
@@ -84,8 +85,6 @@ export default function CheckoutPage() {
     : "Retail: 100% Secure Advance Payment";
 
   const handlePlaceOrder = async () => {
-    if (isSubmitting) return;
-    setSubmitError("");
     const fullName = `${firstName} ${lastName}`.trim();
     if (!firstName.trim() || !lastName.trim() || !email.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
       alert("Please fill First Name, Last Name, Email, Country, Address, City, State, Postal Code and Phone");
@@ -134,7 +133,6 @@ export default function CheckoutPage() {
       `ITEMS:\n${itemsText}`,
     ].filter(Boolean).join("\n");
 
-    setIsSubmitting(true);
     try {
       const response = await fetch("/api/lead", {
         method: "POST",
@@ -154,12 +152,10 @@ export default function CheckoutPage() {
           },
         }),
       });
-      const result: { success?: boolean; orderId?: string; error?: string } = await response.json().catch(() => ({}));
+      const result: { success?: boolean; orderId?: string; error?: string } = await response.json();
 
       if (!response.ok || !result.success || !result.orderId) {
-        const msg = result.error || `Server error (${response.status}). Please try again.`;
-        setSubmitError(msg);
-        alert(msg);
+        alert(result.error || "We couldn't submit your order. Please try again.");
         return;
       }
 
@@ -169,10 +165,7 @@ export default function CheckoutPage() {
       window.dispatchEvent(new Event("cartUpdated"));
       setOrderSent(true);
     } catch {
-      setSubmitError("Network error. Please check internet and try again.");
       alert("We couldn't submit your order. Please try again.");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -291,10 +284,8 @@ export default function CheckoutPage() {
               <p className="text-xs text-zinc-500 mt-3">After placing order, our team will confirm payment details on WhatsApp. Your order will be dispatched after payment confirmation. {paymentTerms}.</p>
             </div>
 
-            {submitError && <p className="mt-3 bg-red-500/10 border border-red-500/40 text-red-300 text-xs p-3 rounded">{submitError}</p>}
-
-            <button onClick={handlePlaceOrder} disabled={isSubmitting} className="mt-5 w-full bg-[#D4AF37] text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-[#E8C15A] disabled:opacity-60">
-              {isSubmitting ? "Sending Order..." : "Place Order →"}
+            <button onClick={handlePlaceOrder} className="mt-5 w-full bg-[#D4AF37] text-black py-3.5 rounded text-sm font-bold uppercase hover:bg-[#E8C15A]">
+              Place Order →
             </button>
             <Link href="/cart" className="block text-center mt-3 text-xs underline text-zinc-500">Back to Cart</Link>
           </div>
