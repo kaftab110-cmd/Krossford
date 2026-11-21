@@ -5,13 +5,24 @@ import { useEffect, useState } from "react";
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/api/lead").then(r => r.json()).then(d => {
-      if (Array.isArray(d)) setOrders(d);
-      else if (d?.leads) setOrders(d.leads);
-      else setOrders([]);
-    }).catch(() => setOrders([]));
+    setLoading(true);
+    fetch("/api/lead", { cache: "no-store" })
+      .then(r => r.json())
+      .then(d => {
+        if (Array.isArray(d)) setOrders(d);
+        else if (d?.leads) setOrders(d.leads);
+        else setOrders([]);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Orders load nahi hue. Dobara try karo.");
+        setOrders([]);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -26,20 +37,31 @@ export default function AdminOrders() {
 
         <div className="bg-zinc-900 border border-zinc-800 p-4 rounded text-xs">
           <p className="text-zinc-400">TOTAL ORDERS</p>
-          <p className="text-xl font-bold text-white mt-1">{orders.length}</p>
+          <p className="text-xl font-bold text-white mt-1">{loading ? "..." : orders.length}</p>
+          {error ? <p className="text-red-400 mt-2">{error}</p> : null}
+          {!loading && orders.length === 0 ? <p className="text-zinc-500 mt-2">Supabase leads table me abhi koi row nahi hai. Pehle ek test order karo.</p> : null}
         </div>
 
-        {orders.length === 0 ? (
+        {loading ? (
+          <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-xs text-zinc-400">
+            Loading orders...
+          </div>
+        ) : orders.length === 0 ? (
           <div className="bg-zinc-900 border border-zinc-800 p-6 rounded text-center text-xs text-zinc-400">
             No orders yet.
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3">
             {orders.map((o: any, i: number) => (
-              <div key={i} className="bg-zinc-900 border border-zinc-800 p-4 rounded text-xs space-y-1">
-                <p className="font-bold text-white">{o.name || o.email || "New Order"}</p>
-                <p className="text-zinc-400">{o.email} • {o.whatsapp || o.phone || ""}</p>
-                <p className="text-zinc-400">Total: {o.total || o.amount || "-"} • Qty: {o.quantity || "-"}</p>
+              <div key={o.id || i} className="bg-zinc-900 border border-zinc-800 p-4 rounded text-xs space-y-1">
+                <div className="flex justify-between gap-2">
+                  <p className="font-bold text-white text-sm">{o.name || "New Order"}</p>
+                  <p className="text-amber-400 font-bold">{o.order_id || o.orderId || ""}</p>
+                </div>
+                <p className="text-zinc-400">{o.email || "No email"} • {o.whatsapp || o.phone || "No phone"}</p>
+                <p className="text-zinc-400">Total: {o.total || o.amount || "-"} • Qty: {o.quantity || o.total_quantity || "-"}</p>
+                <p className="text-zinc-500">Status: {o.lead_status || "New"} • Priority: {o.priority || "Normal"} • Country: {o.country || "-"}</p>
+                <p className="text-zinc-500">{o.created_at ? new Date(o.created_at).toLocaleString() : ""}</p>
               </div>
             ))}
           </div>
