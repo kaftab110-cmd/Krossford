@@ -17,9 +17,12 @@ export const dynamic = "force-dynamic";
 // 7. Slider formula same (ProductCard wala) + Add to Cart + Search + Sort sab rakha hua hai
 // 8. ?category=For Her aaye to seedha /for-her pe redirect - Shop me For Her category nahi khulegi
 // 9. NEW - Supabase products bhi yahan dikhenge - Admin se add kiya hua product Shop pe khud aa jayega
+// 10. FIX - Broken image fallback - Admin product bina photo ke ho ya galat link ho, to toota icon nahi aayega - wallet.jpg aa jayegi
 
 type SupabaseProduct = { id: number; name: string; price: number; category: string; image: string; stock: number; description: string };
 type ShopProduct = { id: number | string; slug: string; name: string; price: number; category: string; image: string; description: string; gallery: string[]; badge?: string };
+
+const FALLBACK_IMAGE = "/images/wallet.jpg";
 
 function ShopPageInner() {
   const searchParams = useSearchParams();
@@ -39,17 +42,20 @@ function ShopPageInner() {
       try {
         const res = await fetch("/api/products");
         const j = await res.json() as { products?: SupabaseProduct[] };
-        const list = (j.products || []).map((p): ShopProduct => ({
-          id: `admin-${p.id}`,
-          slug: `admin-${p.id}`,
-          name: p.name,
-          price: Number(p.price),
-          category: p.category || "General",
-          image: p.image || "/images/placeholder.jpg",
-          description: p.description || "",
-          gallery: p.image ? [p.image] : [],
-          badge: "New",
-        }));
+        const list = (j.products || []).map((p): ShopProduct => {
+          const finalImage = (p.image || "").trim() || FALLBACK_IMAGE;
+          return {
+            id: `admin-${p.id}`,
+            slug: `admin-${p.id}`,
+            name: p.name,
+            price: Number(p.price),
+            category: p.category || "General",
+            image: finalImage,
+            description: p.description || "",
+            gallery: [finalImage],
+            badge: "New",
+          };
+        });
         setSupabaseProducts(list);
       } catch {
         setSupabaseProducts([]);
@@ -245,7 +251,7 @@ function ShopPageInner() {
                   touchStartX.current = null;
                 }}
               >
-                <img src={currentImage} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <img src={currentImage} alt={p.name} onError={(e) => { const t = e.target as HTMLImageElement; if (t.src !== FALLBACK_IMAGE) t.src = FALLBACK_IMAGE; }} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                 {p.badge && <span className="absolute top-3 left-3 bg-[#D4AF37] text-black text-xs font-bold px-2 py-1 uppercase">{p.badge}</span>}
                 <span className="absolute bottom-3 left-3 bg-black/80 text-white text-xs px-2 py-1">Click To View Designs</span>
                 {hasSlider && (
