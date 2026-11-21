@@ -1,87 +1,29 @@
 "use client";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
-
-type Announcement = {
-  id: string;
-  date: string;
-  title: string;
-  desc: string;
-  tag: string;
-  link: string;
-  linkText: string;
-};
-
-const ANNOUNCEMENTS: Announcement[] = [
-  {
-    id: "ann-sale",
-    date: "November 2026",
-    title: "Sale Is On - Up To 22% OFF",
-    desc: "Messenger Bag, Wallet aur Leather Vest pe discount chal raha hai. Stock khatam hone se pehle order karo.",
-    tag: "SALE",
-    link: "/sale",
-    linkText: "View Sale →",
-  },
-  {
-    id: "ann-combo",
-    date: "November 2026",
-    title: "New Combo Deals Live Hain",
-    desc: "Ab 2 products ek saath lo to alag lene se sasta parega. Messenger + Wallet Combo pe $29 ki bachat.",
-    tag: "COMBO",
-    link: "/combo-deals",
-    linkText: "View Combos →",
-  },
-  {
-    id: "ann-pakistan",
-    date: "November 2026",
-    title: "Pakistan Delivery FREE Hai",
-    desc: "Pakistan ke liye delivery charge FREE hai. International delivery courier deal ke baad final hogi.",
-    tag: "DELIVERY",
-    link: "/shop",
-    linkText: "Shop Now →",
-  },
-  {
-    id: "ann-new",
-    date: "November 2026",
-    title: "Naye Products Aa Rahe Hain",
-    desc: "Jald hi Krossford pe naye designs aayenge. Admin se roz naye products add hote rahenge, Shop pe khud aa jayenge.",
-    tag: "NEW",
-    link: "/shop",
-    linkText: "View Shop →",
-  },
+const posts = [
+  { tag: "SALE", date: "November 2026", title: "SALE IS ON - UP TO 22% OFF", desc: "Discount is live on Messenger Bag, Wallet and Leather Vest. Order before stock runs out.", link: "/sale", btn: "VIEW SALE →" },
+  { tag: "COMBO", date: "November 2026", title: "NEW COMBO DEALS ARE LIVE", desc: "Buy 2 products together and save more than buying separately. Save $29 on Messenger + Wallet Combo.", link: "/combo-deals", btn: "VIEW COMBOS →" },
+  { tag: "DELIVERY", date: "November 2026", title: "PAKISTAN DELIVERY IS FREE", desc: "Delivery inside Pakistan is FREE. International delivery will be confirmed after our courier deal is final.", link: "/shop", btn: "SHOP NOW →" },
+  { tag: "NEW", date: "November 2026", title: "NEW PRODUCTS COMING SOON", desc: "New wallets, bags and jackets are coming soon. Follow Announcements for the launch.", link: "/shop", btn: "SHOP NOW →" },
 ];
 
 export default function AnnouncementsPage() {
   return (
-    <main className="bg-black text-white min-h-screen">
-      <div className="bg-[#D4AF37] text-black text-center text-xs font-black uppercase tracking-widest py-2 px-4">
-        Announcements - Krossford Ki Saari Khabrein Ek Jagah
-      </div>
-
-      <section className="mx-auto max-w-7xl px-6 pt-16 pb-6 text-center">
-        <h1 className="text-3xl font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Announcements</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Sale - Combo - Delivery - New Launch - Sab Kuch Yahan</p>
-      </section>
-
-      <section className="mx-auto max-w-4xl px-6 pb-16 space-y-4">
-        {ANNOUNCEMENTS.map((a) => (
-          <div key={a.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-6 hover:border-[#D4AF37]">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="bg-[#D4AF37] text-black text-xs font-bold px-2 py-1 uppercase">{a.tag}</span>
-              <span className="text-xs text-zinc-500">{a.date}</span>
+    <main className="bg-black text-white min-h-screen pt-28 pb-16">
+      <div className="max-w-3xl mx-auto px-4">
+        <h1 className="text-4xl font-bold tracking-wide text-center">ANNOUNCEMENTS</h1>
+        <p className="text-zinc-400 text-sm text-center mt-3">Latest news, sales and updates from Krossford.</p>
+        <div className="mt-10 space-y-6">
+          {posts.map((p) => (
+            <div key={p.title} className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
+              <div className="flex items-center gap-3"><span className="bg-[#D4AF37] text-black text-xs font-bold px-2 py-1">{p.tag}</span><span className="text-zinc-500 text-xs">{p.date}</span></div>
+              <h2 className="font-bold tracking-wide mt-3">{p.title}</h2>
+              <p className="text-zinc-400 text-sm mt-2">{p.desc}</p>
+              <Link href={p.link} className="text-[#D4AF37] text-sm font-bold mt-3 inline-block">{p.btn}</Link>
             </div>
-            <h3 className="text-base font-semibold uppercase">{a.title}</h3>
-            <p className="text-sm text-zinc-400 mt-2">{a.desc}</p>
-            <Link href={a.link} className="inline-block mt-3 text-xs font-bold uppercase tracking-widest text-[#D4AF37] hover:text-white">{a.linkText}</Link>
-          </div>
-        ))}
-      </section>
-
-      <div className="mx-auto max-w-7xl px-6 pb-16 text-center flex flex-col sm:flex-row gap-3 justify-center">
-        <Link href="/sale" className="inline-block bg-red-600 text-white text-xs font-bold uppercase tracking-widest px-8 py-3 rounded-full">View Sale →</Link>
-        <Link href="/combo-deals" className="inline-block bg-[#D4AF37] text-black text-xs font-bold uppercase tracking-widest px-8 py-3 rounded-full">View Combos →</Link>
-        <Link href="/shop" className="inline-block bg-zinc-900 border border-zinc-700 text-xs font-bold uppercase tracking-widest px-8 py-3 rounded-full hover:border-[#D4AF37]">Shop Now →</Link>
+          ))}
+        </div>
       </div>
     </main>
   );
