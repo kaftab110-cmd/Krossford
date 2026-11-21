@@ -1,6 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Order = {
+  id?: number | string;
+  order_id?: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  whatsapp?: string;
+  country?: string;
+  total?: string;
+  amount?: string;
+  subtotal?: string;
+  lead_status?: string;
+  status?: string;
+  created_at?: string;
+  message?: string;
+};
+
+function clean(v: unknown): string {
+  const s = String(v === null || v === undefined ? "" : v).trim();
+  if (s.toUpperCase() === "EMPTY" || s.toUpperCase() === "NULL" || s === "-") return "";
+  return s;
+}
+
+function fieldFromMessage(msg: string, label: string): string {
+  const key = label + ":";
+  const idx = msg.indexOf(key);
+  if (idx < 0) return "";
+  const rest = msg.slice(idx + key.length);
+  const line = rest.split("\n")[0] || "";
+  return clean(line.trim());
+}
+
+function getTotalVal(o: Order): string {
+  const direct = clean(o.total || o.amount);
+  if (direct) return direct;
+  const msg = o.message ? o.message : "";
+  return fieldFromMessage(msg, "Total");
+}
 
 const CARDS = [
   { title: "Customers", desc: "VIP, Repeat, New customers", href: "/admin/customers", count: "CRM" },
@@ -11,6 +51,56 @@ const CARDS = [
 ];
 
 export default function AdminDashboard() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/lead", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (Array.isArray(d)) setOrders(d as Order[]);
+        else if (d && d.leads) setOrders(d.leads as Order[]);
+        else setOrders([]);
+        setLoading(false);
+      })
+      .catch(() => {
+        setOrders([]);
+        setLoading(false);
+      });
+  }, []);
+
+  // --- Real Numbers ---
+  const totalOrders = orders.length;
+
+  let totalRevenue = 0;
+  orders.forEach((o) => {
+    const tv = getTotalVal(o);
+    const n = Number(tv.replace(/[^0-9.]/g, ""));
+    if (Number.isFinite(n)) totalRevenue = totalRevenue + n;
+  });
+
+  // Unique Customers = unique email, nahi to phone
+  const customerSet = new Set<string>();
+  orders.forEach((o) => {
+    const key = (clean(o.email) || clean(o.whatsapp || o.phone) || "").toLowerCase();
+    if (key) customerSet.add(key);
+  });
+  const totalCustomers = customerSet.size;
+
+  // New Orders
+  let newOrders = 0;
+  orders.forEach((o) => {
+    const s = clean(o.lead_status || o.status) || "New";
+    if (s.toLowerCase() === "new") newOrders = newOrders + 1;
+  });
+
+  // Aaj ke Orders
+  const todayStr = new Date().toDateString();
+  let todayOrders = 0;
+  orders.forEach((o) => {
+    if (o.created_at && new Date(o.created_at).toDateString() === todayStr) todayOrders = todayOrders + 1;
+  });
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-6">
       <div className="max-w-6xl mx-auto space-y-6">
@@ -24,19 +114,23 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
             <p className="text-zinc-400">TOTAL CUSTOMERS</p>
-            <p className="text-xl font-bold text-white mt-1">CRM</p>
+            <p className="text-xl font-bold text-white mt-1">{loading ? "..." : totalCustomers}</p>
+            <p className="text- text-zinc-500 mt-1">Unique Email / Phone se</p>
           </div>
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
             <p className="text-zinc-400">TOTAL ORDERS</p>
-            <p className="text-xl font-bold text-green-400 mt-1">Orders</p>
+            <p className="text-xl font-bold text-green-400 mt-1">{loading ? "..." : totalOrders}</p>
+            <p className="text- text-zinc-500 mt-1">New: {loading ? "..." : newOrders} | Aaj: {loading ? "..." : todayOrders}</p>
           </div>
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
-            <p className="text-zinc-400">TOTAL PRODUCTS</p>
-            <p className="text-xl font-bold text-amber-400 mt-1">Products</p>
+            <p className="text-zinc-400">TOTAL REVENUE</p>
+            <p className="text-xl font-bold text-amber-400 mt-1">{loading ? "..." : "$" + totalRevenue.toFixed(2)}</p>
+            <p className="text- text-zinc-500 mt-1">Sab orders ka total</p>
           </div>
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
-            <p className="text-zinc-400">UPCOMING EVENTS</p>
-            <p className="text-xl font-bold text-blue-400 mt-1">Events</p>
+            <p className="text-zinc-400">NEW ORDERS</p>
+            <p className="text-xl font-bold text-blue-400 mt-1">{loading ? "..." : newOrders}</p>
+            <p className="text- text-zinc-500 mt-1">Abhi confirm karne wale</p>
           </div>
         </div>
 
@@ -48,6 +142,32 @@ export default function AdminDashboard() {
               <p className="text- text-amber-400 font-bold uppercase">Open {c.title} -&gt;</p>
             </Link>
           ))}
+        </div>
+
+        {/* Recent Orders - Last 5 */}
+        <div className="bg-zinc-900 border border-zinc-800 rounded p-4 space-y-3">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-bold text-white">Recent Orders - Last 5</h3>
+            <Link href="/admin/orders" className="text-xs text-amber-400 font-bold">View All -&gt;</Link>
+          </div>
+          {loading ? (
+            <p className="text-xs text-zinc-500">Loading...</p>
+          ) : orders.length === 0 ? (
+            <p className="text-xs text-zinc-500">Abhi koi order nahi hai.</p>
+          ) : (
+            orders.slice(0, 5).map((o, i) => (
+              <div key={String(o.id || o.order_id || i)} className="flex justify-between gap-2 border-b border-zinc-800 pb-2 last:border-0 text-xs">
+                <div>
+                  <p className="font-bold text-white">{clean(o.name) || "New Order"} <span className="text-amber-400 font-bold ml-1">{clean(o.order_id)}</span></p>
+                  <p className="text-zinc-500">{clean(o.email) || ""} | {o.created_at ? new Date(o.created_at).toLocaleString() : ""}</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="font-bold text-amber-400">{getTotalVal(o) || "-"}</p>
+                  <p className="text-zinc-500">{clean(o.lead_status || o.status) || "New"}</p>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
