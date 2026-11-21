@@ -82,7 +82,7 @@ export default function Navbar() {
             </span>
           </div>
         </Link>
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-6 text-xs font-bold tracking-wider whitespace-nowrap">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text- font-bold tracking-wider whitespace-nowrap">
           <Link href="/" className={pathname === "/" ? "text-[#D4AF37]" : "text-white hover:text-[#D4AF37]"}>
             HOME
           </Link>
@@ -91,6 +91,15 @@ export default function Navbar() {
           </Link>
           <Link href="/for-her" className={pathname === "/for-her" ? "text-[#D4AF37]" : "text-zinc-300 hover:text-[#D4AF37] transition-colors"}>
             FOR HER
+          </Link>
+          <Link href="/combo-deals" className={cls("/combo-deals")}>
+            COMBO DEALS
+          </Link>
+          <Link href="/sale" className={pathname === "/sale" ? "text-red-500" : "text-red-400 hover:text-red-300 transition-colors"}>
+            SALE
+          </Link>
+          <Link href="/announcements" className={cls("/announcements")}>
+            ANNOUNCEMENTS
           </Link>
           <Link href="/collections" className={cls("/collections")}>
             COLLECTIONS
@@ -123,9 +132,7 @@ export default function Navbar() {
           <button
             onClick={() => setOpen(true)}
             className="text-white p-1 shrink-0 w-9 h-9 flex items-center justify-center border border-transparent"
-            aria-label="Open Menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            aria-label="Open Menu"[STRIPPED 40 bytes]"w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -166,6 +173,15 @@ export default function Navbar() {
               </Link>
               <Link href="/for-her" onClick={() => setOpen(false)} className={`py-2 border-b border-zinc-900 ${pathname === "/for-her" ? "text-[#D4AF37]" : ""}`}>
                 FOR HER
+              </Link>
+              <Link href="/combo-deals" onClick={() => setOpen(false)} className={`py-2 border-b border-zinc-900 ${pathname === "/combo-deals" ? "text-[#D4AF37]" : ""}`}>
+                COMBO DEALS
+              </Link>
+              <Link href="/sale" onClick={() => setOpen(false)} className={`py-2 border-b border-zinc-900 ${pathname === "/sale" ? "text-red-500" : "text-red-400"}`}>
+                SALE
+              </Link>
+              <Link href="/announcements" onClick={() => setOpen(false)} className={`py-2 border-b border-zinc-900 ${pathname === "/announcements" ? "text-[#D4AF37]" : ""}`}>
+                ANNOUNCEMENTS
               </Link>
               <Link href="/collections" onClick={() => setOpen(false)} className={`py-2 border-b border-zinc-900 ${pathname === "/collections" ? "text-[#D4AF37]" : ""}`}>
                 COLLECTIONS
