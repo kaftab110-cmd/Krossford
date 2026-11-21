@@ -63,10 +63,31 @@ function getOrderEmailItems(value: unknown): OrderEmailItem[] | null {
 }
 
 function getEmailImageUrl(image: string): string {
+  const raw = (image || "").trim();
+  if (!raw || raw.startsWith("data:") || raw.startsWith("blob:")) return "";
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://www.krossford.com").replace(/\/$/, "");
   try {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://www.krossford.com";
-    const url = new URL(image, siteUrl);
-    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : "";
+    // Agar image pehle se pura link hai — usko waisa hi rakho
+    if (raw.startsWith("http://") || raw.startsWith("https://")) {
+      const u = new URL(raw);
+      // /_next/image?url=/images/xxx.jpg — isko seedha image me badlo
+      if (u.pathname.includes("/_next/image")) {
+        const inner = u.searchParams.get("url");
+        if (inner) return getEmailImageUrl(inner);
+      }
+      return u.toString();
+    }
+    if (raw.startsWith("//")) return `https:${raw}`;
+    // Agar /_next/image?url=... aaya to andar wala image nikalo
+    if (raw.includes("/_next/image")) {
+      const q = raw.split("?")[1] || "";
+      const params = new URLSearchParams(q);
+      const inner = params.get("url");
+      if (inner) return getEmailImageUrl(decodeURIComponent(inner));
+    }
+    // Relative path — jaise /images/belt.jpg — isko pura banao
+    const path = raw.startsWith("/") ? raw : `/${raw}`;
+    return `${siteUrl}${encodeURI(path)}`;
   } catch { return ""; }
 }
 
@@ -74,9 +95,9 @@ function renderOrderItemsHtml(items: OrderEmailItem[]): string {
   if (items.length === 0) return "<p>No item details supplied.</p>";
   const rows = items.map((item) => {
     const imageUrl = getEmailImageUrl(item.image);
-    const image = imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.name)}" width="120" style="display:block;width:120px;height:auto;max-height:120px;object-fit:contain;">` : "Image unavailable";
+    const image = imageUrl ? `<a href="${escapeHtml(imageUrl)}" target="_blank" rel="noopener"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.name)}" width="120" style="display:block;width:120px;height:auto;max-height:120px;object-fit:contain;border:0;"></a>` : "Image unavailable";
     const lineTotal = (item.unitPrice * item.quantity).toFixed(2);
-    return `<tr><td style="padding:10px;border:1px solid #ddd;">${image}</td><td style="padding:10px;border:1px solid #ddd;"><strong>${escapeHtml(item.name)}</strong><br>Colour: ${escapeHtml(item.color)}<br>Size: ${escapeHtml(item.size)}<br>Quantity: ${item.quantity}<br>Unit price: $${item.unitPrice.toFixed(2)}<br>Line total: $${lineTotal}${item.customization ? `<br>Customization: ${escapeHtml(item.customization)}` : ""}</td></tr>`;
+    return `<tr><td style="padding:10px;border:1px solid #ddd;vertical-align:top;">${image}</td><td style="padding:10px;border:1px solid #ddd;"><strong>${escapeHtml(item.name)}</strong><br>Colour: ${escapeHtml(item.color)}<br>Size: ${escapeHtml(item.size)}<br>Quantity: ${item.quantity}<br>Unit price: $${item.unitPrice.toFixed(2)}<br>Line total: $${lineTotal}${item.customization ? `<br>Customization: ${escapeHtml(item.customization)}` : ""}</td></tr>`;
   }).join("");
   return `<table style="border-collapse:collapse;width:100%;"><tbody>${rows}</tbody></table>`;
 }
@@ -201,7 +222,7 @@ export async function POST(req: Request) {
     }
     const supabase = getSupabase();
     const totalQty = orderItems ? orderItems.reduce((a, b) => a + b.quantity, 0) : (Number(quantity) || 0);
-    const { error: dbError } = await supabase.from("leads").insert([{ name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), created_at: new Date().toISOString() }]);
+    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), created_at: new Date().toISOString() }]);
     if (dbError) console.error("Supabase lead insert error after notification email was sent:", dbError);
     return NextResponse.json({ success: true, orderId });
   } catch (error) {
