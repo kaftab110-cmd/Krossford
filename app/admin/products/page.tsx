@@ -90,7 +90,7 @@ export default function AdminProducts() {
   });
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-6">
+    <div className="min-h-screen bg-zinc-950 text-white p-6 pt-24">
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
           <Link href="/admin" className="bg-zinc-900 border border-zinc-700 px-3 py-1.5 rounded text-xs font-bold hover:border-amber-400">← Back to Dashboard</Link>
@@ -139,6 +139,8 @@ export default function AdminProducts() {
                 {p.image ? <img src={p.image} alt={p.name} className="w-full h-32 object-cover rounded" /> : null}
                 <p className="font-bold text-white">{p.name}</p>
                 <p className="text-zinc-400">{p.category} • ${p.price} • Stock: {p.stock}</p>
+                {p.description ? <p className="text-zinc-500">{p.description}</p> : null}
+                {p.stock <= 5 ? <p className="text-amber-400 font-bold">⚠️ Low Stock - Jaldi restock karo</p> : null}
                 {editId === p.id ? (
                   <div className="flex gap-2">
                     <input value={editPrice} onChange={(e) => setEditPrice(e.target.value)} placeholder="New Price" className="w-24 bg-zinc-950 border border-zinc-800 px-2 py-1.5 rounded text-xs outline-none focus:border-amber-400" />
