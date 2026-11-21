@@ -33,7 +33,6 @@ async function createOrderId(supabase: ReturnType<typeof getSupabase>): Promise<
     throw new Error("Could not allocate order ID - Supabase count failed");
   }
   const next = (typeof count === "number" ? count : 0) + 1;
-  // KF-0078611001, KF-0078611002, KF-0078611003 ...
   return `KF-0078611${String(next).padStart(3, "0")}`;
 }
 
@@ -183,7 +182,7 @@ export async function POST(req: Request) {
     const backupEmail = process.env.KROSSFORD_BACKUP_EMAIL?.trim();
     const senderEmail = "hello@krossford.com";
     if (!smtpHost || !Number.isInteger(smtpPort) || smtpPort < 1 || smtpPort > 65535 || !smtpUser || !smtpPassword || smtpUser.toLowerCase() !== senderEmail || smtpFrom?.toLowerCase() !== senderEmail || !smtpSecure || !backupEmail || !isValidEmail(backupEmail)) {
-      console.error("Order notification service is missing required 【entity-Zoho¦canonical_name=Zoho】 SMTP configuration.");
+      console.error("Order notification service is missing required Zoho SMTP configuration.");
       return NextResponse.json({ error: "Order notifications are temporarily unavailable." }, { status: 503 });
     }
     const sourceLabel = source === "b2b-contact" ? "New B2B Enquiry" : "New B2C Order";
@@ -194,10 +193,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Orders are temporarily unavailable. Please try again." }, { status: 503 });
     }
     const totalText = source === "b2c-checkout" ? `$${Number(total).toFixed(2)} USD` : "Not provided";
-    // PEHLE SUPABASE ME SAVE KARO - PHIR EMAIL BHEJO
     const totalQty = orderItems ? orderItems.reduce((a, b) => a + b.quantity, 0) : (Number(quantity) || 0);
     const supabase = getSupabase();
-    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), created_at: new Date().toISOString() }]);
+    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), product: product || null, message: message || null, items: orderItems || null, created_at: new Date().toISOString() }]);
     if (dbError) {
       console.error("Supabase lead insert error:", dbError);
       return NextResponse.json({ error: "Order could not be saved. Please try again." }, { status: 503 });
