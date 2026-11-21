@@ -81,6 +81,27 @@ function parseItems(o: Order): Item[] {
   return [];
 }
 
+function getTotalVal(o: Order): string {
+  const direct = clean(o.total || o.amount);
+  if (direct) return direct;
+  const msg = o.message ? o.message : "";
+  return fieldFromMessage(msg, "Total");
+}
+
+function getSubtotalVal(o: Order, totalVal: string, dc: string): string {
+  const direct = clean(o.subtotal);
+  if (direct) return direct;
+  const msg = o.message ? o.message : "";
+  const fromMsg = fieldFromMessage(msg, "Subtotal");
+  if (fromMsg) return fromMsg;
+  if (totalVal && dc) {
+    const t = Number(totalVal.replace(/[^0-9.]/g, ""));
+    const d = Number(dc.replace(/[^0-9.]/g, ""));
+    if (Number.isFinite(t) && Number.isFinite(d)) return "$" + (t - d).toFixed(2);
+  }
+  return "";
+}
+
 export default function AdminOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -141,7 +162,8 @@ export default function AdminOrders() {
 
   let totalRevenue = 0;
   filtered.forEach((o) => {
-    const n = Number(String(o.total || o.amount || "").replace(/[^0-9.]/g, ""));
+    const tv = getTotalVal(o);
+    const n = Number(tv.replace(/[^0-9.]/g, ""));
     if (Number.isFinite(n)) totalRevenue = totalRevenue + n;
   });
 
@@ -188,8 +210,9 @@ export default function AdminOrders() {
               const country = clean(o.country) || fieldFromMessage(msg, "Country");
               const address = fieldFromMessage(msg, "Address");
               const city = fieldFromMessage(msg, "City");
-              const subtotal = clean(o.subtotal) || fieldFromMessage(msg, "Subtotal");
               const dc = clean(o.delivery_charges || o.shipping) || fieldFromMessage(msg, "Shipping");
+              const totalVal = getTotalVal(o);
+              const subtotalVal = getSubtotalVal(o, totalVal, dc);
               const status = getStatus(o);
               const isOpen = String(o.id || o.order_id || "") === String(selectedId || "");
               let qtyNum = 0;
@@ -205,7 +228,7 @@ export default function AdminOrders() {
                     <p className="text-amber-400 font-bold">{clean(o.order_id)}</p>
                   </div>
                   <p className="text-zinc-400">{clean(o.email) || "No email"} | {clean(o.whatsapp || o.phone) || "No phone"}</p>
-                  <p className="text-zinc-400">Total: {clean(o.total || o.amount) || "-"} | Subtotal: {subtotal || "-"} | DC: {dc || "$0.00"} | Qty: {String(qtyNum)}</p>
+                  <p className="text-zinc-400">Total: {totalVal || "-"} | Subtotal: {subtotalVal || "-"} | DC: {dc || "$0.00"} | Qty: {String(qtyNum)}</p>
                   <p className="text-zinc-500">Status: {status} | Country: {country || "-"} | {city ? city + ", " : ""}{o.created_at ? new Date(o.created_at).toLocaleString() : ""}</p>
                   {o.product ? <p className="text-zinc-300">Products: {o.product}</p> : null}
                   <div className="flex flex-wrap gap-2 pt-1">
@@ -224,9 +247,9 @@ export default function AdminOrders() {
                         <p><span className="text-zinc-500">Country: </span>{country || "-"}</p>
                         <p><span className="text-zinc-500">City: </span>{city || "-"}</p>
                         <p><span className="text-zinc-500">Address: </span>{address || "-"}</p>
-                        <p><span className="text-zinc-500">Subtotal: </span>{subtotal || "-"}</p>
+                        <p><span className="text-zinc-500">Subtotal: </span>{subtotalVal || "-"}</p>
                         <p><span className="text-zinc-500">Delivery Charges (DC): </span>{dc || "$0.00"}</p>
-                        <p><span className="text-zinc-500">Total: </span>{clean(o.total || o.amount) || "-"}</p>
+                        <p><span className="text-zinc-500">Total: </span>{totalVal || "-"}</p>
                         <p><span className="text-zinc-500">Quantity: </span>{String(qtyNum)}</p>
                         <p><span className="text-zinc-500">Status: </span>{status}</p>
                         <p><span className="text-zinc-500">Source: </span>{clean(o.source) || "-"}</p>
