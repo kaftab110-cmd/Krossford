@@ -24,19 +24,66 @@ function errMsg(e: unknown): string {
   if (e instanceof Error) return e.message;
   return "Server error";
 }
-// Message se field nikalna - Country: Pakistan jaisa
-function fromMessage(msg: string, label: string): string {
-  const m = msg.match(new RegExp(label + "\\s*:\\s*([^\\n\\r]+)", "i"));
-  if (!m) return "";
-  return cleanStr(m[1].trim());
+function fieldFromMessage(msg: string, label: string): string {
+  const key = label + ":";
+  const idx = msg.indexOf(key);
+  if (idx < 0) return "";
+  const rest = msg.slice(idx + key.length);
+  const line = rest.split("\n")[0] || "";
+  return cleanStr(line.trim());
 }
-// Message se paisa nikalna - Shipping: $20 / Delivery: 20 jaisa
 function moneyFromMessage(msg: string, labels: string[]): number {
-  for (const label of labels) {
-    const m = msg.match(new RegExp(label + "\\s*:\\s*\\$?([0-9]+(?:\\.[0-9]+)?)", "i"));
+  for (let li = 0; li < labels.length; li++) {
+    const label = labels[li];
+    const key = label + ":";
+    const idx = msg.toLowerCase().indexOf(key.toLowerCase());
+    if (idx < 0) continue;
+    const rest = msg.slice(idx + key.length).trim();
+    const m = rest.match(/([0-9]+(?:\.[0-9]+)?)/);
     if (m) return getNum(m[1], 0);
   }
   return 0;
+}
+function getSupabase() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_ROLE_KEY as string);
+}
+
+// --- ADMIN: GET orders - admin/orders page isi se orders laata hai ---
+export async function GET() {
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase.from("leads").select("*").order("created_at", { ascending: false }).limit(200);
+    if (error) return NextResponse.json({ leads: [], error: error.message });
+    return NextResponse.json(data || []);
+  } catch (e: unknown) {
+    return NextResponse.json({ leads: [], error: errMsg(e) });
+  }
+}
+
+// --- ADMIN: PATCH status - Mark Confirmed / Shipped / Delivered ---
+export async function PATCH(req: Request) {
+  try {
+    const body = asRecord(await req.json().catch(() => ({})));
+    const id = body.id;
+    const orderId = cleanStr(body.order_id || body.orderId);
+    const statusRaw = cleanStr(body.status || body.lead_status || "New");
+    const status = statusRaw.toLowerCase();
+    const leadStatus = statusRaw.charAt(0).toUpperCase() + statusRaw.slice(1).toLowerCase();
+    const supabase = getSupabase();
+    let q = supabase.from("leads").update({ status, lead_status: leadStatus });
+    if (id !== undefined && id !== "" && id !== null) {
+      q = q.eq("id", id as number);
+    } else if (orderId) {
+      q = q.eq("order_id", orderId);
+    } else {
+      return NextResponse.json({ ok: false, error: "id or order_id missing" }, { status: 400 });
+    }
+    const { error } = await q;
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ ok: true, status, lead_status: leadStatus });
+  } catch (e: unknown) {
+    return NextResponse.json({ ok: false, error: errMsg(e) }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
@@ -54,15 +101,14 @@ export async function POST(req: Request) {
     const incomingMessage = getStr(p.message || body.message);
     const notes = cleanStr(p.notes || body.notes);
 
-    // --- COUNTRY FIX: pehle direct field, EMPTY ho to message se ---
     let country = cleanStr(p.country || p.shippingCountry || body.country);
     let address = cleanStr(p.address || body.address);
     let city = cleanStr(p.city || body.city);
     let zip = cleanStr(p.zip || p.postalCode || body.postalCode);
-    if (!country) country = fromMessage(incomingMessage, "Country");
-    if (!address) address = fromMessage(incomingMessage, "Address");
-    if (!city) city = fromMessage(incomingMessage, "City");
-    if (!zip) zip = fromMessage(incomingMessage, "ZIP|Postal");
+    if (!country) country = fieldFromMessage(incomingMessage, "Country");
+    if (!address) address = fieldFromMessage(incomingMessage, "Address");
+    if (!city) city = fieldFromMessage(incomingMessage, "City");
+    if (!zip) zip = fieldFromMessage(incomingMessage, "ZIP");
 
     const rawItems: unknown[] = Array.isArray(p.items) ? (p.items as unknown[]) : [];
     const items: Item[] = rawItems.map((raw) => {
@@ -81,13 +127,10 @@ export async function POST(req: Request) {
     });
 
     const totalQty = items.reduce((s: number, i: Item) => s + (i.qty || 1), 0) || getNum(p.quantity, 1) || 1;
-
-    // --- TOTAL + SHIPPING FIX ---
     const subtotalClean = getStr(p.subtotal ?? p.subTotal ?? "").replace(/[^0-9.]/g, "");
     const subtotal = getNum(subtotalClean, 0) || items.reduce((s: number, i: Item) => s + i.price * (i.qty || 1), 0);
     let shipping = getNum(p.shipping ?? p.shippingCharge ?? p.shippingCost ?? p.delivery ?? p.deliveryCharge ?? p.deliveryCost, 0);
     if (!shipping) shipping = moneyFromMessage(incomingMessage, ["Shipping", "Delivery", "DHL", "Shipping Charge", "Delivery Charge"]);
-    // Agar checkout ne grandTotal bheja hai to wohi use karo, warna subtotal + shipping
     const grandClean = getStr(p.grandTotal ?? p.grand_total ?? p.totalAmount ?? "").replace(/[^0-9.]/g, "");
     let grandTotal = getNum(grandClean, 0);
     if (!grandTotal) grandTotal = subtotal + shipping;
@@ -126,11 +169,10 @@ export async function POST(req: Request) {
     ].filter(Boolean).join("\n");
 
     try {
-      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_ROLE_KEY as string);
+      const supabase = getSupabase();
       const { count } = await supabase.from("leads").select("id", { count: "exact", head: true });
       const nextNum = 8611001 + (count || 0);
       orderId = `KF-007${nextNum}`;
-
       const fullRow = {
         order_id: orderId,
         name,
@@ -142,6 +184,9 @@ export async function POST(req: Request) {
         quantity: String(totalQty),
         total,
         amount: total,
+        subtotal: `$${subtotal.toFixed(2)}`,
+        shipping: `$${shipping.toFixed(2)}`,
+        delivery_charges: `$${shipping.toFixed(2)}`,
         total_quantity: totalQty,
         total_orders: 1,
         lead_status: "New",
@@ -150,7 +195,6 @@ export async function POST(req: Request) {
         message,
         items: itemsWithImages,
       };
-
       const { error } = await supabase.from("leads").insert([fullRow]);
       if (error) {
         console.error("FULL INSERT FAILED, trying minimal:", error.message);
