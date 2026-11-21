@@ -43,16 +43,42 @@ function getTotalVal(o: Order): string {
 }
 
 const CARDS = [
-  { title: "Customers", desc: "VIP, Repeat, New customers", href: "/admin/customers", count: "CRM" },
-  { title: "Orders", desc: "Sab orders, status, total", href: "/admin/orders", count: "Orders" },
-  { title: "Products", desc: "Products add / edit / price", href: "/admin/products", count: "Products" },
-  { title: "Events", desc: "90 - 45 - 30 - 20 - 10 - 0 reminder", href: "/admin/events", count: "Events" },
-  { title: "Settings", desc: "Site settings, password, info", href: "/admin/settings", count: "Settings" },
+  {
+    title: "Orders",
+    desc: "Sab orders, status, total",
+    href: "/admin/orders",
+    guide: "Yahan se: Order ka status badlo - New -> Confirmed -> Shipped -> Delivered. Order ki detail dekho - naam, phone, country, total.",
+  },
+  {
+    title: "Customers",
+    desc: "VIP, Repeat, New customers",
+    href: "/admin/customers",
+    guide: "Yahan se: Customer ka total kharcha dekho. VIP kaun hai, Repeat kaun hai. WhatsApp / Email karo.",
+  },
+  {
+    title: "Products",
+    desc: "Products add / edit / price",
+    href: "/admin/products",
+    guide: "Yahan se: Product ki price / stock badlo. Naya product ka record add karo. NOTE: Abhi ye Shop pe nahi jata, Shop ke liye VS Code chahiye - agle step me Supabase se jorenge.",
+  },
+  {
+    title: "Events",
+    desc: "90 - 45 - 30 - 20 - 10 - 0 reminder",
+    href: "/admin/events",
+    guide: "Yahan se: Shadi / Event ki date daalo. System 90, 45, 30, 20, 10, 0 din pehle yaad dilayega.",
+  },
+  {
+    title: "Settings",
+    desc: "Site settings, password, info",
+    href: "/admin/settings",
+    guide: "Yahan se: Site ka naam, email, WhatsApp number, password badlo. Ye sab jagah update hoga.",
+  },
 ];
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showGuide, setShowGuide] = useState(true);
 
   useEffect(() => {
     fetch("/api/lead", { cache: "no-store" })
@@ -111,6 +137,52 @@ export default function AdminDashboard() {
 
         <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Admin Dashboard</h1>
 
+        {/* ===== GUIDE - YAHAN SE KYA KARNA HAI ===== */}
+        <div className="bg-amber-400/10 border border-amber-400/40 rounded p-4 space-y-3">
+          <div className="flex justify-between items-center">
+            <h2 className="font-bold text-amber-400 text-sm">📋 KROSSFORD ADMIN GUIDE - Pehle Ise Parho - Kahan Se Kya Karna Hai</h2>
+            <button onClick={() => setShowGuide(!showGuide)} className="bg-zinc-900 border border-zinc-700 px-3 py-1 rounded text-xs font-bold">
+              {showGuide ? "Hide Guide ↑" : "Show Guide ↓"}
+            </button>
+          </div>
+
+          {showGuide ? (
+            <div className="space-y-3 text-xs leading-relaxed text-zinc-200">
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">1. NAYA ORDER AAYE TO KYA KARNA HAI?</p>
+                <p className="text-zinc-400 mt-1">Orders page kholo → Order ko View Detail karo → Customer ko WhatsApp karo → Mark Confirmed dabao → Jab bhej do to Mark Shipped → Jab mil jaye to Mark Delivered.</p>
+              </div>
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">2. NAYA PRODUCT ADD KARNA HO TO KYA KARNA HAI?</p>
+                <p className="text-zinc-400 mt-1">Abhi ke liye: VS Code me public/products/ me photo daalo + Shop wali file me product ka block add karo + Deploy karo. Admin Products me sirf record ke liye add karo. Agle step me Admin se hi Shop pe jayega, VS Code ki zaroorat nahi hogi.</p>
+              </div>
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">3. PRICE / STOCK BADALNI HO TO KYA KARNA HAI?</p>
+                <p className="text-zinc-400 mt-1">Products page kholo → Edit Price / Stock dabao → Nayi price / stock likho → Save dabao. NOTE: Abhi ye Shop ki price nahi badlega, Shop ki price ke liye VS Code me Shop file badalni hogi.</p>
+              </div>
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">4. CUSTOMER KO WHATSAPP / EMAIL KARNA HO TO?</p>
+                <p className="text-zinc-400 mt-1">Customers page kholo → Jis customer ko karna hai uske card me WhatsApp Chat ya Email History dabao.</p>
+              </div>
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">5. VS CODE KAB CHAHIYE, KAB NAHI?</p>
+                <p className="text-zinc-400 mt-1">✅ VS Code NAHI chahiye: Order status badalna, Customer dekhna, Dashboard dekhna.</p>
+                <p className="text-zinc-400">⚠️ VS Code CHAHIYE (abhi ke liye): Naya product Shop pe lagana, Shop ki price badalna, Website ka design badalna.</p>
+              </div>
+
+              <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
+                <p className="font-bold text-white">6. HAR PAGE KIS KAAM KE LIYE HAI?</p>
+                <p className="text-zinc-400 mt-1">Orders = Orders dekhna + Status badalna | Customers = VIP / Repeat dekhna | Products = Price / Stock record | Events = Shadi/Event reminder | Settings = Site info / Password</p>
+              </div>
+            </div>
+          ) : null}
+        </div>
+        {/* ===== GUIDE KHATAM ===== */}
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
           <div className="bg-zinc-900 border border-zinc-800 p-4 rounded">
             <p className="text-zinc-400">TOTAL CUSTOMERS</p>
@@ -139,6 +211,7 @@ export default function AdminDashboard() {
             <Link key={c.href} href={c.href} className="bg-zinc-900 border border-zinc-800 p-5 rounded space-y-2 hover:border-amber-400 block">
               <h3 className="text-sm font-bold text-white">{c.title}</h3>
               <p className="text-xs text-zinc-400">{c.desc}</p>
+              <p className="text-xs text-amber-400/90 leading-relaxed">{c.guide}</p>
               <p className="text- text-amber-400 font-bold uppercase">Open {c.title} -&gt;</p>
             </Link>
           ))}
