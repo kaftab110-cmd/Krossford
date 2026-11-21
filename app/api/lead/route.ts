@@ -17,16 +17,22 @@ type OrderEmailItem = {
   customization: string;
 };
 
-async function createOrderId(): Promise<string> {
-  const stamp = Date.now().toString().slice(-6);
-  const rand = Math.floor(1000 + Math.random() * 9000).toString();
-  return `KF-00786110${stamp}${rand}`.slice(0, 16);
-}
-
 function getSupabase() {
   const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co").trim();
   const key = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key").trim();
   return createClient(url, key);
+}
+
+async function createOrderId(supabase: ReturnType<typeof getSupabase>): Promise<string> {
+  try {
+    const { count, error } = await supabase.from("leads").select("id", { count: "exact", head: true });
+    if (!error && typeof count === "number") {
+      const next = count + 1;
+      return `KF-00786110${String(next).padStart(2, "0")}`;
+    }
+  } catch {}
+  const stamp = Date.now().toString().slice(-6);
+  return `KF-00786110${stamp}`.slice(0, 16);
 }
 
 function getString(value: unknown): string {
@@ -164,7 +170,7 @@ export async function POST(req: Request) {
     const sourceLabel = source === "b2b-contact" ? "New B2B Enquiry" : "New B2C Order";
     const safeCustomerName = customerName.replace(/[\r\n]+/g, " ").slice(0, 120);
     let orderId: string;
-    try { orderId = await createOrderId(); } catch (error) {
+    try { orderId = await createOrderId(getSupabase()); } catch (error) {
       console.error("Could not allocate a persistent order ID. Database error:", error);
       return NextResponse.json({ error: "Orders are temporarily unavailable. Please try again." }, { status: 503 });
     }
