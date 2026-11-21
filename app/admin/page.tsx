@@ -78,7 +78,7 @@ const CARDS = [
 export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showGuide, setShowGuide] = useState(true);
+  const [showGuide, setShowGuide] = useState(false);
 
   useEffect(() => {
     fetch("/api/lead", { cache: "no-store" })
@@ -95,7 +95,6 @@ export default function AdminDashboard() {
       });
   }, []);
 
-  // --- Real Numbers ---
   const totalOrders = orders.length;
 
   let totalRevenue = 0;
@@ -105,7 +104,6 @@ export default function AdminDashboard() {
     if (Number.isFinite(n)) totalRevenue = totalRevenue + n;
   });
 
-  // Unique Customers = unique email, nahi to phone
   const customerSet = new Set<string>();
   orders.forEach((o) => {
     const key = (clean(o.email) || clean(o.whatsapp || o.phone) || "").toLowerCase();
@@ -113,14 +111,12 @@ export default function AdminDashboard() {
   });
   const totalCustomers = customerSet.size;
 
-  // New Orders
   let newOrders = 0;
   orders.forEach((o) => {
     const s = clean(o.lead_status || o.status) || "New";
     if (s.toLowerCase() === "new") newOrders = newOrders + 1;
   });
 
-  // Aaj ke Orders
   const todayStr = new Date().toDateString();
   let todayOrders = 0;
   orders.forEach((o) => {
@@ -137,50 +133,52 @@ export default function AdminDashboard() {
 
         <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Admin Dashboard</h1>
 
-        {/* ===== GUIDE - YAHAN SE KYA KARNA HAI ===== */}
-        <div className="bg-amber-400/10 border border-amber-400/40 rounded p-4 space-y-3">
-          <div className="flex justify-between items-center">
-            <h2 className="font-bold text-amber-400 text-sm">📋 KROSSFORD ADMIN GUIDE - Pehle Ise Parho - Kahan Se Kya Karna Hai</h2>
-            <button onClick={() => setShowGuide(!showGuide)} className="bg-zinc-900 border border-zinc-700 px-3 py-1 rounded text-xs font-bold">
-              {showGuide ? "Hide Guide ↑" : "Show Guide ↓"}
-            </button>
-          </div>
+        {/* ===== GUIDE BUTTON - PINK PILL JAISA ===== */}
+        <div className="text-center">
+          <button
+            onClick={() => setShowGuide(!showGuide)}
+            className="inline-block bg-[#ff2e88] hover:bg-[#ff4d9d] text-white font-bold text-sm tracking-wider px-8 py-3 rounded-full border-2 border-white/20 shadow-[0_0_25px_rgba(255,46,136,0.6)] transition"
+          >
+            {showGuide ? "HIDE GUIDE ↑" : "VIEW ADMIN GUIDE →"}
+          </button>
+          <p className="text- text-zinc-500 mt-2">Is button pe click karo - poori guide list nikal aayegi - kahan se kya karna hai</p>
+        </div>
 
-          {showGuide ? (
+        {showGuide ? (
+          <div className="bg-amber-400/10 border border-amber-400/40 rounded p-4 space-y-3">
+            <h2 className="font-bold text-amber-400 text-sm">📋 KROSSFORD ADMIN GUIDE - Kahan Se Kya Karna Hai</h2>
             <div className="space-y-3 text-xs leading-relaxed text-zinc-200">
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">1. NAYA ORDER AAYE TO KYA KARNA HAI?</p>
                 <p className="text-zinc-400 mt-1">Orders page kholo → Order ko View Detail karo → Customer ko WhatsApp karo → Mark Confirmed dabao → Jab bhej do to Mark Shipped → Jab mil jaye to Mark Delivered.</p>
               </div>
-
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">2. NAYA PRODUCT ADD KARNA HO TO KYA KARNA HAI?</p>
                 <p className="text-zinc-400 mt-1">Abhi ke liye: VS Code me public/products/ me photo daalo + Shop wali file me product ka block add karo + Deploy karo. Admin Products me sirf record ke liye add karo. Agle step me Admin se hi Shop pe jayega, VS Code ki zaroorat nahi hogi.</p>
               </div>
-
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">3. PRICE / STOCK BADALNI HO TO KYA KARNA HAI?</p>
                 <p className="text-zinc-400 mt-1">Products page kholo → Edit Price / Stock dabao → Nayi price / stock likho → Save dabao. NOTE: Abhi ye Shop ki price nahi badlega, Shop ki price ke liye VS Code me Shop file badalni hogi.</p>
               </div>
-
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">4. CUSTOMER KO WHATSAPP / EMAIL KARNA HO TO?</p>
                 <p className="text-zinc-400 mt-1">Customers page kholo → Jis customer ko karna hai uske card me WhatsApp Chat ya Email History dabao.</p>
               </div>
-
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">5. VS CODE KAB CHAHIYE, KAB NAHI?</p>
                 <p className="text-zinc-400 mt-1">✅ VS Code NAHI chahiye: Order status badalna, Customer dekhna, Dashboard dekhna.</p>
                 <p className="text-zinc-400">⚠️ VS Code CHAHIYE (abhi ke liye): Naya product Shop pe lagana, Shop ki price badalna, Website ka design badalna.</p>
               </div>
-
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">6. HAR PAGE KIS KAAM KE LIYE HAI?</p>
                 <p className="text-zinc-400 mt-1">Orders = Orders dekhna + Status badalna | Customers = VIP / Repeat dekhna | Products = Price / Stock record | Events = Shadi/Event reminder | Settings = Site info / Password</p>
               </div>
             </div>
-          ) : null}
-        </div>
+            <div className="text-center">
+              <button onClick={() => setShowGuide(false)} className="bg-zinc-900 border border-zinc-700 px-5 py-2 rounded-full text-xs font-bold">Close Guide ↑</button>
+            </div>
+          </div>
+        ) : null}
         {/* ===== GUIDE KHATAM ===== */}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
@@ -217,7 +215,6 @@ export default function AdminDashboard() {
           ))}
         </div>
 
-        {/* Recent Orders - Last 5 */}
         <div className="bg-zinc-900 border border-zinc-800 rounded p-4 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className="text-sm font-bold text-white">Recent Orders - Last 5</h3>
