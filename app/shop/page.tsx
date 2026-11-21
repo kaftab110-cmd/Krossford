@@ -13,14 +13,19 @@ export const dynamic = "force-dynamic";
 // 3. Card se For Her label HATAYA - Shop me For Her items dikhenge par label nahi lagega - For Her ka apna alag page hai
 // 4. For Her button SIRF Shop pe - For Her page pe nahi (ye file Shop ki hai, is liye yahan hamesha dikhega)
 // 5. Banner line NAHI hai - koi banner nahi
-// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + DHL
+// 6. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi - Ab sirf 1 line: Designs + Delivery 12-17 + 【entity-DHL¦canonical_name=DHL】
 // 7. Slider formula same (ProductCard wala) + Add to Cart + Search + Sort sab rakha hua hai
 // 8. ?category=For Her aaye to seedha /for-her pe redirect - Shop me For Her category nahi khulegi
+// 9. NEW - Supabase products bhi yahan dikhenge - Admin se add kiya hua product Shop pe khud aa jayega
+
+type SupabaseProduct = { id: number; name: string; price: number; category: string; image: string; stock: number; description: string };
+type ShopProduct = { id: number | string; slug: string; name: string; price: number; category: string; image: string; description: string; gallery: string[]; badge?: string };
 
 function ShopPageInner() {
   const searchParams = useSearchParams();
   const urlCategory = searchParams.get("category") || "All";
   const [activeCategory, setActiveCategory] = useState(urlCategory);
+  const [supabaseProducts, setSupabaseProducts] = useState<ShopProduct[]>([]);
 
   useEffect(() => {
     if (urlCategory === 'For Her') { window.location.href = '/for-her'; return; }
@@ -28,16 +33,41 @@ function ShopPageInner() {
     setSearchQuery('');
   }, [urlCategory]);
 
+  // Supabase se Admin wale products lao - purane wale products ke saath dikhenge
+  useEffect(() => {
+    const loadSupabase = async () => {
+      try {
+        const res = await fetch("/api/products");
+        const j = await res.json() as { products?: SupabaseProduct[] };
+        const list = (j.products || []).map((p): ShopProduct => ({
+          id: `admin-${p.id}`,
+          slug: `admin-${p.id}`,
+          name: p.name,
+          price: Number(p.price),
+          category: p.category || "General",
+          image: p.image || "/images/placeholder.jpg",
+          description: p.description || "",
+          gallery: p.image ? [p.image] : [],
+          badge: "New",
+        }));
+        setSupabaseProducts(list);
+      } catch {
+        setSupabaseProducts([]);
+      }
+    };
+    loadSupabase();
+  }, []);
+
   // --- SEARCH + SORT - Shop SEO / Usability ---
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "price-low" | "price-high" | "name">("featured");
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
 
   // ADD TO CART - Shop me pehle tha hi nahi, sirf View Designs tha - is liye add kiya
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: ShopProduct) => {
     const slug = product.slug || String(product.id);
-    const existingCart = readCartItems<any>();
-    const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
+    const existingCart = readCartItems<Record<string, unknown>>();
+    const existingIndex = existingCart.findIndex((it) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
     } else {
@@ -60,30 +90,54 @@ function ShopPageInner() {
     setTimeout(() => setAddedSlug(null), 2000);
   };
 
+  const allProducts: ShopProduct[] = useMemo(() => {
+    const staticList: ShopProduct[] = (products as unknown as ShopProduct[]).map((p) => ({
+      ...p,
+      gallery: (p.gallery as string[]) || [],
+    }));
+    // Admin wale pehle dikhenge, phir purane wale
+    return [...supabaseProducts, ...staticList];
+  }, [supabaseProducts]);
+
+  const getCount = (cat: string) => {
+    if (cat === "All") return allProducts.length;
+    return allProducts.filter((p) => p.category === cat).length;
+  };
+
   const filtered = useMemo(() => {
-    let list = [...getProductsByCategory(activeCategory)];
+    let list = [...allProducts];
+    if (activeCategory !== "All") {
+      // Purane wale getProductsByCategory wale logic ke liye - All ke alawa category se filter karo
+      list = list.filter((p) => p.category === activeCategory);
+      // Agar purane wale products me category ka naam alag hai to fallback: getProductsByCategory wali list bhi jor do
+      const oldList = getProductsByCategory(activeCategory) as unknown as ShopProduct[];
+      const seen = new Set(list.map((x) => String(x.id)));
+      oldList.forEach((p) => {
+        if (!seen.has(String(p.id))) list.push({ ...p, gallery: (p.gallery as string[]) || [] });
+      });
+    }
     const q = searchQuery.trim().toLowerCase();
     if (q) {
-      list = list.filter((p: any) =>
-        [p.name, p.description, p.category, p.slug].some((f: any) => String(f || "").toLowerCase().includes(q))
+      list = list.filter((p) =>
+        [p.name, p.description, p.category, p.slug].some((f) => String(f || "").toLowerCase().includes(q))
       );
     }
-    if (sortBy === "price-low") list.sort((a: any, b: any) => a.price - b.price);
-    if (sortBy === "price-high") list.sort((a: any, b: any) => b.price - a.price);
-    if (sortBy === "name") list.sort((a: any, b: any) => String(a.name).localeCompare(String(b.name)));
+    if (sortBy === "price-low") list.sort((a, b) => a.price - b.price);
+    if (sortBy === "price-high") list.sort((a, b) => b.price - a.price);
+    if (sortBy === "name") list.sort((a, b) => String(a.name).localeCompare(String(b.name)));
     return list;
-  }, [activeCategory, searchQuery, sortBy]);
+  }, [activeCategory, searchQuery, sortBy, allProducts]);
 
   // SLIDER FORMULA (ProductCard wala - har folder/file me same):
   // - Arrows mobile pe hamesha visible, desktop pe hover pe
   // - Dots + Counter (1 / 5)
   // - Swipe left/right mobile pe
   // - Slider sirf tab jab 1 se zyada photo ho
-  const [slideIndex, setSlideIndex] = useState<Record<number, number>>({});
-  const [hoverId, setHoverId] = useState<number | null>(null);
+  const [slideIndex, setSlideIndex] = useState<Record<string, number>>({});
+  const [hoverId, setHoverId] = useState<string | null>(null);
   const touchStartX = useRef<number | null>(null);
 
-  const hoverProduct = hoverId !== null ? products.find((p) => p.id === hoverId) : undefined;
+  const hoverProduct = hoverId !== null ? allProducts.find((p) => String(p.id) === hoverId) : undefined;
   const hoverImages = hoverProduct ? [...new Set([hoverProduct.image, ...(hoverProduct.gallery || [])].filter(Boolean))] : [];
 
   const HOVER_SLIDE_DELAY = 1800;
@@ -99,18 +153,18 @@ function ShopPageInner() {
     return () => clearInterval(timer);
   }, [hoverId, hoverImages.length]);
 
-  const goTo = (id: number, total: number, dir: 1 | -1) => {
+  const goTo = (id: string, total: number, dir: 1 | -1) => {
     setSlideIndex((prev) => {
       const cur = prev[id] ?? 0;
       return { ...prev, [id]: (cur + dir + total) % total };
     });
   };
 
-  const goToIndex = (id: number, idx: number) => {
+  const goToIndex = (id: string, idx: number) => {
     setSlideIndex((prev) => ({ ...prev, [id]: idx }));
   };
 
-  const startHover = (id: number) => {
+  const startHover = (id: string) => {
     setHoverId(id);
   };
   const stopHover = () => {
@@ -131,7 +185,7 @@ function ShopPageInner() {
 
       <div className="flex flex-wrap justify-center gap-2 px-6 pb-6">
         {CATEGORIES.filter((cat) => cat !== 'For Her').map((cat) => {
-          const count = getProductsByCategory(cat).length;
+          const count = getCount(cat);
           return (
             <button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }}
               className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border cursor-pointer ${activeCategory === cat ? "bg-[#D4AF37] text-black border-[#D4AF37] font-black shadow-lg" : "bg-zinc-950 text-zinc-100 border-zinc-700 hover:border-[#D4AF37]"}`}>
@@ -154,7 +208,7 @@ function ShopPageInner() {
           Sort:
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as "featured" | "price-low" | "price-high" | "name")}
             className="bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"
           >
             <option value="featured">Featured</option>
@@ -169,24 +223,25 @@ function ShopPageInner() {
         <p className="text-center text-sm text-zinc-400 pb-16">No products found for “{searchQuery}” in {activeCategory}. Try another search or category.</p>
       ) : (
       <section className="mx-auto max-w-7xl px-6 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filtered.map((p: any) => {
+        {filtered.map((p) => {
           const cardImages = [...new Set([p.image, ...(p.gallery || [])].filter(Boolean))];
           const hasSlider = cardImages.length > 1;
-          const curIdx = slideIndex[p.id] ?? 0;
+          const pid = String(p.id);
+          const curIdx = slideIndex[pid] ?? 0;
           const currentImage = hasSlider ? cardImages[curIdx % cardImages.length] : p.image;
           return (
-          <div key={p.id} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-[#D4AF37]">
+          <div key={pid} className="bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden group hover:border-[#D4AF37]">
             <Link href={`/product/${p.slug}`}>
               <div
                 className="relative h-64 bg-zinc-900 overflow-hidden cursor-pointer"
-                onMouseEnter={() => startHover(p.id)}
+                onMouseEnter={() => startHover(pid)}
                 onMouseLeave={stopHover}
                 onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
                 onTouchEnd={(e) => {
                   if (touchStartX.current === null || !hasSlider) return;
                   const dx = e.changedTouches[0].clientX - touchStartX.current;
-                  if (dx < -50) goTo(p.id, cardImages.length, 1);
-                  if (dx > 50) goTo(p.id, cardImages.length, -1);
+                  if (dx < -50) goTo(pid, cardImages.length, 1);
+                  if (dx > 50) goTo(pid, cardImages.length, -1);
                   touchStartX.current = null;
                 }}
               >
@@ -201,13 +256,13 @@ function ShopPageInner() {
                     <button
                       type="button"
                       aria-label="Previous photo"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(p.id, cardImages.length, -1); }}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(pid, cardImages.length, -1); }}
                       className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     >‹</button>
                     <button
                       type="button"
                       aria-label="Next photo"
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(p.id, cardImages.length, 1); }}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); goTo(pid, cardImages.length, 1); }}
                       className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     >›</button>
                   </>
@@ -219,7 +274,7 @@ function ShopPageInner() {
                         key={i}
                         type="button"
                         aria-label={`Go to photo ${i + 1}`}
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(p.id, i); }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); goToIndex(pid, i); }}
                         className={`rounded-full transition-all ${i === (curIdx % cardImages.length) ? "w-4 h-2 bg-[#D4AF37]" : "w-2 h-2 bg-white/70"}`}
                       />
                     ))}
@@ -242,7 +297,7 @@ function ShopPageInner() {
                 </button>
                 <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
               </div>
-              <Link href={`/product/${p.slug}`} className="block text-center text- text-zinc-400 hover:text-[#D4AF37] uppercase tracking-widest">View Designs →</Link>
+              <Link href={`/product/${p.slug}`} className="block text-center text-xs text-zinc-400 hover:text-[#D4AF37] uppercase tracking-widest">View Designs →</Link>
             </div>
           </div>
           );
