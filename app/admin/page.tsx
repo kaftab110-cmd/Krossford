@@ -133,11 +133,11 @@ export default function AdminDashboard() {
 
         <h1 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-2xl">KROSSFORD Admin Dashboard</h1>
 
-        {/* ===== GUIDE BUTTON - PINK PILL JAISA ===== */}
+        {/* ===== GUIDE BUTTON - YELLOW / GOLD ===== */}
         <div className="text-center">
           <button
             onClick={() => setShowGuide(!showGuide)}
-            className="inline-block bg-[#ff2e88] hover:bg-[#ff4d9d] text-white font-bold text-sm tracking-wider px-8 py-3 rounded-full border-2 border-white/20 shadow-[0_0_25px_rgba(255,46,136,0.6)] transition"
+            className="inline-block bg-amber-400 hover:bg-amber-300 text-black font-bold text-sm tracking-wider px-8 py-3 rounded-full border-2 border-amber-200 shadow-[0_0_25px_rgba(251,191,36,0.6)] transition"
           >
             {showGuide ? "HIDE GUIDE ↑" : "VIEW ADMIN GUIDE →"}
           </button>
