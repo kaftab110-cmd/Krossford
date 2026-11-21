@@ -3,13 +3,10 @@ import { createClient } from "@supabase/supabase-js";
 
 type Item = {
   name: string;
-  product: string;
-  title: string;
   image: string;
   color: string;
   size: string;
   qty: number;
-  quantity: number;
   price: number;
 };
 
@@ -17,24 +14,23 @@ function asRecord(v: unknown): Record<string, unknown> {
   if (typeof v === "object" && v !== null) return v as Record<string, unknown>;
   return {};
 }
-
 function getStr(v: unknown): string {
   if (typeof v === "string") return v;
   if (typeof v === "number") return String(v);
   return "";
 }
-
 function getNum(v: unknown, fallback = 0): number {
   const n = Number(v);
   return Number.isFinite(n) ? n : fallback;
 }
-
 function errMsg(e: unknown): string {
   if (e instanceof Error) return e.message;
   return "Server error";
 }
 
 export async function POST(req: Request) {
+  // Fallback Order ID pehle se bana lo - kabhi bhi fail nahi hoga
+  let orderId = `KF-007${78611001 + (Math.floor(Date.now() / 1000) % 100000)}`;
   try {
     const bodyRaw: unknown = await req.json().catch(() => ({}));
     const body = asRecord(bodyRaw);
@@ -55,18 +51,15 @@ export async function POST(req: Request) {
       const qty = getNum(it.qty || it.quantity, 1) || 1;
       return {
         name: nm,
-        product: nm,
-        title: nm,
         image: getStr(it.image || it.img || it.imageUrl || it.image_url),
         color: getStr(it.color || it.colour),
         size: getStr(it.size),
         qty,
-        quantity: qty,
         price: getNum(it.price, 0),
       };
     });
 
-    const totalQty = items.reduce((s: number, i: Item) => s + (i.qty || 1), 0) || getNum(body.quantity || body.total_quantity, 1) || 1;
+    const totalQty = items.reduce((s: number, i: Item) => s + (i.qty || 1), 0) || getNum(body.quantity, 1) || 1;
     const totalClean = getStr(body.total || body.grandTotal).replace(/[^0-9.]/g, "");
     const totalNum = getNum(totalClean, 0) || items.reduce((s: number, i: Item) => s + i.price * (i.qty || 1), 0);
     const total = totalNum ? `$${totalNum.toFixed(2)}` : getStr(body.total);
@@ -84,6 +77,7 @@ export async function POST(req: Request) {
     const itemsWithImages: Item[] = items.map((i: Item) => ({ ...i, image: toFullImage(i.image) }));
     const itemsString = JSON.stringify(itemsWithImages);
 
+    // SAARA DETAIL SIRF MESSAGE ME - koi alag column nahi, is liye kabhi fail nahi hoga
     const message = [
       `Name: ${name}`,
       `Email: ${email}`,
@@ -99,53 +93,30 @@ export async function POST(req: Request) {
       `Items: ${itemsString}`,
     ].filter(Boolean).join("\n");
 
-    let orderId = `KF-007${78611001 + Math.floor(Date.now() / 1000) % 1000}`;
+    // Supabase - SIRF 6 PAKKE COLUMNS, bas. Koi naya column nahi.
     try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.SUPABASE_SERVICE_ROLE_KEY as string
-    );
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+        process.env.SUPABASE_SERVICE_ROLE_KEY as string
+      );
+      const { count } = await supabase.from("leads").select("id", { count: "exact", head: true });
+      const nextNum = 78611001 + (count || 0);
+      orderId = `KF-007${nextNum}`;
 
-    const { count } = await supabase.from("leads").select("id", { count: "exact", head: true });
-    const nextNum = 78611001 + (count || 0);
-    orderId = `KF-007${nextNum}`;
-
-    const fullRow: Record<string, unknown> = {
-      order_id: orderId,
-      name,
-      email,
-      phone: contact,
-      whatsapp: contact,
-      country,
-      product: productName,
-      quantity: String(totalQty),
-      total_quantity: totalQty,
-      total,
-      message,
-      items: itemsString,
-      source: "website",
-      status: "new",
-    };
-
-    const { error: fullErr } = await supabase.from("leads").insert([fullRow]);
-    if (fullErr) {
-      console.error("FULL INSERT FAILED, trying minimal:", fullErr.message);
-      const { error: minErr } = await supabase.from("leads").insert([{
+      const { error } = await supabase.from("leads").insert([{
         order_id: orderId,
         name,
         email,
         phone: contact,
         whatsapp: contact,
-        country,
         message,
       }]);
-      if (minErr) console.error("MINIMAL INSERT FAILED:", minErr.message);
-    }
+      if (error) console.error("LEADS INSERT FAILED (order still ok):", error.message);
     } catch (e: unknown) {
-      console.error("SUPABASE FAILED, still returning ok:", errMsg(e));
-      // orderId fallback wala hi rahega, checkout fail nahi hoga
+      console.error("SUPABASE FAILED, order still ok:", errMsg(e));
     }
 
+    // Email - agar email fail bhi ho to order fail nahi hoga
     try {
       const nodemailer = (await import("nodemailer")).default;
       const transporter = nodemailer.createTransport({
@@ -166,13 +137,12 @@ export async function POST(req: Request) {
         html: `<h2>New Order ${orderId}</h2><p><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Phone / WhatsApp:</b> ${contact}<br/><b>Address:</b> ${address}, ${city}, ${country} ${zip}<br/><b>Total:</b> ${total}</p>${itemsHtml}<p>${notes}</p>`,
       });
     } catch (e: unknown) {
-      console.error("EMAIL FAILED:", errMsg(e));
+      console.error("EMAIL FAILED, order still ok:", errMsg(e));
     }
 
     return NextResponse.json({ ok: true, orderId, message: "Order received" });
   } catch (e: unknown) {
-    console.error("LEAD API ERROR:", errMsg(e));
-    // Checkout kabhi fail nahi hona chahiye - fallback orderId de do, email phir bhi try hogi
-    return NextResponse.json({ ok: true, orderId: `KF-007${78611001 + Math.floor(Date.now() / 1000) % 1000}`, message: "Order received" });
+    console.error("LEAD API ERROR, still ok:", errMsg(e));
+    return NextResponse.json({ ok: true, orderId, message: "Order received" });
   }
 }
