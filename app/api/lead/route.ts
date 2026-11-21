@@ -173,17 +173,19 @@ export async function POST(req: Request) {
     if ((source !== "b2b-contact" && source !== "b2c-checkout") || !customerName || !message || customerName.length > 200 || email.length > 254 || message.length > 20000 || (email && !isValidEmail(email)) || ((source === "b2b-contact" || source === "b2c-checkout") && !email) || (source === "b2c-checkout" && (typeof total !== "number" || !Number.isFinite(total) || total < 0 || orderItems === null || orderItems.length === 0))) {
       return NextResponse.json({ error: "Please check the required enquiry details." }, { status: 400 });
     }
+    // FIX 1 — SMTP ko soft kar diya — sirf host/user/pass hona chahiye, exact email / secure true zaroori nahi
     const smtpHost = process.env.SMTP_HOST?.trim();
     const smtpPort = Number(process.env.SMTP_PORT);
     const smtpUser = process.env.SMTP_USER?.trim();
     const smtpPassword = process.env.SMTP_PASSWORD;
     const smtpFrom = process.env.SMTP_FROM?.trim();
-    const smtpSecure = process.env.SMTP_SECURE?.trim().toLowerCase() === "true";
+    const smtpSecureRaw = process.env.SMTP_SECURE?.trim().toLowerCase();
+    const smtpSecure = smtpSecureRaw === "true" || smtpPort === 465;
     const backupEmail = process.env.KROSSFORD_BACKUP_EMAIL?.trim();
-    const senderEmail = "hello@krossford.com";
-    if (!smtpHost || !Number.isInteger(smtpPort) || smtpPort < 1 || smtpPort > 65535 || !smtpUser || !smtpPassword || smtpUser.toLowerCase() !== senderEmail || smtpFrom?.toLowerCase() !== senderEmail || !smtpSecure || !backupEmail || !isValidEmail(backupEmail)) {
-      console.error("Order notification service is missing required Zoho SMTP configuration.");
-      return NextResponse.json({ error: "Order notifications are temporarily unavailable." }, { status: 503 });
+    const senderEmail = (smtpFrom && isValidEmail(smtpFrom) ? smtpFrom : smtpUser) || "hello@krossford.com";
+    const smtpReady = !!(smtpHost && Number.isInteger(smtpPort) && smtpPort >= 1 && smtpPort <= 65535 && smtpUser && smtpPassword);
+    if (!smtpReady) {
+      console.error("SMTP missing — order will still save, email skipped. Check SMTP_HOST/PORT/USER/PASSWORD");
     }
     const sourceLabel = source === "b2b-contact" ? "New B2B Enquiry" : "New B2C Order";
     const safeCustomerName = customerName.replace(/[\r\n]+/g, " ").slice(0, 120);
@@ -195,34 +197,49 @@ export async function POST(req: Request) {
     const totalText = source === "b2c-checkout" ? `$${Number(total).toFixed(2)} USD` : "Not provided";
     const totalQty = orderItems ? orderItems.reduce((a, b) => a + b.quantity, 0) : (Number(quantity) || 0);
     const supabase = getSupabase();
-    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), product: product || null, message: message || null, items: orderItems || null, created_at: new Date().toISOString() }]);
+    // FIX 2 — Pehle full insert, fail ho to minimal insert — taake column missing pe 503 na aaye
+    const fullRow: any = { order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), product: product || null, message: message || null, items: orderItems || null, created_at: new Date().toISOString() };
+    let { error: dbError } = await supabase.from("leads").insert([fullRow]);
     if (dbError) {
-      console.error("Supabase lead insert error:", dbError);
-      return NextResponse.json({ error: "Order could not be saved. Please try again." }, { status: 503 });
+      console.error("Full insert failed, trying minimal insert:", dbError);
+      const minimalRow: any = {
+        order_id: orderId,
+        product: product || (orderItems ? orderItems.map((i) => `${i.name} x${i.quantity}`).join(", ") : null),
+        message: `Name: ${customerName}\nEmail: ${email}\nPhone: ${contact}\nTotal: ${totalText}\nQty: ${totalQty}\nItems: ${JSON.stringify(orderItems)}\n\n${message}`,
+        items: orderItems || null,
+      };
+      const retry = await supabase.from("leads").insert([minimalRow]);
+      dbError = retry.error;
+      if (dbError) {
+        console.error("Supabase lead insert error (minimal also failed):", dbError);
+        return NextResponse.json({ error: "Order could not be saved. Please try again." }, { status: 503 });
+      }
     }
     const emailText = [sourceLabel, `Order ID: ${orderId}`, `Name: ${customerName}`, `Email: ${email || "Not provided"}`, `Contact: ${contact || "Not provided"}`, `Product / Items: ${product || "Not provided"}`, `Quantity: ${quantity || "Not provided"}`, "", source === "b2c-checkout" && orderItems ? formatOrderItemsText(orderItems) : message].join("\n");
     const itemsHtml = source === "b2c-checkout" && orderItems ? renderOrderItemsHtml(orderItems) : `<pre>${escapeHtml(message)}</pre>`;
     const ownerEmailHtml = `<h2>${escapeHtml(sourceLabel)}</h2><p><strong>Order ID:</strong> ${escapeHtml(orderId)}<br><strong>Name:</strong> ${escapeHtml(customerName)}<br><strong>Email:</strong> ${escapeHtml(email)}<br><strong>Phone:</strong> ${escapeHtml(contact || "Not provided")}<br><strong>Total:</strong> ${escapeHtml(totalText)}</p><h3>Products</h3>${itemsHtml}<h3>Full submission</h3><pre>${escapeHtml(message)}</pre>`;
-    const transporter = nodemailer.createTransport({ host: smtpHost, port: smtpPort, secure: smtpSecure, auth: { user: smtpUser, pass: smtpPassword } });
-    const subject = `${sourceLabel} - ${safeCustomerName}`;
-    const [ownerEmailResults, whatsappResult] = await Promise.all([
-      Promise.allSettled([
-        transporter.sendMail({ from: senderEmail, to: "info@krossford.com", subject, text: emailText, html: ownerEmailHtml }),
-        transporter.sendMail({ from: senderEmail, to: backupEmail, subject, text: emailText, html: ownerEmailHtml }),
-      ]),
-      WHATSAPP_ENABLED ? sendWhatsAppNotification(source === "b2c-checkout" ? "order" : "enquiry", orderId, customerName, contact, totalText).then(() => ({ status: "fulfilled" as const }), (error) => ({ status: "rejected" as const, reason: error })) : Promise.resolve({ status: "skipped" as const }),
-    ]);
-    const [primaryResult, backupResult] = ownerEmailResults;
-    if (whatsappResult.status === "rejected") console.error("WhatsApp order notification failed.", whatsappResult.reason instanceof Error ? whatsappResult.reason.message : whatsappResult.reason);
-    else if (whatsappResult.status === "fulfilled") console.log("WhatsApp order notification sent.");
-    if (primaryResult?.status === "rejected") console.error("Primary order notification email failed.", primaryResult.reason instanceof Error ? primaryResult.reason.message : primaryResult.reason);
-    if (backupResult?.status === "rejected") console.error("Backup order notification email failed.", backupResult.reason instanceof Error ? backupResult.reason.message : backupResult.reason);
-    const bothEmailsFailed = primaryResult?.status === "rejected" && backupResult?.status === "rejected";
-    if (bothEmailsFailed) return NextResponse.json({ error: "The enquiry could not be sent. Please try again." }, { status: 502 });
-    if (source === "b2c-checkout") {
+    // FIX 3 — Email / WhatsApp fail ho bhi to order fail nahi hoga
+    if (smtpReady) {
       try {
-        await transporter.sendMail({ from: senderEmail, to: email, subject: "Aap Ka Order Mil Gaya Hai — Shukriya", text: `Aap Ka Order Mil Gaya Hai — Shukriya.\n\nOrder ID: ${orderId}\n\n${formatOrderItemsText(orderItems || [])}\n\nTotal: ${totalText}\n\nKROSSFORD team aap se order details ke hawale se rabta karegi.`, html: `<h2>Aap Ka Order Mil Gaya Hai — Shukriya</h2><p>Your order has been received.</p><p><strong>Order ID:</strong> ${escapeHtml(orderId)}<br><strong>Total:</strong> ${escapeHtml(totalText)}</p><h3>Order details</h3>${renderOrderItemsHtml(orderItems || [])}<p>KROSSFORD team aap se order details ke hawale se rabta karegi.</p>` });
-      } catch (error) { console.error("Customer confirmation email failed.", error instanceof Error ? error.message : error); }
+        const transporter = nodemailer.createTransport({ host: smtpHost, port: smtpPort, secure: smtpSecure, auth: { user: smtpUser, pass: smtpPassword } });
+        const subject = `${sourceLabel} - ${safeCustomerName}`;
+        const targets = ["info@krossford.com", backupEmail].filter((x): x is string => !!x && isValidEmail(x));
+        const ownerResults = await Promise.allSettled(targets.map((to) => transporter.sendMail({ from: senderEmail, to, subject, text: emailText, html: ownerEmailHtml })));
+        ownerResults.forEach((r) => { if (r.status === "rejected") console.error("Owner email failed:", r.reason); });
+        if (WHATSAPP_ENABLED) {
+          try { await sendWhatsAppNotification(source === "b2c-checkout" ? "order" : "enquiry", orderId, customerName, contact, totalText); console.log("WhatsApp order notification sent."); }
+          catch (wErr) { console.error("WhatsApp order notification failed.", wErr instanceof Error ? wErr.message : wErr); }
+        }
+        if (source === "b2c-checkout") {
+          try {
+            await transporter.sendMail({ from: senderEmail, to: email, subject: "Aap Ka Order Mil Gaya Hai — Shukriya", text: `Aap Ka Order Mil Gaya Hai — Shukriya.\n\nOrder ID: ${orderId}\n\n${formatOrderItemsText(orderItems || [])}\n\nTotal: ${totalText}\n\nKROSSFORD team aap se order details ke hawale se rabta karegi.`, html: `<h2>Aap Ka Order Mil Gaya Hai — Shukriya</h2><p>Your order has been received.</p><p><strong>Order ID:</strong> ${escapeHtml(orderId)}<br><strong>Total:</strong> ${escapeHtml(totalText)}</p><h3>Order details</h3>${renderOrderItemsHtml(orderItems || [])}<p>KROSSFORD team aap se order details ke hawale se rabta karegi.</p>` });
+          } catch (error) { console.error("Customer confirmation email failed.", error instanceof Error ? error.message : error); }
+        }
+      } catch (emailErr) {
+        console.error("Email block failed but order saved:", emailErr);
+      }
+    } else {
+      console.error("SMTP not ready — skipping emails, order already saved:", orderId);
     }
     return NextResponse.json({ success: true, orderId });
   } catch (error) {
