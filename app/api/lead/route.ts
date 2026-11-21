@@ -18,21 +18,23 @@ type OrderEmailItem = {
 };
 
 function getSupabase() {
-  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co").trim();
-  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key").trim();
+  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL || "").trim();
+  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "").trim();
+  if (!url || !key) {
+    throw new Error("Supabase env missing - NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY check karo");
+  }
   return createClient(url, key);
 }
 
 async function createOrderId(supabase: ReturnType<typeof getSupabase>): Promise<string> {
-  try {
-    const { count, error } = await supabase.from("leads").select("id", { count: "exact", head: true });
-    if (!error && typeof count === "number") {
-      const next = count + 1;
-      return `KF-00786110${String(next).padStart(2, "0")}`;
-    }
-  } catch {}
-  const stamp = Date.now().toString().slice(-6);
-  return `KF-00786110${stamp}`.slice(0, 16);
+  const { count, error } = await supabase.from("leads").select("id", { count: "exact", head: true });
+  if (error) {
+    console.error("Order ID count failed:", error);
+    throw new Error("Could not allocate order ID - Supabase count failed");
+  }
+  const next = (typeof count === "number" ? count : 0) + 1;
+  // KF-0078611001, KF-0078611002, KF-0078611003 ...
+  return `KF-0078611${String(next).padStart(3, "0")}`;
 }
 
 function getString(value: unknown): string {
@@ -67,10 +69,8 @@ function getEmailImageUrl(image: string): string {
   if (!raw || raw.startsWith("data:") || raw.startsWith("blob:")) return "";
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://www.krossford.com").replace(/\/$/, "");
   try {
-    // Agar image pehle se pura link hai — usko waisa hi rakho
     if (raw.startsWith("http://") || raw.startsWith("https://")) {
       const u = new URL(raw);
-      // /_next/image?url=/images/xxx.jpg — isko seedha image me badlo
       if (u.pathname.includes("/_next/image")) {
         const inner = u.searchParams.get("url");
         if (inner) return getEmailImageUrl(inner);
@@ -78,14 +78,12 @@ function getEmailImageUrl(image: string): string {
       return u.toString();
     }
     if (raw.startsWith("//")) return `https:${raw}`;
-    // Agar /_next/image?url=... aaya to andar wala image nikalo
     if (raw.includes("/_next/image")) {
       const q = raw.split("?")[1] || "";
       const params = new URLSearchParams(q);
       const inner = params.get("url");
       if (inner) return getEmailImageUrl(decodeURIComponent(inner));
     }
-    // Relative path — jaise /images/belt.jpg — isko pura banao
     const path = raw.startsWith("/") ? raw : `/${raw}`;
     return `${siteUrl}${encodeURI(path)}`;
   } catch { return ""; }
@@ -185,7 +183,7 @@ export async function POST(req: Request) {
     const backupEmail = process.env.KROSSFORD_BACKUP_EMAIL?.trim();
     const senderEmail = "hello@krossford.com";
     if (!smtpHost || !Number.isInteger(smtpPort) || smtpPort < 1 || smtpPort > 65535 || !smtpUser || !smtpPassword || smtpUser.toLowerCase() !== senderEmail || smtpFrom?.toLowerCase() !== senderEmail || !smtpSecure || !backupEmail || !isValidEmail(backupEmail)) {
-      console.error("Order notification service is missing required Zoho SMTP configuration.");
+      console.error("Order notification service is missing required 【entity-Zoho¦canonical_name=Zoho】 SMTP configuration.");
       return NextResponse.json({ error: "Order notifications are temporarily unavailable." }, { status: 503 });
     }
     const sourceLabel = source === "b2b-contact" ? "New B2B Enquiry" : "New B2C Order";
@@ -196,6 +194,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Orders are temporarily unavailable. Please try again." }, { status: 503 });
     }
     const totalText = source === "b2c-checkout" ? `$${Number(total).toFixed(2)} USD` : "Not provided";
+    // PEHLE SUPABASE ME SAVE KARO - PHIR EMAIL BHEJO
+    const totalQty = orderItems ? orderItems.reduce((a, b) => a + b.quantity, 0) : (Number(quantity) || 0);
+    const supabase = getSupabase();
+    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), created_at: new Date().toISOString() }]);
+    if (dbError) {
+      console.error("Supabase lead insert error:", dbError);
+      return NextResponse.json({ error: "Order could not be saved. Please try again." }, { status: 503 });
+    }
     const emailText = [sourceLabel, `Order ID: ${orderId}`, `Name: ${customerName}`, `Email: ${email || "Not provided"}`, `Contact: ${contact || "Not provided"}`, `Product / Items: ${product || "Not provided"}`, `Quantity: ${quantity || "Not provided"}`, "", source === "b2c-checkout" && orderItems ? formatOrderItemsText(orderItems) : message].join("\n");
     const itemsHtml = source === "b2c-checkout" && orderItems ? renderOrderItemsHtml(orderItems) : `<pre>${escapeHtml(message)}</pre>`;
     const ownerEmailHtml = `<h2>${escapeHtml(sourceLabel)}</h2><p><strong>Order ID:</strong> ${escapeHtml(orderId)}<br><strong>Name:</strong> ${escapeHtml(customerName)}<br><strong>Email:</strong> ${escapeHtml(email)}<br><strong>Phone:</strong> ${escapeHtml(contact || "Not provided")}<br><strong>Total:</strong> ${escapeHtml(totalText)}</p><h3>Products</h3>${itemsHtml}<h3>Full submission</h3><pre>${escapeHtml(message)}</pre>`;
@@ -220,10 +226,6 @@ export async function POST(req: Request) {
         await transporter.sendMail({ from: senderEmail, to: email, subject: "Aap Ka Order Mil Gaya Hai — Shukriya", text: `Aap Ka Order Mil Gaya Hai — Shukriya.\n\nOrder ID: ${orderId}\n\n${formatOrderItemsText(orderItems || [])}\n\nTotal: ${totalText}\n\nKROSSFORD team aap se order details ke hawale se rabta karegi.`, html: `<h2>Aap Ka Order Mil Gaya Hai — Shukriya</h2><p>Your order has been received.</p><p><strong>Order ID:</strong> ${escapeHtml(orderId)}<br><strong>Total:</strong> ${escapeHtml(totalText)}</p><h3>Order details</h3>${renderOrderItemsHtml(orderItems || [])}<p>KROSSFORD team aap se order details ke hawale se rabta karegi.</p>` });
       } catch (error) { console.error("Customer confirmation email failed.", error instanceof Error ? error.message : error); }
     }
-    const supabase = getSupabase();
-    const totalQty = orderItems ? orderItems.reduce((a, b) => a + b.quantity, 0) : (Number(quantity) || 0);
-    const { error: dbError } = await supabase.from("leads").insert([{ order_id: orderId, name: customerName, email: email || null, whatsapp: contact || null, phone: contact || null, country: "", total_orders: 1, total_quantity: totalQty, lead_status: source === "b2c-checkout" ? "New" : "New", priority: "Normal", total: totalText, amount: totalText, quantity: quantity || String(totalQty), created_at: new Date().toISOString() }]);
-    if (dbError) console.error("Supabase lead insert error after notification email was sent:", dbError);
     return NextResponse.json({ success: true, orderId });
   } catch (error) {
     console.error("Lead API handler failed.", error instanceof Error ? error.name : "Unknown error");
