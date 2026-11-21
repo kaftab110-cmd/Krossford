@@ -11,6 +11,11 @@ function getStr(v: unknown): string {
   if (typeof v === "number") return String(v);
   return "";
 }
+function cleanStr(v: unknown): string {
+  const s = getStr(v).trim();
+  if (s.toUpperCase() === "EMPTY" || s.toUpperCase() === "NULL" || s === "-") return "";
+  return s;
+}
 function getNum(v: unknown, fallback = 0): number {
   const n = Number(v);
   return Number.isFinite(n) ? n : fallback;
@@ -19,9 +24,23 @@ function errMsg(e: unknown): string {
   if (e instanceof Error) return e.message;
   return "Server error";
 }
+// Message se field nikalna - Country: Pakistan jaisa
+function fromMessage(msg: string, label: string): string {
+  const m = msg.match(new RegExp(label + "\\s*:\\s*([^\\n\\r]+)", "i"));
+  if (!m) return "";
+  return cleanStr(m[1].trim());
+}
+// Message se paisa nikalna - Shipping: $20 / Delivery: 20 jaisa
+function moneyFromMessage(msg: string, labels: string[]): number {
+  for (const label of labels) {
+    const m = msg.match(new RegExp(label + "\\s*:\\s*\\$?([0-9]+(?:\\.[0-9]+)?)", "i"));
+    if (m) return getNum(m[1], 0);
+  }
+  return 0;
+}
 
 export async function POST(req: Request) {
-  let orderId = "KF-0078611006";
+  let orderId = "KF-0078611007";
   try {
     const bodyRaw: unknown = await req.json().catch(() => ({}));
     const body = asRecord(bodyRaw);
@@ -29,15 +48,21 @@ export async function POST(req: Request) {
     const hasLead = Object.keys(lead).length > 0;
     const p: Record<string, unknown> = hasLead ? lead : body;
 
-    const name = getStr(p.customerName || p.name || p.fullName).trim();
-    const email = getStr(p.email).trim();
-    const contact = getStr(p.contact || p.phone || p.whatsapp || p.phoneNumber).trim();
-    const country = getStr(p.country || p.shippingCountry || body.country).trim();
-    const address = getStr(p.address || body.address).trim();
-    const city = getStr(p.city || body.city).trim();
-    const zip = getStr(p.zip || p.postalCode || body.postalCode).trim();
-    const notes = getStr(p.notes || body.notes).trim();
+    const name = cleanStr(p.customerName || p.name || p.fullName);
+    const email = cleanStr(p.email);
+    const contact = cleanStr(p.contact || p.phone || p.whatsapp || p.phoneNumber);
     const incomingMessage = getStr(p.message || body.message);
+    const notes = cleanStr(p.notes || body.notes);
+
+    // --- COUNTRY FIX: pehle direct field, EMPTY ho to message se ---
+    let country = cleanStr(p.country || p.shippingCountry || body.country);
+    let address = cleanStr(p.address || body.address);
+    let city = cleanStr(p.city || body.city);
+    let zip = cleanStr(p.zip || p.postalCode || body.postalCode);
+    if (!country) country = fromMessage(incomingMessage, "Country");
+    if (!address) address = fromMessage(incomingMessage, "Address");
+    if (!city) city = fromMessage(incomingMessage, "City");
+    if (!zip) zip = fromMessage(incomingMessage, "ZIP|Postal");
 
     const rawItems: unknown[] = Array.isArray(p.items) ? (p.items as unknown[]) : [];
     const items: Item[] = rawItems.map((raw) => {
@@ -56,10 +81,19 @@ export async function POST(req: Request) {
     });
 
     const totalQty = items.reduce((s: number, i: Item) => s + (i.qty || 1), 0) || getNum(p.quantity, 1) || 1;
-    const totalClean = getStr(p.total ?? body.total).replace(/[^0-9.]/g, "");
-    const totalNum = getNum(totalClean, 0) || items.reduce((s: number, i: Item) => s + i.price * (i.qty || 1), 0);
-    const total = totalNum ? `$${totalNum.toFixed(2)}` : getStr(p.total);
-    const productName = getStr(p.product) || (items.length === 1 ? items[0].name : items.length > 1 ? `${items[0].name} + ${items.length - 1} more` : "Order");
+
+    // --- TOTAL + SHIPPING FIX ---
+    const subtotalClean = getStr(p.subtotal ?? p.subTotal ?? "").replace(/[^0-9.]/g, "");
+    const subtotal = getNum(subtotalClean, 0) || items.reduce((s: number, i: Item) => s + i.price * (i.qty || 1), 0);
+    let shipping = getNum(p.shipping ?? p.shippingCharge ?? p.shippingCost ?? p.delivery ?? p.deliveryCharge ?? p.deliveryCost, 0);
+    if (!shipping) shipping = moneyFromMessage(incomingMessage, ["Shipping", "Delivery", "DHL", "Shipping Charge", "Delivery Charge"]);
+    // Agar checkout ne grandTotal bheja hai to wohi use karo, warna subtotal + shipping
+    const grandClean = getStr(p.grandTotal ?? p.grand_total ?? p.totalAmount ?? "").replace(/[^0-9.]/g, "");
+    let grandTotal = getNum(grandClean, 0);
+    if (!grandTotal) grandTotal = subtotal + shipping;
+    if (!grandTotal) grandTotal = subtotal;
+    const total = `$${grandTotal.toFixed(2)}`;
+    const productName = cleanStr(p.product) || (items.length === 1 ? items[0].name : items.length > 1 ? `${items[0].name} + ${items.length - 1} more` : "Order");
 
     const site = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.krossford.com").replace(/\/$/, "");
     const toFullImage = (raw: string): string => {
@@ -83,13 +117,14 @@ export async function POST(req: Request) {
       zip ? `ZIP: ${zip}` : "",
       `Product: ${productName}`,
       `Quantity: ${totalQty}`,
+      `Subtotal: $${subtotal.toFixed(2)}`,
+      `Shipping: $${shipping.toFixed(2)}`,
       `Total: ${total}`,
       notes ? `Notes: ${notes}` : "",
       incomingMessage ? `--- Checkout Details ---\n${incomingMessage}` : "",
       `Items: ${itemsString}`,
     ].filter(Boolean).join("\n");
 
-    // --- SUPABASE: FULL INSERT - SAB COLUMNS ---
     try {
       const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_ROLE_KEY as string);
       const { count } = await supabase.from("leads").select("id", { count: "exact", head: true });
@@ -106,6 +141,7 @@ export async function POST(req: Request) {
         product: productName,
         quantity: String(totalQty),
         total,
+        amount: total,
         total_quantity: totalQty,
         total_orders: 1,
         lead_status: "New",
@@ -142,7 +178,7 @@ export async function POST(req: Request) {
         from: process.env.SMTP_FROM,
         to: process.env.KROSSFORD_BACKUP_EMAIL || process.env.SMTP_USER,
         subject: `New Order ${orderId} - ${name}`,
-        html: `<h2>New Order ${orderId}</h2><p><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Phone / WhatsApp:</b> ${contact}<br/><b>Total:</b> ${total}</p>${itemsHtml}<p>${incomingMessage.replace(/\n/g, "<br/>")}</p>`,
+        html: `<h2>New Order ${orderId}</h2><p><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Phone / WhatsApp:</b> ${contact}<br/><b>Country:</b> ${country}<br/><b>Subtotal:</b> $${subtotal.toFixed(2)}<br/><b>Shipping:</b> $${shipping.toFixed(2)}<br/><b>Total:</b> ${total}</p>${itemsHtml}<p>${incomingMessage.replace(/\n/g, "<br/>")}</p>`,
       });
     } catch (e: unknown) {
       console.error("EMAIL FAILED, order still ok:", errMsg(e));
