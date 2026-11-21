@@ -94,10 +94,10 @@ function getSubtotalVal(o: Order, totalVal: string, dc: string): string {
   const msg = o.message ? o.message : "";
   const fromMsg = fieldFromMessage(msg, "Subtotal");
   if (fromMsg) return fromMsg;
-  if (totalVal && dc) {
+  if (totalVal) {
     const t = Number(totalVal.replace(/[^0-9.]/g, ""));
-    const d = Number(dc.replace(/[^0-9.]/g, ""));
-    if (Number.isFinite(t) && Number.isFinite(d)) return "$" + (t - d).toFixed(2);
+    const d = Number((dc || "$0.00").replace(/[^0-9.]/g, ""));
+    if (Number.isFinite(t)) return "$" + (t - (Number.isFinite(d) ? d : 0)).toFixed(2);
   }
   return "";
 }
@@ -210,7 +210,7 @@ export default function AdminOrders() {
               const country = clean(o.country) || fieldFromMessage(msg, "Country");
               const address = fieldFromMessage(msg, "Address");
               const city = fieldFromMessage(msg, "City");
-              const dc = clean(o.delivery_charges || o.shipping) || fieldFromMessage(msg, "Shipping");
+              const dc = clean(o.delivery_charges || o.shipping) || fieldFromMessage(msg, "Shipping") || "$0.00";
               const totalVal = getTotalVal(o);
               const subtotalVal = getSubtotalVal(o, totalVal, dc);
               const status = getStatus(o);
