@@ -1,5 +1,5 @@
-"use client";
 import Link from "next/link";
+import { createClient } from "@supabase/supabase-js";
 
 const combos = [
   {
@@ -37,12 +37,37 @@ const combos = [
   },
 ];
 
-export default function ComboDealsPage() {
+async function isComboLive() {
+  try {
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const { data } = await supabase.from("site_settings").select("value").eq("key", "combo_live").single();
+    return data?.value === "true";
+  } catch { return false; }
+}
+
+export default async function ComboDealsPage() {
+  const live = await isComboLive();
+
+  if (!live) {
+    return (
+      <main className="bg-black text-white min-h-screen pt-28 pb-16 flex items-center justify-center">
+        <div className="max-w-xl mx-auto px-4 text-center">
+          <p className="text-[#D4AF37] text-xs tracking-[0.3em]">KROSSFORD</p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-wide mt-4">COMBO DEALS</h1>
+          <p className="text-zinc-400 text-sm mt-4 leading-relaxed">Our curated combo deals are being crafted. Two products, one special price - worth the wait.</p>
+          <p className="text-zinc-500 text-xs mt-6 tracking-widest">COMING SOON - WE ARE CRAFTING SOMETHING SPECIAL</p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/shop" className="bg-[#D4AF37] text-black text-xs font-bold px-6 py-3 rounded">SHOP CURRENT COLLECTION →</Link>
+            <a href="mailto:hello@krossford.com?subject=Notify me - Combo Deals" className="border border-zinc-700 text-white text-xs font-bold px-6 py-3 rounded">NOTIFY ME →</a>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="bg-zinc-950 text-white min-h-screen pt-28 pb-16">
-      <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4">
-        COMBO DEALS - CHEAPER TOGETHER - LIMITED TIME OFFER
-      </div>
+      <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4">COMBO DEALS - CHEAPER TOGETHER - LIMITED TIME OFFER</div>
       <div className="max-w-7xl mx-auto px-4 mt-10 text-center">
         <h1 className="text-4xl md:text-5xl font-bold tracking-wide">COMBO DEALS</h1>
         <p className="text-zinc-400 text-sm mt-3 tracking-wider">BUY 2 PRODUCTS TOGETHER - CHEAPER THAN BUYING SEPARATELY - HANDCRAFTED - REAL LEATHER</p>
