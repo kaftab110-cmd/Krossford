@@ -33,6 +33,7 @@ export default function ProductPage() {
   // page unko "not found" dikhata tha. Ab pehle local, phir Supabase table
   // "products" se dhoondhte hain. Supabase row ko local Product jaisa bana dete hain.
   const [dbProduct, setDbProduct] = useState<any>(null);
+  const [dbError, setDbError] = useState<string>("");
   const [dbLoading, setDbLoading] = useState(false);
   useEffect(() => {
     if (localProduct) return;
@@ -48,6 +49,26 @@ export default function ProductPage() {
       return;
     }
     setDbLoading(true);
+    // DEBUG: kaunsi table kaam karti hai ye dhoondhne ke liye sab naam try karte hain
+    const TABLES = ["products", "shop_products", "admin_products", "store_products"];
+    (async () => {
+    let foundRow: any = null; let lastErr = "";
+    for (const tbl of TABLES) {
+      try {
+        const r = await fetch(`${url}/rest/v1/${tbl}?select=*&slug=eq.${encodeURIComponent(slug)}`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+        if (!r.ok) { lastErr = tbl + " -> HTTP " + r.status; continue; }
+        const rows: any[] = await r.json();
+        if (rows?.[0]) { foundRow = rows[0]; break; }
+        // slug se na mile to poori table me id/admin-id se match karo
+        const r2 = await fetch(`${url}/rest/v1/${tbl}?select=*`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+        if (r2.ok) { const all: any[] = await r2.json(); foundRow = (all || []).find((x: any) => normalize(x.slug) === normalize(slug) || normalize(x.id) === normalize(slug) || normalize(`admin-${x.id}`) === normalize(slug) || normalize(x.name) === normalize(slug)); if (foundRow) break; }
+        lastErr = tbl + " -> 0 rows";
+      } catch (e: any) { lastErr = tbl + " -> " + String(e?.message || e); }
+    }
+    if (!foundRow) { setDbError(lastErr || "Supabase se koi row nahi mili"); setDbLoading(false); return; }
+    const row = foundRow;
+    // OLD single-table fetch neeche ab dead hai, isko skip karne ke liye rows ko [row] bana dete hain
+    const rows = [row];
     fetch(`${url}/rest/v1/products?select=*&slug=eq.${encodeURIComponent(slug)}`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
     })
@@ -78,6 +99,7 @@ export default function ProductPage() {
       })
       .catch(() => {})
       .finally(() => setDbLoading(false));
+    })();
   }, [slug, localProduct]);
 
   const product: any = localProduct || dbProduct;
@@ -158,6 +180,8 @@ export default function ProductPage() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-4 p-6 text-center">
         <p className="text-xl font-bold">Loading product...</p>
         <p className="text-xs text-zinc-400">Slug: {slug}</p>
+        <p className="text-xs text-red-400">DB check: {dbError || "Supabase se product nahi mila / table naam alag hai"}</p>
+        <p className="text-xs text-zinc-500">Env: {typeof process !== "undefined" && process.env.NEXT_PUBLIC_SUPABASE_URL ? "Supabase URL mili ✅" : "Supabase URL NAHI mili ❌ — Vercel env check karo"}</p>
       </div>
     );
   }
@@ -167,6 +191,8 @@ export default function ProductPage() {
       <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-4 p-6 text-center">
         <p className="text-xl font-bold">Product not found</p>
         <p className="text-xs text-zinc-400">Slug: {slug}</p>
+        <p className="text-xs text-red-400">DB check: {dbError || "Supabase se product nahi mila / table naam alag hai"}</p>
+        <p className="text-xs text-zinc-500">Env: {typeof process !== "undefined" && process.env.NEXT_PUBLIC_SUPABASE_URL ? "Supabase URL mili ✅" : "Supabase URL NAHI mili ❌ — Vercel env check karo"}</p>
         <Link href="/shop" className="bg-#D4AF37 text-black px-5 py-2 rounded text-xs font-bold">Back to Shop</Link>
         <button
           onClick={() => { localStorage.removeItem("krossford_cart"); localStorage.removeItem("cart"); window.location.href = "/shop"; }}
