@@ -101,6 +101,18 @@ export async function POST(req: Request) {
     const incomingMessage = getStr(p.message || body.message);
     const notes = cleanStr(p.notes || body.notes);
 
+    // ===== GEMINI SCHEMA - B2B / B2C + ENQUIRY / ORDER - NAYA =====
+    // Purane fields same hain, ye naye fields sirf alag karne ke liye hain
+    const company = cleanStr(p.company || body.company);
+    const channelRaw = cleanStr(p.channel || body.channel).toUpperCase();
+    const channel: "B2B" | "B2C" = channelRaw === "B2B" ? "B2B" : "B2C";
+    const actionRaw = cleanStr(p.action || body.action).toLowerCase();
+    const action: "enquiry" | "proceed_order" = actionRaw === "proceed_order" || actionRaw === "proceed-order" || actionRaw === "order" ? "proceed_order" : "enquiry";
+    const sourcePage = cleanStr(p.sourcePage || body.sourcePage || p.source || body.source);
+    const paymentTerms = cleanStr(p.paymentTerms || body.paymentTerms);
+    const shippingMethod = cleanStr(p.shippingMethod || body.shippingMethod || "DHL Express");
+    const hideType = cleanStr((p as any).hideType || body.hideType);
+
     let country = cleanStr(p.country || p.shippingCountry || body.country);
     let address = cleanStr(p.address || body.address);
     let city = cleanStr(p.city || body.city);
@@ -121,8 +133,8 @@ export async function POST(req: Request) {
         color: getStr(it.color || it.colorName || it.colour),
         size: getStr(it.size),
         qty,
-        price: getNum(it.unitPrice ?? it.price, 0),
-        customization: getStr(it.customization),
+        price: getNum(it.unitPrice ?? it.unitPriceUsd ?? it.price, 0),
+        customization: getStr(it.customization || (it as any).hideType || hideType),
       };
     });
 
@@ -131,7 +143,7 @@ export async function POST(req: Request) {
     const subtotal = getNum(subtotalClean, 0) || items.reduce((s: number, i: Item) => s + i.price * (i.qty || 1), 0);
     let shipping = getNum(p.shipping ?? p.shippingCharge ?? p.shippingCost ?? p.delivery ?? p.deliveryCharge ?? p.deliveryCost, 0);
     if (!shipping) shipping = moneyFromMessage(incomingMessage, ["Shipping", "Delivery", "DHL", "Shipping Charge", "Delivery Charge"]);
-    const grandClean = getStr(p.grandTotal ?? p.grand_total ?? p.totalAmount ?? "").replace(/[^0-9.]/g, "");
+    const grandClean = getStr(p.grandTotal ?? p.grand_total ?? p.totalAmount ?? p.totalUsd ?? "").replace(/[^0-9.]/g, "");
     let grandTotal = getNum(grandClean, 0);
     if (!grandTotal) grandTotal = subtotal + shipping;
     if (!grandTotal) grandTotal = subtotal;
@@ -151,6 +163,9 @@ export async function POST(req: Request) {
     const itemsString = JSON.stringify(itemsWithImages);
 
     const message = [
+      `Channel: ${channel} - ${action === "proceed_order" ? "Proceed to Order" : "Enquiry"}`,
+      sourcePage ? `Source Page: ${sourcePage}` : "",
+      company ? `Company: ${company}` : "",
       `Name: ${name}`,
       `Email: ${email}`,
       `Phone / WhatsApp: ${contact}`,
@@ -160,6 +175,9 @@ export async function POST(req: Request) {
       zip ? `ZIP: ${zip}` : "",
       `Product: ${productName}`,
       `Quantity: ${totalQty}`,
+      hideType ? `Hide Type: ${hideType}` : "",
+      paymentTerms ? `Payment Terms: ${paymentTerms}` : "",
+      shippingMethod ? `Shipping Method: ${shippingMethod}` : "",
       `Subtotal: $${subtotal.toFixed(2)}`,
       `Shipping: $${shipping.toFixed(2)}`,
       `Total: ${total}`,
@@ -191,7 +209,7 @@ export async function POST(req: Request) {
         total_orders: 1,
         lead_status: "New",
         status: "new",
-        source: hasLead ? "b2c-checkout" : "website",
+        source: sourcePage || (hasLead ? "b2c-checkout" : channel === "B2B" ? "b2b-enquiry" : "website"),
         message,
         items: itemsWithImages,
       };
@@ -218,11 +236,13 @@ export async function POST(req: Request) {
           ${i.image ? `<img src="${i.image}" width="120" height="120" alt="${i.name}" style="object-fit:cover;border-radius:8px;display:block;" />` : ""}
           <div><b>${i.name}</b><br/>Color: ${i.color || "-"} | Size: ${i.size || "-"} | Qty: ${i.qty}<br/>Price: $${i.price}${i.customization ? `<br/>Custom: ${i.customization}` : ""}</div>
         </div>`).join("");
+      // Email sales@krossford.com pe jayega - Zoho SMTP se
+      const toEmail = process.env.KROSSFORD_BACKUP_EMAIL || "sales@krossford.com";
       await transporter.sendMail({
         from: process.env.SMTP_FROM,
-        to: process.env.KROSSFORD_BACKUP_EMAIL || process.env.SMTP_USER,
-        subject: `New Order ${orderId} - ${name}`,
-        html: `<h2>New Order ${orderId}</h2><p><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Phone / WhatsApp:</b> ${contact}<br/><b>Country:</b> ${country}<br/><b>Subtotal:</b> $${subtotal.toFixed(2)}<br/><b>Shipping:</b> $${shipping.toFixed(2)}<br/><b>Total:</b> ${total}</p>${itemsHtml}<p>${incomingMessage.replace(/\n/g, "<br/>")}</p>`,
+        to: toEmail,
+        subject: `[${channel} - ${action === "proceed_order" ? "ORDER" : "ENQUIRY"}] New ${channel} ${action === "proceed_order" ? "Order" : "Enquiry"} ${orderId} - ${name}`,
+        html: `<h2>New ${channel} ${action === "proceed_order" ? "Order" : "Enquiry"} ${orderId}</h2><p><b>Channel:</b> ${channel} | <b>Type:</b> ${action === "proceed_order" ? "Proceed to Order" : "Enquiry"}<br/><b>Source:</b> ${sourcePage || "-"}<br/><b>Company:</b> ${company || "-"}<br/><b>Name:</b> ${name}<br/><b>Email:</b> ${email}<br/><b>Phone / WhatsApp:</b> ${contact}<br/><b>Country:</b> ${country}<br/><b>Hide Type:</b> ${hideType || "-"}<br/><b>Payment Terms:</b> ${paymentTerms || "-"}<br/><b>Shipping:</b> ${shippingMethod}<br/><b>Subtotal:</b> $${subtotal.toFixed(2)}<br/><b>Shipping:</b> $${shipping.toFixed(2)}<br/><b>Total:</b> ${total}</p>${itemsHtml}<p>${incomingMessage.replace(/\\n/g, "<br/>")}</p>`,
       });
     } catch (e: unknown) {
       console.error("EMAIL FAILED, order still ok:", errMsg(e));
