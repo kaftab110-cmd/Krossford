@@ -189,7 +189,8 @@ export default function Home() {
 
       <Craftsmanship />
       <section className="mx-auto max-w-7xl px-6 py-12 text-center">
-        <p className="text-sm text-zinc-400">No Reviews Yet — Be The First To Review</p>
+        <h2 className="text-xl uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>What Our Customers Say</h2>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Real Reviews • USA • UK • UAE • Canada • Australia • Germany</p>
         <Reviews />
       </section>
       <BrandStory />
