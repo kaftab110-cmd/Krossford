@@ -1,7 +1,37 @@
 import { NextResponse } from "next/server";
 
+// ===== RATE LIMIT - GEMINI SUGGESTION =====
+// 1 user (1 IP) -> 1 minute me max 5 messages
+// 15 total messages ki limit frontend me bhi hai, yahan backend me bhi double-check hai
+// Isse koi bot spam karke tumhara Gemini bill nahi barha sakta
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX = 5; // 1 minute me max 5 requests
+const MAX_MESSAGES = 15; // 1 chat me max 15 messages
+const ipHits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (ipHits.get(ip) || []).filter((t) => now - t < RATE_LIMIT_WINDOW);
+  if (hits.length >= RATE_LIMIT_MAX) {
+    ipHits.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  ipHits.set(ip, hits);
+  return false;
+}
+
 export async function POST(req: Request) {
   try {
+    // ===== RATE LIMIT CHECK - PEHLE YAHI =====
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many messages. Please wait 1 minute, or continue on WhatsApp." },
+        { status: 429 }
+      );
+    }
+
     const { messages, userLanguage, userCountry } = await req.json();
     const apiKey = process.env.GEMINI_API_KEY;
 
@@ -12,8 +42,11 @@ export async function POST(req: Request) {
       );
     }
 
+    // ===== SAFETY: Messages zyada aayen to sirf last 15 rakho =====
+    const safeMessages = Array.isArray(messages) ? messages.slice(-MAX_MESSAGES) : [];
+
     // FIX 1: Pehla Greeting wala message hata do, warna Gemini usi ko copy karega
-    const chatMessages = messages.filter((m: any, index: number) => {
+    const chatMessages = safeMessages.filter((m: any, index: number) => {
       if (index === 0 && m.sender === "ai") return false;
       return true;
     });
@@ -89,7 +122,7 @@ export async function POST(req: Request) {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           systemInstruction,
           contents: formattedContents,
           generationConfig: { temperature: 0.7, maxOutputTokens: 500 }
@@ -98,7 +131,7 @@ export async function POST(req: Request) {
     );
 
     const data = await response.json();
-    
+
     if (data.error) {
       console.error("Gemini API Error:", data.error);
       return NextResponse.json({ error: data.error.message || "Gemini API failed" }, { status: 500 });

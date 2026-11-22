@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import AdminPagesControl from "@/components/AdminPagesControl";
 
 type Order = {
   id?: number | string;
@@ -167,7 +168,7 @@ export default function AdminDashboard() {
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">5. VS CODE KAB CHAHIYE, KAB NAHI?</p>
                 <p className="text-zinc-400 mt-1">✅ VS Code NAHI chahiye: Order status badalna, Customer dekhna, Dashboard dekhna.</p>
-                <p className="text-zinc-400">⚠️ VS Code CHAHIYE (abhi ke liye): Naya product Shop pe lagana, Shop ki price badalna, Website ka design badalna.</p>
+                <p className="text-zinc-400">⚠ VS Code CHAHIYE (abhi ke liye): Naya product Shop pe lagana, Shop ki price badalna, Website ka design badalna.</p>
               </div>
               <div className="bg-zinc-900 border border-zinc-800 rounded p-3">
                 <p className="font-bold text-white">6. HAR PAGE KIS KAAM KE LIYE HAI?</p>
@@ -203,6 +204,10 @@ export default function AdminDashboard() {
             <p className="text- text-zinc-500 mt-1">Abhi confirm karne wale</p>
           </div>
         </div>
+
+        {/* ===== PAGES CONTROL - DASHBOARD ME BHI - LIVE / HIDE ===== */}
+        <AdminPagesControl />
+        {/* ===== PAGES CONTROL KHATAM ===== */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {CARDS.map((c) => (

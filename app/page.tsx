@@ -6,17 +6,11 @@ import BrandStory from "@/components/BrandStory";
 import Craftsmanship from "@/components/Craftsmanship";
 import Bespoke from "@/components/Bespoke";
 import Reviews from "@/components/Reviews";
+import ComboBanner from "@/components/ComboBanner";
+import SaleBanner from "@/components/SaleBanner";
+import AnnouncementsBanner from "@/components/AnnouncementsBanner";
 import { products, findProductBySlug } from "@/lib/data/shop";
 import { readCartItems, saveCart } from "@/lib/cart";
-
-// HOME PAGE - FINAL - ONE TIME ALL FIXES
-// 1. Home Best Sellers uses up to 8 products flagged BEST SELLER.
-// 2. View All Products links to Shop; catalog and featured grids are not rendered on the homepage.
-// 3. Delivery lines DE-DUPLICATE ki - Pehle 4 jagah delivery thi (Hero + Info box 3 lines + Card) - Ab delivery ki DETAIL sirf 1 jagah: Info box me
-//    - Hero se "Total: 12-17" hataya - sirf Ships + Handcrafted + Secure rakha
-//    - Info box se "We will try our best..." wali duplicate aim line hatayi
-//    - Card se "Ships from Pakistan - 12-17 - DHL" wali repeated line hatayi - Card pe sirf Full-Grain line rakhi
-// 4. Slider formula + Add to Cart same rakha
 
 const TOP8 = products.filter((p) => p.badge === "BEST SELLER").slice(0, 8).map((p) => ({
   slug: p.slug,
@@ -76,11 +70,7 @@ export default function Home() {
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
       <section className="relative w-full min-h-screen flex items-center justify-center text-center overflow-hidden bg-black">
-        <img
-          src="/images/leather-duffle-bag.jpg"
-          alt="Leather Duffle Bag"
-          className="absolute inset-0 w-full h-full object-cover object-bottom"
-        />
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-bottom" />
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto py-6 w-full">
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#D4AF37] uppercase text-center leading-none" style={{ fontFamily: "var(--font-brand)" }}>
@@ -94,15 +84,9 @@ export default function Home() {
             Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A]">
-              Shop Collection
-            </a>
-            <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#D4AF37] hover:text-black">
-              Retail + Wholesale
-            </a>
-            <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37]">
-              Request Sample
-            </a>
+            <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A]">Shop Collection</a>
+            <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#D4AF37] hover:text-black">Retail + Wholesale</a>
+            <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37]">Request Sample</a>
           </div>
           <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
@@ -147,16 +131,8 @@ export default function Home() {
                   <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform" />
                   {cardImages.length > 1 && (
                     <>
-                      <button
-                        aria-label="Previous Image"
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length); }}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
-                      >‹</button>
-                      <button
-                        aria-label="Next Image"
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev + 1) % cardImages.length); }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10"
-                      >›</button>
+                      <button aria-label="Previous Image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev - 1 + cardImages.length) % cardImages.length); }} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">‹</button>
+                      <button aria-label="Next Image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex((prev) => (prev + 1) % cardImages.length); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-[#D4AF37] hover:text-black text-white w-8 h-8 rounded-full flex items-center justify-center text-xl font-bold leading-none opacity-100 lg:opacity-0 lg:group-hover/slider:opacity-100 transition-opacity cursor-pointer z-10">›</button>
                       <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                         {cardImages.map((_, i) => (
                           <button key={i} aria-label={`Go to image ${i + 1}`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setHoverSlug(p.slug); setHoverIndex(i); }} className={`h-2 rounded-full cursor-pointer transition-all ${i === (hoverIndex % cardImages.length) ? "bg-[#D4AF37] w-4" : "bg-white/60 w-2"}`} />
@@ -170,23 +146,14 @@ export default function Home() {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <span className="text-xs tracking-widest uppercase text-[#D4AF37] font-bold">{p.tag}</span>
-                  <Link href={`/product/${p.slug}`}>
-                    <h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-[#D4AF37] cursor-pointer">{p.name}</h3>
-                  </Link>
+                  <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-[#D4AF37] cursor-pointer">{p.name}</h3></Link>
                   <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Custom Design As Per Customer Requirement</p>
                 </div>
                 <p className="text-lg text-[#D4AF37] font-bold shrink-0">${p.price}</p>
               </div>
               <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => handleAddToCart(p)}
-                  className={`flex-1 text-center text-xs font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-[#D4AF37] text-black hover:bg-[#E8C15A]"}`}
-                >
-                  {addedSlug === p.slug ? "✓ Added!" : "Add to Cart →"}
-                </button>
-                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-xs uppercase tracking-widest py-2.5 rounded hover:border-[#D4AF37] hover:text-[#D4AF37]">
-                  View Details
-                </Link>
+                <button onClick={() => handleAddToCart(p)} className={`flex-1 text-center text-xs font-bold uppercase tracking-widest py-2.5 rounded cursor-pointer ${addedSlug === p.slug ? "bg-green-500 text-white" : "bg-[#D4AF37] text-black hover:bg-[#E8C15A]"}`}>{addedSlug === p.slug ? "✓ Added!" : "Add to Cart →"}</button>
+                <Link href={`/product/${p.slug}`} className="flex-1 text-center border border-zinc-700 text-white text-xs uppercase tracking-widest py-2.5 rounded hover:border-[#D4AF37] hover:text-[#D4AF37]">View Details</Link>
               </div>
             </div>
             );
@@ -196,6 +163,13 @@ export default function Home() {
           <Link href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded hover:bg-[#E8C15A]">View All Products →</Link>
         </div>
       </section>
+
+      {/* ===== BANNERS - COMBO / SALE / ANNOUNCEMENTS ===== */}
+      {/* Har banner khud check karega - Page LIVE hoga to dikhega, COMING SOON hoga to chhup jayega */}
+      <ComboBanner />
+      <SaleBanner />
+      <AnnouncementsBanner />
+      {/* ===== BANNERS KHATAM ===== */}
 
       <Craftsmanship />
       <section className="mx-auto max-w-7xl px-6 py-12 text-center">
@@ -224,12 +198,8 @@ export default function Home() {
           <p className="text-sm uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Retail + Wholesale Both Available</p>
           <p className="text-xs text-zinc-400">Retail: 1 Piece - For Customers - Shop Directly. Wholesale: 50+ Units - For Buyers - Leather Jackets, Biker Suits, Bags, Belts - White Label & Custom Production.</p>
           <div className="flex flex-wrap justify-center gap-3 pt-1">
-            <a href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#E8C15A]">
-              Shop Retail - 1 Piece
-            </a>
-            <a href="/b2b" className="inline-block border border-[#D4AF37] text-[#D4AF37] text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#D4AF37] hover:text-black">
-              Get Wholesale Quote →
-            </a>
+            <a href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#E8C15A]">Shop Retail - 1 Piece</a>
+            <a href="/b2b" className="inline-block border border-[#D4AF37] text-[#D4AF37] text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#D4AF37] hover:text-black">Get Wholesale Quote →</a>
           </div>
         </div>
       </section>
