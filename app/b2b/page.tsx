@@ -75,9 +75,33 @@ export default function B2BPage() {
     return formData.productType;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const finalProduct = getFinalProduct();
+    // 1) Pehle Email ke liye /api/lead pe bhejo - Email sales@krossford.com pe jayega
+    try {
+      const qtyNum = parseInt(formData.quantity.replace(/[^0-9]/g, ""), 10) || 100;
+      await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.companyName,
+          email: formData.businessEmail,
+          phone: formData.phone,
+          company: formData.companyName,
+          country: formData.country,
+          message: `B2B Wholesale Inquiry\n\nCompany: ${formData.companyName}\nPhone: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate: ${formData.altPhone}` : ""}\nCountry: ${formData.country}\nProduct Type: ${finalProduct}\nQuantity: ${formData.quantity}\nWhite Label: ${formData.whiteLabel}\nLogo: ${logoFile ? logoFile.name : "Not uploaded"}\n\nMessage:\n${formData.message || "Not given"}`,
+          channel: "B2B",
+          action: "enquiry",
+          sourcePage: "/b2b",
+          items: [{ title: finalProduct, quantity: qtyNum, notes: `White Label: ${formData.whiteLabel} | ${formData.message || ""}` }],
+          paymentTerms: "Wholesale: 50% Advance, 50% Before Dispatch",
+          shippingMethod: "DHL Express",
+        }),
+      });
+    } catch (err) {
+      console.error("B2B EMAIL FAILED, WhatsApp still open:", err);
+    }
     const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
@@ -152,7 +176,7 @@ export default function B2BPage() {
             <div className="space-y-2">
               <h3 className="text-lg uppercase tracking-widest text-white" style={{ fontFamily: "var(--font-brand)" }}>Request Received</h3>
               <p className="text-xs text-zinc-300 font-light tracking-wide max-w-md mx-auto leading-relaxed">
-                Your inquiry has been opened in WhatsApp. Please press Send there. Our team will share quote in 24 hours on WhatsApp/Email. Sample available before bulk order.
+                Your inquiry has been sent on Email + WhatsApp. Please press Send on WhatsApp too. Our team will share quote in 24 hours on WhatsApp/Email. Sample available before bulk order.
               </p>
               <p className="text- text-[#D4AF37]">Company: {formData.companyName} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
             </div>
@@ -259,7 +283,7 @@ export default function B2BPage() {
             </div>
 
             <button type="submit" className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-[#E8C15A] transition-colors shadow-md">
-              Submit Wholesale Inquiry - Send On WhatsApp →
+              Submit Wholesale Inquiry - Send On Email + WhatsApp →
             </button>
             <p className="text-center text- text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via DHL Express. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
           </form>
