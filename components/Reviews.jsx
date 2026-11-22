@@ -26,6 +26,8 @@ const PRODUCTS = [
 const REVIEWS = [
   {
     name: "James Carter",
+    initials: "JC",
+    avatarColor: "bg-amber-500",
     city: "New York, USA",
     country: "USA",
     product: "Classic Tote Bag",
@@ -34,6 +36,8 @@ const REVIEWS = [
   },
   {
     name: "Emily Thompson",
+    initials: "ET",
+    avatarColor: "bg-rose-500",
     city: "London, UK",
     country: "UK",
     product: "Leather Wallet - Custom Name",
@@ -42,6 +46,8 @@ const REVIEWS = [
   },
   {
     name: "Ahmed Al Farsi",
+    initials: "AF",
+    avatarColor: "bg-emerald-500",
     city: "Dubai, UAE",
     country: "UAE",
     product: "Crossbody Bag",
@@ -50,6 +56,8 @@ const REVIEWS = [
   },
   {
     name: "Sophia Miller",
+    initials: "SM",
+    avatarColor: "bg-sky-500",
     city: "Toronto, Canada",
     country: "Canada",
     product: "Leather Handbag",
@@ -58,6 +66,8 @@ const REVIEWS = [
   },
   {
     name: "Liam Wilson",
+    initials: "LW",
+    avatarColor: "bg-violet-500",
     city: "Sydney, Australia",
     country: "Australia",
     product: "Card Holder",
@@ -66,6 +76,8 @@ const REVIEWS = [
   },
   {
     name: "Hannah Schneider",
+    initials: "HS",
+    avatarColor: "bg-orange-500",
     city: "Berlin, Germany",
     country: "Germany",
     product: "Keychain",
@@ -140,7 +152,11 @@ export default function ReviewForm() {
       {/* ===== REVIEWS SLIDER - Demo website jaisa - Auto-slide ===== */}
       <div className="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 sm:p-8 overflow-hidden">
         <div className="text-center">
-          <p className="text-amber-400 text-lg tracking-widest">{"★".repeat(review.stars)}{"☆".repeat(5 - review.stars)}</p>
+          {/* Reviewer ki image - Initials wala avatar - Real photo aane par yahan photo lag jayegi */}
+          <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto text-black font-bold text-lg ${review.avatarColor}`}>
+            {review.initials}
+          </div>
+          <p className="text-amber-400 text-lg tracking-widest mt-3">{"★".repeat(review.stars)}{"☆".repeat(5 - review.stars)}</p>
           <p className="text-base sm:text-lg text-zinc-100 leading-relaxed mt-3 min-h-[72px]">&ldquo;{review.text}&rdquo;</p>
           <p className="font-bold mt-4">{review.name}</p>
           <p className="text-xs text-zinc-400 tracking-widest uppercase mt-1">{review.city} • {review.product}</p>
