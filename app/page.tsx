@@ -31,8 +31,23 @@ export default function Home() {
   const [hoverSlug, setHoverSlug] = useState<string | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  // BANNERS CONTROL - Admin se live/hide - Home pe banner sirf tab dikhega jab page LIVE hoga
+  const [siteSettings, setSiteSettings] = useState<{ combo_live?: boolean; sale_live?: boolean; announcements_live?: boolean } | null>(null);
   const hoverImages = hoverSlug ? getTop8Images(hoverSlug, TOP8.find((p) => p.slug === hoverSlug)?.image || "") : [];
   const HOVER_SLIDE_DELAY = 1800;
+
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch("/api/site-settings", { cache: "no-store" });
+        const data = await res.json();
+        setSiteSettings(data);
+      } catch {
+        setSiteSettings({ combo_live: false, sale_live: false, announcements_live: false });
+      }
+    }
+    loadSettings();
+  }, []);
 
   useEffect(() => {
     if (!hoverSlug || hoverImages.length <= 1) return;
@@ -85,7 +100,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <a href="/shop" className="bg-[#D4AF37] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A]">Shop Collection</a>
-            <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#D4AF37] hover:text-black">Retail + Wholesale</a>
+            <a href="/b2b" className="border border-[#D4AF37] text-[#D4AF37] px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A]">Retail + Wholesale</a>
             <a href="/contact" className="border border-zinc-300 px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37]">Request Sample</a>
           </div>
           <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handcrafted To Order • Secure Payments • Bank Transfer</p>
@@ -165,10 +180,11 @@ export default function Home() {
       </section>
 
       {/* ===== BANNERS - COMBO / SALE / ANNOUNCEMENTS ===== */}
-      {/* Har banner khud check karega - Page LIVE hoga to dikhega, COMING SOON hoga to chhup jayega */}
-      <ComboBanner />
-      <SaleBanner />
-      <AnnouncementsBanner />
+      {/* Home khud check karega - Page LIVE hoga to banner dikhega, COMING SOON hoga to banner chhup jayega */}
+      {/* Isse double safety hai - Banner khud bhi check karta hai, Home bhi check karta hai */}
+      {siteSettings?.combo_live === true && <ComboBanner />}
+      {siteSettings?.sale_live === true && <SaleBanner />}
+      {siteSettings?.announcements_live === true && <AnnouncementsBanner />}
       {/* ===== BANNERS KHATAM ===== */}
 
       <Craftsmanship />
