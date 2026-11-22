@@ -3,9 +3,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const items = [
-  { off: "20% OFF", cat: "BAGS", title: "Crossbody Messenger Bag - Jet Black", desc: "Best seller bag - now at sale price.", old: "$149", price: "$119", image: "/images/wallet.jpg", alt: "Crossbody Messenger Bag" },
+  { off: "20% OFF", cat: "BAGS", title: "Crossbody Messenger Bag - Jet Black", desc: "Best seller bag - now at sale price.", old: "$149", price: "$119", image: "/images/leather-duffle-bag.jpg", alt: "Crossbody Messenger Bag" },
   { off: "22% OFF", cat: "WALLETS", title: "RFID Wallet", desc: "RFID safe wallet - for daily use.", old: "$89", price: "$69", image: "/images/wallet.jpg", alt: "RFID Wallet" },
-  { off: "22% OFF", cat: "FOR HIM", title: "Leather Vest", desc: "Premium leather vest - limited stock.", old: "$179", price: "$139", image: "/images/wallet.jpg", alt: "Leather Vest" },
+  { off: "22% OFF", cat: "FOR HIM", title: "Leather Vest", desc: "Premium leather vest - limited stock.", old: "$179", price: "$139", image: "/images/biker-jacket.jpg", alt: "Leather Vest" },
 ];
 
 export default function SalePage() {
