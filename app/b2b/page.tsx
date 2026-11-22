@@ -49,6 +49,7 @@ export default function B2BPage() {
     country: "United States",
     quantity: "100",
     productType: "Leather Jacket",
+    otherProduct: "",
     whiteLabel: "Yes",
     message: "",
   });
@@ -66,9 +67,18 @@ export default function B2BPage() {
     setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
 
+  // Others select hua to buyer ka likha hua product naam hi final product hoga
+  const getFinalProduct = () => {
+    if (formData.productType === "Others") {
+      return formData.otherProduct.trim() ? `Others - ${formData.otherProduct.trim()}` : "Others - Custom / Not Listed";
+    }
+    return formData.productType;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${formData.productType}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
+    const finalProduct = getFinalProduct();
+    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
   };
@@ -84,6 +94,7 @@ export default function B2BPage() {
       country: "United States",
       quantity: "100",
       productType: "Leather Jacket",
+      otherProduct: "",
       whiteLabel: "Yes",
       message: "",
     });
@@ -143,7 +154,7 @@ export default function B2BPage() {
               <p className="text-xs text-zinc-300 font-light tracking-wide max-w-md mx-auto leading-relaxed">
                 Your inquiry has been opened in WhatsApp. Please press Send there. Our team will share quote in 24 hours on WhatsApp/Email. Sample available before bulk order.
               </p>
-              <p className="text- text-[#D4AF37]">Company: {formData.companyName} • Product: {formData.productType} • Qty: {formData.quantity}</p>
+              <p className="text- text-[#D4AF37]">Company: {formData.companyName} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
             </div>
             <button
               onClick={handleReset}
@@ -205,7 +216,21 @@ export default function B2BPage() {
                   <option value="Bag">Bag</option>
                   <option value="Wallet">Wallet</option>
                   <option value="Card Holder / Keychain">Card Holder / Keychain - Bulk</option>
+                  <option value="Others">Others - Custom / Not Listed</option>
                 </select>
+                {formData.productType === "Others" && (
+                  <input
+                    type="text"
+                    required
+                    placeholder="Please specify your product — e.g. Custom Leather Product"
+                    value={formData.otherProduct}
+                    onChange={(e) => setFormData({ ...formData, otherProduct: e.target.value })}
+                    className="w-full bg-zinc-900 border border-[#D4AF37]/60 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none mt-2"
+                  />
+                )}
+                {formData.productType === "Others" && (
+                  <p className="text-[11px] text-zinc-400 tracking-wide">List me nahi hai to yahan apna product likh dein — hum quote de denge.</p>
+                )}
               </div>
               <div className="space-y-2">
                 <label className="text- uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
