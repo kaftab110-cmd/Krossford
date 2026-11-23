@@ -5,6 +5,9 @@
 // 4. Delivery simple rakha - Sirf Estimated Total: 12-17 Working Days likha
 // 5. Payment plan: Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch - sahi hai
 // 6. Copyright AUTO YEAR - Ab 2026 dikhega, agle saal khud 2027 ho jayega
+// 7. Courier fix - courier naam + courier tracking link hataya, sirf fastest delivery + apna /track-order
+
+import Link from "next/link";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -31,21 +34,19 @@ export default function Footer() {
         </p>
 
         <p className="text-center text-xs leading-relaxed mt-2.5 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          Handcrafted To Order • Ships via {"D" + "HL Express"} • Estimated Total:{" "}
+          Handcrafted To Order • Ships via fastest delivery • Estimated Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • Ships from Pakistan
         </p>
 
         <div className="flex flex-col items-center mt-5 gap-2">
-          <a
-            href="https://www.dhl.com/global-en/home/tracking.html"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/track-order"
             className="bg-[#D4AF37] text-black font-bold text-xs px-6 py-2.5 rounded-full whitespace-nowrap hover:bg-[#E8C15A] transition-colors"
           >
             TRACK YOUR ORDER →
-          </a>
+          </Link>
           <p className="text-xs text-zinc-500 text-center leading-relaxed px-2 break-words max-w-full">
-            Enter your {"D" + "HL Tracking Number"} here to track your parcel. Your Tracking Number will be shared on {"Whats" + "App"} after dispatch.
+            Enter your Tracking Number here to track your parcel. Your Tracking Number will be shared on {"Whats" + "App"} after dispatch.
           </p>
         </div>
 

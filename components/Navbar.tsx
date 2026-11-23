@@ -69,14 +69,15 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-x-hidden">
-      <div className="px-3 md:px-6 py-2 flex justify-between items-center gap-6 w-full max-w-full">
-        <Link href="/" className="flex items-center gap-2 min-w-0 flex-1">
-          <Logo className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 shrink-0" />
-          <div className="flex flex-col leading-none min-w-0">
+    <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-hidden">
+      <div className="px-2 sm:px-3 md:px-6 py-2 flex justify-between items-center gap-1 sm:gap-2 md:gap-6 w-full max-w-full">
+        {/* LOGO + KROSSFORD - OVERLAP FIX: logo chhota, font chhota, spacing kam, truncate on */}
+        <Link href="/" className="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden">
+          <Logo className="h-8 w-8 sm:h-10 sm:w-10 md:h-16 md:w-16 shrink-0" />
+          <div className="flex flex-col leading-none min-w-0 overflow-hidden">
             <span
-              className="text-[#D4AF37] uppercase text-lg sm:text-2xl md:text-3xl whitespace-nowrap leading-none"
-              style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.18em" }}
+              className="text-[#D4AF37] uppercase text-[15px] sm:text-2xl md:text-3xl truncate leading-none block"
+              style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}
             >
               KROSSFORD
             </span>
@@ -122,16 +123,17 @@ export default function Navbar() {
             CART ({mounted ? cartCount : 0})
           </Link>
         </div>
+        {/* MOBILE - OVERLAP FIX: buttons chhote + gap kam + shrink-0, KROSSFORD se kabhi takrayenge nahi */}
         <div className="flex lg:hidden items-center gap-1 shrink-0">
-          <Link href="/wishlist" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">
-            W {mounted ? wishlistCount : 0}
+          <Link href="/wishlist" aria-label="Wishlist" className="w-8 h-8 shrink-0 text-[10px] text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">
+            W&nbsp;{mounted ? wishlistCount : 0}
           </Link>
-          <Link href="/cart" className="w-9 h-9 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">
-            C {mounted ? cartCount : 0}
+          <Link href="/cart" aria-label="Cart" className="w-8 h-8 shrink-0 text-[10px] text-white border border-white/40 rounded flex items-center justify-center whitespace-nowrap leading-none">
+            C&nbsp;{mounted ? cartCount : 0}
           </Link>
           <button
             onClick={() => setOpen(true)}
-            className="text-white p-1 shrink-0 w-9 h-9 flex items-center justify-center border border-transparent"
+            className="text-white p-1 shrink-0 w-8 h-8 flex items-center justify-center border border-transparent"
             aria-label="Open Menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +159,7 @@ export default function Navbar() {
                 <Logo className="w-8 h-8 shrink-0" />
                 <span
                   className="text-[#D4AF37] uppercase text-sm truncate"
-                  style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.18em" }}
+                  style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}
                 >
                   KROSSFORD
                 </span>

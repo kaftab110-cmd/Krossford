@@ -1,40 +1,33 @@
 // FILE 1 - app/data/products.ts - KROSSFORD FINAL - HOME PAGE DATA
-// Single source of truth for HOME PAGE products. Do NOT duplicate this list in other files.
-// Product page / cart / shop must import from here or from lib/data/shop.ts which re-exports this.
-
-export type Product = {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-  category: "Bags" | "Custom" | "Belts" | "Wallets" | "Sets";
-  badge: string;
-  slug: string;
-  price: number;
-  forHer: boolean;
-};
-
+// SYNC RULE: Slug, price, name, category, forHer - lib/data/shop.ts se SAME hone chahiye. Dono files me 25 products, LOW -> HIGH sorted.
+// FIX: Pehle sirf 10 products the, Card Holder galat Wallets me tha, For Her sab false tha. Ab 25 products, Card Holder = Card Holders, For Her = 7 ladies items.
+export type Product = { id: number; name: string; image: string; description: string; category: "Bags" | "Custom & Gifts" | "Belts" | "Wallets" | "Sets" | "Card Holders" | "Apparel" | "Accessories" | "Travel & Office"; badge: string; slug: string; price: number; forHer: boolean; };
 export const products: Product[] = [
-  { id: 1, name: "Crossbody Messenger Bag", image: "/images/crossbody-messenger-bag2.jpg", description: "Vintage Brown, Full-Grain Leather, Shoulder Strap - Office + Travel", category: "Bags", badge: "BEST SELLER", slug: "crossbody-messenger-bag", price: 119, forHer: false },
-  { id: 2, name: "Custom-Engraved Belt Pouch", image: "/images/belt-pouch-1.jpg", description: "Dark Brown, Full-Grain, Custom Name Plate Available - KROSSFORD", category: "Custom", badge: "CUSTOM LOGO", slug: "custom-engraved-belt-pouch", price: 49, forHer: false },
-  { id: 3, name: "Vegetable-Tanned Belt", image: "/images/belt.jpg", description: "Dark Brown, Vegetable-Tanned, Brass Buckle, Handicraft", category: "Belts", badge: "", slug: "vegetable-tanned-belt", price: 59, forHer: false },
-  { id: 4, name: "Waist Bag / Fanny Pack", image: "/images/fanny-pack.jpg", description: "Vintage Brown, Functional Luxury, Belt Bag", category: "Bags", badge: "TRENDING", slug: "waist-bag-fanny-pack", price: 89, forHer: false },
-  { id: 5, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", description: "Full-Grain, RFID Blocking, Handicraft", category: "Wallets", badge: "BEST SELLER", slug: "minimalist-rfid-wallet", price: 49, forHer: false },
-  { id: 6, name: "3-Piece Business Set", image: "/images/business-set.jpg", description: "Duffle Bag + Briefcase + Pouch - Vintage Brown, Gift Set / Combo", category: "Sets", badge: "GIFT SET", slug: "3-piece-business-set", price: 249, forHer: false },
-  { id: 7, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", description: "Cognac Brown, Full-Grain Leather, Travel Duffel", category: "Bags", badge: "", slug: "travel-duffle-bag", price: 189, forHer: false },
-  { id: 8, name: "Card Holder - Minimalist", image: "/images/card-holder.jpg", description: "Dark Brown, Full-Grain, 4 Card Slots, Handicraft - Premium Quality. Honest Price. Built To Last.", category: "Wallets", badge: "BEST SELLER", slug: "card-holder", price: 29, forHer: false },
-  { id: 9, name: "Ladies Wallet", image: "/images/ladies-wallet.jpg", description: "Soft Grain Leather, RFID Blocking, Compact Design for Her", category: "Wallets", badge: "LADIES", slug: "ladies-wallet", price: 49, forHer: true },
-  { id: 10, name: "Leather Tag + Keychain Set", image: "/images/leather-tag-keychain-set1.jpg", description: "Custom Name / Logo Engraving Available - Small Gift, Long Life.", category: "Custom", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", price: 25, forHer: false },
+  { id: 1, name: "Leather Tag + Keychain Set", image: "/images/leather-tag-keychain-set1.jpg", description: "Custom Name / Logo Engraving Available - Small Gift, Long Life.", category: "Custom & Gifts", badge: "CUSTOM LOGO", slug: "leather-tag-keychain-set", price: 25, forHer: true },
+  { id: 2, name: "Card Holder", image: "/images/card-holder.jpg", description: "Dark Brown, Full-Grain, 4 Card Slots, Handicraft - Premium Quality. Honest Price. Built To Last.", category: "Card Holders", badge: "BEST SELLER", slug: "card-holder", price: 29, forHer: true },
+  { id: 5, name: "Leather Passport Holder", image: "/images/leather-passport-holder.jpg", description: "Travel Essential, Passport + Cards + Boarding Pass, Slim & Secure", category: "Travel & Office", badge: "NEW", slug: "leather-passport-holder", price: 39, forHer: true },
+  { id: 4, name: "Leather Watch Strap", image: "/images/leather-watch-strap.jpg", description: "Fits All Watches, Handicraft", category: "Accessories", badge: "NEW", slug: "leather-watch-strap", price: 39, forHer: false },
+  { id: 30, name: "Custom-Engraved Belt Pouch", image: "/images/belt-pouch-1.jpg", description: "Dark Brown, Full-Grain, Custom Name Plate Available - KROSSFORD", category: "Custom & Gifts", badge: "CUSTOM LOGO", slug: "custom-engraved-belt-pouch", price: 49, forHer: false },
+  { id: 7, name: "Minimalist RFID Wallet", image: "/images/wallet.jpg", description: "Full-Grain, RFID Blocking, Handicraft", category: "Wallets", badge: "BEST SELLER", slug: "minimalist-rfid-wallet", price: 49, forHer: false },
+  { id: 31, name: "Ladies Wallet", image: "/images/ladies-wallet.jpg", description: "Soft Grain Leather, RFID Blocking, Compact Design for Her", category: "Wallets", badge: "LADIES", slug: "ladies-wallet", price: 49, forHer: true },
+  { id: 8, name: "Leather Phone Case", image: "/images/leather-phone-case.jpg", description: "Card Slots, Premium Protection", category: "Accessories", badge: "NEW", slug: "leather-phone-case", price: 49, forHer: false },
+  { id: 3, name: "Vegetable-Tanned Belt", image: "/images/belt.jpg", description: "Dark Brown, Vegetable-Tanned, Brass Buckle, Handicraft", category: "Belts", badge: "BEST SELLER", slug: "vegetable-tanned-belt", price: 59, forHer: false },
+  { id: 9, name: "Leather Gloves", image: "/images/gloves.jpg", description: "Winter Luxury Gloves, Soft Lining, Handicraft - Full-Grain Leather", category: "Accessories", badge: "NEW", slug: "leather-gloves", price: 59, forHer: false },
+  { id: 10, name: "Leather Tool Roll", image: "/images/leather-tool-roll.jpg", description: "Roll-Up Organizer", category: "Travel & Office", badge: "NEW", slug: "leather-tool-roll", price: 59, forHer: false },
+  { id: 12, name: "Leather Apron", image: "/images/leather-apron.jpg", description: "Workshop, Kitchen & Craft", category: "Accessories", badge: "NEW", slug: "leather-apron", price: 69, forHer: false },
+  { id: 13, name: "Leather Journal", image: "/images/leather-journal.jpg", description: "Leather Journal, Premium Paper, Handicraft - For Notes, Planning & Gifting", category: "Travel & Office", badge: "BEST SELLER", slug: "leather-journal", price: 79, forHer: false },
+  { id: 14, name: "Leather Desk Mat", image: "/images/leather-desk-mat.jpg", description: "Office Luxury, Large Desk Pad", category: "Travel & Office", badge: "NEW", slug: "leather-desk-mat", price: 79, forHer: false },
+  { id: 11, name: "Waist Bag / Fanny Pack", image: "/images/fanny-pack.jpg", description: "Vintage Brown, Functional Luxury, Belt Bag", category: "Bags", badge: "TRENDING", slug: "waist-bag-fanny-pack", price: 89, forHer: true },
+  { id: 15, name: "Crossbody Messenger Bag", image: "/images/crossbody-messenger-bag2.jpg", description: "Vintage Brown, Full-Grain Leather, Shoulder Strap - Office + Travel", category: "Bags", badge: "BEST SELLER", slug: "crossbody-messenger-bag", price: 119, forHer: true },
+  { id: 16, name: "Leather Tote Bag", image: "/images/tote-bag.jpg", description: "Structured Work Tote, Fits Laptop + Daily Essentials, Soft Full-Grain Leather, Handicraft", category: "Bags", badge: "BEST SELLER", slug: "leather-tote-bag", price: 129, forHer: true },
+  { id: 17, name: "Leather Messenger Bag", image: "/images/messenger-bag.jpg", description: "Messenger Bag, Double Buckle Flap, Front Zip Pocket, Work + College + Travel - Full-Grain Leather", category: "Bags", badge: "NEW", slug: "leather-messenger-bag", price: 129, forHer: false },
+  { id: 18, name: "Leather Vest", image: "/images/leather-vest.jpg", description: "Classic Fit, Biker & Casual", category: "Apparel", badge: "NEW", slug: "leather-vest", price: 139, forHer: false },
+  { id: 20, name: "Leather Pants", image: "/images/leather-pants.jpg", description: "Slim Fit, Premium Biker Pants", category: "Apparel", badge: "NEW", slug: "leather-pants", price: 149, forHer: false },
+  { id: 22, name: "Travel Duffle Bag", image: "/images/leather-duffle-bag.jpg", description: "Cognac Brown, Full-Grain Leather, Travel Duffel", category: "Bags", badge: "", slug: "travel-duffle-bag", price: 189, forHer: false },
+  { id: 23, name: "Bomber Jacket", image: "/images/bomber-jacket.jpg", description: "Bomber Style, Premium Everyday", category: "Apparel", badge: "BEST SELLER", slug: "bomber-jacket", price: 199, forHer: false },
+  { id: 24, name: "Biker Jacket", image: "/images/biker-jacket.jpg", description: "Classic Biker, Full-Grain Leather", category: "Apparel", badge: "BEST SELLER", slug: "biker-jacket", price: 219, forHer: false },
+  { id: 32, name: "3-Piece Business Set", image: "/images/business-set.jpg", description: "Duffle Bag + Briefcase + Pouch - Vintage Brown, Gift Set / Combo", category: "Sets", badge: "GIFT SET", slug: "3-piece-business-set", price: 249, forHer: false },
+  { id: 25, name: "Biker Suit", image: "/images/biker-suit.jpg", description: "Full Protection, Professional", category: "Apparel", badge: "BEST SELLER", slug: "biker-suit", price: 349, forHer: false },
 ];
-
-// Shared helper for product and cart pages to avoid duplicating product data.
-export function getProductBySlug(slug: string) {
-  return products.find((p) => p.slug === slug);
-}
-
-export const footerInfo = {
-  payments: "VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER",
-  paymentNote: "Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch",
-  copyright: "© 2026 KROSSFORD ENTERPRISES",
-  guarantee: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | Sample Before Bulk | Custom Logo Available"
-};
+export function getProductBySlug(slug: string) { const t = String(slug || "").trim().toLowerCase(); return products.find((p) => p.slug.toLowerCase() === t || String(p.id) === t || p.name.toLowerCase() === t); }
+export const footerInfo = { payments: "VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER", paymentNote: "Retail 100% Advance | Wholesale 50% Advance - 50% Before Dispatch", copyright: "© 2026 KROSSFORD ENTERPRISES", guarantee: "100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) | Sample Before Bulk | Custom Logo Available" };
