@@ -37,26 +37,32 @@ export default function AdminProducts() {
     setName(""); setPrice(""); setImage(""); setStock("10"); setDescription(""); setSlug(""); setSlugTouched(false); setForHer(false);
     load(); setSaving(false); setTimeout(() => setMsg(""), 3000);
   };
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const del = async (id: number, name: string) => {
     if (!confirm(`"${name}" ko DELETE karna hai? Ye wapas nahi aayega.`)) return;
     setMsg("Deleting...");
+    setDeletingId(id);
+    // FIX: id teen jagah bhejo - URL + body + header - taake Vercel / browser DELETE body kaat bhi de to bhi delete ho jaye
     try {
-      const res = await fetch("/api/products", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+      const res = await fetch(`/api/products?id=${id}`, { method: "DELETE", headers: { "Content-Type": "application/json", "x-product-id": String(id) }, body: JSON.stringify({ id }) });
       const j = await res.json().catch(() => ({}));
-      if (!res.ok || j.ok === false) { setMsg(`❌ Delete nahi hua: ${j.error || "API ne mana kar diya"} — HIDE dabao, wo 100% kaam karega.`); return; }
-      setMsg(`✅ "${name}" delete ho gaya.`);
+      if (!res.ok || j.ok === false) { setMsg(`❌ Delete nahi hua: ${j.error || "API ne mana kar diya"} — HIDE dabao, wo 100% kaam karega.`); setDeletingId(null); return; }
+      // List se foran hatao - load() ka wait mat karo, warna lagta hai Delete kaam nahi kiya
+      setProducts((prev) => prev.filter((x) => x.id !== id));
+      setMsg(`✅ "${name}" delete ho gaya. Shop se bhi gayab ho jayega.`);
+      setDeletingId(null);
       load();
-    } catch { setMsg("❌ Delete nahi hua — Internet / API masla hai. HIDE dabao."); }
+    } catch { setMsg("❌ Delete nahi hua — Internet / API masla hai. HIDE dabao."); setDeletingId(null); }
   };
   const toggleLive = async (p: Product) => {
     const next = !p.is_active;
     setProducts((prev) => prev.map((x) => x.id === p.id ? { ...x, is_active: next } : x));
-    const res = await fetch("/api/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: p.id, is_active: next }) });
+    const res = await fetch(`/api/products?id=${p.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: p.id, is_active: next }) });
     if (!res.ok) { setProducts((prev) => prev.map((x) => x.id === p.id ? { ...x, is_active: p.is_active } : x)); setMsg("Live / Hide save nahi hua — dobara try karo."); }
     else setMsg(next ? `✅ ${p.name} - LIVE ho gaya, Shop pe dikhega.` : `✅ ${p.name} - HIDE ho gaya, Shop pe nahi dikhega.`);
   };
   const startEdit = (p: Product) => { setEditId(p.id); setEditPrice(String(p.price)); setEditStock(String(p.stock)); };
-  const saveEdit = async () => { if (editId === null) return; await fetch("/api/products", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editId, price: Number(editPrice), stock: Number(editStock) }) }); setEditId(null); load(); };
+  const saveEdit = async () => { if (editId === null) return; await fetch(`/api/products?id=${editId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editId, price: Number(editPrice), stock: Number(editStock) }) }); setEditId(null); load(); };
   const filtered = products.filter((p) => { if (catFilter !== "All" && p.category !== catFilter) return false; if (search.trim()) { const s = search.toLowerCase(); if (!p.name.toLowerCase().includes(s) && !p.category.toLowerCase().includes(s)) return false; } return true; });
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-4 sm:p-6 pt-24">
@@ -81,7 +87,7 @@ export default function AdminProducts() {
               {p.description ? <p className="text-zinc-500 break-words">{p.description}</p> : null}
               {p.stock <= 5 ? <p className="text-amber-400 font-bold">⚠ Low Stock - Jaldi restock karo</p> : null}
               {editId === p.id ? (<div className="flex gap-2 flex-wrap"><input value={editPrice} onChange={(e) => setEditPrice(e.target.value)} placeholder="New Price" className="w-24 bg-zinc-950 border border-zinc-800 px-2 py-1.5 rounded text-xs outline-none focus:border-amber-400" /><input value={editStock} onChange={(e) => setEditStock(e.target.value)} placeholder="Stock" className="w-20 bg-zinc-950 border border-zinc-800 px-2 py-1.5 rounded text-xs outline-none focus:border-amber-400" /><button onClick={saveEdit} className="bg-green-600 px-3 py-1.5 rounded font-bold text-xs uppercase">Save</button><button onClick={() => setEditId(null)} className="bg-zinc-800 px-3 py-1.5 rounded font-bold text-xs uppercase">Cancel</button></div>) : (
-                <div className="flex gap-2 flex-wrap"><button onClick={() => startEdit(p)} className="bg-amber-400 text-black px-3 py-1 rounded font-bold text-xs uppercase">Edit Price / Stock</button><button onClick={() => toggleLive(p)} className={`px-3 py-1 rounded font-bold text-xs uppercase ${p.is_active ? "bg-zinc-800 text-zinc-200" : "bg-green-600 text-white"}`}>{p.is_active ? "Hide" : "Make Live"}</button><button onClick={() => del(p.id, p.name)} className="bg-red-600 px-3 py-1 rounded font-bold text-xs uppercase">Delete</button></div>
+                <div className="flex gap-2 flex-wrap"><button onClick={() => startEdit(p)} className="bg-amber-400 text-black px-3 py-1 rounded font-bold text-xs uppercase">Edit Price / Stock</button><button onClick={() => toggleLive(p)} className={`px-3 py-1 rounded font-bold text-xs uppercase ${p.is_active ? "bg-zinc-800 text-zinc-200" : "bg-green-600 text-white"}`}>{p.is_active ? "Hide" : "Make Live"}</button><button disabled={deletingId === p.id} onClick={() => del(p.id, p.name)} className={`px-3 py-1 rounded font-bold text-xs uppercase ${deletingId === p.id ? "bg-zinc-700 text-zinc-400" : "bg-red-600"}`}>{deletingId === p.id ? "Deleting..." : "Delete"}</button></div>
               )}
             </div>
           ))}</div>
