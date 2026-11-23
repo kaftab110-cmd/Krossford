@@ -5,6 +5,8 @@ import { COUNTRIES } from "../../lib/data/countries";
 import PhoneInput from "@/components/PhoneInput";
 import { buildFullPhone } from "@/lib/data/phone-codes";
 const WHATSAPP_NUMBER = "923030006759";
+// CAPITAL FIX - Company naam jaisa bhi likha ho - munib hassan -> Munib Hassan - har word ka pehla letter Capital
+const capWords = (v: string) => v.trim().split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
 const B2B_PRODUCTS = [
   { name: "Leather Jacket - Biker / Bomber", img: "/images/biker-jacket.jpg", desc: "Full-Grain / Sheep Leather. Custom Logo, Sizes XS-3XL.", moq: "MOQ: 50 Pcs", tag: "BEST FOR B2B", productType: "Leather Jacket", quantity: "50" },
   { name: "Leather Biker Suit - 2 Piece", img: "/images/biker-suit.jpg", desc: "CE Protection Ready. Custom Fit, Team / Brand Orders.", moq: "MOQ: 25 Sets", tag: "HIGH MARGIN", productType: "Biker Suit", quantity: "25" },
@@ -76,10 +78,10 @@ function B2BPageInner() {
           action: "submit", channel: "B2B",
           lead: {
             source: "b2b-enquiry", channel: "B2B", enquiryType: "B2B",
-            customerName: formData.companyName, company: formData.companyName, email: formData.businessEmail,
+            customerName: capWords(formData.companyName), company: capWords(formData.companyName), email: formData.businessEmail,
             contact: formData.phone, phone: formData.phone, altPhone: formData.altPhone, country: formData.country,
             product: finalProduct, quantity: String(qtyNum), total: 0,
-            message: `B2B Wholesale Inquiry\n\nCompany: ${formData.companyName}\nPhone: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate: ${formData.altPhone}` : ""}\nCountry: ${formData.country}\nProduct Type: ${finalProduct}\nQuantity: ${formData.quantity}\nWhite Label: ${formData.whiteLabel}\nLogo: ${logoFile ? logoFile.name : "Not uploaded"}\n\nMessage:\n${formData.message || "Not given"}`,
+            message: `B2B Wholesale Inquiry\n\nCompany: ${capWords(formData.companyName)}\nPhone: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate: ${formData.altPhone}` : ""}\nCountry: ${formData.country}\nProduct Type: ${finalProduct}\nQuantity: ${formData.quantity}\nWhite Label: ${formData.whiteLabel}\nLogo: ${logoFile ? logoFile.name : "Not uploaded"}\n\nMessage:\n${formData.message || "Not given"}`,
             items: [{ title: finalProduct, quantity: qtyNum, notes: `White Label: ${formData.whiteLabel} | ${formData.message || ""}` }],
             paymentTerms: "Wholesale: 50% Advance, 50% Before Dispatch", shippingMethod: "fastest delivery",
           },
@@ -90,7 +92,7 @@ function B2BPageInner() {
       emailOk = res.ok && j.success !== false && j.emailSent !== false;
     } catch (err) { console.error("B2B EMAIL FAILED:", err); emailOk = false; }
     setEmailStatus(emailOk ? "sent" : "failed");
-    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
+    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${capWords(formData.companyName)}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
   };
@@ -137,7 +139,7 @@ function B2BPageInner() {
               ) : (
                 <p className="text-xs text-zinc-300 font-light tracking-wide max-w-md mx-auto leading-relaxed">WhatsApp inquiry ready — please press Send on WhatsApp to complete it. Email could not be confirmed this time, so please also send it via WhatsApp. Our team will share quote in 24 hours.</p>
               )}
-              <p className="text-xs text-[#D4AF37]">Company: {formData.companyName} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
+              <p className="text-xs text-[#D4AF37]">Company: {capWords(formData.companyName)} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
               {emailStatus === "failed" && <p className="text-xs text-amber-400">Email status: Not confirmed — WhatsApp se zaroor Send dabayein.</p>}
             </div>
             <button onClick={handleReset} className="bg-[#D4AF37] text-black text-xs uppercase tracking-[0.2em] font-semibold px-6 py-3 hover:bg-[#E8C15A] transition-colors">Submit Another Inquiry</button>
