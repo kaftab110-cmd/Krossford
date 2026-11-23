@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 export default function AdminSettings() {
   const [siteName, setSiteName] = useState("KROSSFORD");
   const [supportEmail, setSupportEmail] = useState("hello@krossford.com");
-  const [whatsapp, setWhatsapp] = useState("+923001234567");
-  const [deliveryNote, setDeliveryNote] = useState("Pakistan: 3-5 working days | International: 7-12 working days");
+  const [whatsapp, setWhatsapp] = useState("+923030006759");
+  const [deliveryNote, setDeliveryNote] = useState("Handcrafted To Order - Total 12-17 Working Days (Crafting 7-10 + Delivery 5-7) • Ships via fastest delivery");
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");

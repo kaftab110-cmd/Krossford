@@ -34,14 +34,14 @@
 
   /* FIX 3: Mobile pe zyada tracking auto kam ho jayegi - poori site ke liye */
   @media (max-width: 640px) {
-    .tracking-\[0\.3em\],
-    .tracking-\[0\.35em\],
-    .tracking-\[0\.4em\],
+    .tracking-\\[0\\.3em\\],
+    .tracking-\\[0\\.35em\\],
+    .tracking-\\[0\\.4em\\],
     .tracking-widest {
       letter-spacing: 0.08em !important;
     }
-    .tracking-\[0\.2em\],
-    .tracking-\[0\.25em\] {
+    .tracking-\\[0\\.2em\\],
+    .tracking-\\[0\\.25em\\] {
       letter-spacing: 0.1em !important;
     }
   }
@@ -83,5 +83,39 @@
   }
   [class*="Ask Krossford"] {
     max-width: calc(100vw - 2rem) !important;
+  }
+}
+
+/* FIX 5: MOBILE CUT FIX - Wo/Co + Request Sample katna band */
+@media (max-width: 640px) {
+  h1, h2, h3, p, span, a, button {
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  /* Koi bhi button / link mobile pe screen se bahar na jaye, text 2 line me aa jaye */
+  a, button {
+    max-width: 100% !important;
+    white-space: normal !important;
+    text-align: center;
+  }
+  /* Hero ke buttons side-by-side katne ke bajaye stack ho jayen */
+  main section:first-child .flex {
+    flex-wrap: wrap !important;
+  }
+  main section:first-child .flex > a,
+  main section:first-child .flex > button {
+    flex: 1 1 100% !important;
+    min-width: 0 !important;
+  }
+  /* WhatsApp + AI float buttons chhote + neeche se upar, hero button se takrayen nahi */
+  .fixed.bottom-4, .fixed.bottom-5, .fixed.bottom-6,
+  a[href*="wa.me"], button[aria-label*="WhatsApp"] {
+    transform: scale(0.85) !important;
+    transform-origin: bottom right !important;
+  }
+  /* Page ke neeche itni jagah ke float button content na dhaken */
+  main {
+    padding-bottom: 5rem !important;
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom)) !important;
   }
 }
