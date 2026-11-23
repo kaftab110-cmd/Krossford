@@ -48,14 +48,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${brandFont.variable} overflow-x-hidden max-w-full`}>
+    <html lang="en" className={`${brandFont.variable} overflow-x-hidden overflow-x-clip max-w-full`}>
       <body
-        className="bg-black text-white min-h-screen overflow-x-hidden max-w-full antialiased flex flex-col justify-between selection:bg-[#D4AF37] selection:text-black"
+        className="bg-black text-white min-h-screen w-full min-w-0 overflow-x-hidden overflow-x-clip max-w-full antialiased flex flex-col justify-between selection:bg-[#D4AF37] selection:text-black"
         style={{ fontFamily: "var(--font-brand), 'Playfair Display', Georgia, serif" }}
       >
-        <div>
+        <div className="w-full min-w-0 overflow-x-clip flex-1">
           <Navbar />
-          <div className="pt-16">
+          {/* ALL DEVICES SUPPORTED - Navbar ab 2 lines ka hai, is liye padding bhi har device ke hisaab se - warna Hero wala KROSSFORD Navbar ke neeche chhup ke kata hua lagega */}
+          {/* Mobile 92px / Tablet 112px / Laptop-Desktop 132px */}
+          <div className="w-full min-w-0 overflow-x-clip pt-[92px] sm:pt-[100px] md:pt-[112px] lg:pt-[132px]">
             {children}
           </div>
         </div>
