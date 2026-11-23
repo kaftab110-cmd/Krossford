@@ -71,30 +71,30 @@ export default function Navbar() {
   return (
     <header className="bg-zinc-950 border-b border-zinc-800 fixed top-0 left-0 right-0 z-50 w-full overflow-hidden">
       <div className="px-2 sm:px-3 md:px-6 py-2 flex justify-between items-center gap-1 sm:gap-2 md:gap-6 w-full max-w-full">
-        <Link href="/" className="flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden">
+        <Link href="/" className="flex items-center gap-1.5 min-w-0 flex-1 lg:flex-none xl:flex-1 overflow-hidden">
           <Logo className="h-8 w-8 sm:h-10 sm:w-10 md:h-16 md:w-16 shrink-0" />
           <div className="flex flex-col leading-none min-w-0 overflow-hidden">
             <span
-              className="text-[#D4AF37] uppercase text-[15px] sm:text-2xl md:text-3xl truncate leading-none block"
+              className="text-[#D4AF37] uppercase text-[15px] sm:text-xl lg:text-xl xl:text-3xl whitespace-nowrap leading-none block"
               style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}
             >
               KROSSFORD
             </span>
           </div>
         </Link>
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text-[11px] font-bold tracking-wider whitespace-nowrap">
+        <nav className="hidden lg:flex items-center gap-2.5 xl:gap-4 text-[10px] xl:text-[11px] font-bold tracking-wider whitespace-nowrap shrink-0">
           <Link href="/" className={pathname === "/" ? "text-[#D4AF37]" : "text-white hover:text-[#D4AF37]"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <Link href="/for-her" className={pathname === "/for-her" ? "text-[#D4AF37]" : "text-zinc-300 hover:text-[#D4AF37] transition-colors"}>FOR HER</Link>
           <Link href="/combo-deals" className={cls("/combo-deals")}>COMBO DEALS</Link>
           <Link href="/sale" className={pathname === "/sale" ? "text-red-500" : "text-red-400 hover:text-red-300 transition-colors"}>SALE</Link>
-          <Link href="/announcements" className={cls("/announcements")}>ANNOUNCEMENTS</Link>
+          <Link href="/announcements" className={cls("/announcements") + " hidden xl:block"}>ANNOUNCEMENTS</Link>
           <Link href="/collections" className={cls("/collections")}>COLLECTIONS</Link>
-          <Link href="/b2b" className={cls("/b2b")}>B2B WHOLESALE</Link>
+          <Link href="/b2b" className={cls("/b2b") + " hidden xl:block"}>B2B WHOLESALE</Link>
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
-          <Link href="/contact" className={cls("/contact") + " whitespace-nowrap"}>CONTACT US</Link>
+          <Link href="/contact" className={cls("/contact") + " whitespace-nowrap hidden xl:block"}>CONTACT US</Link>
         </nav>
-        <div className="hidden lg:flex items-center gap-6 text-xs font-bold tracking-wider shrink-0 whitespace-nowrap ml-4">
+        <div className="hidden lg:flex items-center gap-3 xl:gap-6 text-[11px] xl:text-xs font-bold tracking-wider shrink-0 whitespace-nowrap ml-2 xl:ml-4">
           <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({mounted ? wishlistCount : 0})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({mounted ? cartCount : 0})</Link>
         </div>

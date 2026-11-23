@@ -20,13 +20,11 @@ export default function Home() {
   const pausedUntil = useRef<Record<string, number>>({});
   const touchStartX = useRef<number | null>(null);
   const markFailed = (src: string) => { setFailedImages((prev) => { if (prev.has(src)) return prev; const n = new Set(prev); n.add(src); return n; }); };
-  // Slider images - tooti hui photo ko list se nikaal do, taake slider blank pe na ruke
   const getSafeImages = (slug: string, fallback: string) => getTop8Images(slug, fallback).filter((img) => !failedImages.has(img));
   useEffect(() => { async function loadSettings() { try { const res = await fetch("/api/site-settings", { cache: "no-store" }); const data = await res.json(); setSiteSettings(data); } catch { setSiteSettings({ combo_live: false, sale_live: false, announcements_live: false }); } } loadSettings(); }, []);
   useEffect(() => {
     const timer = setInterval(() => { const now = Date.now(); setSlideIndex((prev) => { const next = { ...prev }; let changed = false; for (const p of TOP8) { const imgs = getSafeImages(p.slug, p.image); if (imgs.length <= 1) continue; if ((pausedUntil.current[p.slug] || 0) > now) continue; next[p.slug] = ((prev[p.slug] ?? 0) + 1) % imgs.length; changed = true; } return changed ? next : prev; }); }, 4000);
     return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [failedImages]);
   const manualGo = (slug: string, total: number, dir: 1 | -1) => { pausedUntil.current[slug] = Date.now() + 8000; setSlideIndex((prev) => ({ ...prev, [slug]: (((prev[slug] ?? 0) + dir + total) % total) })); };
   const goToIndex = (slug: string, idx: number) => { pausedUntil.current[slug] = Date.now() + 8000; setSlideIndex((prev) => ({ ...prev, [slug]: idx })); };
@@ -42,15 +40,16 @@ export default function Home() {
   };
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full min-h-[100svh] flex items-center justify-center text-center overflow-hidden bg-black">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-center" />
+      {/* HERO FIX: height kam + image position upar, taake bag neeche se na kate, upar space kam ho */}
+      <section className="relative w-full min-h-[92svh] lg:min-h-[88svh] flex items-center justify-center text-center overflow-hidden bg-black">
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full pt-28 pb-16 sm:pt-20 sm:pb-10">
+        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full pt-24 pb-10 sm:pt-16 sm:pb-10">
           <p className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#D4AF37] uppercase text-center leading-tight" style={{ fontFamily: "var(--font-brand)" }}>KROSSFORD</p>
-          <h1 className="mt-5 text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center" style={{ fontFamily: "var(--font-brand)" }}>Real Leather.<br />Made Honestly.</h1>
-          <p className="mt-5 text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).</p>
-          <div className="mt-7 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto"><a href="/shop" className="w-full sm:w-auto bg-[#D4AF37] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A] text-center">Shop Collection</a><a href="/b2b" className="w-full sm:w-auto border border-[#D4AF37] text-[#D4AF37] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A] text-center">Retail + Wholesale</a><a href="/contact" className="w-full sm:w-auto border border-zinc-300 px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37] text-center">Request Sample</a></div>
-          <p className="mt-6 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <h1 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center" style={{ fontFamily: "var(--font-brand)" }}>Real Leather.<br />Made Honestly.</h1>
+          <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel).</p>
+          <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto"><a href="/shop" className="w-full sm:w-auto bg-[#D4AF37] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A] text-center">Shop Collection</a><a href="/b2b" className="w-full sm:w-auto border border-[#D4AF37] text-[#D4AF37] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:bg-[#E8C15A] text-center">Retail + Wholesale</a><a href="/contact" className="w-full sm:w-auto border border-zinc-300 px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#D4AF37] text-center">Request Sample</a></div>
+          <p className="mt-5 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 pb-2"><div className="border border-[#D4AF37]/30 rounded-lg p-5 sm:p-6 bg-zinc-950 text-center space-y-2"><p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted To Order • Ships via Fastest Delivery</p><p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p><p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p></div></section>
