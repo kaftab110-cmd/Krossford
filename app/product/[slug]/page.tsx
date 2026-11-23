@@ -8,19 +8,6 @@ import { readCartItems, saveCart } from "@/lib/cart";
 const normalize = (s: string | number | null | undefined): string =>
   String(s ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-const FALLBACK_WALLET: any = {
-  id: 2, name: "Wallet", image: "/images/wallet.jpg",
-  gallery: ["/images/wallet.jpg"],
-  description: "rfid wallet", category: "Wallets",
-  badge: "NEW", slug: "admin-2", aliases: [],
-  price: 69,
-  colors: [
-    { name: "Jet Black", code: "#111111", image: "/images/wallet.jpg" },
-    { name: "Dark Brown", code: "#3E2723", image: "/images/wallet.jpg" },
-    { name: "Cognac Tan", code: "#B87333", image: "/images/wallet.jpg" },
-  ],
-  forHer: false,
-};
 
 export default function ProductPage() {
   const params = useParams();
@@ -31,17 +18,15 @@ export default function ProductPage() {
     return candidates.some((c) => normalize(c) === target);
   });
   const isDbSlug = normalize(slug).startsWith("admin-");
-  const isAdmin2 = normalize(slug) === "admin-2";
 
-  const [dbProduct, setDbProduct] = useState<any>(isAdmin2 ? FALLBACK_WALLET : null);
+  const [dbProduct, setDbProduct] = useState<any>(null);
   const [dbError, setDbError] = useState<string>("");
   const [dbLoading, setDbLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     if (localProduct && !isDbSlug) { setDbLoading(false); return; }
-    if (isAdmin2) { setDbLoading(false); setDbError(""); }
-    else { setDbLoading(true); setDbError(""); setDbProduct(null); }
+    setDbLoading(true); setDbError(""); setDbProduct(null);
     let cancelled = false;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 5000);
@@ -49,7 +34,7 @@ export default function ProductPage() {
       .then(async (r) => { try { return JSON.parse(await r.text()); } catch { return { products: [] }; } })
       .then((res: any) => {
         if (cancelled) return;
-        if (res?.error) { if (!isAdmin2) setDbError(String(res.error)); return; }
+        if (res?.error) { setDbError(String(res.error)); return; }
         const rows: any[] = Array.isArray(res) ? res : res?.products || [];
         const row = rows.find((r: any) =>
           normalize(r.slug) === normalize(slug) ||
@@ -57,7 +42,7 @@ export default function ProductPage() {
           normalize(r.id) === normalize(slug) ||
           normalize(r.name) === normalize(slug)
         );
-        if (!row) { if (!isAdmin2) setDbError("Supabase me is slug ka product nahi mila: " + slug); return; }
+        if (!row) { setDbError("Supabase me is slug ka product nahi mila: " + slug); return; }
         let img = row.image || row.image_url || row.photo || "/images/wallet.jpg";
         if (!img.startsWith("/") && !img.startsWith("http")) img = "/images/" + img;
         if (!img || img === "/images/") img = "/images/wallet.jpg";
@@ -76,7 +61,7 @@ export default function ProductPage() {
           forHer: !!row.forHer,
         });
       })
-      .catch((e: any) => { if (!cancelled && !isAdmin2) setDbError(String(e?.message || e)); })
+      .catch((e: any) => { if (!cancelled) setDbError(String(e?.message || e)); })
       .finally(() => { clearTimeout(timer); if (!cancelled) setDbLoading(false); });
     return () => { cancelled = true; clearTimeout(timer); controller.abort(); };
   }, [slug, retryCount]);
