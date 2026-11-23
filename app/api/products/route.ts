@@ -12,6 +12,17 @@ function supabase() {
   );
 }
 
+// FIX: id teen jagah se padho - URL (?id=) + header (x-product-id) + body - taake DELETE / PATCH kabhi na atke
+async function getIdAndBody(req: Request) {
+  const url = new URL(req.url);
+  const urlId = url.searchParams.get("id");
+  const headerId = req.headers.get("x-product-id");
+  let body: any = {};
+  try { const t = await req.text(); if (t.trim()) body = JSON.parse(t); } catch { body = {}; }
+  const id = Number(body?.id ?? urlId ?? headerId);
+  return { id: Number.isFinite(id) && id > 0 ? id : undefined, body };
+}
+
 const FALLBACK = [
   { id: 2, name: "Wallet", price: 69, category: "For Him", image: "/images/wallet.jpg", slug: "admin-2", stock: 100, description: "rfid wallet", is_active: true },
 ];
@@ -24,10 +35,9 @@ export async function GET(req: Request) {
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
       if (slug) {
-        const one = FALLBACK.find((p) => p.slug === slug);
-        return NextResponse.json({ products: one ? [one] : FALLBACK });
+        return NextResponse.json({ products: [] });
       }
-      return NextResponse.json({ products: FALLBACK });
+      return NextResponse.json({ products: [] });
     }
 
     // FIX 1 - TUMHARI FILE ME YE MISSING THA: Pehle hamesha is_active=true lag raha tha,
@@ -53,7 +63,7 @@ export async function GET(req: Request) {
     }
     return NextResponse.json({ products: data });
   } catch {
-    return NextResponse.json({ products: FALLBACK });
+    return NextResponse.json({ products: [] });
   }
 }
 
@@ -86,15 +96,16 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    // FIX 3a - TUMHARI FILE ME YE MISSING THA: PATCH sirf price/stock update karta tha,
+    // FIX 3a - PATCH sirf price/stock update karta tha,
     // is_active ko ignore karta tha - is liye HIDE / Make Live ka button kaam nahi karta tha.
-    const body = await req.json() as { id?: number; price?: number; stock?: number; is_active?: boolean };
-    if (!body.id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
+    // FIX 4 - id ab URL + header + body teenon se padho
+    const { id, body } = await getIdAndBody(req) as { id?: number; body: { price?: number; stock?: number; is_active?: boolean } };
+    if (!id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
     const patch: any = {};
     if (body.price !== undefined) patch.price = body.price;
     if (body.stock !== undefined) patch.stock = body.stock;
     if (body.is_active !== undefined) patch.is_active = body.is_active;
-    const { error } = await supabase().from("products").update(patch).eq("id", body.id);
+    const { error } = await supabase().from("products").update(patch).eq("id", id);
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     return NextResponse.json({ ok: true });
   } catch {
@@ -104,11 +115,12 @@ export async function PATCH(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const body = await req.json() as { id?: number };
-    if (!body.id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
+    // FIX 4 - id ab URL + header + body teenon se padho - DELETE body katne pe bhi delete hoga
+    const { id } = await getIdAndBody(req);
+    if (!id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
     // FIX 3b - TUMHARI FILE ME DELETE SIRF is_active=false karta tha (soft delete),
     // is liye product Admin me rehta tha. Ab pakka delete hoga.
-    const { error } = await supabase().from("products").delete().eq("id", body.id);
+    const { error } = await supabase().from("products").delete().eq("id", id);
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     return NextResponse.json({ ok: true });
   } catch {
