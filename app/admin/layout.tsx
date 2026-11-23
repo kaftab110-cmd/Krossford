@@ -1,5 +1,5 @@
 "use client";
-// ===== RESET VERSION - Agar ye line nahi dikh rahi to file purani hai =====
+// ===== RESET + EYE VERSION - Agar ye line nahi dikh rahi to file purani hai =====
 import { useState, useEffect } from "react";
 const PERMANENT_USER = "kaftab110";
 const TEMP_USER = "krossford-guest";
@@ -60,12 +60,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <h2 className="font-serif tracking-[0.25em] font-bold text-amber-400 uppercase text-center text-lg">KROSSFORD</h2>
           <p className="font-serif tracking-[0.3em] text-zinc-400 text-center uppercase -mt-2 text-xs">Admin Access</p>
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} autoCapitalize="none" autoCorrect="off" className="w-full bg-zinc-950 border border-zinc-800 p-2 rounded text-xs text-white outline-none focus:border-amber-400" />
-          <div className="relative"><input type={showPass ? "text" : "password"} placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} autoCapitalize="none" autoCorrect="off" className="w-full bg-zinc-950 border border-zinc-800 p-2 pr-12 rounded text-xs text-white outline-none focus:border-amber-400" /><button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-amber-400 font-bold">{showPass ? "HIDE" : "SHOW"}</button></div>
+          <div className="relative"><input type={showPass ? "text" : "password"} placeholder="Enter Admin Password" value={pass} onChange={(e) => setPass(e.target.value)} autoCapitalize="none" autoCorrect="off" className="w-full bg-zinc-950 border border-zinc-800 p-2 pr-12 rounded text-xs text-white outline-none focus:border-amber-400" /><button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-amber-400 font-bold">{showPass ? "🙈" : "👁️"}</button></div>
           {err ? <p className="text-xs text-red-400 bg-red-950/40 border border-red-900 p-2 rounded">{err}</p> : null}
           {diag ? <p className="text-xs text-amber-300 bg-amber-950/40 border border-amber-900 p-2 rounded">{diag}</p> : null}
           <button type="submit" disabled={loggingIn} className={`w-full py-2 rounded font-bold text-xs uppercase ${loggingIn ? "bg-zinc-700 text-zinc-400" : "bg-amber-400 text-black"}`}>{loggingIn ? "Checking..." : "Unlock Dashboard"}</button>
           <button type="button" onClick={resetPassword} disabled={resetting} className="w-full bg-zinc-800 border border-zinc-700 text-zinc-200 py-2 rounded font-bold text-xs uppercase">{resetting ? "Resetting..." : "Password Bhool Gaye? Reset Karo"}</button>
-          <p className="text- text-zinc-500 text-center leading-relaxed">Mobile pe password likhte hue SHOW dabake dekh lo.</p>
+          <p className="text-[11px] text-zinc-500 text-center leading-relaxed">Mobile pe password likhte hue SHOW dabake dekh lo.</p>
         </form>
       </div>
     );
