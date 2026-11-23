@@ -86,9 +86,6 @@ export default function Navbar() {
           <Link href="/" className={pathname === "/" ? "text-[#D4AF37]" : "text-white hover:text-[#D4AF37]"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <Link href="/for-her" className={pathname === "/for-her" ? "text-[#D4AF37]" : "text-zinc-300 hover:text-[#D4AF37] transition-colors"}>FOR HER</Link>
-          <Link href="/combo-deals" className={cls("/combo-deals")}>COMBO DEALS</Link>
-          <Link href="/sale" className={pathname === "/sale" ? "text-red-500" : "text-red-400 hover:text-red-300 transition-colors"}>SALE</Link>
-          <Link href="/announcements" className={cls("/announcements") + " hidden xl:block"}>ANNOUNCEMENTS</Link>
           <Link href="/collections" className={cls("/collections")}>COLLECTIONS</Link>
           <Link href="/b2b" className={cls("/b2b") + " hidden xl:block"}>B2B WHOLESALE</Link>
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
@@ -109,6 +106,15 @@ export default function Navbar() {
           <button onClick={() => setOpen(true)} className="text-white p-1 shrink-0 w-8 h-8 flex items-center justify-center border border-transparent" aria-label="Open Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
+        </div>
+      </div>
+      {/* OFFER BAR - 2nd row - MOBILE + TABLET + DESKTOP SUPPORTED - COMBO / SALE / ANNOUNCEMENTS - thore BARE + ALAG buttons, beech me saaf gap, sliding NAHI */}
+      <div className="border-t border-zinc-800 bg-black">
+        {/* Mobile: 3 buttons 1 line me barabar - grid-cols-3, koi button katega nahi / Tablet-Desktop: bare buttons, beech me gap */}
+        <div className="max-w-3xl mx-auto px-1.5 min-[400px]:px-2 sm:px-3 py-2 sm:py-2.5 grid grid-cols-3 gap-1.5 min-[400px]:gap-2 sm:gap-4 sm:gap-4 md:gap-5">
+          <Link href="/combo-deals" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center ${pathname === "/combo-deals" ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"}`}>COMBO DEALS</Link>
+          <Link href="/sale" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center shadow-[0_0_18px_rgba(239,68,68,0.35)] ${pathname === "/sale" ? "bg-red-600 text-white border-red-600" : "border-red-500 text-red-400 bg-red-600/10 hover:bg-red-600 hover:text-white"}`}>SALE</Link>
+          <Link href="/announcements" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center ${pathname === "/announcements" ? "bg-white text-black border-white" : "border-zinc-400 text-zinc-100 hover:bg-white hover:text-black"}`}>ANNOUNCEMENTS</Link>
         </div>
       </div>
       <div className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 lg:hidden ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} aria-hidden={!open}>
