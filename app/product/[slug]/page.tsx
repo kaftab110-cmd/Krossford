@@ -148,7 +148,7 @@ export default function ProductPage() {
 
   if (!product && dbLoading) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-4 p-6 text-center">
+      <div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words">
         <p className="text-xl font-bold">Loading product...</p>
         <p className="text-xs text-zinc-400">Slug: {slug}</p>
         <p className="text-xs text-zinc-400">Loading from /api/products...</p>
@@ -157,7 +157,7 @@ export default function ProductPage() {
   }
   if (!product) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center flex-col gap-4 p-6 text-center">
+      <div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words">
         <p className="text-xl font-bold">Product not found</p>
         <p className="text-xs text-zinc-400">Slug: {slug}</p>
         <p className="text-xs text-red-400">{dbError || "Supabase se product nahi mila"}</p>
@@ -224,12 +224,12 @@ export default function ProductPage() {
   const related = [...sameCategory, ...otherCategory].slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-6 md:p-12 overflow-x-hidden">
-      <div className="max-w-6xl mx-auto">
-        <p className="text-xs text-zinc-400 uppercase tracking-widest mb-6">
+    <div className="min-h-screen bg-black text-white w-full min-w-0 p-3 min-[400px]:p-4 sm:p-6 lg:p-8 xl:p-12 overflow-x-hidden overflow-x-clip">
+      <div className="max-w-6xl mx-auto w-full min-w-0">
+        <p className="text-[11px] min-[400px]:text-xs text-zinc-400 uppercase tracking-normal sm:tracking-widest mb-6 break-words leading-relaxed">
           <Link href="/" className="hover:text-[#D4AF37]">Home</Link> / <Link href="/shop" className="hover:text-[#D4AF37]">Shop</Link> / <span className="text-[#D4AF37] font-semibold">{product.name}</span>
         </p>
-        <div className="grid md:grid-cols-2 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 w-full min-w-0">
           <div className="min-w-0">
             <div
               className="relative w-full overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 aspect-[4/3]"
@@ -262,7 +262,7 @@ export default function ProductPage() {
                 <p className="text-sm font-bold">SELECT DESIGN: Design {safeDesign + 1}</p>
                 <div className="flex gap-3 mt-3 flex-wrap">
                   {safeGallery.map((g, i) => (
-                    <button key={g} onClick={() => goToSlide(i)} className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer ${safeDesign === i ? "ring-2 ring-[#D4AF37]" : "ring-1 ring-zinc-700"}`}>
+                    <button key={g} onClick={() => goToSlide(i)} className={`w-16 h-16 min-[400px]:w-20 min-[400px]:h-20 rounded-lg overflow-hidden cursor-pointer shrink-0 ${safeDesign === i ? "ring-2 ring-[#D4AF37]" : "ring-1 ring-zinc-700"}`}>
                       <img src={g} alt={`Design ${i + 1}`} onError={() => markFailed(g)} className="w-full h-full object-cover" />
                     </button>
                   ))}
@@ -277,8 +277,8 @@ export default function ProductPage() {
           </div>
           <div className="min-w-0">
             <p className="text-xs tracking-widest text-[#D4AF37] uppercase">{product.category}</p>
-            <h1 className="text-2xl sm:text-3xl font-bold uppercase mt-2 break-words">{product.name}</h1>
-            <p className="text-xl font-bold mt-2 text-[#D4AF37]">${finalPrice} <span className="text-xs font-normal text-zinc-400">• Total: ${finalPrice * quantity} for {quantity} {quantity > 1 ? "pcs" : "pc"}</span></p>
+            <h1 className="text-xl min-[400px]:text-2xl sm:text-3xl font-bold uppercase mt-2 break-words leading-snug">{product.name}</h1>
+            <p className="text-lg min-[400px]:text-xl font-bold mt-2 text-[#D4AF37] break-words">${finalPrice} <span className="text-[11px] min-[400px]:text-xs font-normal text-zinc-400 break-words">• Total: ${finalPrice * quantity} for {quantity} {quantity > 1 ? "pcs" : "pc"}</span></p>
             <p className="text-xs text-zinc-400 mt-1">Selected: Design {safeDesign + 1} • Colour: {selectedColor.name}</p>
             {product.badge && <span className="inline-block mt-2 bg-zinc-900 border border-[#D4AF37]/30 text-[#D4AF37] text-xs px-2 py-1 uppercase">{product.badge}</span>}
             <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5 w-full overflow-hidden">
@@ -389,14 +389,14 @@ export default function ProductPage() {
                 </div>
               )}
             </div>
-            <div className="mt-6 flex gap-3 items-center flex-wrap">
-              <div className="flex items-center border border-zinc-700 rounded-md shrink-0 bg-zinc-950">
+            <div className="mt-6 flex flex-col min-[500px]:flex-row gap-3 min-[500px]:items-center w-full min-w-0">
+              <div className="flex items-center justify-between min-[500px]:justify-start border border-zinc-700 rounded-md shrink-0 bg-zinc-950 w-full min-[500px]:w-auto">
                 <span className="text-xs text-zinc-400 uppercase pl-3 pr-1">Qty:</span>
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">-</button>
                 <span className="px-2 font-bold min-w-[20px] text-center">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">+</button>
               </div>
-              <button onClick={handleMainAction} className="flex-1 min-w-0 bg-[#D4AF37] text-black py-3 px-3 rounded-md text-sm font-bold uppercase hover:bg-amber-300">
+              <button onClick={handleMainAction} className="flex-1 min-w-0 w-full min-[500px]:w-auto bg-[#D4AF37] text-black py-3 px-3 rounded-md text-[12px] min-[400px]:text-sm font-bold uppercase hover:bg-amber-300 break-words leading-snug text-center">
                 {customerType === "B2B" ? `Send B2B Enquiry - ${quantity} pcs →` : `Add To Cart - ${selectedColor.name} • Design ${safeDesign + 1} • $${finalPrice * quantity}`}
               </button>
             </div>
@@ -411,7 +411,7 @@ export default function ProductPage() {
         </div>
         <div className="mt-14 border-t border-zinc-800 pt-8">
           <h2 className="text-lg font-bold uppercase tracking-widest text-white">You May Also Like</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-5">
+          <div className="grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-5 w-full min-w-0">
             {related.map((p) => (
               <Link key={p.id} href={`/product/${p.slug}`} className="border border-zinc-800 bg-zinc-950 rounded-lg overflow-hidden group hover:border-[#D4AF37] transition-colors">
                 <div className="relative aspect-[4/3] bg-zinc-900 overflow-hidden">
@@ -419,7 +419,7 @@ export default function ProductPage() {
                 </div>
                 <div className="p-4">
                   <p className="text-xs text-[#D4AF37] uppercase tracking-widest">{p.category}</p>
-                  <h3 className="text-sm font-semibold uppercase mt-1 text-white">{p.name}</h3>
+                  <h3 className="text-sm font-semibold uppercase mt-1 text-white break-words leading-snug">{p.name}</h3>
                   <p className="text-sm font-bold mt-1 text-[#D4AF37]">${p.price}</p>
                 </div>
               </Link>
