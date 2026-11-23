@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { products, CATEGORIES } from "@/lib/data/shop";
 
@@ -9,19 +9,45 @@ export default function Collections() {
 
   const categories = [...CATEGORIES];
 
-  const allProducts = products.map((p: any) => ({
-    id: p.slug || p.id,
-    name: p.name,
-    category: p.category,
-    forHer: p.forHer || false,
-    leather: p.description,
-    image: p.image,
-    gallery: p.gallery || [p.image],
-    badge: p.badge,
-    price: p.price || 0,
-    colors: p.colors ? p.colors.map((c: any) => c.code || c) : ["#1c1917", "#78350f", "#b45309"],
-    colorNames: p.colors ? p.colors.map((c: any) => c.name) : [],
-  }));
+  // FIX: Admin (Supabase) wale LIVE products bhi Collections me dikhen - Shop jaisa hi fix
+  const [adminProducts, setAdminProducts] = useState<any[]>([]);
+  useEffect(() => {
+    fetch("/api/products", { cache: "no-store" }).then(r => r.json()).then(j => {
+      const list = (j.products || []).filter((p: any) => p.is_active !== false).map((p: any, i: number) => ({
+        id: p.slug || `admin-${p.id}`,
+        name: p.name,
+        category: (p.category === "For Him" ? "Wallets" : p.category) || "Wallets",
+        forHer: !!p.forHer,
+        leather: p.description || "Handcrafted • Full-Grain Leather",
+        image: p.image || "/images/wallet.jpg",
+        gallery: p.image ? [p.image] : ["/images/wallet.jpg"],
+        badge: "NEW",
+        price: Number(p.price) || 0,
+        colors: ["#1c1917", "#78350f", "#b45309"],
+        colorNames: [],
+      }));
+      setAdminProducts(list);
+    }).catch(() => setAdminProducts([]));
+  }, []);
+
+  const allProducts = useMemo(() => {
+    const staticList = products.map((p: any) => ({
+      id: p.slug || p.id,
+      name: p.name,
+      category: p.category,
+      forHer: p.forHer || false,
+      leather: p.description,
+      image: p.image,
+      gallery: p.gallery || [p.image],
+      badge: p.badge,
+      price: p.price || 0,
+      colors: p.colors ? p.colors.map((c: any) => c.code || c) : ["#1c1917", "#78350f", "#b45309"],
+      colorNames: p.colors ? p.colors.map((c: any) => c.name) : [],
+    }));
+    // Duplicate id/slug ho to ek hi rakho - Admin wala jeetega
+    const merged = [...staticList, ...adminProducts];
+    return [...new Map(merged.map((p: any) => [String(p.id), p])).values()];
+  }, [adminProducts]);
 
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [hoverIndex, setHoverIndex] = useState(0);

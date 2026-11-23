@@ -18,7 +18,7 @@ function ShopPageInner() {
     fetch("/api/products", { cache: "no-store" }).then(r => r.json()).then(j => {
       const list = (j.products || []).filter((p: any) => p.is_active !== false).map((p: any, i: number) => ({
         id: 100000 + (p.id || i), name: p.name, slug: p.slug || `admin-${p.id}`, price: Number(p.price) || 0,
-        category: p.category || "Wallets", image: p.image || "/images/wallet.jpg", gallery: p.image ? [p.image] : [],
+        category: (p.category === "For Him" ? "Wallets" : p.category) || "Wallets", image: p.image || "/images/wallet.jpg", gallery: p.image ? [p.image] : [],
         description: p.description || "Handcrafted • Full-Grain Leather", badge: "NEW", forHer: !!p.forHer, stock: p.stock ?? 10,
       }));
       setAdminProducts(list);
