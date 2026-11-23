@@ -15,7 +15,8 @@ export default function AdminProducts() {
   const [search, setSearch] = useState(""); const [catFilter, setCatFilter] = useState("All");
   const [editId, setEditId] = useState<number | null>(null); const [editPrice, setEditPrice] = useState(""); const [editStock, setEditStock] = useState("");
   const [msg, setMsg] = useState(""); const [saving, setSaving] = useState(false);
-  const load = async () => { setLoading(true); try { const res = await fetch("/api/products"); const j = await res.json() as { products?: Product[] }; setProducts(j.products || []); } catch { setProducts([]); } setLoading(false); };
+  // Admin ko LIVE + HIDDEN dono chahiye - is liye ?all=true
+  const load = async () => { setLoading(true); try { const res = await fetch("/api/products?all=true"); const j = await res.json() as { products?: Product[] }; setProducts(j.products || []); } catch { setProducts([]); } setLoading(false); };
   useEffect(() => { load(); }, []);
   const onNameChange = (v: string) => { setName(v); if (!slugTouched) setSlug(slugify(v)); };
   const onImageFile = async (f: File | null) => {
@@ -36,7 +37,17 @@ export default function AdminProducts() {
     setName(""); setPrice(""); setImage(""); setStock("10"); setDescription(""); setSlug(""); setSlugTouched(false); setForHer(false);
     load(); setSaving(false); setTimeout(() => setMsg(""), 3000);
   };
-  const del = async (id: number) => { if (!confirm("Is product ko delete karna hai?")) return; await fetch("/api/products", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) }); load(); };
+  const del = async (id: number, name: string) => {
+    if (!confirm(`"${name}" ko DELETE karna hai? Ye wapas nahi aayega.`)) return;
+    setMsg("Deleting...");
+    try {
+      const res = await fetch("/api/products", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok || j.ok === false) { setMsg(`❌ Delete nahi hua: ${j.error || "API ne mana kar diya"} — HIDE dabao, wo 100% kaam karega.`); return; }
+      setMsg(`✅ "${name}" delete ho gaya.`);
+      load();
+    } catch { setMsg("❌ Delete nahi hua — Internet / API masla hai. HIDE dabao."); }
+  };
   const toggleLive = async (p: Product) => {
     const next = !p.is_active;
     setProducts((prev) => prev.map((x) => x.id === p.id ? { ...x, is_active: next } : x));
@@ -70,7 +81,7 @@ export default function AdminProducts() {
               {p.description ? <p className="text-zinc-500 break-words">{p.description}</p> : null}
               {p.stock <= 5 ? <p className="text-amber-400 font-bold">⚠ Low Stock - Jaldi restock karo</p> : null}
               {editId === p.id ? (<div className="flex gap-2 flex-wrap"><input value={editPrice} onChange={(e) => setEditPrice(e.target.value)} placeholder="New Price" className="w-24 bg-zinc-950 border border-zinc-800 px-2 py-1.5 rounded text-xs outline-none focus:border-amber-400" /><input value={editStock} onChange={(e) => setEditStock(e.target.value)} placeholder="Stock" className="w-20 bg-zinc-950 border border-zinc-800 px-2 py-1.5 rounded text-xs outline-none focus:border-amber-400" /><button onClick={saveEdit} className="bg-green-600 px-3 py-1.5 rounded font-bold text-xs uppercase">Save</button><button onClick={() => setEditId(null)} className="bg-zinc-800 px-3 py-1.5 rounded font-bold text-xs uppercase">Cancel</button></div>) : (
-                <div className="flex gap-2 flex-wrap"><button onClick={() => startEdit(p)} className="bg-amber-400 text-black px-3 py-1 rounded font-bold text-xs uppercase">Edit Price / Stock</button><button onClick={() => toggleLive(p)} className={`px-3 py-1 rounded font-bold text-xs uppercase ${p.is_active ? "bg-zinc-800 text-zinc-200" : "bg-green-600 text-white"}`}>{p.is_active ? "Hide" : "Make Live"}</button><button onClick={() => del(p.id)} className="bg-red-600 px-3 py-1 rounded font-bold text-xs uppercase">Delete</button></div>
+                <div className="flex gap-2 flex-wrap"><button onClick={() => startEdit(p)} className="bg-amber-400 text-black px-3 py-1 rounded font-bold text-xs uppercase">Edit Price / Stock</button><button onClick={() => toggleLive(p)} className={`px-3 py-1 rounded font-bold text-xs uppercase ${p.is_active ? "bg-zinc-800 text-zinc-200" : "bg-green-600 text-white"}`}>{p.is_active ? "Hide" : "Make Live"}</button><button onClick={() => del(p.id, p.name)} className="bg-red-600 px-3 py-1 rounded font-bold text-xs uppercase">Delete</button></div>
               )}
             </div>
           ))}</div>
