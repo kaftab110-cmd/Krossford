@@ -20,6 +20,7 @@ export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
     const slug = url.searchParams.get("slug");
+    const all = url.searchParams.get("all") === "true";
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
       if (slug) {
@@ -29,19 +30,26 @@ export async function GET(req: Request) {
       return NextResponse.json({ products: FALLBACK });
     }
 
-    let query: any = supabase().from("products").select("*").eq("is_active", true);
+    // FIX 1 - TUMHARI FILE ME YE MISSING THA: Pehle hamesha is_active=true lag raha tha,
+    // is liye Admin me HIDDEN wale product dikhte hi nahi the.
+    // Ab: Admin (?all=true) ko LIVE + HIDDEN dono milenge, Shop ko sirf LIVE.
+    let query: any = supabase().from("products").select("*");
+    if (!all) query = query.eq("is_active", true);
     if (slug) query = query.eq("slug", slug);
     else query = query.order("created_at", { ascending: false });
 
     const timeout = new Promise((resolve) => setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 5000));
     const { data, error }: any = await Promise.race([query, timeout]);
 
-    if (error || !data || data.length === 0) {
-      if (slug) {
-        const one = FALLBACK.find((p) => p.slug === slug);
-        return NextResponse.json({ products: one ? [one] : FALLBACK });
-      }
-      return NextResponse.json({ products: FALLBACK });
+    // FIX 2 - TUMHARI FILE ME YE MASLA THA: Supabase se khaali aata tha to FALLBACK wapas
+    // admin-2 ko zinda kar deta tha - is liye Delete ke baad bhi Wallet wapas aa jata tha.
+    // Ab: Supabase chal raha hai to khaali matlab khaali - FALLBACK nahi bhejenge.
+    if (error) {
+      if (slug) return NextResponse.json({ products: [] });
+      return NextResponse.json({ products: [] });
+    }
+    if (!data || data.length === 0) {
+      return NextResponse.json({ products: [] });
     }
     return NextResponse.json({ products: data });
   } catch {
@@ -51,7 +59,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json() as { name?: string; price?: number; category?: string; image?: string; stock?: number; description?: string };
+    const body = await req.json() as { name?: string; price?: number; category?: string; image?: string; stock?: number; description?: string; slug?: string; forHer?: boolean };
     if (!body.name || !body.price) {
       return NextResponse.json({ ok: false, error: "Name aur Price zaroori hai" }, { status: 400 });
     }
@@ -62,10 +70,12 @@ export async function POST(req: Request) {
       image: body.image || "",
       stock: body.stock ?? 0,
       description: body.description || "",
+      slug: body.slug || null,
+      forHer: !!body.forHer,
       is_active: true,
     }]).select().single();
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
-    if (data?.id) {
+    if (data?.id && !body.slug) {
       await supabase().from("products").update({ slug: `admin-${data.id}` }).eq("id", data.id);
     }
     return NextResponse.json({ ok: true, product: data });
@@ -76,9 +86,15 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    const body = await req.json() as { id?: number; price?: number; stock?: number };
+    // FIX 3a - TUMHARI FILE ME YE MISSING THA: PATCH sirf price/stock update karta tha,
+    // is_active ko ignore karta tha - is liye HIDE / Make Live ka button kaam nahi karta tha.
+    const body = await req.json() as { id?: number; price?: number; stock?: number; is_active?: boolean };
     if (!body.id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
-    const { error } = await supabase().from("products").update({ price: body.price, stock: body.stock }).eq("id", body.id);
+    const patch: any = {};
+    if (body.price !== undefined) patch.price = body.price;
+    if (body.stock !== undefined) patch.stock = body.stock;
+    if (body.is_active !== undefined) patch.is_active = body.is_active;
+    const { error } = await supabase().from("products").update(patch).eq("id", body.id);
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     return NextResponse.json({ ok: true });
   } catch {
@@ -90,7 +106,9 @@ export async function DELETE(req: Request) {
   try {
     const body = await req.json() as { id?: number };
     if (!body.id) return NextResponse.json({ ok: false, error: "ID missing" }, { status: 400 });
-    const { error } = await supabase().from("products").update({ is_active: false }).eq("id", body.id);
+    // FIX 3b - TUMHARI FILE ME DELETE SIRF is_active=false karta tha (soft delete),
+    // is liye product Admin me rehta tha. Ab pakka delete hoga.
+    const { error } = await supabase().from("products").delete().eq("id", body.id);
     if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
     return NextResponse.json({ ok: true });
   } catch {
