@@ -154,7 +154,7 @@ export default function Collections() {
                   ))}
                 </div>
               </div>
-              <p className="text-[11px] text-zinc-500 mt-2 break-words leading-relaxed">🚚 Estimated Total: 12-17 Working Days • DHL Express • Tracking Provided</p>
+              <p className="text-[11px] text-zinc-500 mt-2 break-words leading-relaxed">🚚 Estimated Total: 12-17 Working Days • Fastest Delivery • Tracking Provided</p>
 
               <div className="mt-4 flex flex-col min-[420px]:flex-row gap-2 min-w-0">
                 <Link
