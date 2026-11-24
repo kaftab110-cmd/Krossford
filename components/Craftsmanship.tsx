@@ -13,7 +13,7 @@ export default function Craftsmanship() {
           {craftsmanshipSection.items.map((item, index) => (
             <article key={item.id} className="overflow-hidden rounded-xl border border-amber-400/20 bg-zinc-900 flex flex-col">
               <div className="relative w-full aspect-[7/5] overflow-hidden bg-zinc-800">
-                <SafeImage src={`/images/craft-${index + 1}.jpg`} alt={item.title} width={700} height={500} className="absolute inset-0 h-full w-full object-cover object-center" />
+                <SafeImage src={(item as { image?: string }).image || `/images/craft-${index + 1}.jpg`} alt={item.title} width={700} height={500} className="absolute inset-0 h-full w-full object-cover object-center" />
               </div>
               <div className="p-5 flex-1">
                 <h3 className="text-lg sm:text-xl font-semibold text-amber-400 leading-snug" style={{ fontFamily: "var(--font-brand)" }}>{item.title}</h3>

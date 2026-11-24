@@ -6,10 +6,10 @@ import PhoneInput from "@/components/PhoneInput";
 import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
 
-const WA = "Whats" + "App";
-const VISA = "VI" + "SA";
-const MC = "MASTER" + "CARD";
-const WU = "WESTERN " + "UNION";
+const WA = "WhatsApp";
+const VISA = "VISA";
+const MC = "MASTERCARD";
+const WU = "WESTERN UNION";
 
 // CAPITAL FIX - Naam / Company jaisa bhi likha ho - munib hassan -> Munib Hassan
 const capWords = (v: string) => v.trim().split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
@@ -104,16 +104,16 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-16 px-3 min-[400px]:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white pb-16 px-3 min-[400px]:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
       <div className="max-w-4xl mx-auto space-y-8 w-full min-w-0">
         <div className="text-center space-y-2 min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#D4AF37] break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>Contact Us</h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Wholesale / Bulk Enquiries Only • Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Wholesale / Bulk Enquiries Only • Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
           <Link href="/b2b" className="border border-[#D4AF37]/50 rounded-lg p-4 sm:p-5 bg-[#D4AF37]/5 hover:border-[#D4AF37] transition-colors text-center min-w-0">
             <p className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest break-words">I Want Bulk / Wholesale</p>
-            <p className="text-xs text-zinc-400 mt-1 break-words">Jacket 50+ • Biker Suit 25+ • Small Items 100+</p>
+            <p className="text-xs text-zinc-400 mt-1 break-words">Jacket 50 • Biker Suit 25 • Bags / Belts / Wallets 100</p>
             <p className="text-xs font-bold mt-2 underline break-words">Go To B2B Form →</p>
           </Link>
           <Link href="/shop" className="border border-zinc-800 rounded-lg p-4 sm:p-5 bg-zinc-900 hover:border-[#D4AF37] transition-colors text-center min-w-0">
@@ -189,7 +189,7 @@ export default function ContactPage() {
             <div className="block rounded-md border border-zinc-800 px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <span className="block text-xs text-zinc-400 uppercase break-words">Payment</span>
               <span className="text-xs text-zinc-300 mt-1 block break-words">{VISA} | {MC} | {WU} | BANK TRANSFER</span>
-              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% After Order Ready • Sample Before Bulk • Handstitched • Customized / On Demand</span>
+              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% Before Dispatch • Sample Before Bulk • Hand Stitched • Customized / On Demand</span>
             </div>
           </div>
         </div>

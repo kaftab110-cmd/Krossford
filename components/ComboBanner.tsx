@@ -32,7 +32,7 @@ export default function ComboBanner() {
               Save More Together.
             </h2>
             <p className="text-sm text-zinc-400 mt-3 leading-relaxed">
-              Handcrafted full-grain leather combo. Made to order. Sample before bulk. Ships via DHL Express.
+              Handcrafted full-grain leather combo. Made to order. Sample before bulk. Ships via fastest delivery.
             </p>
             <div className="flex flex-wrap gap-3 mt-5">
               <Link href="/combo-deals" className="bg-amber-400 text-black px-6 py-3 rounded-md text-xs font-bold uppercase tracking-widest hover:bg-amber-300">

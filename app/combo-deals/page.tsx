@@ -1,16 +1,19 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// FIX: Naam = Photo. Pehle 3no combo pe ek hi "/images/wallet.jpg" lagi thi - galat product dikhta tha.
-// Ab har combo ki apni photo hai. Agar tumhare public/images me messenger / tote ka naam alag hai to mujhe wo naam bhej do, main isi file me badal dunga.
-// PRICE FORMULA: save = old - price khud banega - haath se "Save $29" likhne ki galti khatam. 198-169=29 | 219-189=30 | 159-129=30
+// COMBO DEALS - FINAL FIXED
+// Combo Price LOCKED: $169 / $189 / $129
+// Old Price = 2 Singles ka total (Shop se): $178 / $228 / $158
+// Save khud banega: $9 / $39 / $29
+// 1 vs 2 Table neeche hai - customer ko faida nazar aayega
 const combos = [
   {
     tag: "BEST SELLER",
     title: "Messenger + Wallet Combo",
     desc: "Crossbody Messenger Bag - Jet Black + RFID Wallet",
     detail: "The perfect everyday combo - Bag + Wallet together, better value than buying separately.",
-    oldPrice: 198,
+    oldPrice: 178,
     price: 169,
     image: "/images/messenger-bag.jpg",
     alt: "Messenger and Wallet Combo",
@@ -20,7 +23,7 @@ const combos = [
     title: "Travel Combo",
     desc: "Duffle Bag + Passport Holder",
     detail: "A complete travel set - Duffle + Passport Holder, better value together.",
-    oldPrice: 219,
+    oldPrice: 228,
     price: 189,
     image: "/images/leather-duffle-bag.jpg",
     alt: "Travel Combo",
@@ -30,7 +33,7 @@ const combos = [
     title: "Daily Use Combo",
     desc: "Tote Bag + Card Holder",
     detail: "A lightweight daily set - Tote + Card Holder, both essentials in one deal.",
-    oldPrice: 159,
+    oldPrice: 158,
     price: 129,
     image: "/images/tote-bag.jpg",
     alt: "Daily Use Combo",
@@ -38,8 +41,36 @@ const combos = [
 ];
 
 export default function ComboDealsPage() {
+  const [live, setLive] = useState<boolean | null>(true);
+  useEffect(() => {
+    async function load() {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 3000);
+        const res = await fetch("/api/site-settings", { cache: "no-store", signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) return;
+        const data = await res.json().catch(() => ({}));
+        if (data && "combo_live" in data) setLive(data.combo_live === true || data.combo_live === "true");
+      } catch {}
+    }
+    load();
+  }, []);
+  if (live === null) return null;
+  if (!live) {
+    return (
+      <main className="bg-zinc-950 text-white min-h-screen pb-16 flex items-center justify-center px-3 min-[400px]:px-4 w-full min-w-0 overflow-x-hidden">
+        <div className="max-w-xl mx-auto text-center space-y-5 w-full min-w-0">
+          <p className="text-[#D4AF37] text-xs tracking-[0.35em] uppercase">Krossford</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-wide break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>COMBO DEALS — COMING SOON</h1>
+          <p className="text-zinc-400 text-sm tracking-wider leading-relaxed">Our combo deals will open soon. Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <div className="flex flex-col min-[420px]:flex-row justify-center gap-3 pt-2"><Link href="/shop" className="bg-[#E8C15A] text-black text-xs font-bold tracking-widest px-6 py-3 rounded hover:bg-[#D4AF37] text-center border-2 border-[#E8C15A]">SHOP RETAIL →</Link><Link href="/b2b" className="border-2 border-zinc-400 text-white text-xs font-bold tracking-widest px-6 py-3 rounded hover:border-[#D4AF37] text-center">B2B WHOLESALE →</Link></div>
+        </div>
+      </main>
+    );
+  }
   return (
-    <main className="bg-zinc-950 text-white min-h-screen pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-16 w-full min-w-0 overflow-x-hidden">
+    <main className="bg-zinc-950 text-white min-h-screen pb-16 w-full min-w-0 overflow-x-hidden">
       <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4 break-words">
         COMBO DEALS - SAVE MORE TOGETHER - LIMITED TIME OFFER
       </div>
@@ -65,6 +96,34 @@ export default function ComboDealsPage() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="max-w-7xl mx-auto px-4 mt-10">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-5">
+          <h2 className="text-center text-sm font-bold tracking-widest text-[#D4AF37]">1 PIECE vs 2 PIECE COMBO — KITNA FAIDA?</h2>
+          <p className="text-center text-xs text-zinc-400 mt-2">Alag-alag lo to zyada, Combo me lo to sasta — neeche table me dekh lo.</p>
+          <div className="overflow-x-auto mt-4">
+            <table className="w-full text-xs sm:text-sm text-left">
+              <thead>
+                <tr className="text-zinc-400 border-b border-zinc-800">
+                  <th className="py-2 pr-3">Combo</th>
+                  <th className="py-2 pr-3">1 + 1 Alag (Old)</th>
+                  <th className="py-2 pr-3">Combo Price</th>
+                  <th className="py-2">You Save</th>
+                </tr>
+              </thead>
+              <tbody>
+                {combos.map((c) => (
+                  <tr key={c.title} className="border-b border-zinc-800 last:border-0">
+                    <td className="py-3 pr-3 font-bold text-white">{c.title}</td>
+                    <td className="py-3 pr-3 text-zinc-400 line-through">${c.oldPrice}</td>
+                    <td className="py-3 pr-3 text-[#D4AF37] font-bold">${c.price}</td>
+                    <td className="py-3 text-green-400 font-bold">Save ${c.oldPrice - c.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </main>
   );

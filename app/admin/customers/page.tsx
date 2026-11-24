@@ -72,8 +72,6 @@ export default function AdminCustomersCRM() {
         let leads: Lead[] = [];
         if (Array.isArray(data)) leads = data as Lead[];
         else if (data && typeof data === "object" && "leads" in data && Array.isArray((data as { leads: unknown }).leads)) leads = (data as { leads: Lead[] }).leads;
-
-        // Group - 1 Email = 1 Customer, 6 orders bhi 1 customer
         const map: Record<string, Customer> = {};
         leads.forEach((o) => {
           const email = clean(o.email).toLowerCase();
@@ -112,7 +110,6 @@ export default function AdminCustomersCRM() {
             c.last_order_id = clean(o.order_id);
           }
         });
-
         const list: Customer[] = Object.keys(map).map((k) => {
           const c = map[k];
           if (c.total_spent >= 500) c.lead_status = "VIP";
@@ -120,7 +117,6 @@ export default function AdminCustomersCRM() {
           else c.lead_status = "New";
           return c;
         }).sort((a, b) => b.total_spent - a.total_spent);
-
         setCustomers(list);
         setLoading(false);
       })
@@ -188,10 +184,10 @@ export default function AdminCustomersCRM() {
                 <div className="flex justify-between items-start border-b border-zinc-800 pb-2">
                   <div>
                     <h3 className="text-sm font-bold text-white">{c.name || c.email}</h3>
-                    <p className="text- text-zinc-400">{c.whatsapp} • {c.country}</p>
-                    <p className="text- text-zinc-500 mt-1">{c.email}</p>
+                    <p className="text-xs text-zinc-400">{c.whatsapp} • {c.country}</p>
+                    <p className="text-xs text-zinc-500 mt-1">{c.email}</p>
                   </div>
-                  <span className={`px-2 py-0.5 rounded text- font-bold uppercase ${c.lead_status === "VIP" ? "bg-amber-400 text-black" : c.total_orders > 1 ? "bg-green-600 text-white" : "bg-zinc-800 text-zinc-300"}`}>
+                  <span className={`px-2 py-0.5 rounded text-xs font-bold uppercase ${c.lead_status === "VIP" ? "bg-amber-400 text-black" : c.total_orders > 1 ? "bg-green-600 text-white" : "bg-zinc-800 text-zinc-300"}`}>
                     {c.lead_status === "VIP" ? "VIP REPEAT" : c.total_orders > 1 ? "REPEAT" : "NEW"}
                   </span>
                 </div>
@@ -203,8 +199,8 @@ export default function AdminCustomersCRM() {
                   <p><span className="text-zinc-500">Priority Level:</span> <span className={c.priority === "HIGH PRIORITY" ? "text-red-400 font-bold" : "text-zinc-400"}>{c.priority}</span></p>
                 </div>
                 <div className="flex gap-2 pt-2">
-                  <a href={`https://wa.me/${c.whatsapp?.replace(/[^0-9]/g, "")}`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold text- uppercase">WhatsApp Chat</a>
-                  <a href={`mailto:${c.email}`} className="flex-1 bg-amber-400 text-black text-center py-1.5 rounded font-bold text- uppercase">Email History</a>
+                  {c.whatsapp ? <a href={`https://wa.me/${c.whatsapp?.replace(/[^0-9]/g, "")}`} target="_blank" className="flex-1 bg-green-600 text-white text-center py-1.5 rounded font-bold text-xs uppercase">WhatsApp Chat</a> : <span className="flex-1 bg-zinc-800 text-zinc-500 text-center py-1.5 rounded font-bold text-xs uppercase">No WhatsApp</span>}
+                  {c.email ? <a href={`mailto:${c.email}`} className="flex-1 bg-amber-400 text-black text-center py-1.5 rounded font-bold text-xs uppercase">Email History</a> : <span className="flex-1 bg-zinc-800 text-zinc-500 text-center py-1.5 rounded font-bold text-xs uppercase">No Email</span>}
                 </div>
               </div>
             ))}
@@ -212,7 +208,7 @@ export default function AdminCustomersCRM() {
         )}
 
         {!loading && customers.length > 0 ? (
-          <p className="text-center text- text-zinc-500">Total Revenue from Customers: ${totalRevenue.toFixed(2)} — Orders page se match hona chahiye ($566.00)</p>
+          <p className="text-center text-xs text-zinc-500">Total Revenue from Customers: ${totalRevenue.toFixed(2)}</p>
         ) : null}
       </div>
     </div>

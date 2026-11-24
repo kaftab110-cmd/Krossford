@@ -3,7 +3,7 @@ import { aboutContent } from "@/lib/data/about";
 export default function AboutUsPage() {
   return (
     <main className="bg-black text-white min-h-screen">
-      <section className="mx-auto max-w-4xl px-6 py-20">
+      <section className="mx-auto max-w-4xl px-6 py-12 sm:py-16">
         <h1 className="mb-6 text-4xl font-bold tracking-tight text-amber-400">
           {aboutContent.title}
         </h1>
@@ -33,7 +33,7 @@ export default function AboutUsPage() {
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
             <p className="text-amber-400 font-bold text-sm">Fastest Delivery</p>
-            <p className="text-zinc-400 text-xs mt-2">Ships Worldwide • Tracking Provided • Total: 12-17 Working Days</p>
+            <p className="text-zinc-400 text-xs mt-2">Ships Worldwide • Tracking Provided • Estimated Total: 12-17 Working Days</p>
             <p className="text-xs text-amber-400 mt-1">Order Type - International Only</p>
           </div>
         </div>

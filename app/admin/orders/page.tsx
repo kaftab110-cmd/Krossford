@@ -138,15 +138,19 @@ export default function AdminOrders() {
 
   function changeStatus(o: Order, next: string) {
     const key = String(o.id || o.order_id || "");
-    const nextMap: Record<string, string> = {};
-    Object.keys(statusMap).forEach((k) => { nextMap[k] = statusMap[k]; });
-    nextMap[key] = next;
-    setStatusMap(nextMap);
+    const prev = getStatus(o);
+    setStatusMap((m) => ({ ...m, [key]: next }));
     fetch("/api/lead", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: o.id, order_id: o.order_id, status: next.toLowerCase(), lead_status: next }),
-    }).catch(() => {});
+    }).then((r) => {
+      if (!r.ok) throw new Error("save failed");
+    }).catch(() => {
+      // ROLLBACK - Save fail ho to purana status wapas dikhao, galat status na dikhe
+      setStatusMap((m) => ({ ...m, [key]: prev }));
+      setError("Status save nahi hua - internet / API masla hai. Dobara try karo.");
+    });
   }
 
   const q = search.trim().toLowerCase();

@@ -7,11 +7,10 @@ export default function AdminSettings() {
   const [siteName, setSiteName] = useState("KROSSFORD");
   const [supportEmail, setSupportEmail] = useState("hello@krossford.com");
   const [whatsapp, setWhatsapp] = useState("+923030006759");
-  const [deliveryNote, setDeliveryNote] = useState("Handcrafted To Order - Total 12-17 Working Days (Crafting 7-10 + Delivery 5-7) • Ships via fastest delivery");
+  const [deliveryNote, setDeliveryNote] = useState("Hand Stitched • Estimated Total: 12-17 Working Days • Ships via fastest delivery");
   const [oldPass, setOldPass] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  // FIX - Eye buttons: 3 password boxes me dekhne ke liye
   const [showOld, setShowOld] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -29,10 +28,7 @@ export default function AdminSettings() {
         if (p.whatsapp) setWhatsapp(p.whatsapp);
         if (p.deliveryNote) setDeliveryNote(p.deliveryNote);
       }
-    } catch {
-      // ignore
-    }
-    // Server se Site Info bhi le aao - taake har device pe same dikhe
+    } catch {}
     (async () => {
       try {
         const r = await fetch("/api/site-settings", { cache: "no-store" });
@@ -55,7 +51,6 @@ export default function AdminSettings() {
     const data = { siteName, supportEmail, whatsapp, deliveryNote };
     try {
       localStorage.setItem("krossford_settings", JSON.stringify(data));
-      // FIX - Server pe bhi save karo, taake har device pe same dikhe
       await saveToServer("site_name", siteName);
       await saveToServer("support_email", supportEmail);
       await saveToServer("whatsapp", whatsapp);
@@ -76,22 +71,27 @@ export default function AdminSettings() {
     if (!oldP || !newP || !confP) { setMsg("Teeno boxes bharo."); return; }
     if (newP.length < 6) { setMsg("Naya password kam se kam 6 letters ka rakho!"); return; }
     if (newP !== confP) { setMsg("Naya password aur Confirm password same nahi hai!"); return; }
+    if (newP === oldP) { setMsg("Naya password purane se alag rakho!"); return; }
     setSavingPass(true);
     try {
-      // FIX - Purana password pehle SERVER se check karo, phir is browser se, phir default se.
-      // Pehle sirf is browser se check hota tha - Mobile pe purana password galat batata tha.
-      let current = "";
+      // FIX - Password GET se nahi aata (security) - server se VERIFY karwao, password dikhega nahi
+      let oldOk = false;
       try {
-        const r = await fetch("/api/site-settings", { cache: "no-store" });
+        const r = await fetch("/api/site-settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "verify_admin_pass", value: oldP }) });
         const d = await r.json().catch(() => ({}));
-        current = String(d.admin_pass || d.krossford_admin_pass || d.admin_password || "").trim();
+        oldOk = d.ok === true;
       } catch {}
-      if (!current) current = (localStorage.getItem("krossford_admin_pass") || "krossford2026").trim();
-      const localSaved = (localStorage.getItem("krossford_admin_pass") || "").trim();
-      const oldOk = oldP === current || (localSaved && oldP === localSaved) || oldP === "krossford2026";
-      if (!oldOk) { setMsg("Purana password galat hai! 👁️ dabake dekh ke dobara likho."); setSavingPass(false); return; }
-      // FIX - Naya password 2 jagah save karo: Server (sab devices) + is browser (backup)
-      await saveToServer("admin_pass", newP);
+      // Fallback - is browser me save hua password (agar server verify fail ho)
+      if (!oldOk) {
+        const localSaved = (localStorage.getItem("krossford_admin_pass") || "").trim();
+        if (localSaved && oldP === localSaved) oldOk = true;
+      }
+      if (!oldOk) { setMsg("Purana password galat hai! 👁 dabake dekh ke dobara likho."); setSavingPass(false); return; }
+      // FIX - admin_pass badalne ke liye purana password saath bhejna zaroori hai (API check karegi)
+      {
+        const r = await fetch("/api/site-settings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: "admin_pass", value: newP, oldPass: oldP }) });
+        if (!r.ok) throw new Error("save failed");
+      }
       localStorage.setItem("krossford_admin_pass", newP);
       setMsg("✅ Password change ho gaya! Ab ye naya password Laptop + Mobile dono pe chalega.");
       setOldPass(""); setNewPass(""); setConfirmPass("");
@@ -103,7 +103,7 @@ export default function AdminSettings() {
   };
 
   const eyeBtn = (show: boolean, setShow: (v: boolean) => void) => (
-    <button type="button" onClick={() => setShow(!show)} className="absolute right-2 top-1/2 -translate-y-1/2 text-base" title={show ? "Chhupao" : "Dekho"}>{show ? "🙈" : "👁️"}</button>
+    <button type="button" onClick={() => setShow(!show)} className="absolute right-2 top-1/2 -translate-y-1/2 text-base" title={show ? "Chhupao" : "Dekho"}>{show ? "🙈" : "👁"}</button>
   );
 
   return (
@@ -125,10 +125,9 @@ export default function AdminSettings() {
         <div className="bg-zinc-900 border border-zinc-800 p-5 rounded space-y-3 text-xs">
           <p className="font-bold text-white">Admin Info</p>
           <p className="text-zinc-400">Dashboard: <span className="text-white">/admin</span></p>
-          <p className="text-zinc-400">Default Password (pehli dafa): <span className="text-white">krossford2026</span> - Pehli dafa isi se login hoga, phir neeche se badal do.</p>
+          <p className="text-zinc-400">Password bhool gaye to — pehle wala password yaad karke yahan se badlo. Password kisi ko mat batao.</p>
         </div>
 
-        {/* Site Info */}
         <form onSubmit={saveSettings} className="bg-zinc-900 border border-zinc-800 p-5 rounded space-y-3">
           <p className="font-bold text-white text-sm">Site Info - Kahan Se Kya Badlega</p>
           <div>

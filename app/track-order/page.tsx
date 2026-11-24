@@ -21,19 +21,17 @@ export default function TrackOrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-mono pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-16 px-3 min-[400px]:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white font-mono pb-16 px-3 min-[400px]:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
       <div className="max-w-4xl mx-auto space-y-8 w-full min-w-0">
-        {/* Heading */}
         <div className="text-center space-y-2 min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-amber-400 break-words leading-snug">
             Track Your Order
           </h1>
           <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">
-            For Retail Customers (1 Piece) &amp; Wholesale Buyers (50+ Units) • Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
+            For Retail Customers (1 Piece) &amp; Wholesale Buyers (50+ Units) • Handicraft • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
           </p>
         </div>
 
-        {/* TRACKING PROGRESS BAR - Processing -> Fastest Delivery -> Delivered */}
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 min-[400px]:p-4 sm:p-5 w-full min-w-0 overflow-hidden">
           <p className="text-xs font-bold text-amber-400 uppercase tracking-widest text-center break-words">Your Order Journey</p>
           <div className="flex items-start justify-between mt-4 px-0 sm:px-1 w-full min-w-0">
@@ -56,7 +54,6 @@ export default function TrackOrderPage() {
           <p className="text-[11px] text-zinc-500 text-center mt-3 break-words leading-relaxed">Once you receive your tracking ID, you can also track your order on the tracking link we share below.</p>
         </div>
 
-        {/* 2 Raste */}
         <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
           <div className="border border-zinc-800 rounded-lg p-4 sm:p-5 bg-zinc-900 text-center min-w-0">
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest break-words">Retail Customer - 1 Piece</p>
@@ -69,17 +66,15 @@ export default function TrackOrderPage() {
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest break-words">Wholesale Buyer - 50+ Units</p>
             <p className="text-xs text-zinc-400 mt-2 leading-relaxed break-words">
               Estimated Bulk Production: 30-45 days after Sample Approval<br />
-              Estimated Total: 12-17 Working Days<br />
+              
               Payment: 50% Advance - 50% Before Dispatch
             </p>
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 sm:gap-6 w-full min-w-0">
-          {/* Track Form */}
           <form onSubmit={handleTrack} className="bg-zinc-900 border border-zinc-800 p-3 min-[400px]:p-4 sm:p-6 rounded space-y-4 w-full min-w-0">
             <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 break-words">Enter Order Details</h2>
-
             <select
               value={orderType}
               onChange={(e) => setOrderType(e.target.value)}
@@ -89,7 +84,6 @@ export default function TrackOrderPage() {
               <option>Wholesale Order - 50+ Units (Buyer)</option>
               <option>Sample Order</option>
             </select>
-
             <input
               required
               placeholder="Order Reference / Tracking ID * e.g. KRF-1234 / 1234567890"
@@ -97,7 +91,6 @@ export default function TrackOrderPage() {
               onChange={(e) => setOrderRef(e.target.value)}
               className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
             />
-
             <input
               type="email"
               placeholder="Email Used For Order (Optional)"
@@ -105,45 +98,37 @@ export default function TrackOrderPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400"
             />
-
             <button type="submit" className="w-full bg-[#25D366] text-black py-4 rounded text-xs font-bold uppercase tracking-wider hover:brightness-110 border-2 border-[#25D366] shadow-md">
               Track Via WhatsApp (Fast) →
             </button>
-
             <div className="block w-full text-center bg-zinc-950 text-zinc-300 py-4 px-3 rounded text-xs leading-relaxed border border-zinc-800 break-words">📦 Tracking link dispatch ke baad WhatsApp / Email par share kiya jata hai. Agar tracking ID nahi mila to neeche WhatsApp par rabta karein.</div>
-
             <p className="text-[11px] text-zinc-500 text-center leading-relaxed break-words">
               After you receive your tracking ID, you can track it directly with the tracking link we share.
               If you have not received a tracking ID, contact us on WhatsApp below.
             </p>
           </form>
 
-          {/* Help */}
           <div className="space-y-4 w-full min-w-0">
             <h2 className="text-xl font-semibold text-white break-words">How Tracking Works?</h2>
-
             <div className="border border-zinc-800 rounded-md px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <p className="text-xs font-bold text-amber-400 uppercase break-words">Step 1 - Processing</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed break-words">
-                Retail: Production, quality check, and packing. Handstitched • Customized / On Demand.<br />
+                Retail: Production, quality check, and packing. Handicraft • Customized / On Demand.<br />
                 Wholesale: Estimated Bulk Production: 30-45 days after Sample Approval.
               </p>
             </div>
-
             <div className="border border-zinc-800 rounded-md px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <p className="text-xs font-bold text-amber-400 uppercase break-words">Step 2 - Fastest Delivery</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed break-words">
                 Ships via Fastest Delivery. Your tracking ID will be shared by WhatsApp or email after dispatch.
               </p>
             </div>
-
             <div className="border border-zinc-800 rounded-md px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <p className="text-xs font-bold text-amber-400 uppercase break-words">Step 3 - Delivery</p>
               <p className="text-xs text-zinc-400 mt-1 leading-relaxed break-words">
                 Estimated Total: 12-17 Working Days. We always aim to deliver earlier. Contact us on WhatsApp if customs delay your order.
               </p>
             </div>
-
             <a
               href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi KROSSFORD, I want help tracking my Retail / Wholesale order.")}`}
               target="_blank"
@@ -153,7 +138,6 @@ export default function TrackOrderPage() {
               <span className="block text-xs text-zinc-400 uppercase break-words">Need Help?</span>
               <span className="text-sm font-bold text-[#25D366] break-words">WhatsApp: +92303 0006759 💬 Chat Now</span>
             </a>
-
             <div className="flex gap-3 text-xs min-w-0">
               <Link href="/shop" className="flex-1 min-w-0 text-center border border-zinc-800 py-3 px-2 rounded font-bold hover:border-amber-400 break-words">Shop Retail →</Link>
               <Link href="/b2b" className="flex-1 min-w-0 text-center border border-amber-400/50 py-3 px-2 rounded font-bold hover:border-amber-400 break-words">Wholesale →</Link>

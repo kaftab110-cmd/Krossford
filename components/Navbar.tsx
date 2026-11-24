@@ -25,7 +25,10 @@ export default function Navbar() {
     const updateWishlist = () => {
       try {
         const wishlist = JSON.parse(localStorage.getItem("krossford_wishlist") || "[]");
-        setWishlistCount(wishlist.length);
+        if (Array.isArray(wishlist) && wishlist.length > 0) { setWishlistCount(wishlist.length); return; }
+        // FALLBACK - Purani key "wishlist" me items hon to unko bhi gino, taake count 0 na dikhe
+        const legacy = JSON.parse(localStorage.getItem("wishlist") || "[]");
+        setWishlistCount(Array.isArray(legacy) ? legacy.length : 0);
       } catch {
         setWishlistCount(0);
       }
@@ -107,7 +110,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* OFFER BAR - FIX: Colour LOW tha -> ab 3no SOLID BRIGHT, SALE sab se prominent, koi sliding NAHI, grid hi rahega */}
       <div className="border-t border-zinc-800 bg-black">
         <div className="max-w-4xl mx-auto px-2 min-[400px]:px-3 sm:px-4 py-2.5 sm:py-3 grid grid-cols-3 gap-2 min-[400px]:gap-2.5 sm:gap-4 md:gap-5">
           <Link href="/combo-deals" className={`w-full min-w-0 px-1 sm:px-6 py-2.5 sm:py-3 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center bg-[#E8C15A] text-black border-[#E8C15A] shadow-[0_0_18px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] hover:border-[#D4AF37]`}>COMBO DEALS</Link>

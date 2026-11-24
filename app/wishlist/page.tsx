@@ -2,25 +2,46 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const WISHLIST_KEY = "krossford_wishlist";
+const LEGACY_KEY = "wishlist";
+
 export default function WishlistPage() {
   const [items, setItems] = useState<any[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem("wishlist");
-    if (saved) {
-      try { setItems(JSON.parse(saved)); } catch { setItems([]); }
-    }
+    // UNIFIED KEY - Cart / Shop wali key: krossford_wishlist
+    // Purani key "wishlist" se migrate: agar nayi key khali hai aur purani me items hain to unko nayi key me le aao
+    try {
+      const saved = localStorage.getItem(WISHLIST_KEY);
+      if (saved) {
+        setItems(JSON.parse(saved));
+        return;
+      }
+      const legacy = localStorage.getItem(LEGACY_KEY);
+      if (legacy) {
+        const parsed = JSON.parse(legacy);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setItems(parsed);
+          localStorage.setItem(WISHLIST_KEY, JSON.stringify(parsed));
+        } else {
+          setItems([]);
+        }
+      }
+    } catch { setItems([]); }
   }, []);
 
   const removeItem = (index: number) => {
     const next = items.filter((_, i) => i !== index);
     setItems(next);
-    localStorage.setItem("wishlist", JSON.stringify(next));
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(next));
+    // Purani key bhi saaf rakho taake dobara migrate na ho
+    localStorage.setItem(LEGACY_KEY, JSON.stringify(next));
   };
 
   const clearAll = () => {
     setItems([]);
-    localStorage.setItem("wishlist", JSON.stringify([]));
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify([]));
+    localStorage.setItem(LEGACY_KEY, JSON.stringify([]));
   };
 
   if (items.length === 0) {
@@ -28,7 +49,7 @@ export default function WishlistPage() {
       <div className="min-h-screen bg-zinc-950 text-white pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-16 px-3 min-[400px]:px-4 sm:px-6 text-center w-full min-w-0 overflow-x-hidden">
         <div className="max-w-xl mx-auto w-full min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 break-words leading-snug">Your Wishlist is Empty</h1>
-          <p className="text-zinc-400 mt-2 text-sm break-words leading-relaxed">You have not saved any products yet. Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <p className="text-zinc-400 mt-2 text-sm break-words leading-relaxed">You have not saved any products yet. Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
           <Link href="/shop" className="inline-block mt-6 bg-[#E8C15A] text-black px-6 py-3.5 rounded font-bold border-2 border-[#E8C15A] hover:bg-[#D4AF37] text-sm">
             Go To Shop →
           </Link>
@@ -43,7 +64,7 @@ export default function WishlistPage() {
         <div className="flex flex-wrap items-center justify-between gap-3 min-w-0">
           <div className="min-w-0">
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-amber-400 break-words leading-snug">My Wishlist ({items.length})</h1>
-            <p className="text-xs text-zinc-400 uppercase tracking-widest mt-2 break-words">Handstitched • Customized / On Demand • Handcrafted • Real Leather</p>
+            <p className="text-xs text-zinc-400 uppercase tracking-widest mt-2 break-words">Hand Stitched • Customized / On Demand • Handcrafted • Real Leather</p>
           </div>
           <button onClick={clearAll} className="text-xs font-bold uppercase tracking-wider text-zinc-400 border border-zinc-800 rounded px-4 py-2.5 hover:border-red-400 hover:text-red-400 transition-colors">Clear All</button>
         </div>

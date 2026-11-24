@@ -8,7 +8,6 @@ type Msg = { sender: "user" | "ai"; text: string; image?: string };
 // ===== TUMHARA BUSINESS WhatsApp NUMBER =====
 const BUSINESS_WHATSAPP = "923030006759"; // +92303 0006759
 const WHATSAPP_LINK = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent("Hi KROSSFORD, I want to order leather products.")}`;
-const DHL = "D" + "HL";
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,19 +44,19 @@ export default function AIChatbot() {
   const getOfflineReply = (q: string): string => {
     const lower = q.toLowerCase();
     const hasWord = (w: string) => new RegExp(`\\b${w}\\b`).test(lower);
-    const hasNumber = /\d+/.test(q);
-    const isBulk = hasNumber || lower.includes("bulk") || lower.includes("b2b") || lower.includes("units") || lower.includes("unit") || lower.includes("pieces") || lower.includes("piece") || hasWord("need");
+    // FIX - Bulk sirf tab jab customer khud bulk / B2B / wholesale bole. Sirf number ya "need" likhne se bulk nahi.
+    const isBulk = lower.includes("bulk") || lower.includes("b2b") || lower.includes("wholesale");
 
-    if (isBulk) return `Absolutely! For ${q}, wholesale orders are available with no fixed minimum order quantity. Which color and logo or customization options do you need? Paid samples are available, and the sample price will be applied to your order. Would you like to start with a sample or receive a wholesale quote?`;
+    if (isBulk) return `Absolutely! For ${q}, wholesale orders are available. MOQ: Jackets 50, Biker Suit 25, Bags / Belts / Wallets 100. Which product, color and logo or customization options do you need? Paid samples are available, and the sample price will be applied to your order. Would you like to start with a sample or receive a wholesale quote?`;
     if (lower.includes("price") || lower.includes("cost") || lower.includes("rate") || lower.includes("how much")) {
       const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
       return `Our Top Products:\n${list}\n\nShipping and delivery charges will be confirmed separately.`;
     }
-    if (hasWord("hello") || hasWord("hi") || hasWord("hey")) return "Hello! Welcome to KROSSFORD. Which product are you interested in? Bag, wallet, jacket, belt, or cap? Are you looking for a single item or a wholesale order?";
-    if (lower.includes("b2c") || lower.includes("single")) return `Single-piece orders are available, with delivery via ${DHL} courier.`;
+    if (hasWord("hello") || hasWord("hi") || hasWord("hey")) return "Hello! Welcome to KROSSFORD. Which product are you interested in? Bag, wallet, jacket, or belt? Are you looking for a single item or a wholesale order?";
+    if (lower.includes("b2c") || lower.includes("single")) return `Single-piece orders are available, with delivery via fastest delivery.`;
     if (lower.includes("sample")) return "Paid samples are available. If you place an order, the sample price will be applied to your order.";
-    if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier") || lower.includes(DHL.toLowerCase())) return "Shipping and delivery charges are confirmed based on your country and are not included in the product price. Your tracking number will be shared after dispatch. Estimated Total: 12-17 Working Days.";
-    if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("cap") || lower.includes("glove")) return `Thanks for your design! For ${q}, custom names, engraving, and logos are available. Extra charges may apply and will be confirmed with your order. You can also send the design on WhatsApp.`;
+    if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier")) return "Shipping and delivery charges are confirmed based on your country and are not included in the product price. Your tracking number will be shared after dispatch. Estimated Total: 12-17 Working Days.";
+    if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("glove")) return `Thanks for your design! For ${q}, custom names, engraving, and logos are available. Extra charges may apply and will be confirmed with your order. You can also send the design on WhatsApp.`;
     if (lower.includes("payment") || lower.includes("pay")) return "Payment details will be shared on WhatsApp after your order is confirmed. Payments are secure and protected.";
     const found = products.find(p => lower.includes(p.name.toLowerCase().split(" ")[0]));
     if (found) return `${found.name} - $${found.price} - ${found.description || found.category}. Select a colour and add it to your cart.`;
@@ -97,7 +96,6 @@ export default function AIChatbot() {
 
   return (
     <>
-      {/* ===== FLOATING BUTTONS - BOTTOM RIGHT, NOT MIDDLE ===== */}
       {!isOpen && (
         <div className="fixed right-3 bottom-4 z-50 flex flex-col items-end gap-2">
           <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
@@ -131,7 +129,6 @@ export default function AIChatbot() {
               <button onClick={sendToWhatsApp} className="w-full bg-green-500 text-white py-2 rounded-full text-sm font-bold shadow">
                 💬 Continue on WhatsApp - +92303 0006759
               </button>
-              {/* Urdu wali line yahan se hata di - User ne remove karne ko bola tha */}
             </div>
             <div ref={bottomRef} />
           </div>
