@@ -95,7 +95,6 @@ export default function Navbar() {
           <Link href="/wishlist" className="flex items-center gap-1 whitespace-nowrap text-zinc-300 hover:text-white">WISHLIST ({mounted ? wishlistCount : 0})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({mounted ? cartCount : 0})</Link>
         </div>
-        {/* MOBILE - FIX: W / C katna band - ab icon + count, button bada, kuch nahi katega */}
         <div className="flex lg:hidden items-center gap-1.5 shrink-0">
           <Link href="/wishlist" aria-label="Wishlist" title="Wishlist" className="h-9 min-w-[44px] px-1.5 shrink-0 text-xs text-white border border-white/40 rounded flex items-center justify-center gap-0.5 whitespace-nowrap leading-none">
             <span aria-hidden="true">♡</span><span>{mounted ? wishlistCount : 0}</span>
@@ -108,13 +107,12 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* OFFER BAR - 2nd row - MOBILE + TABLET + DESKTOP SUPPORTED - COMBO / SALE / ANNOUNCEMENTS - thore BARE + ALAG buttons, beech me saaf gap, sliding NAHI */}
+      {/* OFFER BAR - FIX: Colour LOW tha -> ab 3no SOLID BRIGHT, SALE sab se prominent, koi sliding NAHI, grid hi rahega */}
       <div className="border-t border-zinc-800 bg-black">
-        {/* Mobile: 3 buttons 1 line me barabar - grid-cols-3, koi button katega nahi / Tablet-Desktop: bare buttons, beech me gap */}
-        <div className="max-w-3xl mx-auto px-1.5 min-[400px]:px-2 sm:px-3 py-2 sm:py-2.5 grid grid-cols-3 gap-1.5 min-[400px]:gap-2 sm:gap-4 sm:gap-4 md:gap-5">
-          <Link href="/combo-deals" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center ${pathname === "/combo-deals" ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"}`}>COMBO DEALS</Link>
-          <Link href="/sale" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center shadow-[0_0_18px_rgba(239,68,68,0.35)] ${pathname === "/sale" ? "bg-red-600 text-white border-red-600" : "border-red-500 text-red-400 bg-red-600/10 hover:bg-red-600 hover:text-white"}`}>SALE</Link>
-          <Link href="/announcements" className={`w-full min-w-0 px-1 sm:px-6 py-2 sm:py-2.5 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center ${pathname === "/announcements" ? "bg-white text-black border-white" : "border-zinc-400 text-zinc-100 hover:bg-white hover:text-black"}`}>ANNOUNCEMENTS</Link>
+        <div className="max-w-4xl mx-auto px-2 min-[400px]:px-3 sm:px-4 py-2.5 sm:py-3 grid grid-cols-3 gap-2 min-[400px]:gap-2.5 sm:gap-4 md:gap-5">
+          <Link href="/combo-deals" className={`w-full min-w-0 px-1 sm:px-6 py-2.5 sm:py-3 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center bg-[#E8C15A] text-black border-[#E8C15A] shadow-[0_0_18px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] hover:border-[#D4AF37]`}>COMBO DEALS</Link>
+          <Link href="/sale" className={`w-full min-w-0 px-1 sm:px-6 py-2.5 sm:py-3 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center bg-red-600 text-white border-red-600 shadow-[0_0_26px_rgba(239,68,68,0.65)] ring-2 ring-red-500/60 scale-[1.04] hover:bg-red-500 hover:border-red-500`}>SALE 🔥</Link>
+          <Link href="/announcements" className={`w-full min-w-0 px-1 sm:px-6 py-2.5 sm:py-3 rounded-full border-2 text-[10px] min-[400px]:text-[11px] sm:text-[13px] font-bold tracking-normal sm:tracking-wider whitespace-nowrap text-center bg-white text-black border-white shadow-[0_0_16px_rgba(255,255,255,0.35)] hover:bg-zinc-100`}>ANNOUNCEMENTS</Link>
         </div>
       </div>
       <div className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 lg:hidden ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} aria-hidden={!open}>
