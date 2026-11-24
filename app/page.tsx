@@ -105,11 +105,11 @@ export default function Home() {
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
       {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
+      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black pt-[132px] sm:pt-[148px] lg:pt-[158px]">
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-10 sm:pt-12 lg:pt-14 pb-10 sm:pb-12">
-          <p className="text-[32px] min-[400px]:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
+        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10">
+          <p className="text-[28px] min-[400px]:text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
           <h1 className="mt-4 text-[34px] min-[400px]:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
