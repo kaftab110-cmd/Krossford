@@ -3,21 +3,49 @@ import { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { products, getForHerProducts } from "@/lib/data/shop";
 
-// FOR HER - ALAG FOLDER / ALAG PAGE
-// RULE: B2B aur FOR HER hamesha alag rakhne hain - Shop ke andar mix nahi karne
-// RULE: Sirf wo product jisme forHer: true hai wo yahan dikhega
-// SLIDER FORMULA (ProductCard wala - har folder/file me same):
-// - Arrows mobile pe hamesha visible, desktop pe hover pe
-// - Dots + Counter (1 / 5)
-// - Swipe left/right mobile pe
-// - Slider sirf tab jab 1 se zyada photo ho
-// - Delivery: 12-17 Working Days
+// FOR HER - FINAL - ONE TIME ALL FIXES
+// 1. ALAG PAGE - /for-her - Sirf forHer: true wale products - B2B / Shop se alag
+// 2. Header DE-DUPLICATE ki - Pehle 2 lines thi (Curated For Her - Handcrafted + 10 Products - Handcrafted) - Ab sirf 1 count line: "10 Products - Handcrafted - Real Leather"
+// 3. "For Her Only - B2B Se Alag Page" wali line NAHI hai - koi aisi line nahi
+// 4. "Go to For Her Page" wala button YAHAN NAHI hai - Wo sirf Shop pe hai, For Her pe nahi
+// 5. Delivery line DE-DUPLICATE ki - Pehle 2 lines thi (Delivery 12-17 + Our aim...) - Ab sirf 1 line
+// 6. Card category se "• For Her" suffix hataya - Poora page hi For Her hai, har card pe likhna duplicate tha - Photo pe pink badge rakha hua hai
+// 7. Slider formula + Add to Cart + Search + Sort sab rakha hua hai
 
 export const dynamic = "force-dynamic";
 
 function ForHerPageInner() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "price-low" | "price-high" | "name">("featured");
+  const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  // ADD TO CART - For Her page me pehle tha hi nahi, is liye add kiya - warna customer ko product page pe jana padta tha
+  const handleAddToCart = (product: any) => {
+    const slug = product.slug || String(product.id);
+    const existingCart = JSON.parse(localStorage.getItem("krossford_cart") || "[]");
+    const existingIndex = existingCart.findIndex((it: any) => it.slug === slug && it.colorName === "Jet Black" && it.customerType === "B2C");
+    if (existingIndex >= 0) {
+      existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
+    } else {
+      existingCart.push({
+        id: `${slug}-jet-black-b2c-${Date.now()}`,
+        slug: slug,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+        colorName: "Jet Black",
+        customerType: "B2C",
+        additionalOption: "none",
+        customText: "",
+        uploadedFileName: "",
+      });
+    }
+    localStorage.setItem("krossford_cart", JSON.stringify(existingCart));
+    window.dispatchEvent(new Event("cartUpdated"));
+    setAddedSlug(slug);
+    setTimeout(() => setAddedSlug(null), 2000);
+  };
 
   const allForHer = useMemo(() => getForHerProducts(), []);
 
@@ -68,9 +96,8 @@ function ForHerPageInner() {
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-6 text-center">
-        <p className="text-xs uppercase tracking-widest text-amber-400 mb-2">Curated For Her • Handcrafted • Real Leather</p>
         <h1 className="text-3xl font-bold uppercase tracking-widest">For Her Collection</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • For Her Only • B2B Se Alag Page</p>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">{filtered.length} Products • Handcrafted • Real Leather</p>
       </section>
 
       <div className="mx-auto max-w-7xl px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
@@ -160,16 +187,21 @@ function ForHerPageInner() {
                   </div>
                 </Link>
                 <div className="p-5 space-y-3">
-                  <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category} • For Her</span>
+                  <span className="text-xs text-amber-400 uppercase tracking-widest">{p.category}</span>
                   <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-amber-400 cursor-pointer">{p.name}</h3></Link>
                   <p className="text-xs text-zinc-400 line-clamp-2">{p.description}</p>
                   <p className="text-sm text-amber-400 font-mono">${p.price}</p>
-                  <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery in 12-17 Working Days • DHL Express</p>
-                  <p className="text-[11px] text-zinc-500">Our aim to deliver earlier than estimated.</p>
+                  <p className="text-xs text-zinc-400">{p.gallery?.length || 1} Designs Available • Delivery in 12-17 Working Days • Ships via fastest delivery</p>
                   <div className="flex gap-2">
-                    <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-amber-400 text-black text-xs font-bold uppercase py-3 rounded">View Designs →</Link>
+                    <button
+                      onClick={() => handleAddToCart(p)}
+                      className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-amber-400 hover:bg-amber-300 text-black"}`}
+                    >
+                      {addedSlug === (p.slug || String(p.id)) ? "✓ Added!" : "Add to Cart →"}
+                    </button>
                     <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
                   </div>
+                  <Link href={`/product/${p.slug}`} className="block text-center text-[11px] text-zinc-400 hover:text-amber-400 uppercase tracking-widest">View Designs →</Link>
                 </div>
               </div>
             );

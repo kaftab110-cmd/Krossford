@@ -79,19 +79,19 @@ export default function Home() {
 
   const handleAddToCart = (p: (typeof TOP8)[number]) => {
     const existingCart = readCartItems<any>();
-    const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "Single Piece");
+    const existingIndex = existingCart.findIndex((it: any) => it.slug === p.slug && it.colorName === "Jet Black" && it.customerType === "B2C");
     if (existingIndex >= 0) {
       existingCart[existingIndex].quantity = Number(existingCart[existingIndex].quantity || 1) + 1;
     } else {
       existingCart.push({
-        id: `${p.slug}-jet-black-single-piece-${Date.now()}`,
+        id: `${p.slug}-jet-black-b2c-${Date.now()}`,
         slug: p.slug,
         name: p.name,
         price: p.price,
         image: p.image,
         quantity: 1,
         colorName: "Jet Black",
-        customerType: "Single Piece",
+        customerType: "B2C",
         additionalOption: "none",
         customText: "",
         uploadedFileName: "",
@@ -117,14 +117,14 @@ export default function Home() {
           </h1>
           <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
             A New-Generation International Leather Brand, Since 2025.
-            Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
+            Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
             <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
             <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
             <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-5 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Handstitched • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <p className="mt-5 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Hand Stitched • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 

@@ -1,20 +1,25 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-// components/Reviews.jsx - DROPLEATHER STYLE - .jsx only, no TypeScript
-// 1. Initials wala rang-biranga dabba KHATAM - har reviewer ki gol PHOTO hai
+// components/Reviews.jsx - BEST FIX
+// 1. Pravatar wali NAKLI photos KHATAM - ab har reviewer ke naam ke INITIALS gol dabbe me dikhenge (JC, ET...)
+//    Kyun? Pravatar photos kisi aur bande ki thi, customer ki nahi thi - bharosa toot sakta tha. Initials me koi jhooth nahi.
 // 2. Ek bada card KHATAM - ab chhote WHITE cards, ek saath 3 dikhenge (mobile pe 1)
 // 3. Sliding: auto-slide har 4 sec, arrow / dot pe 8 sec pause, touch swipe bhi chalega
 // 4. Write a Review form SAME hai - WhatsApp pe jayega, wahan Send dabana hoga
-// 5. Photo: pravatar faces - jab asli customer ki photo milegi to uska image yahan laga denge
+// 5. Jab asli customer ki apni photo milegi to uski photo yahan laga denge - tab tak Initials hi rahenge
 const PRODUCTS = ["Leather Tote Bag", "Minimalist RFID Wallet", "Crossbody Messenger Bag", "Card Holder", "Leather Tag + Keychain Set", "Leather Handbag", "Other Product"];
 const REVIEWS = [
-  { name: "James Carter", role: "Retail Brand Owner", city: "New York, USA", product: "Leather Tote Bag", stars: 5, img: "https://i.pravatar.cc/100?img=12", text: "Genuine leather, premium stitching. The tote feels luxury in hand. Delivery was fast and tracked. Will order again." },
-  { name: "Emily Thompson", role: "Boutique Owner", city: "London, UK", product: "Minimalist RFID Wallet", stars: 5, img: "https://i.pravatar.cc/100?img=47", text: "Ordered a custom name wallet. Finish is clean, name engraving is perfect. Looks far more expensive than the price. Highly recommended." },
-  { name: "Ahmed Al Farsi", role: "Product Designer", city: "Dubai, UAE", product: "Crossbody Messenger Bag", stars: 5, img: "https://i.pravatar.cc/100?img=33", text: "Best crossbody bag I have bought. Strong leather, smooth zip, perfect for daily use. Krossford quality is real." },
-  { name: "Sophia Miller", role: "Small Business Owner", city: "Toronto, Canada", product: "Leather Handbag", stars: 5, img: "https://i.pravatar.cc/100?img=45", text: "Beautiful handbag, soft leather and honest craftsmanship. Sample first, then bulk - I trust this brand for my boutique." },
-  { name: "Liam Wilson", role: "Fashion Entrepreneur", city: "Sydney, Australia", product: "Card Holder", stars: 4, img: "https://i.pravatar.cc/100?img=53", text: "Slim card holder, very good leather. Delivery took a little time but worth the wait. Quality is excellent for the price." },
-  { name: "Hannah Schneider", role: "Brand Owner", city: "Berlin, Germany", product: "Leather Tag + Keychain Set", stars: 5, img: "https://i.pravatar.cc/100?img=44", text: "Small product, big quality. Keychain leather is thick and well finished. Packaging was premium. Will order in bulk." },
+  { name: "James Carter", role: "Retail Brand Owner", city: "New York, USA", product: "Leather Tote Bag", stars: 5, text: "Genuine leather, premium stitching. The tote feels luxury in hand. Delivery was fast and tracked. Will order again." },
+  { name: "Emily Thompson", role: "Boutique Owner", city: "London, UK", product: "Minimalist RFID Wallet", stars: 5, text: "Ordered a custom name wallet. Finish is clean, name engraving is perfect. Looks far more expensive than the price. Highly recommended." },
+  { name: "Ahmed Al Farsi", role: "Product Designer", city: "Dubai, UAE", product: "Crossbody Messenger Bag", stars: 5, text: "Best crossbody bag I have bought. Strong leather, smooth zip, perfect for daily use. Krossford quality is real." },
+  { name: "Sophia Miller", role: "Small Business Owner", city: "Toronto, Canada", product: "Leather Handbag", stars: 5, text: "Beautiful handbag, soft leather and honest craftsmanship. Sample first, then bulk - I trust this brand for my boutique." },
+  { name: "Liam Wilson", role: "Fashion Entrepreneur", city: "Sydney, Australia", product: "Card Holder", stars: 4, text: "Slim card holder, very good leather. Delivery took a little time but worth the wait. Quality is excellent for the price." },
+  { name: "Hannah Schneider", role: "Brand Owner", city: "Berlin, Germany", product: "Leather Tag + Keychain Set", stars: 5, text: "Small product, big quality. Keychain leather is thick and well finished. Packaging was premium. Will order in bulk." },
 ];
+// Initials: "James Carter" -> "JC" | Colour: naam se ek rang fix hota hai, har baar wahi rang aayega
+const getInitials = (name) => name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("");
+const AVATAR_COLORS = ["bg-[#D4AF37] text-black", "bg-zinc-800 text-[#D4AF37]", "bg-[#8B5E2E] text-white", "bg-zinc-700 text-white", "bg-[#3E2723] text-[#D4AF37]", "bg-[#1F2937] text-[#E8C15A]"];
+const getAvatarColor = (name) => { let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 1000; return AVATAR_COLORS[h % AVATAR_COLORS.length]; };
 export default function Reviews() {
   const [open, setOpen] = useState(false);
   const [sent, setSent] = useState(false);
@@ -44,7 +49,7 @@ export default function Reviews() {
               <div className="bg-white text-black rounded-xl p-5 h-full flex flex-col min-h-[240px] shadow-lg">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3 min-w-0">
-                    <img src={r.img} alt={r.name} className="w-11 h-11 rounded-full object-cover shrink-0" loading="lazy" />
+                    <span className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${getAvatarColor(r.name)}`}>{getInitials(r.name)}</span>
                     <div className="min-w-0"><p className="font-bold text-sm truncate">{r.name}</p><p className="text-xs text-zinc-500 truncate">{r.role}</p></div>
                   </div>
                   <span className="text-red-500 text-xs font-bold shrink-0">★ {r.stars}/5</span>

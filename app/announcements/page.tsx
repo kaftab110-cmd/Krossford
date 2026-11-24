@@ -3,11 +3,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 // FIX 1: Live check - API "true" string bhejti hai. Pehle === true hamesha false hota tha, Announcements kabhi LIVE nahi hoti thi.
 // FIX 2: Naam sync - Sale page wala naam yahan bhi wahi hai.
-// FIX 3: Delivery wali line saaf hai.
+// SIMPLE RULE: No % OFF, no product discount claim, no free-delivery claim here - discount etc Admin Panel se set hoga.
 const posts = [
-  { tag: "SALE", date: "November 2026", title: "SALE IS ON - UP TO 22% OFF", desc: "Discount is live on Duffle Bag, Wallet and Biker Jacket. Order before stock runs out.", link: "/sale", btn: "VIEW SALE →" },
-  { tag: "COMBO", date: "November 2026", title: "NEW COMBO DEALS ARE LIVE", desc: "Buy 2 products together and save more than buying separately. Save $29 on Messenger + Wallet Combo.", link: "/combo-deals", btn: "VIEW COMBOS →" },
-  { tag: "DELIVERY", date: "November 2026", title: "PAKISTAN DELIVERY IS FREE", desc: "Delivery inside Pakistan is FREE. International delivery details will be confirmed soon.", link: "/shop", btn: "SHOP NOW →" },
+  { tag: "SALE", date: "November 2026", title: "SALE IS ON", desc: "Check Sale page for live deals. Prices and discounts are set from Admin Panel.", link: "/sale", btn: "VIEW SALE →" },
+  { tag: "COMBO", date: "November 2026", title: "COMBO DEALS ARE LIVE", desc: "Buy products together and save more than buying separately. Check Combo Deals page.", link: "/combo-deals", btn: "VIEW COMBOS →" },
+  { tag: "DELIVERY", date: "November 2026", title: "DELIVERY UPDATE", desc: "Delivery details will be confirmed after order confirmation.", link: "/shop", btn: "SHOP NOW →" },
   { tag: "NEW", date: "November 2026", title: "NEW PRODUCTS COMING SOON", desc: "New wallets, bags and jackets are coming soon. Follow Announcements for the launch.", link: "/shop", btn: "SHOP NOW →" },
 ];
 export default function AnnouncementsPage() {
