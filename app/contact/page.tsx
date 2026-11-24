@@ -11,6 +11,8 @@ const VISA = "VI" + "SA";
 const MC = "MASTER" + "CARD";
 const WU = "WESTERN " + "UNION";
 
+// CAPITAL FIX - Naam / Company jaisa bhi likha ho - munib hassan -> Munib Hassan
+const capWords = (v: string) => v.trim().split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
 const contact = {
   email: "hello@krossford.com",
   waNumber: "923030006759",
@@ -55,11 +57,13 @@ export default function ContactPage() {
 
   const buildMessage = () => {
     const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Please attach the photos manually to ${WA} or email)` : "";
-    return `Hello Krossford! NEW ENQUIRY\n\nName: ${form.name}\nCompany: ${form.company}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
+    return `Hello Krossford! NEW ENQUIRY\n\nName: ${capWords(form.name)}\nCompany: ${capWords(form.company)}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // DOUBLE-SUBMIT GUARD - 2 baar dabane se 2 enquiries nahi jayengi
+    if (submitting) return;
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       alert("Please fill Name, Email and Message");
       return;
@@ -76,7 +80,7 @@ export default function ContactPage() {
           action: "submit",
           lead: {
             source: "b2b-contact",
-            customerName: form.name,
+            customerName: capWords(form.name),
             email: form.email,
             contact: form.phone || form.altPhone,
             product: form.orderType,
@@ -157,7 +161,7 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-[#D4AF37] mt-2 break-words">⚠ {WA} / Email khulne ke baad photos dobara attach kar dena, taake design mil jaye.</p>
+                  <p className="text-xs text-[#D4AF37] mt-2 break-words">⚠ Photos yahan se upload nahi hoti — Enquiry bhejne ke baad apna design {WA} (+92303 0006759) ya Email (hello@krossford.com) par bhej dein, taake design mil jaye.</p>
                 </div>
               )}
             </div>
@@ -166,6 +170,7 @@ export default function ContactPage() {
             </button>
             {submissionError && <p role="alert" className="text-xs text-red-400 text-center break-words">{submissionError}</p>}
             {sent && <p className="text-xs text-green-400 text-center break-words">Enquiry sent to our team. Thank you!</p>}
+            {sent && <button type="button" onClick={() => { setSent(false); setForm({ name: "", email: "", message: "", company: "", orderType: "Sample Piece - B2B", quantity: "", phone: "", altPhone: "", country: "United States" }); setFiles([]); setPreviews([]); }} className="w-full bg-zinc-950 text-[#D4AF37] py-3 rounded text-xs font-bold uppercase tracking-wider border border-[#D4AF37]/50 hover:bg-[#D4AF37] hover:text-black transition-colors">Send Another Enquiry</button>}
           </form>
           <div className="space-y-4 w-full min-w-0">
             <h2 className="text-xl font-semibold text-white mb-4 break-words" style={{ fontFamily: "var(--font-brand)" }}>Direct Touchpoints</h2>
