@@ -136,7 +136,7 @@ export default function CheckoutPage() {
 
   if (orderSent) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center">
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 px-4 sm:px-6 pt-[148px] pb-12 text-center w-full min-w-0 overflow-x-hidden">
         <div className="w-14 h-14 bg-[#D4AF37]/10 text-[#D4AF37] rounded-full flex items-center justify-center text-2xl">✓</div>
         <p className="text-2xl font-bold" style={{ fontFamily: "var(--font-brand)" }}>Order Sent!</p>
         {emailSent ? (
@@ -150,24 +150,24 @@ export default function CheckoutPage() {
       </div>
     );
   }
-  if (isCartLoading) return <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center text-sm">Loading Checkout...</div>;
+  if (isCartLoading) return <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center text-sm px-4 pt-[148px]">Loading Checkout...</div>;
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 p-6 text-center">
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-4 px-4 sm:px-6 pt-[148px] pb-12 text-center w-full min-w-0 overflow-x-hidden">
         <p className="text-2xl font-bold" style={{ fontFamily: "var(--font-brand)" }}>Your cart is empty</p>
         <Link href="/shop" className="bg-[#D4AF37] text-black px-6 py-3 rounded text-sm font-bold">Go To Shop</Link>
       </div>
     );
   }
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-4 sm:p-6 md:p-12">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+    <div className="min-h-screen bg-zinc-950 text-white w-full min-w-0 overflow-x-hidden px-3 min-[400px]:px-4 sm:px-6 md:px-12 pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-12">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 w-full min-w-0">
         <div>
-          <h1 className="text-3xl font-bold uppercase" style={{ fontFamily: "var(--font-brand)" }}>Checkout</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold uppercase break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>Checkout</h1>
           <p className="text-xs text-zinc-400 mt-1">Fill in your details to submit your order.</p>
           <p className="text-xs text-[#D4AF37] mt-2 tracking-wide">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel) • Sample Before Bulk • {paymentTerms}</p>
           <div className="mt-6 space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
               <input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-[#D4AF37] placeholder:text-zinc-500 text-white" />
               <input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-[#D4AF37] placeholder:text-zinc-500 text-white" />
             </div>
@@ -178,7 +178,7 @@ export default function CheckoutPage() {
               {CHECKOUT_COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
             </select>
             <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Full Address - Street, House No. *" rows={3} className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-[#D4AF37] placeholder:text-zinc-500 text-white resize-none" />
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
               <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-[#D4AF37] placeholder:text-zinc-500 text-white" />
               <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State / Province *" className="w-full bg-zinc-900 border border-zinc-800 rounded px-3 py-3 text-sm outline-none focus:border-[#D4AF37] placeholder:text-zinc-500 text-white" />
             </div>
@@ -188,12 +188,12 @@ export default function CheckoutPage() {
           <div className="mt-4 bg-zinc-900 border border-zinc-800 rounded p-3"><p className="text-xs text-zinc-400">Shipping & delivery charges, plus any extra customization charges, will be confirmed after your order is confirmed. They are not included in the product price.</p></div>
           <div className="mt-3 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded p-3 space-y-1">
             <p className="text-xs text-[#D4AF37] font-bold">Handcrafted To Order • Ships via {DELIVERY_LABEL} • Estimated Total: 12-17 Working Days • Full Tracking Provided • Ships from Pakistan</p>
-            <p className="text-xs text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
+            <p className="text-xs text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is handstitched & customized / made on demand as per buyer & customer requirement, only after your order.</p>
             <p className="text-xs text-zinc-400 mt-1">We Always Aim To Deliver Earlier.</p>
           </div>
         </div>
         <div>
-          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-5">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-5 w-full min-w-0 overflow-hidden">
             <p className="text-xs font-bold tracking-widest uppercase text-zinc-300">Order Summary</p>
             <div className="mt-4 space-y-4">
               {cart.map((it) => (
@@ -234,10 +234,10 @@ export default function CheckoutPage() {
             <div className="mt-4 flex flex-wrap justify-center gap-2 text-center">
               <span className="bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-300">✓ Secure Payment</span>
               <span className="bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-300">✓ 100% Genuine Leather</span>
-              <span className="bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-300">✓ Handcrafted To Order</span>
+              <span className="bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-300">✓ Handstitched • Customized / On Demand</span>
               <span className="bg-zinc-950 border border-zinc-800 rounded-full px-3 py-1.5 text-xs text-zinc-300">✓ Full Tracking</span>
             </div>
-            <button onClick={handlePlaceOrder} disabled={isPlacing} className={`mt-4 w-full py-3.5 rounded text-sm font-bold uppercase ${isPlacing ? "bg-zinc-700 text-zinc-400 cursor-not-allowed" : "bg-[#D4AF37] text-black hover:bg-[#E8C15A]"}`}>
+            <button onClick={handlePlaceOrder} disabled={isPlacing} className={`mt-4 w-full py-3.5 rounded text-sm font-bold uppercase ${isPlacing ? "bg-zinc-700 text-zinc-400 cursor-not-allowed" : "bg-[#E8C15A] text-black hover:bg-[#D4AF37] border-2 border-[#E8C15A] shadow-[0_0_22px_rgba(232,193,90,0.4)]"}`}>
               {isPlacing ? "Placing Order... Please Wait" : "Place Order →"}
             </button>
             <Link href="/cart" className="block text-center mt-3 text-xs underline text-zinc-500">Back to Cart</Link>
