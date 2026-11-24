@@ -26,6 +26,25 @@ export default function HelpCenterPage() {
             </Link>
           ))}
         </div>
+
+        <div className="mt-8 sm:mt-10 w-full min-w-0">
+          <h2 className="text-lg sm:text-xl font-semibold text-yellow-500 break-words leading-snug">Still Need Help?</h2>
+          <p className="mt-2 text-sm text-zinc-300 break-words leading-relaxed">Answer na mile to seedha hum se rabta karein — sab se tez jawab WhatsApp par milta hai.</p>
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3 mt-4 w-full min-w-0">
+            <a href="https://wa.me/923030006759?text=Hi%20KROSSFORD%2C%20I%20need%20help." target="_blank" rel="noopener noreferrer" className="rounded-lg border border-[#25D366]/40 bg-zinc-900 p-4 sm:p-5 transition hover:border-[#25D366] w-full min-w-0 block text-center">
+              <p className="text-xs font-bold text-[#25D366] uppercase tracking-widest break-words">WhatsApp — Fastest</p>
+              <p className="text-sm text-zinc-300 mt-2 break-words">+92303 0006759 💬 Chat Now</p>
+            </a>
+            <Link href="/contact" className="rounded-lg border border-yellow-500/20 bg-zinc-900 p-4 sm:p-5 transition hover:border-yellow-500 w-full min-w-0 block text-center">
+              <p className="text-xs font-bold text-yellow-500 uppercase tracking-widest break-words">Send Enquiry</p>
+              <p className="text-sm text-zinc-300 mt-2 break-words">Contact Form →</p>
+            </Link>
+            <Link href="/track-order" className="rounded-lg border border-yellow-500/20 bg-zinc-900 p-4 sm:p-5 transition hover:border-yellow-500 w-full min-w-0 block text-center">
+              <p className="text-xs font-bold text-yellow-500 uppercase tracking-widest break-words">Track Order</p>
+              <p className="text-sm text-zinc-300 mt-2 break-words">Order Status →</p>
+            </Link>
+          </div>
+        </div>
       </section>
     </main>
   );
