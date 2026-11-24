@@ -105,26 +105,26 @@ export default function Home() {
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
       {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black pt-[132px] sm:pt-[148px] lg:pt-[158px]">
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black pt-[132px] sm:pt-[148px] lg:pt-[158px]">
         <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10">
-          <p className="text-[28px] min-[400px]:text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
+        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-6 sm:pt-8 pb-6 sm:pb-8">
+          <p className="text-2xl min-[400px]:text-3xl sm:text-4xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
-          <h1 className="mt-4 text-[34px] min-[400px]:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
+          <h1 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
             Real Leather.<br />Made Honestly.
           </h1>
-          <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
+          <p className="mt-3 text-xs sm:text-sm md:text-base text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
             A New-Generation International Leather Brand, Since 2025.
             Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
-            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
-            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
-            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
+          <div className="mt-4 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
+            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-6 py-2.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
+            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-6 py-2.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
+            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-6 py-2.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-5 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Hand Stitched • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <p className="mt-4 text-[10px] sm:text-xs text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Hand Stitched • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
