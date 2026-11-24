@@ -4,26 +4,16 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { products, type ProductColor } from "@/lib/data/shop";
 import { readCartItems, saveCart } from "@/lib/cart";
-
-const normalize = (s: string | number | null | undefined): string =>
-  String(s ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-
+const normalize = (s: string | number | null | undefined): string => String(s ?? "").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 export default function ProductPage() {
   const params = useParams();
   const slug = decodeURIComponent((params.slug as string) || "").trim();
-  const localProduct = products.find((p) => {
-    const target = normalize(slug);
-    const candidates: (string | number)[] = [p.slug, p.id, p.name, ...(p.aliases || [])];
-    return candidates.some((c) => normalize(c) === target);
-  });
+  const localProduct = products.find((p) => { const target = normalize(slug); const candidates: (string | number)[] = [p.slug, p.id, p.name, ...(p.aliases || [])]; return candidates.some((c) => normalize(c) === target); });
   const isDbSlug = normalize(slug).startsWith("admin-");
-
   const [dbProduct, setDbProduct] = useState<any>(null);
   const [dbError, setDbError] = useState<string>("");
   const [dbLoading, setDbLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-
   useEffect(() => {
     if (localProduct && !isDbSlug) { setDbLoading(false); return; }
     setDbLoading(true); setDbError(""); setDbProduct(null);
@@ -36,41 +26,20 @@ export default function ProductPage() {
         if (cancelled) return;
         if (res?.error) { setDbError(String(res.error)); return; }
         const rows: any[] = Array.isArray(res) ? res : res?.products || [];
-        const row = rows.find((r: any) =>
-          normalize(r.slug) === normalize(slug) ||
-          normalize(`admin-${r.id}`) === normalize(slug) ||
-          normalize(r.id) === normalize(slug) ||
-          normalize(r.name) === normalize(slug)
-        );
+        const row = rows.find((r: any) => normalize(r.slug) === normalize(slug) || normalize(`admin-${r.id}`) === normalize(slug) || normalize(r.id) === normalize(slug) || normalize(r.name) === normalize(slug));
         if (!row) { setDbError("Supabase me is slug ka product nahi mila: " + slug); return; }
         let img = row.image || row.image_url || row.photo || "/images/wallet.jpg";
         if (!img.startsWith("/") && !img.startsWith("http")) img = "/images/" + img;
         if (!img || img === "/images/") img = "/images/wallet.jpg";
-        const fixedCategory = String(row.name || "").toLowerCase().includes("wallet") ? "Wallets" : (row.category || "Wallets");
-        setDbProduct({
-          id: row.id ?? slug, name: row.name || "Product", image: img,
-          gallery: row.gallery?.length ? row.gallery : [img],
-          description: row.description || "", category: fixedCategory,
-          badge: row.badge || "NEW", slug: row.slug || slug, aliases: [],
-          price: Number(row.price || 0),
-          colors: [
-            { name: "Jet Black", code: "#111111", image: img },
-            { name: "Dark Brown", code: "#3E2723", image: img },
-            { name: "Cognac Tan", code: "#B87333", image: img },
-          ],
-          forHer: !!row.forHer,
-        });
+        const fixedCategory = row.category || (String(row.name || "").toLowerCase().includes("wallet") ? "Wallets" : "Wallets");
+        setDbProduct({ id: row.id ?? slug, name: row.name || "Product", image: img, gallery: row.gallery?.length ? row.gallery : [img], description: row.description || "", category: fixedCategory, badge: row.badge || "NEW", slug: row.slug || slug, aliases: [], price: Number(row.price || 0), colors: [{ name: "Jet Black", code: "#111111", image: img }, { name: "Dark Brown", code: "#3E2723", image: img }, { name: "Cognac Tan", code: "#B87333", image: img }], forHer: !!row.forHer });
       })
       .catch((e: any) => { if (!cancelled) setDbError(String(e?.message || e)); })
       .finally(() => { clearTimeout(timer); if (!cancelled) setDbLoading(false); });
     return () => { cancelled = true; clearTimeout(timer); controller.abort(); };
   }, [slug, retryCount]);
-
   const product: any = isDbSlug ? dbProduct : (localProduct || dbProduct);
-
-  const [selectedColor, setSelectedColor] = useState<ProductColor>(
-    product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" }
-  );
+  const [selectedColor, setSelectedColor] = useState<ProductColor>(product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" });
   const [selectedDesign, setSelectedDesign] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [customerType, setCustomerType] = useState<"B2C" | "B2B">("B2C");
@@ -83,197 +52,56 @@ export default function ProductPage() {
   const [customMadeDetail, setCustomMadeDetail] = useState("");
   const [customMadeFile, setCustomMadeFile] = useState<File | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
-  const markFailed = (src: string) => {
-    setFailedImages((prev) => { if (prev.has(src)) return prev; const next = new Set(prev); next.add(src); return next; });
-  };
+  const markFailed = (src: string) => { setFailedImages((prev) => { if (prev.has(src)) return prev; const next = new Set(prev); next.add(src); return next; }); };
   const [sliderPaused, setSliderPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const pauseTimer = useRef<any>(null);
-  const pauseAuto = () => {
-    setSliderPaused(true);
-    if (pauseTimer.current) clearTimeout(pauseTimer.current);
-    pauseTimer.current = setTimeout(() => setSliderPaused(false), 8000);
-  };
-
-  // GALLERY - colour ke hisaab se: colour ki apni image ho to wo pehle, phir designs
+  const pauseAuto = () => { setSliderPaused(true); if (pauseTimer.current) clearTimeout(pauseTimer.current); pauseTimer.current = setTimeout(() => setSliderPaused(false), 8000); };
   const fullGalleryRaw: string[] = (product as any)?.gallery?.length ? (product as any).gallery : [product?.image];
   const galleryFiltered: string[] = fullGalleryRaw.filter((g) => !failedImages.has(g));
   const safeGallery = galleryFiltered.length > 0 ? galleryFiltered : ["/images/wallet.jpg"];
   const safeDesign = Math.min(selectedDesign, safeGallery.length - 1);
   const hasSlider = safeGallery.length > 1;
-  // Main image = Design wali photo, lekin agar colour ki alag photo hai aur design 0 hai to colour wali photo
   const colorImage = (selectedColor as any)?.image || "";
   const mainImage = failedImages.has(safeGallery[safeDesign]) ? "/images/wallet.jpg" : (safeDesign === 0 && colorImage && colorImage !== safeGallery[0] ? colorImage : (safeGallery[safeDesign] || colorImage || "/images/wallet.jpg"));
-
-  // HOOKS - sab hooks early-return se PEHLE (pehle auto-slide hook return ke baad tha - crash ka chance tha)
-  useEffect(() => {
-    if (!product) return;
-    document.title = `${product.name} - Handmade Full-Grain Leather | Krossford`;
-    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Estimated Total: 12-17 Working Days. Ships from Pakistan.`;
-  }, [product?.slug]);
-
-  // AUTO SLIDE - har 4 sec, manual pe 8 sec pause (global formula)
-  useEffect(() => {
-    if (!hasSlider || sliderPaused) return;
-    const t = setInterval(() => setSelectedDesign((prev) => (prev + 1) % safeGallery.length), 4000);
-    return () => clearInterval(t);
-  }, [hasSlider, safeGallery.length, sliderPaused]);
-
-  useEffect(() => {
-    try {
-      const wl = JSON.parse(localStorage.getItem("krossford_wishlist") || "[]") as any[];
-      setIsLiked(!!wl.find((w: any) => String(w.slug) === String(product?.slug || product?.id)));
-    } catch { setIsLiked(false); }
-    setSelectedColor(product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" });
-    setSelectedDesign(0); setQuantity(1); setAdditionalOption("none"); setCustomText("");
-    setUploadedFile(null); setCustomMadeEnabled(false); setCustomMadeType("");
-    setCustomMadeDetail(""); setCustomMadeFile(null); setFailedImages(new Set());
-  }, [slug]);
-
-  // DB product load hone pe colour bhi reset - pehle purana colour rehta tha
-  useEffect(() => {
-    if (product?.colors?.[0]) setSelectedColor(product.colors[0]);
-    setSelectedDesign(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product?.slug]);
-
-  // COLOUR BADLE TO DESIGN 0 PE - slider colour ke hisaab se shuru hoga
-  const handleColorChange = (c: ProductColor) => {
-    setSelectedColor(c);
-    setSelectedDesign(0);
-    pauseAuto();
-  };
-
-  if (!product && dbLoading) {
-    return (
-      <div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words">
-        <p className="text-xl font-bold">Loading product...</p>
-        <p className="text-xs text-zinc-400">Slug: {slug}</p>
-        <p className="text-xs text-zinc-400">Loading from /api/products...</p>
-      </div>
-    );
-  }
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words">
-        <p className="text-xl font-bold">Product not found</p>
-        <p className="text-xs text-zinc-400">Slug: {slug}</p>
-        <p className="text-xs text-red-400">{dbError || "Supabase se product nahi mila"}</p>
-        <button onClick={() => setRetryCount((c) => c + 1)} className="bg-[#D4AF37] text-black px-5 py-2 rounded text-xs font-bold">Retry Again</button>
-        <Link href="/shop" className="bg-[#D4AF37] text-black px-5 py-2 rounded text-xs font-bold">Back to Shop</Link>
-        <button onClick={() => { localStorage.removeItem("krossford_cart"); localStorage.removeItem("cart"); window.location.href = "/shop"; }} className="border border-zinc-600 px-5 py-2 rounded text-xs">Clear Old Cart &amp; Go To Shop</button>
-      </div>
-    );
-  }
-
+  useEffect(() => { if (!product) return; document.title = `${product.name} - Handmade Full-Grain Leather | Krossford`; let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null; if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); } meta.content = `${product.name} - ${product.description} - $${product.price}. Handcrafted To Order. Estimated Total: 12-17 Working Days. Ships from Pakistan.`; }, [product?.slug]);
+  useEffect(() => { if (!hasSlider || sliderPaused) return; const t = setInterval(() => setSelectedDesign((prev) => (prev + 1) % safeGallery.length), 4000); return () => clearInterval(t); }, [hasSlider, safeGallery.length, sliderPaused]);
+  useEffect(() => { try { const wl = JSON.parse(localStorage.getItem("krossford_wishlist") || "[]") as any[]; setIsLiked(!!wl.find((w: any) => String(w.slug) === String(product?.slug || product?.id))); } catch { setIsLiked(false); } setSelectedColor(product?.colors?.[0] || { name: "Dark Brown", code: "#3E2723", image: product?.image || "" }); setSelectedDesign(0); setQuantity(1); setAdditionalOption("none"); setCustomText(""); setUploadedFile(null); setCustomMadeEnabled(false); setCustomMadeType(""); setCustomMadeDetail(""); setCustomMadeFile(null); setFailedImages(new Set()); }, [slug]);
+  useEffect(() => { if (product?.colors?.[0]) setSelectedColor(product.colors[0]); setSelectedDesign(0); }, [product?.slug]);
+  const handleColorChange = (c: ProductColor) => { setSelectedColor(c); setSelectedDesign(0); pauseAuto(); };
+  if (!product && dbLoading) { return (<div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words"><p className="text-xl font-bold">Loading product...</p><p className="text-xs text-zinc-400">Slug: {slug}</p><p className="text-xs text-zinc-400">Loading from /api/products...</p></div>); }
+  if (!product) { return (<div className="min-h-screen bg-black text-white w-full min-w-0 flex items-center justify-center flex-col gap-4 p-4 sm:p-6 text-center break-words"><p className="text-xl font-bold">Product not found</p><p className="text-xs text-zinc-400">Slug: {slug}</p><p className="text-xs text-red-400">{dbError || "Supabase se product nahi mila"}</p><button onClick={() => setRetryCount((c) => c + 1)} className="bg-[#D4AF37] text-black px-5 py-2 rounded text-xs font-bold">Retry Again</button><Link href="/shop" className="bg-[#D4AF37] text-black px-5 py-2 rounded text-xs font-bold">Back to Shop</Link><button onClick={() => { localStorage.removeItem("krossford_cart"); localStorage.removeItem("cart"); window.location.href = "/shop"; }} className="border border-zinc-600 px-5 py-2 rounded text-xs">Clear Old Cart &amp; Go To Shop</button></div>); }
   const WHATSAPP_NUMBER = "923030006759";
   const finalPrice = product.price;
-  const goSlide = (dir: 1 | -1) => {
-    pauseAuto();
-    setSelectedDesign((prev) => (prev + dir + safeGallery.length) % safeGallery.length);
-  };
+  const goSlide = (dir: 1 | -1) => { pauseAuto(); setSelectedDesign((prev) => (prev + dir + safeGallery.length) % safeGallery.length); };
   const goToSlide = (i: number) => { pauseAuto(); setSelectedDesign(i); };
-  const handleSampleRequest = () => {
-    const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Design: Design ${safeDesign + 1}, Color: ${selectedColor.name}, Type: ${customerType === "B2C" ? "Single Piece" : "Bulk Order"}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`;
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
-  };
-  const handleToggleWishlist = () => {
-    const existing = JSON.parse(localStorage.getItem("krossford_wishlist") || "[]") as any[];
-    const foundIndex = existing.findIndex((it: any) => String(it.slug) === String(product.slug || product.id));
-    if (foundIndex > -1) {
-      localStorage.setItem("krossford_wishlist", JSON.stringify(existing.filter((_: any, i: number) => i !== foundIndex)));
-      setIsLiked(false);
-    } else {
-      localStorage.setItem("krossford_wishlist", JSON.stringify([...existing, { slug: product.slug || product.id, name: product.name, category: product.category, price: finalPrice, image: mainImage, quantity: quantity, colorName: selectedColor.name, savedAt: Date.now() }]));
-      setIsLiked(true);
-    }
-    window.dispatchEvent(new Event("wishlistUpdated"));
-  };
+  const handleSampleRequest = () => { const msg = `Hello Krossford! I want a PAID SAMPLE of ${product.name} - Design: Design ${safeDesign + 1}, Color: ${selectedColor.name}, Type: ${customerType === "B2C" ? "Single Piece" : "Bulk Order"}. Please confirm Sample Price + Shipment + Delivery Charges. I understand if I place order, sample price will be adjusted.`; window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank"); };
+  const handleToggleWishlist = () => { const existing = JSON.parse(localStorage.getItem("krossford_wishlist") || "[]") as any[]; const foundIndex = existing.findIndex((it: any) => String(it.slug) === String(product.slug || product.id)); if (foundIndex > -1) { localStorage.setItem("krossford_wishlist", JSON.stringify(existing.filter((_: any, i: number) => i !== foundIndex))); setIsLiked(false); } else { localStorage.setItem("krossford_wishlist", JSON.stringify([...existing, { slug: product.slug || product.id, name: product.name, category: product.category, price: finalPrice, image: mainImage, quantity: quantity, colorName: selectedColor.name, savedAt: Date.now() }])); setIsLiked(true); } window.dispatchEvent(new Event("wishlistUpdated")); };
   const handleMainAction = () => {
-    if (customerType === "B2B") {
-      const q = new URLSearchParams({ product: product.name, qty: String(quantity), color: selectedColor.name, design: `Design ${safeDesign + 1}`, price: String(finalPrice) });
-      window.location.href = `/b2b?${q.toString()}`;
-      return;
-    }
+    if (customerType === "B2B") { const q = new URLSearchParams({ product: product.name, qty: String(quantity), color: selectedColor.name, design: `Design ${safeDesign + 1}`, price: String(finalPrice) }); window.location.href = `/b2b?${q.toString()}`; return; }
     if ((additionalOption === "engraving" || additionalOption === "both") && !customText.trim()) { alert("Please enter your Name / Initials for engraving"); return; }
     if ((additionalOption === "image" || additionalOption === "both") && !uploadedFile) { alert("Please upload your image"); return; }
     if (customMadeEnabled && !customMadeType) { alert("Please select - Customer kya customize karwana chahta hai?"); return; }
     if (customMadeEnabled && !customMadeDetail.trim() && !customMadeFile) { alert("Please apna design detail likhein ya apni image upload karein"); return; }
-    const cartItem = {
-      id: `${product.slug || product.id}-design${safeDesign + 1}-${selectedColor.name}-${additionalOption}-${customText}`,
-      addedAt: Date.now(), slug: product.slug || product.id, name: product.name, category: product.category,
-      price: finalPrice, image: mainImage, leather: product.description, quantity: quantity,
-      colorName: selectedColor.name, colorCode: selectedColor.code, design: `Design ${safeDesign + 1}`,
-      customerType: customerType, additionalOption: additionalOption, customText: customText,
-      uploadedFileName: uploadedFile ? uploadedFile.name : "",
-      customMade: customMadeEnabled ? { enabled: true, type: customMadeType, detail: customMadeDetail, fileName: customMadeFile ? customMadeFile.name : "" } : { enabled: false },
-      extraChargesNote: customMadeEnabled || additionalOption !== "none" ? "Extra charges apply for customization - final price will be confirmed after order confirmation." : "",
-      shipmentNote: "Shipment + Delivery Charges To Be Confirmed After Destination Check",
-    };
-    const existing = readCartItems<typeof cartItem>();
-    const foundIndex = existing.findIndex((it) => it.id === cartItem.id);
-    if (foundIndex > -1) { existing[foundIndex].quantity = Number(existing[foundIndex].quantity || 1) + Number(quantity); } else { existing.push(cartItem); }
-    saveCart(existing);
-    window.dispatchEvent(new Event("storage"));
-    window.location.href = "/cart";
+    const cartItem = { id: `${product.slug || product.id}-design${safeDesign + 1}-${selectedColor.name}-${additionalOption}-${customText}`, addedAt: Date.now(), slug: product.slug || product.id, name: product.name, category: product.category, price: finalPrice, image: mainImage, leather: product.description, quantity: quantity, colorName: selectedColor.name, colorCode: selectedColor.code, design: `Design ${safeDesign + 1}`, customerType: customerType, additionalOption: additionalOption, customText: customText, uploadedFileName: uploadedFile ? uploadedFile.name : "", customMade: customMadeEnabled ? { enabled: true, type: customMadeType, detail: customMadeDetail, fileName: customMadeFile ? customMadeFile.name : "" } : { enabled: false }, extraChargesNote: customMadeEnabled || additionalOption !== "none" ? "Extra charges apply for customization - final price will be confirmed after order confirmation." : "", shipmentNote: "Shipment + Delivery Charges To Be Confirmed After Destination Check" };
+    const existing = readCartItems<typeof cartItem>(); const foundIndex = existing.findIndex((it) => it.id === cartItem.id); if (foundIndex > -1) { existing[foundIndex].quantity = Number(existing[foundIndex].quantity || 1) + Number(quantity); } else { existing.push(cartItem); } saveCart(existing); window.dispatchEvent(new Event("storage")); window.location.href = "/cart";
   };
   const sameCategory = [...products].filter((p) => p.id !== product.id && p.category === product.category).sort((a, b) => Number(a.price) - Number(b.price));
   const otherCategory = [...products].filter((p) => p.id !== product.id && p.category !== product.category).sort((a, b) => Number(a.price) - Number(b.price));
   const related = [...sameCategory, ...otherCategory].slice(0, 3);
-
   return (
     <div className="min-h-screen bg-black text-white w-full min-w-0 p-3 min-[400px]:p-4 sm:p-6 lg:p-8 xl:p-12 overflow-x-hidden overflow-x-clip">
       <div className="max-w-6xl mx-auto w-full min-w-0">
-        <p className="text-[11px] min-[400px]:text-xs text-zinc-400 uppercase tracking-normal sm:tracking-widest mb-6 break-words leading-relaxed">
-          <Link href="/" className="hover:text-[#D4AF37]">Home</Link> / <Link href="/shop" className="hover:text-[#D4AF37]">Shop</Link> / <span className="text-[#D4AF37] font-semibold">{product.name}</span>
-        </p>
+        <p className="text-[11px] min-[400px]:text-xs text-zinc-400 uppercase tracking-normal sm:tracking-widest mb-6 break-words leading-relaxed"><Link href="/" className="hover:text-[#D4AF37]">Home</Link> / <Link href="/shop" className="hover:text-[#D4AF37]">Shop</Link> / <span className="text-[#D4AF37] font-semibold">{product.name}</span></p>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 w-full min-w-0">
           <div className="min-w-0">
-            <div
-              className="relative w-full overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 aspect-[4/3]"
-              onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-              onTouchEnd={(e) => {
-                if (touchStartX.current === null || !hasSlider) return;
-                const dx = e.changedTouches[0].clientX - touchStartX.current;
-                if (dx < -50) goSlide(1);
-                if (dx > 50) goSlide(-1);
-                touchStartX.current = null;
-              }}
-            >
+            <div className="relative w-full overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 aspect-[4/3]" onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }} onTouchEnd={(e) => { if (touchStartX.current === null || !hasSlider) return; const dx = e.changedTouches[0].clientX - touchStartX.current; if (dx < -50) goSlide(1); if (dx > 50) goSlide(-1); touchStartX.current = null; }}>
               <img src={mainImage} alt={product.name} onError={() => markFailed(mainImage)} className="w-full h-full object-cover" />
-              {hasSlider && (
-                <>
-                  <button type="button" aria-label="Previous photo" onClick={() => goSlide(-1)} className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none">‹</button>
-                  <button type="button" aria-label="Next photo" onClick={() => goSlide(1)} className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none">›</button>
-                  <span className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">{safeDesign + 1} / {safeGallery.length}</span>
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">
-                    {safeGallery.map((_, i) => (
-                      <button key={i} type="button" aria-label={`Go to photo ${i + 1}`} onClick={() => goToSlide(i)} className={`rounded-full transition-all ${i === safeDesign ? "w-4 h-2 bg-[#D4AF37]" : "w-2 h-2 bg-white/70"}`} />
-                    ))}
-                  </div>
-                </>
-              )}
+              {hasSlider && (<><button type="button" aria-label="Previous photo" onClick={() => goSlide(-1)} className="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none">‹</button><button type="button" aria-label="Next photo" onClick={() => goSlide(1)} className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center text-lg leading-none">›</button><span className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-full z-10">{safeDesign + 1} / {safeGallery.length}</span><div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5">{safeGallery.map((_, i) => (<button key={i} type="button" aria-label={`Go to photo ${i + 1}`} onClick={() => goToSlide(i)} className={`rounded-full transition-all ${i === safeDesign ? "w-4 h-2 bg-[#D4AF37]" : "w-2 h-2 bg-white/70"}`} />))}</div></>)}
             </div>
             <p className="text-xs text-zinc-400 mt-2">{product.description}</p>
-            {safeGallery.length > 1 && (
-              <div className="mt-5">
-                <p className="text-sm font-bold">SELECT DESIGN: Design {safeDesign + 1}</p>
-                <div className="flex gap-3 mt-3 flex-wrap">
-                  {safeGallery.map((g, i) => (
-                    <button key={g} onClick={() => goToSlide(i)} className={`w-16 h-16 min-[400px]:w-20 min-[400px]:h-20 rounded-lg overflow-hidden cursor-pointer shrink-0 ${safeDesign === i ? "ring-2 ring-[#D4AF37]" : "ring-1 ring-zinc-700"}`}>
-                      <img src={g} alt={`Design ${i + 1}`} onError={() => markFailed(g)} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            <div className="mt-4 flex flex-wrap gap-2 text-xs">
-              <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ 100% Real Leather</span>
-              <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Handicraft</span>
-              <span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Sample Before Bulk</span>
-            </div>
+            {safeGallery.length > 1 && (<div className="mt-5"><p className="text-sm font-bold">SELECT DESIGN: Design {safeDesign + 1}</p><div className="flex gap-3 mt-3 flex-wrap">{safeGallery.map((g, i) => (<button key={g} onClick={() => goToSlide(i)} className={`w-16 h-16 min-[400px]:w-20 min-[400px]:h-20 rounded-lg overflow-hidden cursor-pointer shrink-0 ${safeDesign === i ? "ring-2 ring-[#D4AF37]" : "ring-1 ring-zinc-700"}`}><img src={g} alt={`Design ${i + 1}`} onError={() => markFailed(g)} className="w-full h-full object-cover" /></button>))}</div></div>)}
+            <div className="mt-4 flex flex-wrap gap-2 text-xs"><span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ 100% Real Leather</span><span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Handicraft</span><span className="bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-full">✓ Sample Before Bulk</span></div>
           </div>
           <div className="min-w-0">
             <p className="text-xs tracking-widest text-[#D4AF37] uppercase">{product.category}</p>
@@ -287,145 +115,18 @@ export default function ProductPage() {
                 <button onClick={() => setCustomerType("B2C")} className={`p-3 rounded border text-left w-full ${customerType === "B2C" ? "border-[#D4AF37] bg-zinc-900" : "border-zinc-800 bg-black"}`}><span className="text-xs font-bold block">Single Piece</span><span className="text-xs text-zinc-400 block mt-0.5">1+ pcs at retail price — direct checkout</span></button>
                 <button onClick={() => setCustomerType("B2B")} className={`p-3 rounded border text-left w-full ${customerType === "B2B" ? "border-[#D4AF37] bg-zinc-900" : "border-zinc-800 bg-black"}`}><span className="text-xs font-bold block">Bulk Order</span><span className="text-xs text-zinc-400 block mt-0.5">Wholesale quote — goes to B2B enquiry form, not checkout</span></button>
               </div>
-              {customerType === "B2C" ? (
-                <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
-                  <p className="text-xs font-bold text-white">Simple Order</p>
-                  <p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p>
-                  <p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-[#D4AF37] font-bold">To Be Confirmed</span> (Single Packing)</p>
-                  <p className="text-xs text-zinc-400">Delivery: <span className="text-[#D4AF37] font-bold">To Be Confirmed</span></p>
-                  <p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p>
-                </div>
-              ) : (
-                <div className="mt-4 pt-4 border-t border-zinc-800 space-y-1">
-                  <p className="text-xs text-zinc-300"><b className="text-white">Minimum Quantity:</b> Jacket 50 Pcs • Biker Suit 25 Sets • Small Items (Card Holder / Keychain / Wallet) 100 Pcs</p>
-                  <p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-[#D4AF37] font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p>
-                  <p className="text-xs text-zinc-300"><b className="text-white">Delivery:</b> <span className="text-[#D4AF37] font-bold">To Be Confirmed</span></p>
-                  <p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p>
-                  <p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + Delivery 5-7).</p>
-                  <Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-[#D4AF37] hover:text-amber-300">Go To B2B Wholesale Form →</Link>
-                  <div className="pt-3 border-t border-zinc-800 mt-3">
-                    <p className="text-xs font-bold text-white">Sample Available - Paid Sample</p>
-                    <p className="text-xs text-zinc-400 mt-1">Sample Price Will Be Paid By Buyer. Charges To Be Confirmed.</p>
-                    <p className="text-xs text-green-400 font-medium mt-1">If You Place Order, Sample Price Will Be Adjusted In Your Order.</p>
-                    <button onClick={handleSampleRequest} className="mt-3 w-full border border-[#D4AF37] text-[#D4AF37] text-xs uppercase font-bold py-2.5 rounded hover:bg-[#D4AF37] hover:text-black transition-all">Request Paid Sample →</button>
-                  </div>
-                </div>
-              )}
+              {customerType === "B2C" ? (<div className="mt-4 pt-4 border-t border-zinc-800 space-y-1"><p className="text-xs font-bold text-white">Simple Order</p><p className="text-xs text-zinc-400">Just Select Your Piece And Checkout.</p><p className="text-xs text-zinc-400">Shipment (Packing): <span className="text-[#D4AF37] font-bold">To Be Confirmed</span> (Single Packing)</p><p className="text-xs text-zinc-400">Delivery: <span className="text-[#D4AF37] font-bold">To Be Confirmed</span></p><p className="text-xs text-zinc-300 mt-2">Handcrafted To Order - No Ready-Made Stock. Crafting 7-10 Working Days + Delivery 5-7 Working Days = Total 12-17 Working Days. Full tracking. Ships from Pakistan.</p></div>) : (<div className="mt-4 pt-4 border-t border-zinc-800 space-y-1"><p className="text-xs text-zinc-300"><b className="text-white">Minimum Quantity:</b> Jacket 50 Pcs • Biker Suit 25 Sets • Small Items (Card Holder / Keychain / Wallet) 100 Pcs</p><p className="text-xs text-zinc-300"><b className="text-white">Shipment (Packing):</b> <span className="text-[#D4AF37] font-bold">To Be Confirmed</span> (Bulk Pallet Packing)</p><p className="text-xs text-zinc-300"><b className="text-white">Delivery:</b> <span className="text-[#D4AF37] font-bold">To Be Confirmed</span></p><p className="text-xs text-zinc-400">Delivery Schedule Will Be Confirmed After Order. Tracking Number Will Be Shared After Dispatch.</p><p className="text-xs text-zinc-300 mt-1">Handcrafted To Order - No Ready-Made Stock. Ships from Pakistan. Single Piece Total 12-17 Working Days (Crafting 7-10 + Delivery 5-7).</p><Link href="/b2b" className="inline-block mt-2 text-xs font-bold underline text-[#D4AF37] hover:text-amber-300">Go To B2B Wholesale Form →</Link><div className="pt-3 border-t border-zinc-800 mt-3"><p className="text-xs font-bold text-white">Sample Available - Paid Sample</p><p className="text-xs text-zinc-400 mt-1">Sample Price Will Be Paid By Buyer. Charges To Be Confirmed.</p><p className="text-xs text-green-400 font-medium mt-1">If You Place Order, Sample Price Will Be Adjusted In Your Order.</p><button onClick={handleSampleRequest} className="mt-3 w-full border border-[#D4AF37] text-[#D4AF37] text-xs uppercase font-bold py-2.5 rounded hover:bg-[#D4AF37] hover:text-black transition-all">Request Paid Sample →</button></div></div>)}
             </div>
-            <div className="mt-6">
-              <p className="text-sm font-bold">SELECT COLOUR: {selectedColor.name}</p>
-              <div className="flex gap-3 mt-3 flex-wrap">
-                {product.colors?.map((c: ProductColor) => (
-                  <button key={c.name} onClick={() => handleColorChange(c)} title={c.name} aria-label={c.name} style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #fbbf24" : "1px solid #3f3f46", cursor: "pointer" }} />
-                ))}
-              </div>
-            </div>
-            <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5">
-              <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Additional Options</p>
-              <p className="text-xs text-[#D4AF37] font-medium mt-1">Extra charges apply for customization - final price will be confirmed after order confirmation.</p>
-              <div className="mt-4 space-y-4">
-                <label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "none"} onChange={() => setAdditionalOption("none")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">No Additional Option</span><span className="text-xs text-zinc-400">Simple order without customization</span></span></label>
-                <label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "engraving"} onChange={() => setAdditionalOption("engraving")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Custom Name / Initials (Text Engraving)</span><span className="text-xs text-zinc-400">Your name will be engraved</span></span></label>
-                <label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "image"} onChange={() => setAdditionalOption("image")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Upload Your Own Image</span><span className="text-xs text-zinc-400">Upload your logo / design</span></span></label>
-                <label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "both"} onChange={() => setAdditionalOption("both")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Custom Text + Upload Image</span><span className="text-xs text-zinc-400">Both text and image</span></span></label>
-                {additionalOption !== "none" && (<button onClick={() => { setAdditionalOption("none"); setCustomText(""); setUploadedFile(null); }} className="text-xs underline text-zinc-400">Clear Selection</button>)}
-              </div>
-              {(additionalOption === "engraving" || additionalOption === "both") && (
-                <div className="mt-4 bg-black border border-[#D4AF37]/30 rounded-md p-3">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Enter Your Name / Initials *</label>
-                  <input type="text" value={customText} onChange={(e) => setCustomText(e.target.value)} placeholder="e.g. A. Khan / AK" maxLength={20} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-[#D4AF37] bg-zinc-950 text-white" />
-                  <p className="text-xs text-zinc-400 mt-1">{customText.length} / 20</p>
-                </div>
-              )}
-              {(additionalOption === "image" || additionalOption === "both") && (
-                <div className="mt-4 bg-black border border-[#D4AF37]/30 rounded-md p-3">
-                  <label className="text-xs font-bold uppercase text-zinc-400">Upload Your Image / Logo *</label>
-                  <label className="mt-1 w-full border-2 border-dashed border-zinc-700 rounded-md px-3 py-5 text-center block cursor-pointer hover:border-[#D4AF37] bg-zinc-950">
-                    <span className="text-sm text-zinc-400">{uploadedFile ? `✅ ${uploadedFile.name}` : "Click to Upload Image (JPG / PNG)"}</span>
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => setUploadedFile(e.target.files?.[0] || null)} />
-                  </label>
-                </div>
-              )}
-            </div>
-            <div className="mt-6 bg-zinc-950 border border-[#D4AF37]/30 rounded-lg p-4 sm:p-5">
-              <p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Custom Made - Hand Stitched</p>
-              <p className="text-xs text-[#D4AF37] font-medium mt-1">On Customer Demand - Extra charges apply, final price will be confirmed after order confirmation.</p>
-              <label className="flex items-start gap-3 cursor-pointer mt-4">
-                <input type="checkbox" checked={customMadeEnabled} onChange={(e) => setCustomMadeEnabled(e.target.checked)} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" />
-                <span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want Custom Made Hand Stitched Product</span><span className="text-xs text-zinc-400">Tick karein agar apna design banwana hai</span></span>
-              </label>
-              {customMadeEnabled && (
-                <div className="mt-4 space-y-4">
-                  <div>
-                    <p className="text-xs font-bold uppercase text-zinc-400">Customer Kya Customize Karwana Chahta Hai *</p>
-                    <div className="mt-2 space-y-2">
-                      {[
-                        { v: "full", l: "Full Product - Mere Design Pe Banao", d: "Poora product aapke design pe banega" },
-                        { v: "stitching", l: "Stitching Only - Hand Stitched Chahiye", d: "Sirf hand stitching hogi, design same rahega" },
-                        { v: "design", l: "Design Change", d: "Is product ka design badalna hai" },
-                        { v: "size-colour", l: "Size / Colour Change", d: "Size ya colour apne hisaab se" },
-                        { v: "logo-name", l: "Logo / Name Add Karna Hai", d: "Logo, naam ya initials add karne hain" },
-                      ].map((o) => (
-                        <label key={o.v} className="flex items-start gap-3 cursor-pointer">
-                          <input type="radio" name="customMadeType" checked={customMadeType === o.v} onChange={() => setCustomMadeType(o.v)} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" />
-                          <span className="flex-1 min-w-0"><span className="block text-sm font-medium">{o.l}</span><span className="text-xs text-zinc-400">{o.d}</span></span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold uppercase text-zinc-400">Apna Design / Image Upload Karein</label>
-                    <label className="mt-1 w-full border-2 border-dashed border-zinc-700 rounded-md px-3 py-5 text-center block cursor-pointer hover:border-[#D4AF37] bg-black">
-                      <span className="text-sm text-zinc-400">{customMadeFile ? `✅ ${customMadeFile.name}` : "Click to Upload Design Image (JPG / PNG)"}</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={(e) => setCustomMadeFile(e.target.files?.[0] || null)} />
-                    </label>
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold uppercase text-zinc-400">Detail Likhein *</label>
-                    <textarea value={customMadeDetail} onChange={(e) => setCustomMadeDetail(e.target.value)} placeholder="e.g. Mujhe is wallet pe hand stitching chahiye..." maxLength={500} rows={4} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-[#D4AF37] bg-black text-white" />
-                    <p className="text-xs text-zinc-400 mt-1">{customMadeDetail.length} / 500</p>
-                  </div>
-                  <button onClick={() => { setCustomMadeEnabled(false); setCustomMadeType(""); setCustomMadeDetail(""); setCustomMadeFile(null); }} className="text-xs underline text-zinc-400">Clear Custom Made Selection</button>
-                </div>
-              )}
-            </div>
-            <div className="mt-6 flex flex-col min-[500px]:flex-row gap-3 min-[500px]:items-center w-full min-w-0">
-              <div className="flex items-center justify-between min-[500px]:justify-start border border-zinc-700 rounded-md shrink-0 bg-zinc-950 w-full min-[500px]:w-auto">
-                <span className="text-xs text-zinc-400 uppercase pl-3 pr-1">Qty:</span>
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">-</button>
-                <span className="px-2 font-bold min-w-[20px] text-center">{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">+</button>
-              </div>
-              <button onClick={handleMainAction} className="flex-1 min-w-0 w-full min-[500px]:w-auto bg-[#D4AF37] text-black py-3 px-3 rounded-md text-[12px] min-[400px]:text-sm font-bold uppercase hover:bg-amber-300 break-words leading-snug text-center">
-                {customerType === "B2B" ? `Send B2B Enquiry - ${quantity} pcs →` : `Add To Cart - ${selectedColor.name} • Design ${safeDesign + 1} • $${finalPrice * quantity}`}
-              </button>
-            </div>
-            <div className="mt-3 bg-zinc-950 border border-zinc-800 rounded-lg p-3 space-y-1">
-              <p className="text-xs text-zinc-300">🚚 <b className="text-white">Delivery:</b> Estimated Total 12-17 Working Days • Ships via fastest delivery • Full Tracking • Ships from Pakistan</p>
-              <p className="text-xs text-zinc-300">↩ <b className="text-white">Returns:</b> Handcrafted To Order — please check design / colour before confirming. Issue ho to WhatsApp pe rabta karein, hum hal karenge.</p>
-              <p className="text-xs text-zinc-400">Shipment + Delivery Charges: To Be Confirmed after destination check.</p>
-            </div>
+            <div className="mt-6"><p className="text-sm font-bold">SELECT COLOUR: {selectedColor.name}</p><div className="flex gap-3 mt-3 flex-wrap">{product.colors?.map((c: ProductColor) => (<button key={c.name} onClick={() => handleColorChange(c)} title={c.name} aria-label={c.name} style={{ background: c.code, width: 32, height: 32, borderRadius: "50%", border: selectedColor.name === c.name ? "3px solid #fbbf24" : "1px solid #3f3f46", cursor: "pointer" }} />))}</div></div>
+            <div className="mt-6 bg-zinc-950 border border-zinc-800 rounded-lg p-4 sm:p-5"><p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Additional Options</p><p className="text-xs text-[#D4AF37] font-medium mt-1">Extra charges apply for customization - final price will be confirmed after order confirmation.</p><div className="mt-4 space-y-4"><label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "none"} onChange={() => setAdditionalOption("none")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">No Additional Option</span><span className="text-xs text-zinc-400">Simple order without customization</span></span></label><label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "engraving"} onChange={() => setAdditionalOption("engraving")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Custom Name / Initials (Text Engraving)</span><span className="text-xs text-zinc-400">Your name will be engraved</span></span></label><label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "image"} onChange={() => setAdditionalOption("image")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Upload Your Own Image</span><span className="text-xs text-zinc-400">Upload your logo / design</span></span></label><label className="flex items-start gap-3 cursor-pointer"><input type="radio" name="additional" checked={additionalOption === "both"} onChange={() => setAdditionalOption("both")} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">Custom Text + Upload Image</span><span className="text-xs text-zinc-400">Both text and image</span></span></label>{additionalOption !== "none" && (<button onClick={() => { setAdditionalOption("none"); setCustomText(""); setUploadedFile(null); }} className="text-xs underline text-zinc-400">Clear Selection</button>)}</div>{(additionalOption === "engraving" || additionalOption === "both") && (<div className="mt-4 bg-black border border-[#D4AF37]/30 rounded-md p-3"><label className="text-xs font-bold uppercase text-zinc-400">Enter Your Name / Initials *</label><input type="text" value={customText} onChange={(e) => setCustomText(e.target.value)} placeholder="e.g. A. Khan / AK" maxLength={20} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-[#D4AF37] bg-zinc-950 text-white" /><p className="text-xs text-zinc-400 mt-1">{customText.length} / 20</p></div>)}{(additionalOption === "image" || additionalOption === "both") && (<div className="mt-4 bg-black border border-[#D4AF37]/30 rounded-md p-3"><label className="text-xs font-bold uppercase text-zinc-400">Upload Your Image / Logo *</label><label className="mt-1 w-full border-2 border-dashed border-zinc-700 rounded-md px-3 py-5 text-center block cursor-pointer hover:border-[#D4AF37] bg-zinc-950"><span className="text-sm text-zinc-400">{uploadedFile ? `✅ ${uploadedFile.name}` : "Click to Upload Image (JPG / PNG)"}</span><input type="file" accept="image/*" className="hidden" onChange={(e) => setUploadedFile(e.target.files?.[0] || null)} /></label></div>)}</div>
+            <div className="mt-6 bg-zinc-950 border border-[#D4AF37]/30 rounded-lg p-4 sm:p-5"><p className="text-xs font-bold tracking-widest uppercase text-zinc-200">Custom Made - Hand Stitched</p><p className="text-xs text-[#D4AF37] font-medium mt-1">On Customer Demand - Extra charges apply, final price will be confirmed after order confirmation.</p><label className="flex items-start gap-3 cursor-pointer mt-4"><input type="checkbox" checked={customMadeEnabled} onChange={(e) => setCustomMadeEnabled(e.target.checked)} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">I Want Custom Made Hand Stitched Product</span><span className="text-xs text-zinc-400">Tick karein agar apna design banwana hai</span></span></label>{customMadeEnabled && (<div className="mt-4 space-y-4"><div><p className="text-xs font-bold uppercase text-zinc-400">Customer Kya Customize Karwana Chahta Hai *</p><div className="mt-2 space-y-2">{[{ v: "full", l: "Full Product - Mere Design Pe Banao", d: "Poora product aapke design pe banega" }, { v: "stitching", l: "Stitching Only - Hand Stitched Chahiye", d: "Sirf hand stitching hogi, design same rahega" }, { v: "design", l: "Design Change", d: "Is product ka design badalna hai" }, { v: "size-colour", l: "Size / Colour Change", d: "Size ya colour apne hisaab se" }, { v: "logo-name", l: "Logo / Name Add Karna Hai", d: "Logo, naam ya initials add karne hain" }].map((o) => (<label key={o.v} className="flex items-start gap-3 cursor-pointer"><input type="radio" name="customMadeType" checked={customMadeType === o.v} onChange={() => setCustomMadeType(o.v)} className="mt-1 w-4 h-4 accent-[#D4AF37] shrink-0" /><span className="flex-1 min-w-0"><span className="block text-sm font-medium">{o.l}</span><span className="text-xs text-zinc-400">{o.d}</span></span></label>))}</div></div><div><label className="text-xs font-bold uppercase text-zinc-400">Apna Design / Image Upload Karein</label><label className="mt-1 w-full border-2 border-dashed border-zinc-700 rounded-md px-3 py-5 text-center block cursor-pointer hover:border-[#D4AF37] bg-black"><span className="text-sm text-zinc-400">{customMadeFile ? `✅ ${customMadeFile.name}` : "Click to Upload Design Image (JPG / PNG)"}</span><input type="file" accept="image/*" className="hidden" onChange={(e) => setCustomMadeFile(e.target.files?.[0] || null)} /></label></div><div><label className="text-xs font-bold uppercase text-zinc-400">Detail Likhein *</label><textarea value={customMadeDetail} onChange={(e) => setCustomMadeDetail(e.target.value)} placeholder="e.g. Mujhe is wallet pe hand stitching chahiye..." maxLength={500} rows={4} className="mt-1 w-full border border-zinc-700 rounded-md px-3 py-2.5 text-sm outline-none focus:border-[#D4AF37] bg-black text-white" /><p className="text-xs text-zinc-400 mt-1">{customMadeDetail.length} / 500</p></div><button onClick={() => { setCustomMadeEnabled(false); setCustomMadeType(""); setCustomMadeDetail(""); setCustomMadeFile(null); }} className="text-xs underline text-zinc-400">Clear Custom Made Selection</button></div>)}</div>
+            <div className="mt-6 flex flex-col min-[500px]:flex-row gap-3 min-[500px]:items-center w-full min-w-0"><div className="flex items-center justify-between min-[500px]:justify-start border border-zinc-700 rounded-md shrink-0 bg-zinc-950 w-full min-[500px]:w-auto"><span className="text-xs text-zinc-400 uppercase pl-3 pr-1">Qty:</span><button onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Decrease quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">-</button><span className="px-2 font-bold min-w-[20px] text-center">{quantity}</span><button onClick={() => setQuantity(quantity + 1)} aria-label="Increase quantity" className="px-3 py-2 hover:text-[#D4AF37] text-base font-bold">+</button></div><button onClick={handleMainAction} className="flex-1 min-w-0 w-full min-[500px]:w-auto bg-[#D4AF37] text-black py-3 px-3 rounded-md text-[12px] min-[400px]:text-sm font-bold uppercase hover:bg-amber-300 break-words leading-snug text-center">{customerType === "B2B" ? `Send B2B Enquiry - ${quantity} pcs →` : `Add To Cart - ${selectedColor.name} • Design ${safeDesign + 1} • $${finalPrice * quantity}`}</button></div>
+            <div className="mt-3 bg-zinc-950 border border-zinc-800 rounded-lg p-3 space-y-1"><p className="text-xs text-zinc-300">🚚 <b className="text-white">Delivery:</b> Estimated Total 12-17 Working Days • Ships via fastest delivery • Full Tracking • Ships from Pakistan</p><p className="text-xs text-zinc-300">↩ <b className="text-white">Returns:</b> Handcrafted To Order — please check design / colour before confirming. Issue ho to WhatsApp pe rabta karein, hum hal karenge.</p><p className="text-xs text-zinc-400">Shipment + Delivery Charges: To Be Confirmed after destination check.</p></div>
             <button onClick={handleToggleWishlist} className="mt-4 w-full border border-[#D4AF37] text-[#D4AF37] text-xs uppercase font-bold py-3 rounded hover:bg-[#D4AF37] hover:text-black transition-all">{isLiked ? "♥ Saved in Wishlist" : "♡ Add to Wishlist"}</button>
             <Link href="/shop" className="block text-center mt-3 text-xs underline text-zinc-400 hover:text-[#D4AF37]">Continue Shopping</Link>
           </div>
         </div>
-        <div className="mt-14 border-t border-zinc-800 pt-8">
-          <h2 className="text-lg font-bold uppercase tracking-widest text-white">You May Also Like</h2>
-          <div className="grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-5 w-full min-w-0">
-            {related.map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="border border-zinc-800 bg-zinc-950 rounded-lg overflow-hidden group hover:border-[#D4AF37] transition-colors">
-                <div className="relative aspect-[4/3] bg-zinc-900 overflow-hidden">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-4">
-                  <p className="text-xs text-[#D4AF37] uppercase tracking-widest">{p.category}</p>
-                  <h3 className="text-sm font-semibold uppercase mt-1 text-white break-words leading-snug">{p.name}</h3>
-                  <p className="text-sm font-bold mt-1 text-[#D4AF37]">${p.price}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
+        <div className="mt-14 border-t border-zinc-800 pt-8"><h2 className="text-lg font-bold uppercase tracking-widest text-white">You May Also Like</h2><div className="grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-5 w-full min-w-0">{related.map((p) => (<Link key={p.id} href={`/product/${p.slug}`} className="border border-zinc-800 bg-zinc-950 rounded-lg overflow-hidden group hover:border-[#D4AF37] transition-colors"><div className="relative aspect-[4/3] bg-zinc-900 overflow-hidden"><img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" /></div><div className="p-4"><p className="text-xs text-[#D4AF37] uppercase tracking-widest">{p.category}</p><h3 className="text-sm font-semibold uppercase mt-1 text-white break-words leading-snug">{p.name}</h3><p className="text-sm font-bold mt-1 text-[#D4AF37]">${p.price}</p></div></Link>))}</div></div>
       </div>
     </div>
   );

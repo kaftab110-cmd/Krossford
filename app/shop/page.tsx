@@ -13,16 +13,20 @@ function ShopPageInner() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"featured" | "price-low" | "price-high" | "name">("featured");
   // FIX: Admin (Supabase) wale LIVE products bhi Shop pe dikhen
+  // FIX 2 (Audit): API hang ho to Shop Loading pe na atke - 3 sec timeout + local products foran dikhenge
   const [adminProducts, setAdminProducts] = useState<any[]>([]);
   useEffect(() => {
-    fetch("/api/products", { cache: "no-store" }).then(r => r.json()).then(j => {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 3000);
+    fetch("/api/products", { cache: "no-store", signal: ctrl.signal }).then(r => r.json()).then(j => {
       const list = (j.products || []).filter((p: any) => p.is_active !== false).map((p: any, i: number) => ({
         id: 100000 + (p.id || i), name: p.name, slug: p.slug || `admin-${p.id}`, price: Number(p.price) || 0,
-        category: (p.category === "For Him" ? "Wallets" : p.category) || "Wallets", image: p.image || "/images/wallet.jpg", gallery: p.image ? [p.image] : [],
+        category: p.category || "Wallets", image: p.image || "/images/wallet.jpg", gallery: p.image ? [p.image] : [],
         description: p.description || "Handcrafted • Full-Grain Leather", badge: "NEW", forHer: !!p.forHer, stock: p.stock ?? 10,
       }));
       setAdminProducts(list);
-    }).catch(() => setAdminProducts([]));
+    }).catch(() => setAdminProducts([])).finally(() => clearTimeout(t));
+    return () => { clearTimeout(t); ctrl.abort(); };
   }, []);
   // WISHLIST - Shop se dil dabao -> Cart ke Saved Products me jayega, same key
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
@@ -66,7 +70,7 @@ function ShopPageInner() {
   const goToIndex = (id: number, idx: number) => { pauseAuto(); setSlideIndex((prev) => ({ ...prev, [id]: idx })); };
   return (
     <main className="bg-black text-white min-h-screen w-full min-w-0 overflow-x-hidden overflow-x-clip">
-      <section className="mx-auto max-w-7xl w-full min-w-0 px-3 min-[400px]:px-4 sm:px-6 pt-6 sm:pt-8 pb-6 text-center"><h1 className="text-2xl min-[400px]:text-3xl font-bold uppercase tracking-normal sm:tracking-widest break-words" style={{ fontFamily: "var(--font-brand)" }}>{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1><p className="text-[11px] min-[400px]:text-xs text-zinc-400 tracking-normal sm:tracking-widest uppercase mt-2 break-words px-1">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p></section>
+      <section className="mx-auto max-w-7xl w-full min-w-0 px-3 min-[400px]:px-4 sm:px-6 pt-6 sm:pt-8 pb-6 text-center"><h1 className="text-2xl min-[400px]:text-3xl font-bold uppercase tracking-normal sm:tracking-widest break-words" style={{ fontFamily: "var(--font-brand)" }}>{activeCategory === "For Her" ? "For Her Collection" : "Shop Collection"}</h1><p className="text-[11px] min-[400px]:text-xs text-zinc-400 tracking-normal sm:tracking-widest uppercase mt-2 break-words px-1">{activeCategory === "For Her" ? `Curated For Her • ${filtered.length} Products • Handcrafted • Real Leather` : `${filtered.length} Products • Handcrafted • Real Leather`}</p><p className="text-[11px] text-zinc-500 tracking-wider mt-2">Handcrafted To Order • Handstitched • Customized / On Demand • Estimated Total: 12-17 Working Days</p></section>
       <div className="grid grid-cols-2 min-[500px]:flex min-[500px]:flex-wrap min-[500px]:justify-center gap-2 px-3 min-[400px]:px-4 sm:px-6 pb-6 w-full min-w-0 max-w-3xl min-[500px]:max-w-none mx-auto">{CATEGORIES.map((cat) => { const count = getProductsByCategory(cat).length + (cat === "All" ? adminProducts.length : adminProducts.filter((p: any) => p.category === cat).length); return (<button key={cat} onClick={() => { setActiveCategory(cat); setSearchQuery(""); }} className={`w-full min-[500px]:w-auto px-2 min-[400px]:px-4 py-2.5 rounded-full text-[11px] min-[400px]:text-xs font-bold uppercase tracking-normal sm:tracking-widest border cursor-pointer text-center whitespace-nowrap ${activeCategory === cat ? "bg-amber-400 text-black border-amber-400" : "bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-amber-400"}`}>{cat} ({count})</button>); })}</div>
       <div className="mx-auto max-w-7xl w-full min-w-0 px-3 min-[400px]:px-4 sm:px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between"><input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search products - wallet, tote, crossbody..." className="flex-1 min-w-0 w-full bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500" /><label className="flex items-center gap-2 text-[11px] min-[400px]:text-xs text-zinc-400 uppercase tracking-normal sm:tracking-widest shrink-0">Sort:<select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} className="flex-1 sm:flex-none min-w-0 bg-zinc-950 border border-zinc-800 focus:border-amber-400 outline-none rounded-lg px-3 py-3 text-sm text-white cursor-pointer"><option value="featured">Featured</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="name">Name: A to Z</option></select></label></div>
       {filtered.length === 0 ? (<p className="text-center text-sm text-zinc-400 pb-16">No products found for “{searchQuery}” in {activeCategory}. Try another search or category.</p>) : (
