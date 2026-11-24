@@ -45,6 +45,7 @@ function B2BPageInner() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
   const [formData, setFormData] = useState({
+    yourName: "",
     companyName: "",
     businessEmail: "",
     phone: "",
@@ -129,7 +130,8 @@ function B2BPageInner() {
           lead: {
             source: "b2b-enquiry",
             enquiryType: "B2B",
-            customerName: formData.companyName,
+            customerName: formData.yourName,
+            yourName: formData.yourName,
             company: formData.companyName,
             email: formData.businessEmail,
             contact: formData.phone,
@@ -139,7 +141,7 @@ function B2BPageInner() {
             product: finalProduct,
             quantity: String(qtyNum),
             total: 0,
-            message: `B2B Wholesale Inquiry\n\nCompany: ${formData.companyName}\nPhone: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate: ${formData.altPhone}` : ""}\nCountry: ${formData.country}\nProduct Type: ${finalProduct}\nQuantity: ${formData.quantity}\nWhite Label: ${formData.whiteLabel}\nLogo: ${logoFile ? logoFile.name : "Not uploaded"}\n\nMessage:\n${formData.message || "Not given"}`,
+            message: `B2B Wholesale Inquiry\n\nYour Name: ${formData.yourName}\nCompany: ${formData.companyName}\nPhone: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate: ${formData.altPhone}` : ""}\nCountry: ${formData.country}\nProduct Type: ${finalProduct}\nQuantity: ${formData.quantity}\nWhite Label: ${formData.whiteLabel}\nLogo: ${logoFile ? logoFile.name : "Not uploaded"}\n\nMessage:\n${formData.message || "Not given"}`,
             items: [{ title: finalProduct, quantity: qtyNum, notes: `White Label: ${formData.whiteLabel} | ${formData.message || ""}` }],
             paymentTerms: "Wholesale: 50% Advance, 50% Before Dispatch",
             shippingMethod: "fastest delivery",
@@ -153,7 +155,7 @@ function B2BPageInner() {
       emailOk = false;
     }
     setEmailStatus(emailOk ? "sent" : "failed");
-    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
+    const msg = `Hello Krossford! NEW B2B / WHOLESALE INQUIRY\n\nYour Name: ${formData.yourName}\nCompany: ${formData.companyName}\nBusiness Email: ${formData.businessEmail}\nPhone / WhatsApp: ${formData.phone || "Not given"}${formData.altPhone ? `\nAlternate / Contact Number: ${formData.altPhone}` : ""}\nCountry / Target Market: ${formData.country}\n\nProduct Type: ${finalProduct}\nEstimated Quantity: ${formData.quantity}\nWhite Label Needed: ${formData.whiteLabel}\nBrand Logo File: ${logoFile ? logoFile.name : "Not uploaded"}\n\nProject Specifications / Message:\n${formData.message || "Not given"}\n\nPlease share Wholesale Quote in 24 hours.\nPayment Terms: 50% Advance - 50% Before Dispatch\nEstimated Total: 12-17 Working Days\nSample: Paid Sample Available - Sample Before Bulk`;
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
     setSubmitted(true);
   };
@@ -163,6 +165,7 @@ function B2BPageInner() {
     setEmailStatus("idle");
     setLogoFile(null);
     setFormData({
+      yourName: "",
       companyName: "",
       businessEmail: "",
       phone: "",
@@ -192,6 +195,7 @@ function B2BPageInner() {
           <p className="text-xs text-[#D4AF37]/90 tracking-wide">
             Sample Before Bulk • 50% Advance - 50% Before Dispatch • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
           </p>
+          <p className="text-[11px] text-zinc-400 tracking-widest uppercase">Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement</p>
           <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
             <p className="text-xs text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
             <a href="/shop" className="inline-block mt-2 bg-[#D4AF37] text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded hover:bg-[#E8C15A]">
@@ -236,7 +240,7 @@ function B2BPageInner() {
                   WhatsApp inquiry ready — please press Send on WhatsApp to complete it. Email could not be confirmed this time, so please also send it via WhatsApp. Our team will share quote in 24 hours.
                 </p>
               )}
-              <p className="text-xs text-[#D4AF37]">Company: {formData.companyName} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
+              <p className="text-xs text-[#D4AF37]">Name: {formData.yourName} • Company: {formData.companyName} • Product: {getFinalProduct()} • Qty: {formData.quantity}</p>
               {emailStatus === "failed" && <p className="text-xs text-amber-400">Email status: Not confirmed — WhatsApp se zaroor Send dabayein.</p>}
             </div>
             <button
@@ -250,31 +254,38 @@ function B2BPageInner() {
           <form ref={formRef} onSubmit={handleSubmit} className="bg-zinc-950 border border-zinc-800 rounded-xl p-8 space-y-6 scroll-mt-24">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Company Name *</label>
-                <input type="text" required placeholder="Your Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
+                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Your Name *</label>
+                <input type="text" required placeholder="Your Full Name" value={formData.yourName} onChange={(e) => setFormData({ ...formData, yourName: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Business Email *</label>
-                <input type="email" required placeholder="you@company.com" value={formData.businessEmail} onChange={(e) => setFormData({ ...formData, businessEmail: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
+                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Company Name *</label>
+                <input type="text" required placeholder="Your Company Name" value={formData.companyName} onChange={(e) => setFormData({ ...formData, companyName: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
+                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Business Email *</label>
+                <input type="email" required placeholder="you@company.com" value={formData.businessEmail} onChange={(e) => setFormData({ ...formData, businessEmail: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none" />
+              </div>
+              <div className="space-y-2">
                 <PhoneInput country={formData.country} value={formData.phone} onChange={(v) => setFormData({ ...formData, phone: v })} label="Phone / WhatsApp" placeholder="3001234567" required={false} />
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Country / Target Market</label>
                 <select value={formData.country} onChange={(e) => setFormData({ ...formData, country: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
                   {COUNTRIES.map((c, i) => <option key={`${c}-${i}`} value={c}>{c}</option>)}
                 </select>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <PhoneInput country={formData.country} value={formData.altPhone} onChange={(v) => setFormData({ ...formData, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Estimated Quantity</label>
                 <select value={formData.quantity} onChange={(e) => setFormData({ ...formData, quantity: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
@@ -285,9 +296,6 @@ function B2BPageInner() {
                   <option value="1000+">1000+ Units</option>
                 </select>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">Product Type</label>
                 <select value={formData.productType} onChange={(e) => setFormData({ ...formData, productType: e.target.value })} className="w-full bg-zinc-900 border border-zinc-800 rounded px-4 py-3 text-xs text-white focus:border-[#D4AF37] focus:outline-none">
@@ -313,18 +321,19 @@ function B2BPageInner() {
                   <p className="text-[11px] text-zinc-400 tracking-wide">List me nahi hai to yahan apna product likh dein — hum quote de denge.</p>
                 )}
               </div>
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
-                <div className="flex items-center gap-6 pt-3 text-xs">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
-                    <span>Yes</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
-                    <span>No</span>
-                  </label>
-                </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs uppercase tracking-widest text-zinc-300 font-light">White Label Needed?</label>
+              <div className="flex items-center gap-6 pt-3 text-xs">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="whiteLabel" value="Yes" checked={formData.whiteLabel === "Yes"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
+                  <span>Yes</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="whiteLabel" value="No" checked={formData.whiteLabel === "No"} onChange={(e) => setFormData({ ...formData, whiteLabel: e.target.value })} className="accent-[#D4AF37]" />
+                  <span>No</span>
+                </label>
               </div>
             </div>
 

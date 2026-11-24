@@ -217,8 +217,8 @@ export default function Home() {
             <p className="text-zinc-400 text-xs mt-2">Order a sample first, then decide for bulk.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-[#D4AF37] font-bold">100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel)</p>
-            <p className="text-zinc-400 text-xs mt-2">Hide type is confirmed in writing before production.</p>
+            <p className="text-[#D4AF37] font-bold">Hide Confirmed In Writing</p>
+            <p className="text-zinc-400 text-xs mt-2">Cow / Buffalo / Sheep / Goat / Camel — hide type is confirmed in writing before production.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
             <p className="text-[#D4AF37] font-bold">Direct From Maker</p>
