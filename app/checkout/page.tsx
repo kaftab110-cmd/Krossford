@@ -23,6 +23,7 @@ type CartItem = {
   extraChargesNote?: string;
 };
 
+const capWords = (v: string) => v.trim().split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
 const CHECKOUT_COUNTRIES = [...new Set([...COUNTRIES, "Other"])];
 const WU = "Western " + "Union";
 const VISA = "V" + "ISA";
@@ -65,8 +66,11 @@ export default function CheckoutPage() {
   const placingRef = useRef(false);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("krossford_cart") || "[]") as CartItem[];
-    setCart(saved);
+    try {
+      const raw: any = JSON.parse(localStorage.getItem("krossford_cart") || localStorage.getItem("cart") || "[]");
+      const saved: CartItem[] = Array.isArray(raw) ? raw : Array.isArray(raw?.items) ? raw.items : [];
+      setCart(saved);
+    } catch { setCart([]); }
     setIsCartLoading(false);
   }, []);
   useEffect(() => {
@@ -82,7 +86,7 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async () => {
     // Guard - pehle se chal raha ho to dobara fetch mat karo
     if (placingRef.current || isPlacing) return;
-    const fullName = `${firstName} ${lastName}`.trim();
+    const fullName = `${capWords(firstName)} ${capWords(lastName)}`.trim();
     if (!firstName.trim() || !lastName.trim() || !email.trim() || !country.trim() || !address.trim() || !city.trim() || !state.trim() || !postalCode.trim() || !phone.trim()) {
       alert("Please fill First Name, Last Name, Email, Country, Address, City, State, Postal Code and Phone");
       return;
