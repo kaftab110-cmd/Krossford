@@ -3,117 +3,128 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | KROSSFORD Enterprises",
-  description: "Terms and Conditions for KROSSFORD Enterprises - handcrafted to order leather goods, DHL Express delivery. Estimated Total: 12-17 Working Days.",
+  title: "Privacy Policy | KROSSFORD Enterprises",
+  description: "Privacy Policy for KROSSFORD Enterprises - how we collect, use, and protect your personal information. We never sell or rent your personal information.",
 };
 
-// Terms cover orders, payments, delivery, cancellations, and returns.
-
-export default function TermsPage() {
+export default function PrivacyPolicyPage() {
   return (
     <main className="bg-black text-white min-h-screen">
       <section className="mx-auto max-w-4xl px-6 sm:px-10 py-16 sm:py-24">
-        <h1 className="text-3xl sm:text-4xl font-bold text-yellow-500 mb-4">
-          Terms and Conditions
-        </h1>
-        <p className="text-xs uppercase tracking-widest text-zinc-400 mb-8">
-          Last Updated: November 12, 2026
-        </p>
+        <h1 className="text-3xl sm:text-4xl font-bold text-yellow-500 mb-4">Privacy Policy</h1>
+        <p className="text-xs uppercase tracking-widest text-zinc-400 mb-8">Last Updated: November 25, 2026</p>
 
-        <LegalNav currentSlug="terms" />
+        <LegalNav currentSlug="privacy-policy" />
 
         <div className="mt-8 space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">
+          <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-6">
+            <h2 className="text-lg font-semibold text-white mb-3">Our Promise — Your Information Is Safe With Us</h2>
+            <p className="text-zinc-200 text-xs sm:text-sm leading-relaxed">
+              We never sell or rent your personal information. We collect only what we need to make and deliver your order — nothing extra. Your payment is processed securely through trusted third-party providers — we do not store your card details.
+            </p>
+          </section>
+
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">1. Who We Are</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              KROSSFORD Enterprises is a Pakistan-based handcrafted leather goods brand. By ordering from krossford.com or confirming an order on WhatsApp, you agree to these Terms. If you do not agree, please do not place an order. These Terms apply to retail orders and wholesale / B2B orders.
+              This Privacy Policy explains how KROSSFORD Enterprises (&quot;KROSSFORD&quot;, &quot;we&quot;, &quot;us&quot;) collects, uses, and protects your personal information when you visit krossford.com, place an order on our website, or contact us on WhatsApp. By using our website or placing an order, you agree to this Privacy Policy. If you do not agree, please do not use our website or place an order.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">2. Handcrafted To Order</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">2. What Information We Collect</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Every KROSSFORD bag is made only after your order. We do not keep ready-made stock. Each piece is cut, stitched, and finished for you. Because of this, your order cannot be resold to another customer once crafting has started. Please check size, colour, design, logo, and custom text carefully before you confirm your order on WhatsApp. Your custom logo designs and personal engravings are 100% yours.
+              We collect only the information we need to process your order and serve you better:<br /><br />
+              <b className="text-zinc-200">Contact details:</b> Your full name, email address, and phone number / WhatsApp number.<br />
+              <b className="text-zinc-200">Shipping details:</b> Your full delivery address — street, city, postcode, and country.<br />
+              <b className="text-zinc-200">Order details:</b> The product, size, colour, quantity, and price you ordered.<br />
+              <b className="text-zinc-200">Custom / engraving details:</b> Any custom design, logo, text, initials, or engraving you send us for your product.<br />
+              <b className="text-zinc-200">Messages:</b> Messages you send us on WhatsApp, email, or our Contact page about your order.<br />
+              We do NOT collect your card number, CVV, or bank password. Payment details are handled only by the trusted payment provider.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">3. How To Order</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">3. How We Use Your Information</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              You can order through this website or directly on WhatsApp. Your order is confirmed only after your payment is received and we confirm it on WhatsApp. Until payment is confirmed, your order is not started. If any design, size, or custom detail is unclear, we will confirm it with you on WhatsApp before crafting starts.
+              We use your information only for these purposes:<br /><br />
+              <b className="text-zinc-200">1. To process your order</b> — to make your product, pack it, and ship it to you.<br />
+              <b className="text-zinc-200">2. To provide customer support</b> — to answer your questions and solve any issue with your order.<br />
+              <b className="text-zinc-200">3. To improve our website</b> — to understand what our customers like, so we can make our website and products better.<br />
+              <b className="text-zinc-200">4. To communicate with you</b> — to send you order updates, cutting / making / packing / shipment images and videos, tracking details, and delivery updates.<br />
+              We will never use your information for any other purpose without your permission.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">4. Pricing</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">4. Payment — We Do Not Store Your Card Details</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Prices on this website are shown in USD unless stated otherwise. Prices include crafting and standard packaging. Prices do not include any import duty, customs tax, or local delivery charges charged by your country - if your country charges any, you will pay it directly to your local courier / customs. If a price is shown wrong by mistake, we will contact you on WhatsApp before crafting starts.
+              Your payment is processed securely through trusted third-party payment providers. We do not see, collect, or store your card number, CVV, or bank password. When you pay, you are paying through that trusted provider&apos;s secure system — not through our website. Please never send your card number, CVV, or bank password to us on WhatsApp or email.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">5. Payment Methods</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">5. Who We Share Your Information With</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              We accept only these payment methods - VISA, MASTERCARD, WESTERN UNION, and BANK TRANSFER. We do not accept PayPal, Stripe, Apple Pay, Klarna, or Bancontact. Retail orders: 100% advance payment before crafting starts. Wholesale orders: 50% advance to start production - 50% before dispatch. Your order will not be dispatched until full payment is received. Bank / transfer charges charged by your provider are paid by you, not by us.
+              We never sell or rent your personal information to anyone.<br /><br />
+              We share your information ONLY when it is necessary to fulfil your order or follow the law:<br /><br />
+              <b className="text-zinc-200">Payment providers</b> — to process your payment securely.<br />
+              <b className="text-zinc-200">Shipping / courier partners</b> — to deliver your parcel — we share only your name, address, and phone number, so the courier can deliver to you.<br />
+              <b className="text-zinc-200">Legal requirement</b> — if the law requires us to share information, we will do so only as required by law.<br />
+              We never share your custom logo, engraving, or personal design with anyone except the team making your product.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">6. Delivery Time</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">6. How We Protect Your Information</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Estimated Total: 12-17 Working Days. Full DHL tracking is provided. We will try our best to deliver as soon as possible and aim to deliver earlier than estimated. A small delay due to crafting, customs, or DHL does not qualify for a return, refund, or cancellation. If your parcel is stuck, message us on WhatsApp with your tracking number and we will check with DHL.
+              We take reasonable steps to protect your personal information from loss, misuse, or unauthorised access. Only the KROSSFORD team members who need your information to make, pack, ship, or support your order can access it. No method of transmission over the internet is 100% secure, but we do our best to keep your information safe.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">7. Cancellation</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">7. Cookies</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Once crafting has started, your order cannot be cancelled. If crafting has not started yet, contact us on WhatsApp as soon as possible - we will try our best to help, but we cannot promise cancellation. Custom-engraved, initialed, or specially manufactured wholesale orders are non-refundable once production approval is given, unless there is a confirmed material defect.
+              Our website may use cookies to improve your browsing experience — for example, to remember your preferences and to understand how visitors use our website. Cookies do not give us access to your personal files. You can disable cookies through your browser settings at any time. If you disable cookies, some parts of our website may not work as smoothly.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">8. Returns, Defects & Refunds</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">8. Your Rights — Access, Update, or Delete</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              We do not accept returns or exchanges for change of mind - including colour change, size change, design change, or you no longer want the order. If your order arrives with a manufacturing defect or structural flaw, contact us on WhatsApp within 48 hours of delivery with clear photos and a short video plus your order details. Do not use, wash, or alter the item after you find the defect. Keep the original DHL packaging until your case is closed. If a refund is approved, it will be sent by the same method you paid with wherever possible. Full details are on our Returns and Refunds page.
+              You have the right to ask us:<br /><br />
+              <b className="text-zinc-200">What information</b> we hold about you.<br />
+              <b className="text-zinc-200">To update or correct</b> your information — for example, if your address or phone number changes.<br />
+              <b className="text-zinc-200">To delete</b> your personal information — we will delete it, except where we must keep it for legal or order records.<br />
+              To make any of these requests, contact us through our Contact page or WhatsApp. We will respond as soon as possible.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">9. Wholesale / B2B Orders</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">9. Children&apos;s Privacy</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Wholesale orders (50+ units) are custom production. Bulk orders cannot be returned for change of mind. If any pieces in bulk are defective, report them with photos within 7 days of delivery. We will remake or adjust only the defective pieces - not the full bulk order. Sample approval before bulk is strongly recommended - order a sample first, then decide for bulk.
+              Our website and products are intended for adults (18 years and older). We do not knowingly collect personal information from children under 18. If you believe a child has shared personal information with us, please contact us and we will delete it.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">10. Intellectual Property</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">10. Changes To This Policy</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              All designs, photos, logos, and content on krossford.com belong to KROSSFORD Enterprises. You may not copy, reuse, or resell our photos or designs without our written permission. If you send us your own logo for custom work, you confirm that you have the right to use that logo.
+              KROSSFORD may update this Privacy Policy at any time. Any changes will be posted on this page with a new &quot;Last Updated&quot; date. We recommend checking this page from time to time. If you continue to use our website after changes are posted, you agree to the updated policy.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">11. Fair Use & Contact</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">11. Contact Us</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Please use this website fairly. Do not try to break, hack, or misuse the website. If you have any question about these Terms, contact us through our Contact page or WhatsApp. We will try our best to resolve any issue directly with you.
+              If you have any question about this Privacy Policy, or if you wish to access, update, or delete your personal information, please contact us through our Contact page or WhatsApp. We will try our best to help you and resolve any issue directly with you.
             </p>
           </section>
         </div>
 
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-          <Link
-            href="/contact"
-            className="inline-block rounded-md border border-yellow-500 px-6 py-3 text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition"
-          >
-            Contact Us
-          </Link>
-          <Link
-            href="/returns-and-refunds"
-            className="inline-block rounded-md border border-zinc-700 px-6 py-3 text-sm font-medium text-zinc-300 hover:border-yellow-500 hover:text-yellow-500 transition"
-          >
-            Returns and Refunds
-          </Link>
+          <Link href="/contact" className="inline-block rounded-md border border-yellow-500 px-6 py-3 text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition">Contact Us</Link>
+          <Link href="/terms" className="inline-block rounded-md border border-zinc-700 px-6 py-3 text-sm font-medium text-zinc-300 hover:border-yellow-500 hover:text-yellow-500 transition">Terms and Conditions</Link>
         </div>
       </section>
     </main>
