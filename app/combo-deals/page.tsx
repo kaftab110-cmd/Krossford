@@ -2,46 +2,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-// COMBO DEALS - FINAL FIXED
-// Combo Price LOCKED: $169 / $189 / $129
-// Old Price = 2 Singles ka total (Shop se): $178 / $228 / $158
-// Save khud banega: $9 / $39 / $29
-// 1 vs 2 Table neeche hai - customer ko faida nazar aayega
-const combos = [
-  {
-    tag: "BEST SELLER",
-    title: "Messenger + Wallet Combo",
-    desc: "Crossbody Messenger Bag - Jet Black + RFID Wallet",
-    detail: "The perfect everyday combo - Bag + Wallet together, better value than buying separately.",
-    oldPrice: 178,
-    price: 169,
-    image: "/images/messenger-bag.jpg",
-    alt: "Messenger and Wallet Combo",
-  },
-  {
-    tag: "TRAVEL",
-    title: "Travel Combo",
-    desc: "Duffle Bag + Passport Holder",
-    detail: "A complete travel set - Duffle + Passport Holder, better value together.",
-    oldPrice: 228,
-    price: 189,
-    image: "/images/leather-duffle-bag.jpg",
-    alt: "Travel Combo",
-  },
-  {
-    tag: "DAILY USE",
-    title: "Daily Use Combo",
-    desc: "Tote Bag + Card Holder",
-    detail: "A lightweight daily set - Tote + Card Holder, both essentials in one deal.",
-    oldPrice: 158,
-    price: 129,
-    image: "/images/tote-bag.jpg",
-    alt: "Daily Use Combo",
-  },
+// COMBO DEALS - FINAL - ADMIN SE CHALEGA
+// RULE: Admin se Deal aaye to wahi dikhegi, warna neeche wali 3 purani Deals (fallback) dikhengi.
+// Admin Combo page se tum Deal banao gi - jis product ki inventory zyada hogi usko Deal me lagao gi.
+// Combo Price LOCKED (fallback): $169 / $189 / $129 - Old Price = 2 Singles ka total: $178 / $228 / $158 - Save khud banega
+const combosFallback = [
+  { tag: "BEST SELLER", title: "Messenger + Wallet Combo", desc: "Crossbody Messenger Bag - Jet Black + RFID Wallet", detail: "The perfect everyday combo - Bag + Wallet together, better value than buying separately.", oldPrice: 178, price: 169, image: "/images/messenger-bag.jpg", alt: "Messenger and Wallet Combo" },
+  { tag: "TRAVEL", title: "Travel Combo", desc: "Duffle Bag + Passport Holder", detail: "A complete travel set - Duffle + Passport Holder, better value together.", oldPrice: 228, price: 189, image: "/images/leather-duffle-bag.jpg", alt: "Travel Combo" },
+  { tag: "DAILY USE", title: "Daily Use Combo", desc: "Tote Bag + Card Holder", detail: "A lightweight daily set - Tote + Card Holder, both essentials in one deal.", oldPrice: 158, price: 129, image: "/images/tote-bag.jpg", alt: "Daily Use Combo" },
 ];
 
 export default function ComboDealsPage() {
   const [live, setLive] = useState<boolean | null>(true);
+  const [adminCombos, setAdminCombos] = useState<any[]>([]);
   useEffect(() => {
     async function load() {
       try {
@@ -56,6 +29,17 @@ export default function ComboDealsPage() {
     }
     load();
   }, []);
+  // ADMIN COMBOS - Admin se bani Deal aaye to wahi dikhegi, warna fallback
+  useEffect(() => {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 3000);
+    fetch("/api/combo-deals", { cache: "no-store", signal: ctrl.signal }).then(r => r.json()).then(j => {
+      const list = (j.combos || j.deals || []).filter((c: any) => c.is_active !== false && c.title && c.price !== undefined);
+      if (list.length > 0) setAdminCombos(list);
+    }).catch(() => {}).finally(() => clearTimeout(t));
+    return () => { clearTimeout(t); ctrl.abort(); };
+  }, []);
+  const combos = adminCombos.length > 0 ? adminCombos.map((c: any) => ({ tag: c.tag || "COMBO", title: c.title, desc: c.desc || c.description || "", detail: c.detail || "", oldPrice: Number(c.oldPrice ?? c.old_price ?? 0), price: Number(c.price || 0), image: c.image || "/images/messenger-bag.jpg", alt: c.alt || c.title })) : combosFallback;
   if (live === null) return null;
   if (!live) {
     return (
@@ -71,9 +55,7 @@ export default function ComboDealsPage() {
   }
   return (
     <main className="bg-zinc-950 text-white min-h-screen pb-16 w-full min-w-0 overflow-x-hidden">
-      <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4 break-words">
-        COMBO DEALS - SAVE MORE TOGETHER - LIMITED TIME OFFER
-      </div>
+      <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4 break-words">COMBO DEALS - SAVE MORE TOGETHER - LIMITED TIME OFFER</div>
       <div className="max-w-7xl mx-auto px-4 mt-10 text-center">
         <h1 className="text-4xl md:text-5xl font-bold tracking-wide break-words">COMBO DEALS</h1>
         <p className="text-zinc-400 text-sm mt-3 tracking-wider">BUY 2 PRODUCTS TOGETHER - BETTER VALUE THAN BUYING SEPARATELY - HANDCRAFTED - REAL LEATHER</p>
@@ -103,24 +85,8 @@ export default function ComboDealsPage() {
           <p className="text-center text-xs text-zinc-400 mt-2">Alag-alag lo to zyada, Combo me lo to sasta — neeche table me dekh lo.</p>
           <div className="overflow-x-auto mt-4">
             <table className="w-full text-xs sm:text-sm text-left">
-              <thead>
-                <tr className="text-zinc-400 border-b border-zinc-800">
-                  <th className="py-2 pr-3">Combo</th>
-                  <th className="py-2 pr-3">1 + 1 Alag (Old)</th>
-                  <th className="py-2 pr-3">Combo Price</th>
-                  <th className="py-2">You Save</th>
-                </tr>
-              </thead>
-              <tbody>
-                {combos.map((c) => (
-                  <tr key={c.title} className="border-b border-zinc-800 last:border-0">
-                    <td className="py-3 pr-3 font-bold text-white">{c.title}</td>
-                    <td className="py-3 pr-3 text-zinc-400 line-through">${c.oldPrice}</td>
-                    <td className="py-3 pr-3 text-[#D4AF37] font-bold">${c.price}</td>
-                    <td className="py-3 text-green-400 font-bold">Save ${c.oldPrice - c.price}</td>
-                  </tr>
-                ))}
-              </tbody>
+              <thead><tr className="text-zinc-400 border-b border-zinc-800"><th className="py-2 pr-3">Combo</th><th className="py-2 pr-3">1 + 1 Alag (Old)</th><th className="py-2 pr-3">Combo Price</th><th className="py-2">You Save</th></tr></thead>
+              <tbody>{combos.map((c) => (<tr key={c.title} className="border-b border-zinc-800 last:border-0"><td className="py-3 pr-3 font-bold text-white">{c.title}</td><td className="py-3 pr-3 text-zinc-400 line-through">${c.oldPrice}</td><td className="py-3 pr-3 text-[#D4AF37] font-bold">${c.price}</td><td className="py-3 text-green-400 font-bold">Save ${c.oldPrice - c.price}</td></tr>))}</tbody>
             </table>
           </div>
         </div>

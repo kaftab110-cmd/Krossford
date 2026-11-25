@@ -104,11 +104,12 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
+      {/* HERO FINAL - Layout pehle hi pt deta hai (92/100/112/132), isliye Hero me dobara pt NAHI. Height = 100svh MINUS Layout padding. */}
       {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black pt-[132px] sm:pt-[148px] lg:pt-[158px]">
+      <section className="relative w-full min-h-[calc(100svh-92px)] sm:min-h-[calc(100svh-100px)] md:min-h-[calc(100svh-112px)] lg:min-h-[calc(100svh-132px)] flex items-center justify-center text-center overflow-hidden bg-black">
         <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-center" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-6 sm:pt-8 pb-6 sm:pb-8">
+        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-4 sm:pt-5 pb-4 sm:pb-5">
           <p className="text-2xl min-[400px]:text-3xl sm:text-4xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>

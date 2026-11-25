@@ -17,7 +17,6 @@ export async function GET() {
   const { data } = await supabase.from("site_settings").select("key, value");
   const settings: Record<string, string> = {};
   (data || []).forEach((row: { key: string; value: string }) => {
-    // FIX - Password wali keys kabhi GET se wapas nahi bhejni - warna koi bhi password dekh lega
     if (SENSITIVE_KEYS.includes(row.key)) return;
     settings[row.key] = row.value;
   });
@@ -31,24 +30,23 @@ export async function POST(req: Request) {
 
   if (!key) return NextResponse.json({ error: "key missing" }, { status: 400 });
 
-  // VERIFY - Purana password sahi hai ya nahi, bina password dikhaye batana
+  // VERIFY - Purana password sahi hai ya nahi, bina password dikhaye
   if (key === "verify_admin_pass") {
     const { data } = await supabase.from("site_settings").select("value").eq("key", "admin_pass").maybeSingle();
     const stored = String((data as { value?: string } | null)?.value || "").trim();
-    const current = stored || (process.env.KROSSFORD_ADMIN_PASS || "");
-    // Agar server pe koi password nahi hai to pehli dafa wala hi chalega (Settings page pe bhi wahi logic hai)
-    const ok = String(value || "").trim() === (current || "") || (!current && String(value || "").trim() === "");
-    // NOTE: Agar stored hai to sirf stored hi sahi hai - default tabhi jab stored khaali ho
+    const envPass = String(process.env.KROSSFORD_ADMIN_PASS || "").trim();
+    const expected = stored || envPass;
     if (!expected) return NextResponse.json({ ok: false });
-    const finalOk = stored ? String(value || "").trim() === stored : String(value || "").trim() === "";
+    const finalOk = String(value || "").trim() === expected;
     return NextResponse.json({ ok: finalOk });
   }
 
-  // FIX - admin_pass badalne ke liye PURANA password zaroori hai, warna 403
+  // admin_pass badalne ke liye PURANA password zaroori hai, warna 403
   if (SENSITIVE_KEYS.includes(key)) {
     const { data } = await supabase.from("site_settings").select("value").eq("key", "admin_pass").maybeSingle();
     const stored = String((data as { value?: string } | null)?.value || "").trim();
-    const expected = stored || String(process.env.KROSSFORD_ADMIN_PASS || "").trim();
+    const envPass = String(process.env.KROSSFORD_ADMIN_PASS || "").trim();
+    const expected = stored || envPass;
     if (!expected) return NextResponse.json({ error: "Admin password set nahi hai" }, { status: 403 });
     if (String(oldPass || "").trim() !== expected) {
       return NextResponse.json({ error: "Purana password galat hai" }, { status: 403 });
