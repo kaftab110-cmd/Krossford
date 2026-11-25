@@ -3,10 +3,27 @@
 import { useState } from "react";
 import Link from "next/link";
 
+// INTERNATIONAL COURIERS ONLY - Direct TRACKING PAGE links - Homepage nahi, seedha Tracking Page
+const COURIERS = [
+  { id: "dhl", name: "DHL Express — International", url: (t: string) => `https://www.dhl.com/en/express/tracking.html?AWB=${encodeURIComponent(t)}` },
+  { id: "fedex", name: "FedEx — International", url: (t: string) => `https://www.fedex.com/fedextrack/?trknbr=${encodeURIComponent(t)}` },
+  { id: "ups", name: "UPS — International", url: (t: string) => `https://www.ups.com/track?tracknum=${encodeURIComponent(t)}` },
+  { id: "aramex", name: "Aramex — International", url: (t: string) => `https://www.aramex.com/us/en/track/shipments?ShipmentNumber=${encodeURIComponent(t)}` },
+  { id: "dpd", name: "DPD — Europe / UK", url: (t: string) => `https://www.dpd.com/tracking?parcelNumber=${encodeURIComponent(t)}` },
+  { id: "usps", name: "USPS — USA", url: (t: string) => `https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=${encodeURIComponent(t)}` },
+  { id: "royalmail", name: "Royal Mail — UK", url: (t: string) => `https://www.royalmail.com/track-your-item?trackingNumber=${encodeURIComponent(t)}` },
+  { id: "canadapost", name: "Canada Post — Canada", url: (t: string) => `https://www.canadapost-postescanada.ca/track-reperage/en#/details/${encodeURIComponent(t)}` },
+  { id: "auspost", name: "Australia Post — Australia", url: (t: string) => `https://auspost.com.au/mypost/track/#/details/${encodeURIComponent(t)}` },
+  { id: "dhl-ecommerce", name: "DHL eCommerce — International", url: (t: string) => `https://webtrack.dhlglobalmail.com/?trackingnumber=${encodeURIComponent(t)}` },
+];
+
 export default function TrackOrderPage() {
   const [orderRef, setOrderRef] = useState("");
   const [orderType, setOrderType] = useState("Retail Order - 1 Piece (Customer)");
   const [email, setEmail] = useState("");
+  const [courierId, setCourierId] = useState("dhl");
+  const [trackingNo, setTrackingNo] = useState("");
+  const [courierMsg, setCourierMsg] = useState("");
 
   const whatsappNumber = "923030006759";
 
@@ -18,6 +35,14 @@ export default function TrackOrderPage() {
     }
     const message = `Hi KROSSFORD, I want to track my order.\n\nOrder Type: ${orderType}\nOrder Reference / Tracking ID: ${orderRef}\nEmail: ${email}\n\nPlease share my tracking update.`;
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+  };
+
+  const openCourier = (id?: string) => {
+    const t = (trackingNo || orderRef).trim();
+    if (!t) { setCourierMsg("Pehle Tracking Number likho — Jo humne WhatsApp / Email par bheja tha."); return; }
+    const c = COURIERS.find((x) => x.id === (id || courierId)) || COURIERS[0];
+    setCourierMsg("");
+    window.open(c.url(t), "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -66,7 +91,6 @@ export default function TrackOrderPage() {
             <p className="text-xs font-bold text-amber-400 uppercase tracking-widest break-words">Wholesale Buyer - 50+ Units</p>
             <p className="text-xs text-zinc-400 mt-2 leading-relaxed break-words">
               Estimated Bulk Production: 30-45 days after Sample Approval<br />
-              
               Payment: 50% Advance - 50% Before Dispatch
             </p>
           </div>
@@ -143,6 +167,36 @@ export default function TrackOrderPage() {
               <Link href="/b2b" className="flex-1 min-w-0 text-center border border-amber-400/50 py-3 px-2 rounded font-bold hover:border-amber-400 break-words">Wholesale →</Link>
             </div>
           </div>
+        </div>
+
+        {/* INTERNATIONAL COURIERS - Direct Tracking Links - Sirf Track Page par */}
+        <div className="bg-zinc-900 border border-amber-400/40 rounded-lg p-4 sm:p-6 w-full min-w-0">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 break-words">International Customer — Track On Courier Website</h2>
+          <p className="text-xs text-zinc-400 mt-2 leading-relaxed break-words">Apna Tracking Number likhein — Courier Company select karein — Click karein — Seedha us Courier ke Tracking Page par chale jayein. Koi Homepage nahi — Seedha Tracking Page.</p>
+          <div className="grid sm:grid-cols-2 gap-3 mt-4">
+            <div>
+              <label className="block text-xs text-zinc-400 mb-1">Tracking Number *</label>
+              <input value={trackingNo} onChange={(e) => setTrackingNo(e.target.value)} placeholder="Tracking Number — Agar upar wala hi hai to wahi chalega" className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400" />
+              <p className="text-[11px] text-zinc-500 mt-1 break-words">Khaali chhoda to upar wala Order Reference / Tracking ID use hoga.</p>
+            </div>
+            <div>
+              <label className="block text-xs text-zinc-400 mb-1">Courier Company — International *</label>
+              <select value={courierId} onChange={(e) => setCourierId(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-amber-400">
+                {COURIERS.map((c) => (<option key={c.id} value={c.id}>{c.name}</option>))}
+              </select>
+            </div>
+          </div>
+          {courierMsg ? <p className="text-xs text-amber-400 bg-amber-400/10 border border-amber-400/30 p-3 rounded mt-3 break-words">{courierMsg}</p> : null}
+          <button onClick={() => openCourier()} className="w-full mt-4 bg-amber-400 text-black py-3.5 rounded text-xs font-bold uppercase tracking-wider hover:bg-[#E8C15A]">Track On Courier Website →</button>
+          <div className="grid sm:grid-cols-2 gap-2 mt-4">
+            {COURIERS.map((c) => (
+              <button key={c.id} onClick={() => openCourier(c.id)} className="text-left bg-zinc-950 border border-zinc-800 hover:border-amber-400 rounded px-3 py-3 flex items-center justify-between gap-2 transition">
+                <span className="text-xs font-bold text-white break-words">{c.name}</span>
+                <span className="text-amber-400 font-bold text-xs shrink-0">TRACK →</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-[11px] text-zinc-500 text-center mt-3 break-words">Courier ki Tracking Page nayi tab me khulegi — Tracking Number pehle se likha hua aayega. Courier ka naam nahi pata to WhatsApp par pooch lein.</p>
         </div>
       </div>
     </div>
