@@ -39,7 +39,7 @@ export default function ComboDealsPage() {
     }).catch(() => {}).finally(() => clearTimeout(t));
     return () => { clearTimeout(t); ctrl.abort(); };
   }, []);
-  const combos = adminCombos.length > 0 ? adminCombos.map((c: any) => ({ tag: c.tag || "COMBO", title: c.title, desc: c.desc || c.description || "", detail: c.detail || "", oldPrice: Number(c.oldPrice ?? c.old_price ?? 0), price: Number(c.price || 0), image: c.image || "/images/messenger-bag.jpg", alt: c.alt || c.title })) : combosFallback;
+  const combos = adminCombos.length > 0 ? adminCombos.map((c: any) => ({ tag: c.tag || "COMBO", title: c.title, desc: c.desc || c.description || "", detail: c.detail || "", oldPrice: Number(c.oldPrice ?? c.old_price ?? 0), price: Number(c.price || 0), image: c.image || "/images/messenger-bag.jpg", items: Array.isArray(c.items) ? c.items : [], alt: c.alt || c.title })) : combosFallback.map((c: any) => ({ ...c, items: [] }));
   if (live === null) return null;
   if (!live) {
     return (
@@ -72,7 +72,7 @@ export default function ComboDealsPage() {
             <div className="bg-zinc-950 text-white p-5">
               <h2 className="font-bold tracking-wide">{c.title}</h2>
               <p className="text-zinc-400 text-sm mt-2">{c.desc}</p>
-              <p className="text-zinc-400 text-sm mt-2">{c.detail}</p>
+              {c.items && c.items.length > 0 ? (<ul className="mt-3 space-y-1 border-t border-zinc-800 pt-3">{c.items.map((it: any, i: number) => (<li key={i} className="flex justify-between text-sm"><span className="text-zinc-300">✓ {it.name}</span><span className="text-zinc-400">${Number(it.price || 0)}</span></li>))}<li className="flex justify-between text-sm pt-1 border-t border-zinc-800"><span className="text-zinc-500">Total (alag alag)</span><span className="text-zinc-500 line-through">${c.oldPrice}</span></li></ul>) : (<p className="text-zinc-400 text-sm mt-2">{c.detail}</p>)}
               <p className="mt-4"><span className="text-zinc-500 line-through mr-2">${c.oldPrice}</span><span className="text-[#D4AF37] font-bold text-lg">${c.price}</span></p>
               <Link href="/shop" className="mt-4 inline-block bg-[#D4AF37] text-black text-xs font-bold px-4 py-2 rounded">SHOP COMBO →</Link>
             </div>

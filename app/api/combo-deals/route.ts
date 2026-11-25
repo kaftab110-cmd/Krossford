@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 function supa() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 }
+function parseItems(c: any) { try { if (Array.isArray(c.items)) return c.items; if (typeof c.items === "string" && c.items) return JSON.parse(c.items); } catch {} return []; }
 function norm(c: any) {
   return {
     id: c.id,
@@ -24,6 +25,7 @@ function norm(c: any) {
     image: c.image || "/images/messenger-bag.jpg",
     alt: c.alt || c.title || "",
     is_active: c.is_active !== false,
+    items: parseItems(c),
   };
 }
 export async function GET() {
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
       title: String(b.title), tag: b.tag || "COMBO",
       description: b.desc || b.description || "", detail: b.detail || "",
       old_price: Number(b.oldPrice ?? b.old_price ?? 0), price: Number(b.price),
-      image: b.image || "/images/messenger-bag.jpg", alt: b.alt || b.title,
+      image: b.image || "/images/messenger-bag.jpg", items: b.items || [], alt: b.alt || b.title,
       is_active: b.is_active !== false,
     }]).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -61,6 +63,7 @@ export async function PATCH(req: Request) {
     if (b.price !== undefined) patch.price = Number(b.price);
     if (b.image !== undefined) patch.image = b.image;
     if (b.alt !== undefined) patch.alt = b.alt;
+    if (b.items !== undefined) patch.items = b.items;
     if (b.is_active !== undefined) patch.is_active = b.is_active;
     const { data, error } = await supa().from("combo_deals").update(patch).eq("id", b.id).select().single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
