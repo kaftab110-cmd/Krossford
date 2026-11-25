@@ -1,18 +1,19 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-// SALE - FINAL FIXED - Padding hatayi hui
+// SALE - FINAL - ADMIN SE CHALEGA
+// RULE: Admin se Sale Item aaye to wahi dikhega, warna neeche wali 3 purani Items (fallback) dikhengi.
+// Biker / Wallet wali price PENDING hai - tumhare bataye baghair change NAHI kiya.
+// Biker: Sale old $179 / sale $139 - Shop $219 | Wallet: Sale old $89 / sale $69 - Shop $49
 // Duffle $189 LOCKED: old 189, discount 0, sale $189 - koi 0% badge nahi
-// Biker / Wallet wale Shop se mismatch abhi pending hain - tumhare bataye baghair change NAHI kiya.
-// Biker: Sale old $179 / sale $139 - Shop $219
-// Wallet: Sale old $89 / sale $69 - Shop $49
-const items = [
+const itemsFallback = [
   { cat: "BAGS", title: "Leather Duffle Bag - Jet Black", desc: "Best seller bag - now at sale price.", old: 189, discount: 0, image: "/images/leather-duffle-bag.jpg", alt: "Leather Duffle Bag" },
   { cat: "WALLETS", title: "RFID Wallet", desc: "RFID safe wallet - for daily use.", old: 89, discount: 22, image: "/images/wallet.jpg", alt: "RFID Wallet" },
   { cat: "FOR HIM", title: "Biker Jacket", desc: "Premium leather biker jacket - limited stock.", old: 179, discount: 22, image: "/images/biker-jacket.jpg", alt: "Biker Jacket" },
 ];
 export default function SalePage() {
   const [live, setLive] = useState<boolean | null>(true);
+  const [adminItems, setAdminItems] = useState<any[]>([]);
   useEffect(() => {
     async function load() {
       try { const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 3000); const res = await fetch("/api/site-settings", { cache: "no-store", signal: ctrl.signal }); clearTimeout(t); if (!res.ok) return; const data = await res.json().catch(() => ({})); if (data && "sale_live" in data) setLive(data.sale_live === true || data.sale_live === "true"); }
@@ -20,6 +21,17 @@ export default function SalePage() {
     }
     load();
   }, []);
+  // ADMIN SALE - Admin se Item aaye to wahi dikhega, warna fallback
+  useEffect(() => {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 3000);
+    fetch("/api/sale-deals", { cache: "no-store", signal: ctrl.signal }).then(r => r.json()).then(j => {
+      const list = (j.items || j.deals || j.sale || []).filter((c: any) => c.is_active !== false && c.title && c.old !== undefined);
+      if (list.length > 0) setAdminItems(list);
+    }).catch(() => {}).finally(() => clearTimeout(t));
+    return () => { clearTimeout(t); ctrl.abort(); };
+  }, []);
+  const items = adminItems.length > 0 ? adminItems.map((c: any) => ({ cat: c.cat || c.category || "SALE", title: c.title, desc: c.desc || c.description || "", old: Number(c.old ?? c.old_price ?? 0), discount: Number(c.discount ?? 0), image: c.image || "/images/leather-duffle-bag.jpg", alt: c.alt || c.title })) : itemsFallback;
   if (live === null) return null;
   if (!live) {
     return (
