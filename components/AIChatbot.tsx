@@ -47,7 +47,7 @@ export default function AIChatbot() {
     // FIX - Bulk sirf tab jab customer khud bulk / B2B / wholesale bole. Sirf number ya "need" likhne se bulk nahi.
     const isBulk = lower.includes("bulk") || lower.includes("b2b") || lower.includes("wholesale");
 
-    if (isBulk) return `Absolutely! For ${q}, wholesale orders are available. MOQ: Jackets 50, Biker Suit 25, Bags / Belts / Wallets 100. Which product, color and logo or customization options do you need? Paid samples are available, and the sample price will be applied to your order. Would you like to start with a sample or receive a wholesale quote?`;
+    if (isBulk) return `Absolutely! For ${q}, wholesale orders are available. Wholesale / B2B — 50+ Units. Payment: 50% Advance + 50% Before Dispatch. Which product, color and logo or customization options do you need? Paid samples are available, and the sample price will be applied to your order. Would you like to start with a sample or receive a wholesale quote?`;
     if (lower.includes("price") || lower.includes("cost") || lower.includes("rate") || lower.includes("how much")) {
       const list = products.slice(0, 5).map(p => `${p.name} - $${p.price}`).join("\n");
       return `Our Top Products:\n${list}\n\nShipping and delivery charges will be confirmed separately.`;
@@ -98,8 +98,8 @@ export default function AIChatbot() {
     <>
       {!isOpen && (
         <div className="fixed right-3 bottom-4 z-50 flex flex-col items-end gap-2">
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-2xl shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
-            💬
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
+            WA
           </a>
           <button onClick={() => setIsOpen(true)} className="bg-black text-white px-3 py-2 rounded-full shadow-lg text-xs font-bold border border-zinc-700 whitespace-nowrap">
             💬 Ask Krossford AI
@@ -107,7 +107,7 @@ export default function AIChatbot() {
         </div>
       )}
       {isOpen && (
-        <div className="fixed right-3 bottom-4 z-50 w-[360px] max-w-[calc(100vw-24px)] h-[520px] max-h-[calc(100dvh-32px)] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
+        <div className="fixed right-3 bottom-4 z-50 w- max-w-[calc(100vw-24px)] h- max-h-[calc(100dvh-32px)] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
           <div className="bg-black text-white p-3 flex justify-between items-center">
             <div>
               <p className="text-sm font-bold">KROSSFORD AI Assistant</p>
@@ -127,7 +127,7 @@ export default function AIChatbot() {
             {loading && <p className="text-xs text-zinc-500">Krossford Team is typing...</p>}
             <div className="flex flex-col gap-2 pt-1">
               <button onClick={sendToWhatsApp} className="w-full bg-green-500 text-white py-2 rounded-full text-sm font-bold shadow">
-                💬 Continue on WhatsApp - +92303 0006759
+                Continue on WhatsApp → - +92303 0006759
               </button>
             </div>
             <div ref={bottomRef} />

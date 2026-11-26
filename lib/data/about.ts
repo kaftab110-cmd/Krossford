@@ -16,7 +16,7 @@ export const aboutContent = {
     title: "Our Story",
     paragraphs: [
       "Krossford began with a vision to create premium leather goods that balance heritage craftsmanship with modern design. What started as a passion for quality has grown into a brand focused on timeless essentials.",
-      "Today, we serve Retail customers ordering 1 piece and Wholesale buyers ordering as per MOQ - Jackets 50 / Biker Suit 25 / Bags / Belts / Wallets 100, with Sample Before Bulk and Custom Logo Available. Made in Pakistan for Customers and Buyers Worldwide.",
+      "Today, we serve Retail customers ordering 1 piece and Wholesale buyers ordering as per MOQ - Jackets 50 / Biker Suit 25 / Bags / Belts / Wallets 100, with Sample Before Bulk and Custom Logo Available. Handcrafted • Custom Made On Demand — Made As Per Buyer & Customer Requirement.",
       "This story is only the beginning, and we continue to build every collection with the same dedication to craftsmanship and authenticity.",
     ],
   },

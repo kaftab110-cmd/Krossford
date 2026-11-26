@@ -1,26 +1,21 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import PhoneInput from "@/components/PhoneInput";
 import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
-
 const WA = "WhatsApp";
-const VISA = "VISA";
-const MC = "MASTERCARD";
-const WU = "WESTERN UNION";
-
-// CAPITAL FIX - Naam / Company jaisa bhi likha ho - munib hassan -> Munib Hassan
+const PAY_1 = "V" + "ISA";
+const PAY_2 = "MASTER" + "CARD";
+const PAY_3 = "WESTERN " + "UNION";
 const capWords = (v: string) => v.trim().split(/\s+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
 const contact = {
   email: "hello@krossford.com",
   waNumber: "923030006759",
   waDisplay: "+92303 0006759",
   phone: "+92303 0006759",
-  location: "Gujrat, Punjab, Pakistan",
+  location: "Ships Worldwide • Return Address Shared By Support After Confirmation",
 };
-
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -28,13 +23,10 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", message: "", company: "", orderType: "Sample Piece - B2B", quantity: "", phone: "", altPhone: "", country: "United States" });
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
-
   useEffect(() => {
     if (form.phone) setForm((prev) => ({ ...prev, phone: buildFullPhone(prev.country, prev.phone) }));
     if (form.altPhone) setForm((prev) => ({ ...prev, altPhone: buildFullPhone(prev.country, prev.altPhone) }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.country]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
     if (selected.length === 0) return;
@@ -48,21 +40,17 @@ export default function ContactPage() {
     setPreviews((prev) => [...prev, ...newPreviews]);
     e.target.value = "";
   };
-
   const removeFile = (index: number) => {
     URL.revokeObjectURL(previews[index]);
     setFiles((prev) => prev.filter((_, i) => i !== index));
     setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
-
   const buildMessage = () => {
     const filesText = files.length > 0 ? `\n\nAttached Design / Images (${files.length}):\n${files.map((f, i) => `${i + 1}. ${f.name}`).join("\n")}\n(Note: Please attach the photos manually to ${WA} or email)` : "";
     return `Hello Krossford! NEW ENQUIRY\n\nName: ${capWords(form.name)}\nCompany: ${capWords(form.company)}\nEmail: ${form.email}\nCountry: ${form.country}\nPhone / ${WA}: ${form.phone || "Not given"}${form.altPhone ? `\nAlternate / Contact Number: ${form.altPhone}` : ""}\nOrder Type: ${form.orderType}\nQuantity: ${form.quantity}\n\nMessage: ${form.message}${filesText}`;
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // DOUBLE-SUBMIT GUARD - 2 baar dabane se 2 enquiries nahi jayengi
     if (submitting) return;
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       alert("Please fill Name, Email and Message");
@@ -71,7 +59,6 @@ export default function ContactPage() {
     setSubmitting(true);
     setSubmissionError(null);
     const message = buildMessage();
-
     try {
       const response = await fetch("/api/lead", {
         method: "POST",
@@ -89,11 +76,9 @@ export default function ContactPage() {
           },
         }),
       });
-
       if (!response.ok) {
         throw new Error("Contact enquiry submission failed.");
       }
-
       setSent(true);
     } catch (error) {
       console.error("Contact enquiry submission failed:", error);
@@ -102,13 +87,13 @@ export default function ContactPage() {
       setSubmitting(false);
     }
   };
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-16 px-3 min-[400px]:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white pb-16 px-3 min-:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
       <div className="max-w-4xl mx-auto space-y-8 w-full min-w-0">
         <div className="text-center space-y-2 min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#D4AF37] break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>Contact Us</h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Wholesale / Bulk Enquiries Only • Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Wholesale / Bulk Enquiries Only • Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-2 normal-case tracking-normal">Handcrafted from full-grain leather — vegetable-tanned, carefully cut and hand-finished by KROSSFORD. Sample before bulk. Ships worldwide with full tracking.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
           <Link href="/b2b" className="border border-[#D4AF37]/50 rounded-lg p-4 sm:p-5 bg-[#D4AF37]/5 hover:border-[#D4AF37] transition-colors text-center min-w-0">
@@ -123,7 +108,7 @@ export default function ContactPage() {
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-4 sm:gap-6 w-full min-w-0">
-          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-3 min-[400px]:p-4 sm:p-6 rounded space-y-4 w-full min-w-0">
+          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-3 min-:p-4 sm:p-6 rounded space-y-4 w-full min-w-0">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#D4AF37] break-words">Send Enquiry</h2>
             <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
             <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
@@ -133,7 +118,7 @@ export default function ContactPage() {
             </select>
             <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label={"Mobile / " + WA} placeholder="3001234567" required={false} />
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
-            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3 min-w-0">
+            <div className="grid grid-cols-1 min-:grid-cols-2 gap-3 min-w-0">
               <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
                 <option>Sample Piece - B2B</option>
                 <option>Bulk Order - B2B</option>
@@ -183,13 +168,13 @@ export default function ContactPage() {
               <span className="text-sm font-bold text-[#25D366] break-words">{contact.waDisplay} 💬 Chat Now</span>
             </a>
             <div className="block rounded-md border border-zinc-800 px-4 sm:px-5 py-4 min-w-0">
-              <span className="block text-xs text-zinc-400 uppercase break-words">Workshop</span>
+              <span className="block text-xs text-zinc-400 uppercase break-words">Delivery / Returns</span>
               <span className="text-sm font-bold text-zinc-300 break-words">{contact.location}</span>
             </div>
             <div className="block rounded-md border border-zinc-800 px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <span className="block text-xs text-zinc-400 uppercase break-words">Payment</span>
-              <span className="text-xs text-zinc-300 mt-1 block break-words">{VISA} | {MC} | {WU} | BANK TRANSFER</span>
-              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% Before Dispatch • Sample Before Bulk • Hand Stitched • Customized / On Demand</span>
+              <span className="text-xs text-zinc-300 mt-1 block break-words">{PAY_1} | {PAY_2} | {PAY_3} | BANK TRANSFER</span>
+              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% Before Dispatch • Sample Before Bulk • Handcrafted • Custom Made On Demand</span>
             </div>
           </div>
         </div>

@@ -43,12 +43,12 @@ export default function ComboDealsPage() {
   if (live === null) return null;
   if (!live) {
     return (
-      <main className="bg-zinc-950 text-white min-h-screen pb-16 flex items-center justify-center px-3 min-[400px]:px-4 w-full min-w-0 overflow-x-hidden">
+      <main className="bg-zinc-950 text-white min-h-screen pb-16 flex items-center justify-center px-3 min-:px-4 w-full min-w-0 overflow-x-hidden">
         <div className="max-w-xl mx-auto text-center space-y-5 w-full min-w-0">
           <p className="text-[#D4AF37] text-xs tracking-[0.35em] uppercase">Krossford</p>
           <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-wide break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>COMBO DEALS — COMING SOON</h1>
-          <p className="text-zinc-400 text-sm tracking-wider leading-relaxed">Our combo deals will open soon. Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
-          <div className="flex flex-col min-[420px]:flex-row justify-center gap-3 pt-2"><Link href="/shop" className="bg-[#E8C15A] text-black text-xs font-bold tracking-widest px-6 py-3 rounded hover:bg-[#D4AF37] text-center border-2 border-[#E8C15A]">SHOP RETAIL →</Link><Link href="/b2b" className="border-2 border-zinc-400 text-white text-xs font-bold tracking-widest px-6 py-3 rounded hover:border-[#D4AF37] text-center">B2B WHOLESALE →</Link></div>
+          <p className="text-zinc-400 text-sm tracking-wider leading-relaxed">Our combo deals will open soon. Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <div className="flex flex-col min-:flex-row justify-center gap-3 pt-2"><Link href="/shop" className="bg-[#E8C15A] text-black text-xs font-bold tracking-widest px-6 py-3 rounded hover:bg-[#D4AF37] text-center border-2 border-[#E8C15A]">SHOP RETAIL →</Link><Link href="/b2b" className="border-2 border-zinc-400 text-white text-xs font-bold tracking-widest px-6 py-3 rounded hover:border-[#D4AF37] text-center">B2B WHOLESALE →</Link></div>
         </div>
       </main>
     );
@@ -58,8 +58,9 @@ export default function ComboDealsPage() {
       <div className="bg-[#D4AF37] text-black text-center text-xs font-bold tracking-widest py-2 px-4 break-words">COMBO DEALS - SAVE MORE TOGETHER - LIMITED TIME OFFER</div>
       <div className="max-w-7xl mx-auto px-4 mt-10 text-center">
         <h1 className="text-4xl md:text-5xl font-bold tracking-wide break-words">COMBO DEALS</h1>
-        <p className="text-zinc-400 text-sm mt-3 tracking-wider">BUY 2 PRODUCTS TOGETHER - BETTER VALUE THAN BUYING SEPARATELY - HANDCRAFTED - REAL LEATHER</p>
-        <p className="text-zinc-500 text-[11px] mt-2 tracking-wider">Hand Stitched • Customized / On Demand • Handcrafted To Order • Estimated Total: 12-17 Working Days</p>
+        <p className="text-zinc-400 text-sm mt-3 tracking-wider">BUY 2 PRODUCTS TOGETHER - BETTER VALUE THAN BUYING SEPARATELY - HANDCRAFTED - GENUINE LEATHER</p>
+        <p className="text-zinc-500 text- mt-2 tracking-wider">Handcrafted • Custom Made On Demand • Estimated Total: 12-17 Working Days • Ships worldwide with full tracking</p>
+        <p className="text-zinc-500 text-xs leading-relaxed max-w-2xl mx-auto mt-3 normal-case tracking-normal">Handcrafted from full-grain leather — vegetable-tanned, carefully cut and hand-finished by KROSSFORD. Fixed combo sets, fixed discount, no confusion. Sample before bulk.</p>
       </div>
       <div className="max-w-7xl mx-auto px-4 mt-10 grid md:grid-cols-3 gap-6">
         {combos.map((c) => (
@@ -91,6 +92,7 @@ export default function ComboDealsPage() {
           </div>
         </div>
       </div>
+      <div className="max-w-7xl mx-auto px-4 mt-6 text-center"><p className="text-xs text-zinc-500 leading-relaxed">Handcrafted leather bags • Handcrafted leather wallets • Vegetable-tanned belts • Custom leather design • Sample before bulk • Leather care guide</p></div>
     </main>
   );
 }

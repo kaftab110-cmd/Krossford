@@ -24,7 +24,7 @@ export default function AboutUsPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center mt-4">
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">
-            <p className="text-amber-400 font-bold text-sm">Real Leather</p>
+            <p className="text-amber-400 font-bold text-sm">Genuine Leather</p>
             <p className="text-zinc-400 text-xs mt-2">100% Full-Grain Leather Guarantee.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-5 bg-zinc-950">

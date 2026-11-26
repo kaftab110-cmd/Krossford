@@ -24,13 +24,13 @@ export default function SafeImage({
   if (hasError) {
     return (
       <div
-        aria-label={alt}
+        aria-label={alt || "Krossford Handcrafted Leather Product"}
         className={
           fallbackClassName ??
           "flex h-full w-full items-center justify-center bg-zinc-800 text-center text-sm text-zinc-400"
         }
       >
-        Image unavailable
+        KROSSFORD
       </div>
     );
   }
@@ -39,7 +39,7 @@ export default function SafeImage({
     <Image
       {...props}
       src={src}
-      alt={alt}
+      alt={alt || "Krossford Handcrafted Leather Product"}
       onError={() => setHasError(true)}
       unoptimized
     />

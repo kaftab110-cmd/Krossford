@@ -47,6 +47,11 @@
   }
 }
 
+/* KROSSFORD BRAND FONT - Layout wale variable se - Kahi bhi KROSSFORD likhna ho to className="font-brand" use karo */
+.font-brand {
+  font-family: var(--font-brand), 'Playfair Display', Georgia, serif;
+}
+
 /* FIX 1: Marquee Animation - Header wali ticker ab chalegi */
 @keyframes marquee {
   from {
@@ -80,7 +85,7 @@
   main section:first-child {
     padding-bottom: 2.5rem !important;
   }
-  /* Fixed wale floating buttons (WhatsApp / AI) ko thoda upar + chhota karo taake content na chhupaye */
+  /* Fixed wale floating buttons (【entity-WhatsApp¦canonical_name=WhatsApp】 / AI) ko thoda upar + chhota karo taake content na chhupaye */
   .fixed.bottom-4, .fixed.bottom-5, .fixed.bottom-6 {
     bottom: 5.5rem !important;
   }

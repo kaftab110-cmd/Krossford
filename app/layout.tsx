@@ -17,14 +17,14 @@ const brandFont = Playfair_Display({
 export const metadata = {
   metadataBase: new URL("https://www.krossford.com"),
   title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
-  description: "Krossford - 25 Handcrafted Full-Grain Leather Products. Products from $25, Wallets from $49, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via fastest delivery.",
+  description: "Krossford - Handcrafted full-grain leather goods. Wallets, bags, belts, jackets, gloves and custom made on demand leather products. Handcrafted • Vegetable-tanned • Sample before bulk. Ships worldwide with full tracking.",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://www.krossford.com",
     siteName: "KROSSFORD",
     title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
-    description: "Krossford - 25 Handcrafted Full-Grain Leather Products. Products from $25, Wallets from $49, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via fastest delivery.",
+    description: "Krossford - Handcrafted full-grain leather goods. Wallets, bags, belts, jackets, gloves and custom made on demand leather products. Handcrafted • Vegetable-tanned • Sample before bulk. Ships worldwide with full tracking.",
     images: [
       {
         url: "/images/leather-duffle-bag.jpg",
@@ -37,7 +37,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Krossford - Handcrafted Full-Grain Leather Goods | Wallets, Bags, Jackets",
-    description: "Krossford - 25 Handcrafted Full-Grain Leather Products. Products from $25, Wallets from $49, Bags, Belts, Jackets. For Her Collection, Custom Logo Engraving. Ships Worldwide via fastest delivery.",
+    description: "Krossford - Handcrafted full-grain leather goods. Wallets, bags, belts, jackets, gloves and custom made on demand leather products. Handcrafted • Vegetable-tanned • Sample before bulk. Ships worldwide with full tracking.",
     images: ["/images/leather-duffle-bag.jpg"],
   },
 };
@@ -57,7 +57,7 @@ export default function RootLayout({
           <Navbar />
           {/* ALL DEVICES SUPPORTED - Navbar ab 2 lines ka hai, is liye padding bhi har device ke hisaab se - warna Hero wala KROSSFORD Navbar ke neeche chhup ke kata hua lagega */}
           {/* Mobile 92px / Tablet 112px / Laptop-Desktop 132px */}
-          <div className="w-full min-w-0 overflow-x-clip pt-[92px] sm:pt-[100px] md:pt-[112px] lg:pt-[132px]">
+          <div className="w-full min-w-0 overflow-x-clip pt- sm:pt- md:pt- lg:pt-">
             {children}
           </div>
         </div>

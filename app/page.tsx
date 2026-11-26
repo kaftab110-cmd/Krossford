@@ -26,6 +26,18 @@ const getTop8Images = (slug: string, fallback: string): string[] => {
   return [...new Set(all)];
 };
 
+const getProductSubtitle = (name: string): string => {
+  const n = name.toLowerCase();
+  if (n.includes("wallet")) return "Full-Grain Leather • 6 Card Slots • Vegetable-Tanned";
+  if (n.includes("jacket") || n.includes("biker")) return "Full-Grain Cowhide • Brass Zippers • Custom Fit";
+  if (n.includes("bag") || n.includes("duffle") || n.includes("messenger") || n.includes("crossbody")) return "Full-Grain Leather • Spacious • Handcrafted";
+  if (n.includes("belt")) return "Full-Grain Leather • Solid Brass Buckle • Adjustable";
+  if (n.includes("glove")) return "Full-Grain Leather • Warm Lining • Custom Fit";
+  if (n.includes("card holder") || n.includes("cardholder")) return "Full-Grain Leather • Slim • 4 Card Slots";
+  if (n.includes("keychain") || n.includes("key chain") || n.includes("tag")) return "Full-Grain Leather • Handcrafted • Gift Ready";
+  return "Full-Grain Leather • Handcrafted • Custom Design Available";
+};
+
 export default function Home() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [siteSettings, setSiteSettings] = useState<{ combo_live?: boolean; sale_live?: boolean; announcements_live?: boolean } | null>(null);
@@ -104,36 +116,35 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* HERO FINAL - Layout pehle hi pt deta hai (92/100/112/132), isliye Hero me dobara pt NAHI. Height = 100svh MINUS Layout padding. */}
       {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full min-h-[calc(100svh-92px)] sm:min-h-[calc(100svh-100px)] md:min-h-[calc(100svh-112px)] lg:min-h-[calc(100svh-132px)] flex items-center justify-center text-center overflow-hidden bg-black">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-center" />
+      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black">
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-4 sm:pt-5 pb-4 sm:pb-5">
-          <p className="text-2xl min-[400px]:text-3xl sm:text-4xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
+        <div className="relative z-10 px-3 min-:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-10 sm:pt-12 lg:pt-14 pb-10 sm:pb-12">
+          <p className="text- min-:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
-          <h1 className="mt-3 text-3xl min-[400px]:text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
-            Real Leather.<br />Made Honestly.
+          <h1 className="mt-4 text- min-:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
+            Genuine Leather.<br />Made Honestly.
           </h1>
-          <p className="mt-3 text-xs sm:text-sm md:text-base text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
+          <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
             A New-Generation International Leather Brand, Since 2025.
-            Sample Before Bulk. 100% Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Hand Stitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement.
+            Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.
           </p>
-          <div className="mt-4 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
-            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-6 py-2.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
-            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-6 py-2.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
-            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-6 py-2.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
+          <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
+            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
+            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
+            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-4 text-[10px] sm:text-xs text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Ships from Pakistan</span> • Hand Stitched • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <p className="mt-5 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 pb-2">
         <div className="border border-[#D4AF37]/30 rounded-lg p-5 sm:p-6 bg-zinc-950 text-center space-y-2">
-          <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted To Order • Ships via Fastest Delivery</p>
+          <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted • Custom Made On Demand • Ships via Fastest Delivery</p>
           <p className="text-sm text-zinc-300">We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.</p>
-          <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Ships from Pakistan</p>
+          <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Shipped by KROSSFORD</p>
         </div>
       </section>
 
@@ -181,7 +192,7 @@ export default function Home() {
                 <div className="min-w-0">
                   <span className="text-xs tracking-widest uppercase text-[#D4AF37] font-bold">{p.tag}</span>
                   <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase tracking-wider mt-1 hover:text-[#D4AF37] cursor-pointer leading-snug">{p.name}</h3></Link>
-                  <p className="text-xs text-zinc-400 mt-1">Full-Grain Leather • Custom Design As Per Customer Requirement</p>
+                  <p className="text-xs text-zinc-400 mt-1">{getProductSubtitle(p.name)}</p>
                 </div>
                 <p className="text-lg text-[#D4AF37] font-bold shrink-0">${p.price}</p>
               </div>
@@ -205,7 +216,7 @@ export default function Home() {
       <Craftsmanship />
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-12 text-center">
         <h2 className="text-xl uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>What Our Customers Say</h2>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Real Reviews • USA • UK • UAE • Canada • Australia • Germany</p>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2">Early Customer Feedback • USA • UK • UAE • Canada • Australia • Germany</p>
         <Reviews />
       </section>
       <BrandStory />
@@ -222,13 +233,13 @@ export default function Home() {
             <p className="text-zinc-400 text-xs mt-2">Cow / Buffalo / Sheep / Goat / Camel — hide type is confirmed in writing before production.</p>
           </div>
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
-            <p className="text-[#D4AF37] font-bold">Direct From Maker</p>
+            <p className="text-[#D4AF37] font-bold">Direct From KROSSFORD</p>
             <p className="text-zinc-400 text-xs mt-2">Email us at hello@krossford.com</p>
           </div>
         </div>
         <div className="mt-6 border border-[#D4AF37]/30 rounded-lg p-6 bg-zinc-950 text-center space-y-2">
           <p className="text-sm uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Retail + Wholesale Both Available</p>
-          <p className="text-xs text-zinc-400">Retail: 1 Piece - For Customers - Shop Directly. Wholesale: 50+ Units - For Buyers - Leather Jackets, Biker Suits, Bags, Belts - White Label &amp; Custom Production.</p>
+          <p className="text-xs text-zinc-400">Retail: 1 Piece - For Customers - Shop Directly. Wholesale: 50+ Units - For Buyers - Leather Jackets, Biker Suits, Bags, Belts - Custom Made On Demand.</p>
           <div className="flex flex-wrap justify-center gap-3 pt-1">
             <a href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#E8C15A]">Shop Retail - 1 Piece</a>
             <a href="/b2b" className="inline-block border border-[#D4AF37] text-[#D4AF37] text-xs uppercase tracking-widest font-bold px-6 py-3 rounded hover:bg-[#D4AF37] hover:text-black">Get Wholesale Quote →</a>

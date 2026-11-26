@@ -35,7 +35,7 @@ function ForHerPageInner() {
   // SAFETY: Sirf forHer === true wale - agar shop.ts me galti se gents aa gaya to yahan nahi dikhega
   const allForHer = useMemo(() => getForHerProducts().filter((p: any) => p.forHer === true), []);
   const filtered = useMemo(() => {
-    let list = [...new Map([...allForHer].map((p: any) => [p.slug, p])).values()];
+    let list = [...new Map([...allForHer, ...adminProducts].map((p: any) => [p.slug, p])).values()];
     const q = searchQuery.trim().toLowerCase();
     if (q) {
       list = list.filter((p: any) => [p.name, p.description, p.category, p.slug].some((f: any) => String(f || "").toLowerCase().includes(q)));
@@ -77,11 +77,12 @@ function ForHerPageInner() {
   };
   return (
     <main className="bg-black text-white min-h-screen w-full min-w-0 overflow-x-hidden">
-      <section className="mx-auto max-w-7xl px-3 min-[400px]:px-4 sm:px-6 pt-[132px] min-[400px]:pt-[138px] sm:pt-[148px] lg:pt-[158px] pb-6 text-center w-full min-w-0">
+      <section className="mx-auto max-w-7xl px-3 min-:px-4 sm:px-6 pt- min-:pt- sm:pt- lg:pt- pb-6 text-center w-full min-w-0">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-widest break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>For Her Collection</h1>
-        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2 break-words">{filtered.length} Products • Handstitched • Customized / On Demand • Handcrafted • Real Leather</p>
+        <p className="text-xs text-zinc-400 tracking-widest uppercase mt-2 break-words">{filtered.length} Products • Handcrafted • Custom Made On Demand • Genuine Leather</p>
+        <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-3 normal-case tracking-normal">Handcrafted from full-grain leather — vegetable-tanned, carefully cut and hand-finished by KROSSFORD. Bags, wallets, belts and small leather goods for her. Choose your hide, colour and design. Order a paid sample first, then order bulk with confidence.</p>
       </section>
-      <div className="mx-auto max-w-7xl px-3 min-[400px]:px-4 sm:px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between w-full min-w-0">
+      <div className="mx-auto max-w-7xl px-3 min-:px-4 sm:px-6 pb-6 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between w-full min-w-0">
         <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search For Her - wallet, tote, crossbody..." className="flex-1 min-w-0 bg-zinc-950 border border-zinc-800 focus:border-[#D4AF37] outline-none rounded-lg px-4 py-3 text-sm placeholder:text-zinc-500" />
         <label className="flex items-center gap-2 text-xs text-zinc-400 uppercase tracking-widest w-full sm:w-auto shrink-0">
           Sort:
@@ -96,7 +97,7 @@ function ForHerPageInner() {
       {filtered.length === 0 ? (
         <p className="text-center text-sm text-zinc-400 pb-16 px-4 break-words">No products found for “{searchQuery}” in For Her. Try another search.</p>
       ) : (
-        <section className="mx-auto max-w-7xl px-3 min-[400px]:px-4 sm:px-6 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full min-w-0">
+        <section className="mx-auto max-w-7xl px-3 min-:px-4 sm:px-6 pb-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 w-full min-w-0">
           {filtered.map((p: any) => {
             const cardImages = [...new Set([p.image, ...(p.gallery || [])].filter(Boolean))];
             const hasSlider = cardImages.length > 1;
@@ -142,8 +143,8 @@ function ForHerPageInner() {
                   <Link href={`/product/${p.slug}`}><h3 className="text-sm font-semibold uppercase hover:text-[#D4AF37] cursor-pointer break-words leading-snug">{p.name}</h3></Link>
                   <p className="text-xs text-zinc-400 line-clamp-2 break-words">{p.description}</p>
                   <p className="text-sm text-[#D4AF37] font-bold">${p.price}</p>
-                  <p className="text-xs text-zinc-400 break-words">{p.gallery?.length || 1} Designs Available • Handstitched • Customized / On Demand • Estimated Total: 12-17 Working Days • Fastest Delivery</p>
-                  <p className="text-[11px] text-zinc-500 break-words">Tip: Colour / Design change karna ho to Details kholo — wahan se sahi colour select hoga.</p>
+                  <p className="text-xs text-zinc-400 break-words">{p.gallery?.length || 1} Designs Available • Handcrafted • Custom Made On Demand • Estimated Total: 12-17 Working Days • Fastest Delivery</p>
+                  <p className="text- text-zinc-500 break-words">Tip: Colour / Design change karna ho to Details kholo — wahan se sahi colour select hoga.</p>
                   <div className="flex gap-2">
                     <button onClick={() => handleAddToCart(p)} className={`flex-1 block text-center text-xs font-bold uppercase py-3 rounded transition-colors cursor-pointer ${addedSlug === (p.slug || String(p.id)) ? "bg-green-500 text-white" : "bg-[#E8C15A] hover:bg-[#D4AF37] text-black border-2 border-[#E8C15A]"}`}>{addedSlug === (p.slug || String(p.id)) ? "✓ Added!" : "Add to Cart →"}</button>
                     <Link href={`/product/${p.slug}`} className="flex-1 block text-center bg-zinc-800 border border-zinc-700 text-xs font-bold uppercase py-3 rounded">Details</Link>
@@ -155,12 +156,13 @@ function ForHerPageInner() {
           })}
         </section>
       )}
+      <section className="mx-auto max-w-7xl px-3 min-:px-4 sm:px-6 pb-16 text-center"><p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto">Handcrafted leather bags for her • Handcrafted leather wallets • Vegetable-tanned belts • Custom leather design • Sample before bulk • Leather care guide</p></section>
     </main>
   );
 }
 export default function ForHerPage() {
   return (
-    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3 px-4 pt-[148px] text-center"><p className="text-2xl sm:text-3xl font-bold uppercase tracking-widest break-words" style={{ fontFamily: "var(--font-brand)" }}>For Her Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase break-words">Loading products - Handstitched • Customized / On Demand • Handcrafted • Real Leather</p></main>}>
+    <Suspense fallback={<main className="bg-black text-white min-h-screen flex flex-col items-center justify-center gap-3 px-4 pt- text-center"><p className="text-2xl sm:text-3xl font-bold uppercase tracking-widest break-words" style={{ fontFamily: "var(--font-brand)" }}>For Her Collection</p><p className="text-xs text-zinc-400 tracking-widest uppercase break-words">Loading products - Handcrafted • Custom Made On Demand • Genuine Leather</p></main>}>
       <ForHerPageInner />
     </Suspense>
   );

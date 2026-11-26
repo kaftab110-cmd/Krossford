@@ -184,18 +184,18 @@ function B2BPageInner() {
       <div className="max-w-5xl mx-auto space-y-10">
         <div className="text-center space-y-3 border-b border-zinc-800 pb-8">
           <span className="text-xs tracking-[0.3em] uppercase text-[#D4AF37] font-bold">
-            Krossford Enterprises B2B Export Portal
+            KROSSFORD B2B Portal
           </span>
           <h1 className="text-3xl sm:text-4xl tracking-[0.1em] uppercase" style={{ fontFamily: "var(--font-brand)" }}>
             Wholesale &amp; Custom Production
           </h1>
           <p className="text-xs text-zinc-400 tracking-widest uppercase font-light max-w-xl mx-auto">
-            Direct manufacturer sourcing. Request a tailored wholesale quotation.
+            Handcrafted • Custom Made On Demand. Request a tailored wholesale quotation.
           </p>
           <p className="text-xs text-[#D4AF37]/90 tracking-wide">
-            Sample Before Bulk • 50% Advance - 50% Before Dispatch • VISA | MASTERCARD | WESTERN UNION | BANK TRANSFER / T/T
+            Sample Before Bulk • 50% Advance - 50% Before Dispatch • 【entity-VISA¦canonical_name=VISA】 | 【entity-MASTERCARD¦canonical_name=MASTERCARD】 | 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 | BANK TRANSFER / T/T
           </p>
-          <p className="text-[11px] text-zinc-400 tracking-widest uppercase">Handstitched • Customized / On Demand — Made As Per Buyer &amp; Customer Requirement</p>
+          <p className="text- text-zinc-400 tracking-widest uppercase">Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement</p>
           <div className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 mt-4">
             <p className="text-xs text-zinc-300">Need Just 1 Piece? Retail price on Shop - No need to fill this form.</p>
             <a href="/shop" className="inline-block mt-2 bg-[#D4AF37] text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded hover:bg-[#E8C15A]">
@@ -318,7 +318,7 @@ function B2BPageInner() {
                   />
                 )}
                 {formData.productType === "Others" && (
-                  <p className="text-[11px] text-zinc-400 tracking-wide">List me nahi hai to yahan apna product likh dein — hum quote de denge.</p>
+                  <p className="text- text-zinc-400 tracking-wide">List me nahi hai to yahan apna product likh dein — hum quote de denge.</p>
                 )}
               </div>
             </div>
@@ -351,7 +351,8 @@ function B2BPageInner() {
             <button type="submit" className="w-full bg-[#D4AF37] text-black font-bold text-xs uppercase tracking-[0.2em] py-4 rounded hover:bg-[#E8C15A] transition-colors shadow-md">
               Submit Wholesale Inquiry - Send On Email + WhatsApp →
             </button>
-            <p className="text-center text-xs text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships via fastest delivery. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
+            <p className="text-center text-xs text-zinc-500 tracking-wide">Retail price on Shop | Wholesale quote in 24 hours. Sample before bulk. Ships worldwide with full tracking. Ships via fastest delivery. • 50% Advance - 50% Before Dispatch • Estimated Total: 12-17 Working Days</p>
+            <p className="text-center text-xs text-zinc-500 tracking-wide">Handcrafted from full-grain leather — vegetable-tanned, carefully cut and hand-finished by KROSSFORD. Wholesale leather jackets • Custom leather bags • White label leather goods • Sample before bulk • Leather care guide</p>
           </form>
         )}
       </div>

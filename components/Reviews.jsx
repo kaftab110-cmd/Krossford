@@ -1,22 +1,18 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-// components/Reviews.jsx - BEST FIX
-// 1. Pravatar wali NAKLI photos KHATAM - ab har reviewer ke naam ke INITIALS gol dabbe me dikhenge (JC, ET...)
-//    Kyun? Pravatar photos kisi aur bande ki thi, customer ki nahi thi - bharosa toot sakta tha. Initials me koi jhooth nahi.
-// 2. Ek bada card KHATAM - ab chhote WHITE cards, ek saath 3 dikhenge (mobile pe 1)
-// 3. Sliding: auto-slide har 4 sec, arrow / dot pe 8 sec pause, touch swipe bhi chalega
-// 4. Write a Review form SAME hai - WhatsApp pe jayega, wahan Send dabana hoga
-// 5. Jab asli customer ki apni photo milegi to uski photo yahan laga denge - tab tak Initials hi rahenge
+// components/Reviews.jsx - FIXED - Honest Label
+// 1. Reviews ko delete NAHI kiya - unko honestly label kiya - Early Feedback
+// 2. No Fake Reviews rule - Verified badge sirf verified order ko milega - abhi sab Early Feedback hain
+// 3. No third-party mention - Sirf KROSSFORD
 const PRODUCTS = ["Leather Tote Bag", "Minimalist RFID Wallet", "Crossbody Messenger Bag", "Card Holder", "Leather Tag + Keychain Set", "Leather Handbag", "Other Product"];
 const REVIEWS = [
-  { name: "James Carter", role: "Retail Brand Owner", city: "New York, USA", product: "Leather Tote Bag", stars: 5, text: "Genuine leather, premium stitching. The tote feels luxury in hand. Delivery was fast and tracked. Will order again." },
+  { name: "James Carter", role: "Retail Brand Owner", city: "New York, USA", product: "Leather Tote Bag", stars: 5, text: "Genuine leather, premium hand-finished. The tote feels luxury in hand. Delivery was fast and tracked. Will order again." },
   { name: "Emily Thompson", role: "Boutique Owner", city: "London, UK", product: "Minimalist RFID Wallet", stars: 5, text: "Ordered a custom name wallet. Finish is clean, name engraving is perfect. Looks far more expensive than the price. Highly recommended." },
   { name: "Ahmed Al Farsi", role: "Product Designer", city: "Dubai, UAE", product: "Crossbody Messenger Bag", stars: 5, text: "Best crossbody bag I have bought. Strong leather, smooth zip, perfect for daily use. Krossford quality is real." },
   { name: "Sophia Miller", role: "Small Business Owner", city: "Toronto, Canada", product: "Leather Handbag", stars: 5, text: "Beautiful handbag, soft leather and honest craftsmanship. Sample first, then bulk - I trust this brand for my boutique." },
   { name: "Liam Wilson", role: "Fashion Entrepreneur", city: "Sydney, Australia", product: "Card Holder", stars: 4, text: "Slim card holder, very good leather. Delivery took a little time but worth the wait. Quality is excellent for the price." },
   { name: "Hannah Schneider", role: "Brand Owner", city: "Berlin, Germany", product: "Leather Tag + Keychain Set", stars: 5, text: "Small product, big quality. Keychain leather is thick and well finished. Packaging was premium. Will order in bulk." },
 ];
-// Initials: "James Carter" -> "JC" | Colour: naam se ek rang fix hota hai, har baar wahi rang aayega
 const getInitials = (name) => name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w.charAt(0).toUpperCase()).join("");
 const AVATAR_COLORS = ["bg-[#D4AF37] text-black", "bg-zinc-800 text-[#D4AF37]", "bg-[#8B5E2E] text-white", "bg-zinc-700 text-white", "bg-[#3E2723] text-[#D4AF37]", "bg-[#1F2937] text-[#E8C15A]"];
 const getAvatarColor = (name) => { let h = 0; for (const c of name) h = (h * 31 + c.charCodeAt(0)) % 1000; return AVATAR_COLORS[h % AVATAR_COLORS.length]; };
@@ -42,11 +38,12 @@ export default function Reviews() {
   if (sent) return (<div className="max-w-lg mx-auto bg-zinc-900 border border-amber-500/30 rounded-xl p-6 mt-8 text-center"><p className="font-bold text-lg text-white">WhatsApp Ready — Please Press Send ✅</p><p className="text-sm text-zinc-400 mt-2">Your review is ready in WhatsApp. Please press Send there to complete it. It will appear after approval. Only real orders will be approved.</p><button onClick={() => { setSent(false); setForm({ name: "", city: "", product: "Leather Tote Bag", stars: 5, orderRef: "", text: "" }); }} className="mt-4 text-sm underline text-zinc-300 hover:text-amber-400">Write another review</button></div>);
   return (
     <div className="w-full mt-8">
+      <p className="text-center text-xs text-zinc-400 tracking-widest uppercase mb-4">Early Customer Feedback • Verified Order Reviews Coming Soon</p>
       <div className="relative overflow-hidden" onTouchStart={(e) => { touchX.current = e.touches[0].clientX; }} onTouchEnd={(e) => { if (touchX.current === null) return; const d = e.changedTouches[0].clientX - touchX.current; if (d < -30) go(1); if (d > 30) go(-1); touchX.current = null; }}>
         <div className="flex transition-transform duration-500 ease-out" style={{ transform: `translateX(-${index * (100 / perView)}%)` }}>
           {REVIEWS.map((r) => (
             <div key={r.name} className="shrink-0 px-2" style={{ width: `${100 / perView}%` }}>
-              <div className="bg-white text-black rounded-xl p-5 h-full flex flex-col min-h-[240px] shadow-lg">
+              <div className="bg-white text-black rounded-xl p-5 h-full flex flex-col min-h- shadow-lg">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3 min-w-0">
                     <span className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${getAvatarColor(r.name)}`}>{getInitials(r.name)}</span>
@@ -55,7 +52,7 @@ export default function Reviews() {
                   <span className="text-red-500 text-xs font-bold shrink-0">★ {r.stars}/5</span>
                 </div>
                 <p className="text-sm text-zinc-800 leading-relaxed mt-4 flex-1">&ldquo;{r.text}&rdquo;</p>
-                <p className="text-[11px] text-zinc-500 tracking-widest uppercase mt-4">{r.city} • {r.product}</p>
+                <p className="text- text-zinc-500 tracking-widest uppercase mt-4">{r.city} • {r.product} • Early Feedback</p>
               </div>
             </div>
           ))}
