@@ -34,7 +34,7 @@ export default function ReturnsAndRefundsPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">2. Handcrafted To Order — Please Read First</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Every KROSSFORD bag is made only after your order. We do not keep ready-made stock. Because each piece is cut, stitched, and finished for you, we cannot resell a returned piece to another customer. Please check size, colour, design, and custom text carefully before you confirm your order on WhatsApp. We will share images and videos at each step — cutting, making, packing, shipment — so you can approve before shipment.
+              Every KROSSFORD bag is made only after your order. We do not keep ready-made stock. Because each piece is cut, stitched, and finished for you, we cannot resell a returned piece to another customer. Please check size, colour, design, and custom text carefully before you confirm your order on 【entity-WhatsApp¦canonical_name=WhatsApp】. We will share images and videos at each step — cutting, making, packing, shipment — so you can approve before shipment.
             </p>
           </section>
 
@@ -44,7 +44,7 @@ export default function ReturnsAndRefundsPage() {
               The same rule applies to all claims — damage, wrong product, defect, customised product damage, and change of mind:<br /><br />
               → <b className="text-white">Time:</b> Within 5 to 7 days of delivery — 7 days is the final limit. No claim shall be accepted after 7 days.<br />
               → <b className="text-white">Proof — BOTH Required:</b> Unboxing VIDEO proof AND clear PHOTOS. A claim with only video or only photos shall not be accepted. If the parcel looks damaged from outside, open it in front of the courier and record video.<br />
-              → <b className="text-white">Send On WhatsApp:</b> Video + Photos + Order details + Tracking number.<br />
+              → <b className="text-white">Send On 【entity-WhatsApp¦canonical_name=WhatsApp】:</b> Video + Photos + Order details + Tracking number.<br />
               → <b className="text-white">Do Not Use:</b> Do not use, wash, or alter the item after you find the issue. Keep the original courier packaging until your case is closed.
             </p>
           </section>
@@ -52,7 +52,7 @@ export default function ReturnsAndRefundsPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">4. How We Manage Your Claim — Step By Step</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Step 1 — You: Send Video + Photos on WhatsApp within 5 to 7 days. Step 2 — KROSSFORD Check: We will check your video / photos within 24-48 hours and tell you whether the claim is approved. Step 3 — Return Only After Approval: Send the product back only if we ask you to, with our written confirmation on WhatsApp. Step 4 — Settlement: If approved, a new product shall be made FREE of product cost. Step 5 — New Product: The new product shall be made (7-10 Working Days crafting + delivery) and shipped. Tracking number shall be shared on WhatsApp.
+              Step 1 — You: Send Video + Photos on 【entity-WhatsApp¦canonical_name=WhatsApp】 within 5 to 7 days. Step 2 — KROSSFORD Check: We will check your video / photos within 24-48 hours and tell you whether the claim is approved. Step 3 — Return Only After Approval: Send the product back only if we ask you to, with our written confirmation on 【entity-WhatsApp¦canonical_name=WhatsApp】. Step 4 — Settlement: If approved, a new product shall be made FREE of product cost. Step 5 — New Product: The new product shall be made (7-10 Working Days crafting + delivery) and shipped. Tracking number shall be shared on 【entity-WhatsApp¦canonical_name=WhatsApp】.
             </p>
           </section>
 
@@ -125,7 +125,7 @@ export default function ReturnsAndRefundsPage() {
 
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
           <Link href="/contact" className="inline-block rounded-md border border-yellow-500 px-6 py-3 text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition">Contact Us</Link>
-          <Link href="/shipping" className="inline-block rounded-md border border-zinc-700 px-6 py-3 text-sm font-medium text-zinc-300 hover:border-yellow-500 hover:text-yellow-500 transition">Shipping Policy</Link>
+          <Link href="/shipping-policy" className="inline-block rounded-md border border-zinc-700 px-6 py-3 text-sm font-medium text-zinc-300 hover:border-yellow-500 hover:text-yellow-500 transition">Shipping Policy</Link>
         </div>
       </section>
     </main>
