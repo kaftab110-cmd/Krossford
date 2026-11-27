@@ -42,7 +42,6 @@ export default function Home() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [siteSettings, setSiteSettings] = useState<{ combo_live?: boolean; sale_live?: boolean; announcements_live?: boolean } | null>(null);
 
-  // GLOBAL SLIDER - auto 4 sec, manual pauses auto 8 sec, arrows/dots/swipe
   const [slideIndex, setSlideIndex] = useState<Record<string, number>>({});
   const pausedUntil = useRef<Record<string, number>>({});
   const touchStartX = useRef<number | null>(null);
@@ -116,15 +115,14 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* HERO FIX — min-h hata di — height content jitni hogi — neeche katna nahi */}
       <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-top" style={{ objectPosition: "center 12%" }} />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16">
-          <p className="text- min-:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
+        <div className="relative z-10 px-3 sm:px-4 md:px-6 max-w-4xl mx-auto w-full pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16">
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
-          <h1 className="mt-4 text- min-:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
+          <h1 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-bold leading-tight text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
             Genuine Leather.<br />Made Honestly.
           </h1>
           <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
@@ -132,11 +130,11 @@ export default function Home() {
             Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
-            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-[0_0_24px_rgba(232,193,90,0.45)] hover:bg-[#D4AF37] text-center">Shop Collection</a>
-            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
+            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-lg hover:bg-[#D4AF37] text-center">Shop Collection</a>
+            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-md hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
             <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-6 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
+          <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
@@ -163,7 +161,8 @@ export default function Home() {
             <div key={p.slug} className="border border-zinc-800 rounded-lg p-4 sm:p-5 bg-zinc-950 hover:border-[#D4AF37] transition-colors overflow-hidden group">
               <Link href={`/product/${p.slug}`} className="block cursor-pointer">
                 <div
-                  className="relative w-full aspect-[4/3] rounded-md mb-4 overflow-hidden group/slider bg-zinc-900"
+                  className="relative w-full rounded-md mb-4 overflow-hidden group/slider bg-zinc-900"
+                  style={{ aspectRatio: "4 / 3" }}
                   onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
                   onTouchEnd={(e) => {
                     if (touchStartX.current === null || !hasSlider) return;
