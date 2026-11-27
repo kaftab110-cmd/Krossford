@@ -41,7 +41,6 @@ const getProductSubtitle = (name: string): string => {
 export default function Home() {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [siteSettings, setSiteSettings] = useState<{ combo_live?: boolean; sale_live?: boolean; announcements_live?: boolean } | null>(null);
-
   const [slideIndex, setSlideIndex] = useState<Record<string, number>>({});
   const pausedUntil = useRef<Record<string, number>>({});
   const touchStartX = useRef<number | null>(null);
@@ -76,7 +75,6 @@ export default function Home() {
       });
     }, 4000);
     return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const manualGo = (slug: string, total: number, dir: 1 | -1) => {
@@ -115,20 +113,13 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-top" style={{ objectPosition: "center 12%" }} />
-        <div className="absolute inset-0 bg-black/60"></div>
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black" style={{ minHeight: "640px" }}>
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-contain" style={{ objectPosition: "center center", opacity: "0.95" }} />
+        <div className="absolute inset-0 bg-black/50"></div>
         <div className="relative z-10 px-3 sm:px-4 md:px-6 max-w-4xl mx-auto w-full pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16">
-          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
-            KROSSFORD
-          </p>
-          <h1 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-bold leading-tight text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
-            Genuine Leather.<br />Made Honestly.
-          </h1>
-          <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
-            A New-Generation International Leather Brand, Since 2025.
-            Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.
-          </p>
+          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>KROSSFORD</p>
+          <h1 className="mt-4 text-4xl sm:text-6xl md:text-7xl font-bold leading-tight text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>Genuine Leather.<br />Made Honestly.</h1>
+          <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
           <div className="mt-6 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
             <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-lg hover:bg-[#D4AF37] text-center">Shop Collection</a>
             <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-md hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
@@ -137,7 +128,6 @@ export default function Home() {
           <p className="mt-6 text-xs sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
         </div>
       </section>
-
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 pb-2">
         <div className="border border-[#D4AF37]/30 rounded-lg p-5 sm:p-6 bg-zinc-950 text-center space-y-2">
           <p className="text-sm font-bold text-[#D4AF37] uppercase tracking-widest">Handcrafted • Custom Made On Demand • Ships via Fastest Delivery</p>
@@ -145,7 +135,6 @@ export default function Home() {
           <p className="text-xs text-zinc-400">Estimated Total: 12-17 Working Days • Full Tracking Provided • We Always Aim To Deliver Earlier • Shipped by KROSSFORD</p>
         </div>
       </section>
-
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
         <div className="text-center mb-6">
           <h2 className="text-xl uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>Start With Our Best Sellers</h2>
@@ -160,18 +149,7 @@ export default function Home() {
             return (
             <div key={p.slug} className="border border-zinc-800 rounded-lg p-4 sm:p-5 bg-zinc-950 hover:border-[#D4AF37] transition-colors overflow-hidden group">
               <Link href={`/product/${p.slug}`} className="block cursor-pointer">
-                <div
-                  className="relative w-full rounded-md mb-4 overflow-hidden group/slider bg-zinc-900"
-                  style={{ aspectRatio: "4 / 3" }}
-                  onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
-                  onTouchEnd={(e) => {
-                    if (touchStartX.current === null || !hasSlider) return;
-                    const diff = e.changedTouches[0].clientX - touchStartX.current;
-                    if (diff < -30) manualGo(p.slug, cardImages.length, 1);
-                    if (diff > 30) manualGo(p.slug, cardImages.length, -1);
-                    touchStartX.current = null;
-                  }}
-                >
+                <div className="relative w-full rounded-md mb-4 overflow-hidden group/slider bg-zinc-900" style={{ aspectRatio: "4 / 3" }} onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }} onTouchEnd={(e) => { if (touchStartX.current === null || !hasSlider) return; const diff = e.changedTouches[0].clientX - touchStartX.current; if (diff < -30) manualGo(p.slug, cardImages.length, 1); if (diff > 30) manualGo(p.slug, cardImages.length, -1); touchStartX.current = null; }}>
                   <img src={currentImage} alt={p.name} className="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform" />
                   {hasSlider && (
                     <>
@@ -207,11 +185,9 @@ export default function Home() {
           <Link href="/shop" className="inline-block bg-[#D4AF37] text-black text-xs uppercase tracking-widest font-bold px-8 py-3.5 rounded hover:bg-[#E8C15A]">View All Products →</Link>
         </div>
       </section>
-
       {siteSettings?.combo_live === true && <ComboBanner />}
       {siteSettings?.sale_live === true && <SaleBanner />}
       {siteSettings?.announcements_live === true && <AnnouncementsBanner />}
-
       <Craftsmanship />
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-12 text-center">
         <h2 className="text-xl uppercase tracking-widest" style={{ fontFamily: "var(--font-brand)" }}>What Our Customers Say</h2>
@@ -220,7 +196,6 @@ export default function Home() {
       </section>
       <BrandStory />
       <Bespoke />
-
       <section className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
           <div className="border border-zinc-800 rounded-lg p-6 bg-zinc-950">
