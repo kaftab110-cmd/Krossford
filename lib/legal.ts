@@ -33,7 +33,7 @@ export const legalPages: LegalPage[] = [
   {
     title: "Shipping Policy",
     slug: "shipping",
-    href: "/shipping",
+    href: "/shipping-policy",
     shortDescription: "Shipping methods, delivery estimates, costs, and destination restrictions for retail and wholesale.",
   },
   {
@@ -58,14 +58,33 @@ export const legalPages: LegalPage[] = [
     title: "Track Your Order",
     slug: "track-order",
     href: "/track-order",
-    shortDescription: "Track your retail or wholesale order via DHL tracking or WhatsApp.",
+    shortDescription: "Track your retail or wholesale order via courier tracking or WhatsApp.",
   },
 ];
 
+// LEGAL_PAGES alias - taake purani files jo LEGAL_PAGES use karti hain wo bhi chalen
+export const LEGAL_PAGES = legalPages;
+
+function normalizeSlug(slug: string): string {
+  if (slug === "shipping-policy") return "shipping";
+  if (slug === "returns-and-refunds") return "returns";
+  if (slug === "privacy") return "privacy-policy";
+  return slug;
+}
+
 export function getLegalPage(slug: string): LegalPage | undefined {
-  return legalPages.find((page) => page.slug === slug);
+  return legalPages.find((page) => page.slug === normalizeSlug(slug));
+}
+
+export function getLegalPages(): LegalPage[] {
+  return legalPages;
+}
+
+export function getLegalPageBySlug(slug: string): LegalPage | undefined {
+  return getLegalPage(slug);
 }
 
 export function getOtherLegalPages(currentSlug: string): LegalPage[] {
-  return legalPages.filter((page) => page.slug !== currentSlug);
+  const current = normalizeSlug(currentSlug);
+  return legalPages.filter((page) => page.slug !== current);
 }
