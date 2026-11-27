@@ -116,11 +116,11 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black">
+      {/* HERO FIX — min-h hata di — height content jitni hogi — neeche katna nahi */}
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black">
         <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
         <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-10 sm:pt-12 lg:pt-14 pb-10 sm:pb-12">
+        <div className="relative z-10 px-3 min-:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-12 sm:pt-16 lg:pt-20 pb-12 sm:pb-16">
           <p className="text- min-:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
@@ -136,7 +136,7 @@ export default function Home() {
             <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
             <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-5 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
+          <p className="mt-6 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Custom Made On Demand • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
