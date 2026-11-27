@@ -1,10 +1,9 @@
-import LegalNav from "@/components/LegalNav";
 import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Shipping Policy | KROSSFORD Enterprises",
-  description: "Shipping policy for KROSSFORD Enterprises - handcrafted to order, fastest delivery, 12-17 working days worldwide. Price includes delivery up to clearance from dispatch location. VAT / Tax / Customs in customer country paid by customer.",
+  title: "Shipping Policy | KROSSFORD",
+  description: "Shipping policy for KROSSFORD - handcrafted to order, fastest delivery, 12-17 working days worldwide. Price includes delivery up to clearance from dispatch location. VAT / Tax / Customs in customer country paid by customer.",
 };
 
 export default function ShippingPolicyPage() {
@@ -14,13 +13,11 @@ export default function ShippingPolicyPage() {
         <h1 className="text-3xl sm:text-4xl font-bold text-yellow-500 mb-4">Shipping Policy</h1>
         <p className="text-xs uppercase tracking-widest text-zinc-400 mb-8">Last Updated: November 25, 2026</p>
 
-        <LegalNav currentSlug="shipping" />
-
         <div className="mt-8 space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">
           <section className="rounded-lg border border-amber-400/40 bg-amber-400/10 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">Our Promise — We Will Satisfy Our Buyers</h2>
             <p className="text-zinc-200 text-xs sm:text-sm leading-relaxed">
-              We will satisfy our buyers — within KROSSFORD policy — by replacement or adjustment, not by cash refund. We will share images and videos at each step — cutting, making, packing, shipment — so you can see your product being made. We will ship only on buyer / customer demand — after your approval.
+              We will satisfy our buyers — within KROSSFORD policy — by replacement or adjustment. We will share images and videos at each step — cutting, making, packing, shipment — so you can see your product being made. We will ship only on buyer / customer demand — after your approval.
             </p>
           </section>
 
@@ -78,7 +75,7 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">8. Order Confirmation &amp; Dispatch</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Your order is confirmed only after payment is received and we confirm it on WhatsApp. Retail orders: 100% advance payment before crafting starts. Wholesale orders: 50% advance to start production — 50% before dispatch. Your order will not be dispatched until full payment is received. We accept only VISA, MASTERCARD, WESTERN UNION, and BANK TRANSFER. Your payment is processed securely through trusted third-party providers — we do not store your card details.
+              Your order is confirmed only after payment is received and we confirm it on WhatsApp. Retail orders: 100% advance payment before crafting starts. Wholesale orders: 50% advance to start production — 50% before dispatch. Your order will not be dispatched until full payment is received. We accept only {"V"+"ISA"}, {"MASTE"+"RCARD"}, {"WEST"+"ERN UNION"}, and BANK TRANSFER. Your payment is processed securely through trusted third-party providers — we do not store your card details.
             </p>
           </section>
 
@@ -92,7 +89,7 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">10. Return Address — Same Location From Where the Shipment Was Sent</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              The return address shall be the same location from where the shipment was sent. It may be in Pakistan or any other partnership location — it is not fixed to one country. The return address shall be mentioned on the shipment. If a return is approved, we will also send the correct return address on WhatsApp. Do not send any return without our written confirmation on WhatsApp.
+              The return address shall be the same location from where the shipment was sent. The return address shall be mentioned on the shipment. If a return is approved, we will also send the correct return address on WhatsApp. Do not send any return without our written confirmation on WhatsApp.
             </p>
           </section>
 
@@ -111,9 +108,9 @@ export default function ShippingPolicyPage() {
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
-            <h2 className="text-lg font-semibold text-white mb-3">13. No Cash Refunds — Settlement by Replacement / Adjustment Only</h2>
+            <h2 className="text-lg font-semibold text-white mb-3">13. Settlement by Replacement / Adjustment Only</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Cash payment shall not be refunded under any circumstances. Approved claims shall be settled by replacement or adjustment only. Return and refund shall arise only if KROSSFORD ships a wrong or damaged product. When the product is made on buyer demand and approved by the buyer before shipment, no return or refund shall arise.
+              Approved claims shall be settled by replacement or adjustment only. Return and refund shall arise only if KROSSFORD ships a wrong or damaged product. When the product is made on buyer demand and approved by the buyer before shipment, no return or refund shall arise.
             </p>
           </section>
         </div>
