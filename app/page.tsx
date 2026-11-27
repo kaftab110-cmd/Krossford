@@ -113,10 +113,10 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black" style={{ minHeight: "560px" }}>
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-contain" style={{ objectPosition: "center center", opacity: "0.95" }} />
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black" style={{ height: "calc(100svh - 130px)", minHeight: "520px" }}>
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "center 38%", opacity: "0.95" }} />
         <div className="absolute inset-0 bg-black/50"></div>
-        <div className="relative z-10 px-3 sm:px-4 md:px-6 max-w-4xl mx-auto w-full pt-8 sm:pt-10 pb-8 sm:pb-10">
+        <div className="relative z-10 px-3 sm:px-4 md:px-6 max-w-4xl mx-auto w-full pt-6 sm:pt-8 pb-6 sm:pb-8">
           <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>KROSSFORD</p>
           <h1 className="mt-3 text-4xl sm:text-6xl md:text-7xl font-bold leading-tight text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>Genuine Leather.<br />Made Honestly.</h1>
           <p className="mt-3 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
