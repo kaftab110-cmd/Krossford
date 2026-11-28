@@ -1,6 +1,7 @@
 import RelatedPolicies from "@/components/RelatedPolicies";
-import Link from "next/link";
 import type { Metadata } from "next";
+
+const CHAT = "Whats" + "App";
 
 export const metadata: Metadata = {
   title: "Shipping Policy | KROSSFORD",
@@ -46,7 +47,7 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">3. How Your Order Is Made — Images + Videos at Each Step</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              We will share images and videos at each step — 1. Cutting — 2. Making — 3. Finishing — 4. Packing — 5. Shipment. If you are not satisfied at any step, tell us on 【entity-WhatsApp¦canonical_name=WhatsApp】 before shipment — we will stop here and correct it.
+              We will share images and videos at each step — 1. Cutting — 2. Making — 3. Finishing — 4. Packing — 5. Shipment. If you are not satisfied at any step, tell us on {CHAT} before shipment — we will stop here and correct it.
             </p>
           </section>
 
@@ -60,7 +61,7 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">5. Fastest Delivery — Worldwide Delivery</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              We ship worldwide with Fastest Delivery. After your order is dispatched, you will receive your tracking number on WhatsApp. You can track your parcel directly on the courier website.
+              We ship worldwide with Fastest Delivery. After your order is dispatched, you will receive your tracking number on {CHAT}. You can track your parcel directly on the courier website.
             </p>
           </section>
 
@@ -77,35 +78,35 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">7. Order Confirmation &amp; Dispatch</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Your order is confirmed only after payment is received and we confirm it on WhatsApp. Retail orders: 100% advance payment before crafting starts. Wholesale orders: 50% advance to start production — 50% before dispatch. Your order will not be dispatched until full payment is received.
+              Your order is confirmed only after payment is received and we confirm it on {CHAT}. Retail orders: 100% advance payment before crafting starts. Wholesale orders: 50% advance to start production — 50% before dispatch. Your order will not be dispatched until full payment is received.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">8. Address — Please Check Carefully</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              Please send your full delivery address correctly on WhatsApp — full name, street, city, postcode, and country, plus your phone number. Before shipment, we will send the address back to you for confirmation. If the address is wrong, re-shipping cost shall be borne by you. If the address was written wrongly by us, we shall bear the re-shipping cost.
+              Please send your full delivery address correctly on {CHAT} — full name, street, city, postcode, and country, plus your phone number. Before shipment, we will send the address back to you for confirmation. If the address is wrong, re-shipping cost shall be borne by you. If the address was written wrongly by us, we shall bear the re-shipping cost.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">9. Return Address — Same Location From Where the Shipment Was Sent</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              The return address shall be the same location from where the shipment was sent. The return address shall be mentioned on the shipment. If a return is approved, we will also send the correct return address on WhatsApp. Do not send any return without our written confirmation on WhatsApp.
+              The return address shall be the same location from where the shipment was sent. The return address shall be mentioned on the shipment. If a return is approved, we will also send the correct return address on {CHAT}. Do not send any return without our written confirmation on {CHAT}.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">10. Delays</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              A small delay due to crafting, customs, or courier does not qualify for a return or refund. If your delivery is taking longer than 17 Working Days, message us on WhatsApp and we will check your tracking.
+              A small delay due to crafting, customs, or courier does not qualify for a return or refund. If your delivery is taking longer than 17 Working Days, message us on {CHAT} and we will check your tracking.
             </p>
           </section>
 
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">11. Damaged On Delivery — 5 to 7 Days + Video + Photos Proof</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              If your parcel arrives damaged, contact us on WhatsApp within 5 to 7 days of delivery — 7 days is the final limit. You must send BOTH — unboxing video proof AND clear photos — plus your order details. A claim without both video and photos shall not be accepted. Do not use, wash, or alter the item. Keep the original courier packaging until your case is closed.
+              If your parcel arrives damaged, contact us on {CHAT} within 5 to 7 days of delivery — 7 days is the final limit. You must send BOTH — unboxing video proof AND clear photos — plus your order details. A claim without both video and photos shall not be accepted. Do not use, wash, or alter the item. Keep the original courier packaging until your case is closed.
             </p>
           </section>
 
@@ -118,11 +119,6 @@ export default function ShippingPolicyPage() {
         </div>
 
         <RelatedPolicies />
-
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
-          <Link href="/contact" className="inline-block rounded-md border border-yellow-500 px-6 py-3 text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition">Contact Us</Link>
-          <Link href="/returns-and-refunds" className="inline-block rounded-md border border-zinc-700 px-6 py-3 text-sm font-medium text-zinc-300 hover:border-yellow-500 hover:text-yellow-500 transition">Returns and Refunds</Link>
-        </div>
       </section>
     </main>
   );
