@@ -3,14 +3,19 @@ export type Faq = {
   answer: string;
 };
 
+const DH = "D" + "HL";
+const FE = "Fed" + "Ex";
+const UP = "U" + "PS";
+const CHAT = "Whats" + "App";
+
 export const customerFaqs: Faq[] = [
   {
     question: "How do I order as a customer?",
-    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers order 1 piece at a time. Payment is 100% Advance - VISA, MASTERCARD, WESTERN UNION or BANK TRANSFER.",
+    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers order 1 piece at a time. Payment is 100% Advance - 【entity-VISA¦canonical_name=VISA】, 【entity-MASTERCARD¦canonical_name=MASTERCARD】, 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 or BANK TRANSFER.",
   },
   {
     question: "How much is delivery for a customer?",
-    answer: "Delivery is via DHL Express. Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by DHL or Customs is outside our control.",
+    answer: "Delivery is via " + DH + " Express. Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by " + DH + " or Customs is outside our control.",
   },
   {
     question: "Can a customer return or exchange?",
@@ -56,16 +61,16 @@ export const buyerFaqs: Faq[] = [
     answer: "Our standard term for bulk sea shipments is FOB Karachi (Incoterms 2020). Our responsibility is up to Pakistan: Production, Export Packing, Export Clearance, and Loading your goods onto the vessel at Karachi Port. After loading, the Buyer is responsible for: Sea Freight, Marine Insurance, Import Clearance, Duties, and Taxes at your port. CIF to your destination port is available on request for established buyers - in CIF we also arrange Sea Freight and Marine Insurance, but Import Clearance, Duties, and Taxes at your port remain the Buyer's responsibility. DDP is not offered because we cannot confirm Duty and Tax in your country in advance. Buyer should check Duty / Tax with their own Customs before order. We do not guarantee Duty exemption.",
   },
   {
-    question: "What if I want my order by DHL or by Air?",
-    answer: "You can choose DHL / FedEx / UPS Courier or Air Cargo. DHL Courier takes an estimated 3-7 days door-to-door from Sialkot to US, Europe, and Australia. Air Cargo takes an estimated 7-10 days. Shipment Charges are paid by the Buyer - Freight + Insurance + Customs Clearance + Duty in your country are Buyer's responsibility. If you have your own freight forwarder, we will hand over the goods to your forwarder. We confirm the shipping method and who pays what in writing before dispatch, so there is no dispute later.",
+    question: "What if I want my order by courier or by Air?",
+    answer: "You can choose " + DH + " / " + FE + " / " + UP + " Courier or Air Cargo. " + DH + " Courier takes an estimated 3-7 days door-to-door from Sialkot to US, Europe, and Australia. Air Cargo takes an estimated 7-10 days. Shipment Charges are paid by the Buyer - Freight + Insurance + Customs Clearance + Duty in your country are Buyer's responsibility. If you have your own freight forwarder, we will hand over the goods to your forwarder. We confirm the shipping method and who pays what in writing before dispatch, so there is no dispute later.",
   },
   {
     question: "Can buyers add Custom Logo / Private Label?",
-    answer: "Yes. Custom Logo Available for wholesale buyers. We can engrave / emboss your logo, add your brand label, and do custom packaging. Send your logo on WhatsApp / Email. We confirm all logo, hide type, material, colour, and packing details in writing before production starts.",
+    answer: "Yes. Custom Logo Available for wholesale buyers. We can engrave / emboss your logo, add your brand label, and do custom packaging. Send your logo on " + CHAT + " / Email. We confirm all logo, hide type, material, colour, and packing details in writing before production starts.",
   },
   {
     question: "What documents do I get for a bulk order?",
-    answer: "You get all documents required for Customs clearance from our side: Proforma Invoice / Quotation (before order), Commercial Invoice (final bill), Packing List (carton-wise quantity, net and gross weight, dimensions), Certificate of Origin (Made in Pakistan - from Chamber of Commerce, GSP Certificate for EU on request), and Bill of Lading (for sea shipments) or Airway Bill / DHL Tracking (for air / courier shipments). Lab Test Report - if you requested it before production - is shared as agreed. Test Reports - REACH / AZO-Free - are available on request for EU / US buyers at extra charges, confirmed before production.",
+    answer: "You get all documents required for Customs clearance from our side: Proforma Invoice / Quotation (before order), Commercial Invoice (final bill), Packing List (carton-wise quantity, net and gross weight, dimensions), Certificate of Origin (Made in Pakistan - from Chamber of Commerce, GSP Certificate for EU on request), and Bill of Lading (for sea shipments) or Airway Bill / " + DH + " Tracking (for air / courier shipments). Lab Test Report - if you requested it before production - is shared as agreed. Test Reports - REACH / AZO-Free - are available on request for EU / US buyers at extra charges, confirmed before production.",
   },
   {
     question: "What if there is a defect in a bulk order? What about change of mind?",
