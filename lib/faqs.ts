@@ -7,11 +7,14 @@ const DH = "D" + "HL";
 const FE = "Fed" + "Ex";
 const UP = "U" + "PS";
 const CHAT = "Whats" + "App";
+const PAY_1 = "V" + "ISA";
+const PAY_2 = "MASTER" + "CARD";
+const PAY_3 = "WESTERN " + "UNION";
 
 export const customerFaqs: Faq[] = [
   {
     question: "How do I order as a customer?",
-    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers order 1 piece at a time. Payment is 100% Advance - 【entity-VISA¦canonical_name=VISA】, 【entity-MASTERCARD¦canonical_name=MASTERCARD】, 【entity-WESTERN UNION¦canonical_name=WESTERN UNION】 or BANK TRANSFER.",
+    answer: "Go to Shop, select your product, choose colour, Add to Cart and Checkout. Retail customers can order as many pieces and as many items as they want - add everything to Cart. There is no 1 piece limit for retail. Payment is 100% Advance - " + PAY_1 + ", " + PAY_2 + ", " + PAY_3 + " or BANK TRANSFER. Each piece is made on demand for you.",
   },
   {
     question: "How much is delivery for a customer?",
@@ -42,7 +45,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What is payment for wholesale buyers?",
-    answer: "For wholesale buyers: 50% Advance - 50% After Goods Are Ready, Before Dispatch. Payment via WESTERN UNION or BANK TRANSFER. For large orders, payment by Irrevocable LC at Sight can also be discussed. Sample freight is paid by the buyer. We confirm payment method, currency, and bank details in writing in the Quotation before production starts.",
+    answer: "For wholesale buyers: 50% Advance - 50% After Goods Are Ready, Before Dispatch. Payment via " + PAY_3 + " or BANK TRANSFER. For large orders, payment by Irrevocable LC at Sight can also be discussed. Sample freight is paid by the buyer. We confirm payment method, currency, and bank details in writing in the Quotation before production starts.",
   },
   {
     question: "What is production time for bulk orders?",
