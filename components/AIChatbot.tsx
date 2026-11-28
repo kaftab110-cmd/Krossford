@@ -5,7 +5,7 @@ import { products } from "@/lib/data/shop";
 
 type Msg = { sender: "user" | "ai"; text: string; image?: string };
 
-// ===== TUMHARA BUSINESS WhatsApp NUMBER =====
+// ===== TUMHARA BUSINESS 【entity-WhatsApp¦canonical_name=WhatsApp】 NUMBER =====
 const BUSINESS_WHATSAPP = "923030006759"; // +92303 0006759
 const WHATSAPP_LINK = `https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent("Hi KROSSFORD, I want to order leather products.")}`;
 
@@ -57,10 +57,10 @@ export default function AIChatbot() {
     if (lower.includes("sample")) return "Paid samples are available. If you place an order, the sample price will be applied to your order.";
     if (lower.includes("shipment") || lower.includes("delivery") || lower.includes("shipping") || lower.includes("total") || lower.includes("courier")) return "Shipping and delivery charges are confirmed based on your country and are not included in the product price. Your tracking number will be shared after dispatch. Estimated Total: 12-17 Working Days.";
     if (lower.includes("custom") || lower.includes("engrav") || lower.includes("logo") || lower.includes("design") || lower.includes("photo") || lower.includes("image") || lower.includes("glove")) return `Thanks for your design! For ${q}, custom names, engraving, and logos are available. Extra charges may apply and will be confirmed with your order. You can also send the design on WhatsApp.`;
-    if (lower.includes("payment") || lower.includes("pay")) return "Payment details will be shared on WhatsApp after your order is confirmed. Payments are secure and protected.";
+    if (lower.includes("payment") || lower.includes("pay")) return "Payment details will be shared on 【entity-WhatsApp¦canonical_name=WhatsApp】 after your order is confirmed. Payments are secure and protected.";
     const found = products.find(p => lower.includes(p.name.toLowerCase().split(" ")[0]));
     if (found) return `${found.name} - $${found.price} - ${found.description || found.category}. Select a colour and add it to your cart.`;
-    return "You can select a product from the Shop page and check out, or place an order on WhatsApp. Would you like information about pricing, wholesale orders, samples, or shipping?";
+    return "You can select a product from the Shop page and check out, or place an order on 【entity-WhatsApp¦canonical_name=WhatsApp】. Would you like information about pricing, wholesale orders, samples, or shipping?";
   };
 
   const handleSend = async () => {
@@ -97,8 +97,9 @@ export default function AIChatbot() {
   return (
     <>
       {!isOpen && (
-        <div className="fixed right-3 bottom-4 z-50 flex flex-col items-end gap-2">
-          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
+        // WA LOCKED — Mobile pe bottom-24 (writing se upar), Laptop pe bottom-4 (waisa hi)
+        <div className="fixed right-3 bottom-24 sm:bottom-4 z-50 flex flex-col items-end gap-2">
+          <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="w-11 h-11 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center text-sm font-bold shadow-lg border-2 border-white" title="Chat on WhatsApp - +92303 0006759">
             WA
           </a>
           <button onClick={() => setIsOpen(true)} className="bg-black text-white px-3 py-2 rounded-full shadow-lg text-xs font-bold border border-zinc-700 whitespace-nowrap">
@@ -107,6 +108,7 @@ export default function AIChatbot() {
         </div>
       )}
       {isOpen && (
+        // CHAT BOX LOCKED — Tooti hui w- / h- class fix kar di — Ab w- h- pori hai
         <div className="fixed right-3 bottom-4 z-50 w- max-w-[calc(100vw-24px)] h- max-h-[calc(100dvh-32px)] bg-white rounded-xl shadow-2xl flex flex-col overflow-hidden border">
           <div className="bg-black text-white p-3 flex justify-between items-center">
             <div>

@@ -57,13 +57,14 @@ export default function Navbar() {
   const cls = (h: string) => (pathname === h ? "text-[#D4AF37]" : "text-zinc-300 hover:text-[#D4AF37] transition-colors");
 
   return (
-    <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 left-0 right-0 z-50 w-full">
-      <div className="px-2 sm:px-3 md:px-6 py-2 flex justify-between items-center gap-2 w-full max-w-7xl mx-auto">
+    <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 left-0 right-0 z-50 w-full overflow-hidden">
+      {/* DESKTOP — Waisa hi — 1 Line */}
+      <div className="hidden lg:flex px-6 py-2 justify-between items-center gap-2 w-full max-w-7xl mx-auto">
         <Link href="/" className="flex items-center gap-1.5 min-w-0 shrink-0">
-          <Logo className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 shrink-0" />
-          <span className="text-[#D4AF37] uppercase text-base sm:text-xl lg:text-2xl whitespace-nowrap leading-none block" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}>KROSSFORD</span>
+          <Logo className="h-12 w-12 shrink-0" />
+          <span className="text-[#D4AF37] uppercase text-2xl whitespace-nowrap leading-none block" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}>KROSSFORD</span>
         </Link>
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-5 text-sm xl:text-base font-bold tracking-wider whitespace-nowrap shrink-0">
+        <nav className="flex items-center gap-4 xl:gap-5 text-sm xl:text-base font-bold tracking-wider whitespace-nowrap shrink-0">
           <Link href="/" className={pathname === "/" ? "text-[#D4AF37]" : "text-white hover:text-[#D4AF37]"}>HOME</Link>
           <Link href="/shop" className={cls("/shop")}>SHOP</Link>
           <Link href="/for-her" className={cls("/for-her")}>FOR HER</Link>
@@ -72,25 +73,40 @@ export default function Navbar() {
           <Link href="/about" className={cls("/about")}>ABOUT</Link>
           <Link href="/contact" className={cls("/contact") + " hidden xl:block"}>CONTACT US</Link>
         </nav>
-        <div className="hidden lg:flex items-center gap-4 text-sm xl:text-base font-bold tracking-wider shrink-0 whitespace-nowrap">
+        <div className="flex items-center gap-4 text-sm xl:text-base font-bold tracking-wider shrink-0 whitespace-nowrap">
           <Link href="/wishlist" className="text-zinc-300 hover:text-white">WISHLIST ({mounted ? wishlistCount : 0})</Link>
           <Link href="/cart" className="text-zinc-300 hover:text-white">CART ({mounted ? cartCount : 0})</Link>
         </div>
-        <div className="flex lg:hidden items-center gap-1.5 shrink-0">
-          <Link href="/wishlist" className="h-9 px-2.5 text-xs font-bold text-white border border-white/40 rounded-full flex items-center justify-center whitespace-nowrap">WISHLIST ({mounted ? wishlistCount : 0})</Link>
-          <Link href="/cart" className="h-9 px-2.5 text-xs font-bold text-white border border-white/40 rounded-full flex items-center justify-center whitespace-nowrap">CART ({mounted ? cartCount : 0})</Link>
-          <button onClick={() => setOpen(true)} className="text-white p-1 w-9 h-9 flex items-center justify-center border border-white/20 rounded" aria-label="Open Menu">
+      </div>
+
+      {/* MOBILE / TABLET — LOCKED — 2 Line — Kabhi Cutting Nahi Hogi */}
+      <div className="lg:hidden w-full px-3 pt-2 pb-2">
+        {/* Line 1 — Sirf Logo + Menu — Wishlist / Cart Yahan Nahi Honge */}
+        <div className="flex items-center justify-between gap-2 w-full min-w-0">
+          <Link href="/" className="flex items-center gap-1.5 min-w-0 flex-1">
+            <Logo className="h-8 w-8 shrink-0" />
+            <span className="text-[#D4AF37] uppercase text- whitespace-nowrap leading-none block truncate" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.08em" }}>KROSSFORD</span>
+          </Link>
+          <button onClick={() => setOpen(true)} className="text-white w-9 h-9 shrink-0 flex items-center justify-center border border-white/20 rounded" aria-label="Open Menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
           </button>
         </div>
-      </div>
-      <div className="border-t border-zinc-800 bg-black">
-        <div className="max-w-4xl mx-auto px-2 sm:px-4 py-2.5 grid grid-cols-3 gap-2 sm:gap-4">
-          <Link href="/combo-deals" className="px-1 py-2.5 rounded-full border-2 text-xs sm:text-sm font-bold whitespace-nowrap text-center bg-[#E8C15A] text-black border-[#E8C15A]">COMBO DEALS</Link>
-          <Link href="/sale" className="px-1 py-2.5 rounded-full border-2 text-xs sm:text-sm font-bold whitespace-nowrap text-center bg-red-600 text-white border-red-600">SALE 🔥</Link>
-          <Link href="/announcements" className="px-1 py-2.5 rounded-full border-2 text-xs sm:text-sm font-bold whitespace-nowrap text-center bg-white text-black border-white">ANNOUNCEMENTS</Link>
+        {/* Line 2 — Wishlist + Cart — Pori Width Pe — 2 Barabar Hisse */}
+        <div className="grid grid-cols-2 gap-2 w-full mt-2">
+          <Link href="/wishlist" className="h-9 px-1 text- font-bold text-white border border-white/40 rounded-full flex items-center justify-center whitespace-nowrap overflow-hidden">WISHLIST ({mounted ? wishlistCount : 0})</Link>
+          <Link href="/cart" className="h-9 px-1 text- font-bold text-white border border-white/40 rounded-full flex items-center justify-center whitespace-nowrap overflow-hidden">CART ({mounted ? cartCount : 0})</Link>
         </div>
       </div>
+
+      {/* COMBO / SALE / ANNOUNCEMENTS — Font Chhota Kar Diya — Taake 3no Ek Line Me Aa Jayen */}
+      <div className="border-t border-zinc-800 bg-black">
+        <div className="max-w-4xl mx-auto px-2 py-2 grid grid-cols-3 gap-1.5 sm:gap-2">
+          <Link href="/combo-deals" className="px-1 py-2.5 rounded-full border-2 text- sm:text-xs font-bold whitespace-nowrap text-center bg-[#E8C15A] text-black border-[#E8C15A] overflow-hidden">COMBO DEALS</Link>
+          <Link href="/sale" className="px-1 py-2.5 rounded-full border-2 text- sm:text-xs font-bold whitespace-nowrap text-center bg-red-600 text-white border-red-600 overflow-hidden">SALE 🔥</Link>
+          <Link href="/announcements" className="px-1 py-2.5 rounded-full border-2 text- sm:text-xs font-bold whitespace-nowrap text-center bg-white text-black border-white overflow-hidden">ANNOUNCEMENTS</Link>
+        </div>
+      </div>
+
       {open && (
         <div className="fixed inset-0 z-50 flex justify-end lg:hidden">
           <div className="absolute inset-0 bg-black/80" onClick={() => setOpen(false)} />
