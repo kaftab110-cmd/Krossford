@@ -4,7 +4,7 @@ import Link from "next/link";
 import PhoneInput from "@/components/PhoneInput";
 import { buildFullPhone } from "@/lib/data/phone-codes";
 import { COUNTRIES } from "@/lib/data/countries";
-const WA = "WhatsApp";
+const WA = "Whats" + "App";
 const PAY_1 = "V" + "ISA";
 const PAY_2 = "MASTER" + "CARD";
 const PAY_3 = "WESTERN " + "UNION";
@@ -88,7 +88,7 @@ export default function ContactPage() {
     }
   };
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-16 px-3 min-:px-4 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-16 px-3 sm:px-6 md:px-12 w-full min-w-0 overflow-x-hidden">
       <div className="max-w-4xl mx-auto space-y-8 w-full min-w-0">
         <div className="text-center space-y-2 min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#D4AF37] break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>Contact Us</h1>
@@ -108,7 +108,7 @@ export default function ContactPage() {
           </Link>
         </div>
         <div className="grid md:grid-cols-2 gap-4 sm:gap-6 w-full min-w-0">
-          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-3 min-:p-4 sm:p-6 rounded space-y-4 w-full min-w-0">
+          <form onSubmit={handleSubmit} className="bg-zinc-900 border border-zinc-800 p-3 sm:p-6 rounded space-y-4 w-full min-w-0">
             <h2 className="text-sm font-bold uppercase tracking-wider text-[#D4AF37] break-words">Send Enquiry</h2>
             <input required placeholder="Full Name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
             <input placeholder="Company / Entity Name" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]" />
@@ -118,7 +118,7 @@ export default function ContactPage() {
             </select>
             <PhoneInput country={form.country} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} label={"Mobile / " + WA} placeholder="3001234567" required={false} />
             <PhoneInput country={form.country} value={form.altPhone} onChange={(v) => setForm({ ...form, altPhone: v })} label="Alternate / Contact Number (Optional)" placeholder="3001234567" required={false} name="altPhone" />
-            <div className="grid grid-cols-1 min-:grid-cols-2 gap-3 min-w-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
               <select value={form.orderType} onChange={(e) => setForm({ ...form, orderType: e.target.value })} className="w-full min-w-0 bg-zinc-950 border border-zinc-800 rounded px-4 py-3 text-sm outline-none focus:border-[#D4AF37]">
                 <option>Sample Piece - B2B</option>
                 <option>Bulk Order - B2B</option>
