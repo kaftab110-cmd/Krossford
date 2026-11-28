@@ -1,8 +1,8 @@
-// Footer.tsx - FIXED - Policy Links + Blind Partner Rule
-// 1. Policy links added - Shipping / Returns / Privacy / Terms / FAQ / Track Order
-// 2. Blind Partner Rule - "Ships from Pakistan" HATA diya - Sirf KROSSFORD
-// 3. Payment pills - gap already fixed - kept
-// 4. No 【entity-DHL¦canonical_name=DHL】 word - Only Fastest Delivery
+// Footer.tsx - FIXED - Policy Links + Blind Partner Rule + Sequence Fixed
+// 1. Policy links - Shipping / Impressum / Returns / Privacy / Terms
+// 2. Sequence - SHOP Pehle - CUSTOMER SERVICE Dusra - POLICIES Teesra
+// 3. Blind Partner Rule - "Ships from Pakistan" HATA diya - Sirf KROSSFORD
+// 4. No DHL word - Only Fastest Delivery
 
 import Link from "next/link";
 
@@ -27,36 +27,37 @@ export default function Footer() {
           We don&apos;t keep ready-made stock. Every Krossford bag is made only after your order, to keep its craftsmanship and exclusivity.
         </p>
         <p className="text-center text- min-:text-xs leading-relaxed mt-2.5 break-words max-w-full sm:max-w-2xl mx-auto px-1">
-          Handcrafted • Custom Made On Demand • Ships via Fastest Delivery • Estimated Total:{" "}
+          Handcrafted To Order • Ships via Fastest Delivery • Estimated Total:{" "}
           <span className="text-white font-bold">12-17 Working Days</span> • Full Tracking Provided • Shipped by KROSSFORD
         </p>
 
-        {/* POLICY + HELP LINKS - Gemini Report #1 Fix - Footer me Policy Links Missing The */}
+        {/* FOOTER LINKS - Sequence Fixed - SHOP Pehle - CUSTOMER SERVICE Dusra - POLICIES Teesra */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 max-w-3xl mx-auto mt-7 text-left">
           <div>
-            <p className="text-white font-bold tracking-wider text-xs mb-3">CUSTOMER SERVICE</p>
-            <ul className="space-y-2">
-              <li><Link href="/track-order" className="hover:text-[#D4AF37]">Track Your Order</Link></li>
-              <li><Link href="/contact" className="hover:text-[#D4AF37]">Contact Us</Link></li>
-              <li><Link href="/faq" className="hover:text-[#D4AF37]">FAQs</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-white font-bold tracking-wider text-xs mb-3">POLICIES</p>
-            <ul className="space-y-2">
-              <li><Link href="/shipping-policy" className="hover:text-[#D4AF37]">Shipping Policy</Link></li>
-              <li><Link href="/returns" className="hover:text-[#D4AF37]">Returns &amp; Refunds</Link></li>
-              <li><Link href="/privacy-policy" className="hover:text-[#D4AF37]">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-[#D4AF37]">Terms of Service</Link></li>
-            </ul>
-          </div>
-          <div className="col-span-2 sm:col-span-1">
             <p className="text-white font-bold tracking-wider text-xs mb-3">SHOP</p>
             <ul className="space-y-2">
               <li><Link href="/shop" className="hover:text-[#D4AF37]">Shop All</Link></li>
               <li><Link href="/for-her" className="hover:text-[#D4AF37]">For Her</Link></li>
               <li><Link href="/combo-deals" className="hover:text-[#D4AF37]">Combo Deals</Link></li>
               <li><Link href="/b2b" className="hover:text-[#D4AF37]">B2B Wholesale</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-white font-bold tracking-wider text-xs mb-3">CUSTOMER SERVICE</p>
+            <ul className="space-y-2">
+              <li><Link href="/contact" className="hover:text-[#D4AF37]">Contact Us</Link></li>
+              <li><Link href="/track-order" className="hover:text-[#D4AF37]">Track Your Order</Link></li>
+              <li><Link href="/faq" className="hover:text-[#D4AF37]">FAQs</Link></li>
+            </ul>
+          </div>
+          <div className="col-span-2 sm:col-span-1">
+            <p className="text-white font-bold tracking-wider text-xs mb-3">POLICIES</p>
+            <ul className="space-y-2">
+              <li><Link href="/shipping-policy" className="hover:text-[#D4AF37]">Shipping Policy</Link></li>
+              <li><Link href="/impressum" className="hover:text-[#D4AF37]">Impressum</Link></li>
+              <li><Link href="/returns" className="hover:text-[#D4AF37]">Returns &amp; Refunds</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-[#D4AF37]">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-[#D4AF37]">Terms of Service</Link></li>
             </ul>
           </div>
         </div>
