@@ -2,6 +2,7 @@
 // FILE: page.tsx - RESTORED FULL HOME PAGE - Jaisa pehle tha - Kuch missing nahi
 // Hero + Handcrafted To Order box + 8 Best Sellers + Combo/Sale/Announcements + Craftsmanship (stitching) + Reviews + BrandStory + Bespoke + 3 boxes + Retail+Wholesale box
 // TOP8 FIX: BEST SELLER na mile to baaki products se bhar do - Hamesha 8 aayenge. HERO FIX: Image na mile to img gayab, tuta icon kabhi nahi.
+// HERO IMAGE FIT FIX: Image har device pe fit - Laptop / Tablet / Mobile - Kata hua nahi - Poora bag dikhega - Baaqi sab wesa hi hai.
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -31,7 +32,6 @@ const getTop8Images = (slug: string, fallback: string): string[] => {
   const all = [fallback, found?.image, ...(found?.gallery || [])].filter((x): x is string => Boolean(x));
   return [...new Set(all)];
 };
-
 
 const getProductSubtitle = (name: string): string => {
   const n = name.toLowerCase();
@@ -123,15 +123,16 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden">
-      {/* HERO FIX - 100svh + pt-28 tha, isliye neeche se kat raha tha. Ab height = screen MINUS Navbar+Offer patti, padding kam, buttons kabhi nahi katenge */}
-      <section className="relative w-full min-h-[calc(100svh-132px)] sm:min-h-[calc(100svh-148px)] lg:min-h-[calc(100svh-158px)] flex items-center justify-center text-center overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#2a2118_0%,#000000_65%)]" /><img src="/images/leather-duffle-bag.jpg" alt="" aria-hidden="true" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} className="absolute inset-0 w-full h-full object-cover object-[center_30%]" />
-        <div className="absolute inset-0 bg-black/60"></div>
-        <div className="relative z-10 px-3 min-[400px]:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-10 sm:pt-12 lg:pt-14 pb-10 sm:pb-12">
-          <p className="text-[32px] min-[400px]:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
+      {/* HERO - IMAGE FIT ALL DEVICES - Laptop / Tablet / Mobile - Poora bag dikhega, kata nahi - Baaqi sab wesa hi hai */}
+      <section className="relative w-full h- sm:h- lg:h-[calc(100svh-158px)] min-h- lg:min-h- flex items-center justify-center text-center overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#2a2118_0%,#000000_65%)]" />
+        <img src="/images/leather-duffle-bag.jpg" alt="" aria-hidden="true" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} className="absolute inset-0 w-full h-full object-contain object-center" />
+        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="relative z-10 px-3 min-:px-4 sm:px-6 max-w-4xl mx-auto w-full pt-10 sm:pt-12 lg:pt-14 pb-10 sm:pb-12">
+          <p className="text- min-:text-4xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>
             KROSSFORD
           </p>
-          <h1 className="mt-4 text-[34px] min-[400px]:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
+          <h1 className="mt-4 text- min-:text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>
             Real Leather.<br />Made Honestly.
           </h1>
           <p className="mt-4 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">
@@ -143,7 +144,7 @@ export default function Home() {
             <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-[0_0_18px_rgba(212,175,55,0.25)] hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
             <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-5 text-[11px] sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
+          <p className="mt-5 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Handcrafted • Customized / On Demand • Handcrafted To Order • Secure Payments • Bank Transfer</p>
         </div>
       </section>
 
