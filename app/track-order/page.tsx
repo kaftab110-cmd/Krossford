@@ -9,6 +9,15 @@ const C2 = "Fed" + "Ex";
 const C3 = "U" + "PS";
 const C4 = "Ara" + "mex";
 const C5 = "U" + "SPS";
+const C6 = "Sky" + "net";
+const C7 = "T" + "NT";
+const C8 = "G" + "LS";
+const C9 = "Ev" + "ri";
+const C10 = "Yun" + "Express";
+const C11 = "Cai" + "niao";
+const C12 = "Post" + "NL";
+const C13 = "Colis" + "simo";
+const C14 = "Cor" + "reos";
 const CHAT = "Whats" + "App";
 
 const COURIERS = [
@@ -22,6 +31,15 @@ const COURIERS = [
   { id: "canadapost", name: "Canada Post — Canada", url: (t: string) => `https://www.canadapost-postescanada.ca/track-reperage/en#/details/${encodeURIComponent(t)}` },
   { id: "auspost", name: "Australia Post — Australia", url: (t: string) => `https://auspost.com.au/mypost/track/#/details/${encodeURIComponent(t)}` },
   { id: "d" + "hl-ecommerce", name: C1 + " eCommerce — International", url: (t: string) => `https://webtrack.dhlglobalmail.com/?trackingnumber=${encodeURIComponent(t)}` },
+  { id: "sky" + "net", name: C6 + " — International", url: (t: string) => `https://www.skynetworldwideexpress.com/track/?tracking_number=${encodeURIComponent(t)}` },
+  { id: "t" + "nt", name: C7 + " — International", url: (t: string) => `https://www.tnt.com/express/en_us/site/shipping-tools/tracking.html?searchType=CON&cons=${encodeURIComponent(t)}` },
+  { id: "g" + "ls", name: C8 + " — Europe", url: (t: string) => `https://gls-group.com/GROUP/en/parcel-tracking?match=${encodeURIComponent(t)}` },
+  { id: "ev" + "ri", name: C9 + " — UK", url: (t: string) => `https://www.evri.com/track-a-parcel?trackingReference=${encodeURIComponent(t)}` },
+  { id: "yun" + "express", name: C10 + " — International", url: (t: string) => `https://www.yunexpress.com/Track/Track?TrackNumber=${encodeURIComponent(t)}` },
+  { id: "cai" + "niao", name: C11 + " — International", url: (t: string) => `https://global.cainiao.com/detail.htm?mailNoList=${encodeURIComponent(t)}` },
+  { id: "post" + "nl", name: C12 + " — Netherlands", url: (t: string) => `https://www.postnl.nl/en/track-and-trace/?barcode=${encodeURIComponent(t)}` },
+  { id: "colis" + "simo", name: C13 + " — France", url: (t: string) => `https://www.laposte.fr/outils/suivre-vos-envois?code=${encodeURIComponent(t)}` },
+  { id: "cor" + "reos", name: C14 + " — Spain", url: (t: string) => `https://www.correos.es/es/en/individuals/consult-your-shipment?tracking-number=${encodeURIComponent(t)}` },
 ];
 
 export default function TrackOrderPage() {
@@ -46,7 +64,7 @@ export default function TrackOrderPage() {
 
   const openCourier = (id?: string) => {
     const t = (trackingNo || orderRef).trim();
-    if (!t) { setCourierMsg("Pehle Tracking Number likho — Jo humne " + CHAT + " / Email par bheja tha."); return; }
+    if (!t) { setCourierMsg("Please enter your Tracking Number first — The one we sent you on " + CHAT + " / Email."); return; }
     const c = COURIERS.find((x) => x.id === (id || courierId)) || COURIERS[0];
     setCourierMsg("");
     window.open(c.url(t), "_blank", "noopener,noreferrer");
@@ -186,7 +204,7 @@ export default function TrackOrderPage() {
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3 sm:p-5 w-full min-w-0 overflow-hidden">
           <h2 className="text-sm font-bold uppercase tracking-wider text-amber-400 text-center break-words">Track Directly With Courier</h2>
-          <p className="text-xs text-zinc-400 text-center mt-2 leading-relaxed break-words">Apna Tracking Number likho — Courier chuno — Uske Tracking Page par chale jao.</p>
+          <p className="text-xs text-zinc-400 text-center mt-2 leading-relaxed break-words">Enter your Tracking Number — Select your Courier — Go to its Tracking Page.</p>
           <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full min-w-0">
             <input
               placeholder="Tracking Number * e.g. 1234567890"
