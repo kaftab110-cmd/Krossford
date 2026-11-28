@@ -1,10 +1,10 @@
-import LegalNav from "@/components/LegalNav";
+import RelatedPolicies from "@/components/RelatedPolicies";
 import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Shipping Policy | KROSSFORD",
-  description: "Shipping policy for KROSSFORD - handcrafted to order, fastest delivery, 12-17 working days. Pakistan law applies. International customers pay VAT / Tax as per their own country law.",
+  description: "Shipping policy for KROSSFORD - Custom Made On Demand, fastest delivery, 12-17 working days. Pakistan law applies. International customers pay VAT / Tax as per their own country law.",
 };
 
 export default function ShippingPolicyPage() {
@@ -46,7 +46,7 @@ export default function ShippingPolicyPage() {
           <section className="rounded-lg border border-yellow-500/10 bg-zinc-950 p-6">
             <h2 className="text-lg font-semibold text-white mb-3">3. How Your Order Is Made — Images + Videos at Each Step</h2>
             <p className="text-zinc-400 text-xs sm:text-sm">
-              We will share images and videos at each step — 1. Cutting — 2. Making — 3. Finishing — 4. Packing — 5. Shipment. If you are not satisfied at any step, tell us on WhatsApp before shipment — we will stop here and correct it.
+              We will share images and videos at each step — 1. Cutting — 2. Making — 3. Finishing — 4. Packing — 5. Shipment. If you are not satisfied at any step, tell us on 【entity-WhatsApp¦canonical_name=WhatsApp】 before shipment — we will stop here and correct it.
             </p>
           </section>
 
@@ -117,7 +117,7 @@ export default function ShippingPolicyPage() {
           </section>
         </div>
 
-        <LegalNav currentSlug="shipping" />
+        <RelatedPolicies />
 
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
           <Link href="/contact" className="inline-block rounded-md border border-yellow-500 px-6 py-3 text-sm font-medium text-yellow-500 hover:bg-yellow-500 hover:text-black transition">Contact Us</Link>
