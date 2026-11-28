@@ -3,9 +3,6 @@ export type Faq = {
   answer: string;
 };
 
-const DH = "D" + "HL";
-const FE = "Fed" + "Ex";
-const UP = "U" + "PS";
 const CHAT = "Whats" + "App";
 const PAY_1 = "V" + "ISA";
 const PAY_2 = "MASTER" + "CARD";
@@ -18,7 +15,7 @@ export const customerFaqs: Faq[] = [
   },
   {
     question: "How much is delivery for a customer?",
-    answer: "Delivery is via " + DH + " Express. Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by " + DH + " or Customs is outside our control.",
+    answer: "Delivery is via Fastest Delivery. Estimated Total: 12-17 Working Days. Tracking is provided. We always aim to deliver earlier. Delivery time is an estimate, not a guarantee - delay by courier or Customs is outside our control.",
   },
   {
     question: "Can a customer return or exchange?",
@@ -65,7 +62,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What if I want my order by courier or by Air?",
-    answer: "You can choose " + DH + " / " + FE + " / " + UP + " Courier or Air Cargo. " + DH + " Courier takes an estimated 3-7 days door-to-door from Sialkot to US, Europe, and Australia. Air Cargo takes an estimated 7-10 days. Shipment Charges are paid by the Buyer - Freight + Insurance + Customs Clearance + Duty in your country are Buyer's responsibility. If you have your own freight forwarder, we will hand over the goods to your forwarder. We confirm the shipping method and who pays what in writing before dispatch, so there is no dispute later.",
+    answer: "You can choose Courier or Air Cargo. Courier takes an estimated 3-7 days door-to-door from Sialkot to US, Europe, and Australia. Air Cargo takes an estimated 7-10 days. Shipment Charges are paid by the Buyer - Freight + Insurance + Customs Clearance + Duty in your country are Buyer's responsibility. If you have your own freight forwarder, we will hand over the goods to your forwarder. We confirm the shipping method and who pays what in writing before dispatch, so there is no dispute later.",
   },
   {
     question: "Can buyers add Custom Logo / Private Label?",
@@ -73,7 +70,7 @@ export const buyerFaqs: Faq[] = [
   },
   {
     question: "What documents do I get for a bulk order?",
-    answer: "You get all documents required for Customs clearance from our side: Proforma Invoice / Quotation (before order), Commercial Invoice (final bill), Packing List (carton-wise quantity, net and gross weight, dimensions), Certificate of Origin (Made in Pakistan - from Chamber of Commerce, GSP Certificate for EU on request), and Bill of Lading (for sea shipments) or Airway Bill / " + DH + " Tracking (for air / courier shipments). Lab Test Report - if you requested it before production - is shared as agreed. Test Reports - REACH / AZO-Free - are available on request for EU / US buyers at extra charges, confirmed before production.",
+    answer: "You get all documents required for Customs clearance from our side: Proforma Invoice / Quotation (before order), Commercial Invoice (final bill), Packing List (carton-wise quantity, net and gross weight, dimensions), Certificate of Origin (Made in Pakistan - from Chamber of Commerce, GSP Certificate for EU on request), and Bill of Lading (for sea shipments) or Airway Bill / Courier Tracking (for air / courier shipments). Lab Test Report - if you requested it before production - is shared as agreed. Test Reports - REACH / AZO-Free - are available on request for EU / US buyers at extra charges, confirmed before production.",
   },
   {
     question: "What if there is a defect in a bulk order? What about change of mind?",
