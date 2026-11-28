@@ -113,20 +113,20 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden w-full min-w-0">
-      {/* HERO — FIXED HEIGHT HATA DI — AB HAR DEVICE PE APNI HEIGHT KHUD LEGA — KAHI CUTTING NAHI HOGI */}
-      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black min-h- sm:min-h- lg:min-h- py-12 sm:py-16">
-        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "center center", opacity: "0.9" }} />
+      {/* HERO LOCKED — ISI FILE ME — Koi min-h / vh / calc / tooti hui class NAHI hai — Height = Sirf content jitni */}
+      <section className="relative w-full flex items-center justify-center text-center overflow-hidden bg-black py-8 sm:py-10">
+        <img src="/images/leather-duffle-bag.jpg" alt="Leather Duffle Bag" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: "center 35%", opacity: "0.9" }} />
         <div className="absolute inset-0 bg-black/55"></div>
-        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full min-w-0 pt-4 pb-24 sm:pb-8">
-          <p className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>KROSSFORD</p>
-          <h1 className="mt-3 text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>Genuine Leather.<br />Made Honestly.</h1>
-          <p className="mt-3 text-sm sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
-          <div className="mt-5 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 w-full max-w-xl mx-auto">
-            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3.5 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-lg hover:bg-[#D4AF37] text-center">Shop Collection</a>
-            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3.5 rounded-md text-sm font-bold tracking-wide shadow-md hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
-            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3.5 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
+        <div className="relative z-10 px-4 sm:px-6 max-w-4xl mx-auto w-full min-w-0 pt-2 pb-2">
+          <p className="text- sm:text-4xl md:text-5xl font-bold tracking-normal sm:tracking-widest text-[#D4AF37] uppercase text-center leading-tight break-words" style={{ fontFamily: "var(--font-brand)" }}>KROSSFORD</p>
+          <h1 className="mt-2 text- sm:text-5xl md:text-6xl font-bold leading-[1.05] text-center break-words" style={{ fontFamily: "var(--font-brand)" }}>Genuine Leather.<br />Made Honestly.</h1>
+          <p className="mt-2 text- sm:text-base md:text-lg text-zinc-300 max-w-3xl mx-auto leading-relaxed text-center">A New-Generation International Leather Brand, Since 2025. Sample Before Bulk. Genuine Leather - Hide As Confirmed In Writing (Cow / Buffalo / Sheep / Goat / Camel). Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <div className="mt-4 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2.5 sm:gap-3 w-full max-w-xl mx-auto">
+            <a href="/shop" className="w-full sm:w-auto bg-[#E8C15A] text-black px-7 py-3 rounded-md text-sm font-bold tracking-wide border-2 border-[#E8C15A] shadow-lg hover:bg-[#D4AF37] text-center">Shop Collection</a>
+            <a href="/b2b" className="w-full sm:w-auto border-2 border-[#E8C15A] bg-[#D4AF37]/15 text-[#E8C15A] px-7 py-3 rounded-md text-sm font-bold tracking-wide shadow-md hover:bg-[#E8C15A] hover:text-black text-center">Retail + Wholesale</a>
+            <a href="/contact" className="w-full sm:w-auto border-2 border-white bg-white/10 text-white px-7 py-3 rounded-md text-sm font-bold tracking-wide hover:border-[#E8C15A] hover:text-[#E8C15A] text-center">Request Sample</a>
           </div>
-          <p className="mt-5 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed break-words"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Custom Made On Demand • Secure Payments • Bank Transfer</p>
+          <p className="mt-3 text- sm:text-sm text-zinc-400 tracking-widest uppercase text-center leading-relaxed break-words"><span className="text-[#D4AF37]">Shipped by KROSSFORD</span> • Custom Made On Demand • Secure Payments • Bank Transfer</p>
         </div>
       </section>
       <section className="mx-auto max-w-7xl px-4 sm:px-6 pt-10 pb-2">
