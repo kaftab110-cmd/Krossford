@@ -92,8 +92,8 @@ export default function ContactPage() {
       <div className="max-w-4xl mx-auto space-y-8 w-full min-w-0">
         <div className="text-center space-y-2 min-w-0">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-widest text-[#D4AF37] break-words leading-snug" style={{ fontFamily: "var(--font-brand)" }}>Contact Us</h1>
-          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Wholesale / Bulk Enquiries Only • Handcrafted • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
-          <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-2 normal-case tracking-normal">Handcrafted from full-grain leather — vegetable-tanned, carefully cut and hand-finished by KROSSFORD. Sample before bulk. Ships worldwide with full tracking.</p>
+          <p className="text-xs text-zinc-400 uppercase tracking-widest break-words">Retail &amp; Wholesale Enquiries • Custom Made On Demand — Made As Per Buyer &amp; Customer Requirement.</p>
+          <p className="text-xs text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-2 normal-case tracking-normal">Made from full-grain leather — vegetable-tanned, carefully cut and finished by KROSSFORD. Sample before bulk. Ships worldwide with full tracking.</p>
         </div>
         <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
           <Link href="/b2b" className="border border-[#D4AF37]/50 rounded-lg p-4 sm:p-5 bg-[#D4AF37]/5 hover:border-[#D4AF37] transition-colors text-center min-w-0">
@@ -102,8 +102,8 @@ export default function ContactPage() {
             <p className="text-xs font-bold mt-2 underline break-words">Go To B2B Form →</p>
           </Link>
           <Link href="/shop" className="border border-zinc-800 rounded-lg p-4 sm:p-5 bg-zinc-900 hover:border-[#D4AF37] transition-colors text-center min-w-0">
-            <p className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest break-words">I Want To Buy 1 Piece</p>
-            <p className="text-xs text-zinc-400 mt-1 break-words">Full-Grain Leather • Handcrafted • Honest Price</p>
+            <p className="text-xs font-bold text-[#D4AF37] uppercase tracking-widest break-words">I Want To Buy Retail</p>
+            <p className="text-xs text-zinc-400 mt-1 break-words">Full-Grain Leather • Custom Made On Demand • Honest Price • Order As Many Pieces As You Want</p>
             <p className="text-xs font-bold mt-2 underline break-words">Go To Shop →</p>
           </Link>
         </div>
@@ -146,7 +146,7 @@ export default function ContactPage() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-[#D4AF37] mt-2 break-words">⚠ Photos yahan se upload nahi hoti — Enquiry bhejne ke baad apna design {WA} (+92303 0006759) ya Email (hello@krossford.com) par bhej dein, taake design mil jaye.</p>
+                  <p className="text-xs text-[#D4AF37] mt-2 break-words">⚠ Photos are not uploaded from here — After sending the enquiry, please send your design on {WA} (+92303 0006759) or Email (hello@krossford.com) so we receive your design.</p>
                 </div>
               )}
             </div>
@@ -163,7 +163,7 @@ export default function ContactPage() {
               <span className="block text-xs text-zinc-400 uppercase break-words">Email Us</span>
               <span className="text-sm font-bold break-all">{contact.email}</span>
             </a>
-            <a href={`https://wa.me/${contact.waNumber}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail (1 Piece) or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-4 sm:px-5 py-4 transition hover:border-[#25D366] min-w-0">
+            <a href={`https://wa.me/${contact.waNumber}?text=${encodeURIComponent("Hi KROSSFORD, I want to enquire about Retail or Wholesale / Bulk leather order.")}`} target="_blank" rel="noopener noreferrer" className="block rounded-md border border-[#25D366]/30 px-4 sm:px-5 py-4 transition hover:border-[#25D366] min-w-0">
               <span className="block text-xs text-zinc-400 uppercase break-words">{WA} / Phone</span>
               <span className="text-sm font-bold text-[#25D366] break-words">{contact.waDisplay} 💬 Chat Now</span>
             </a>
@@ -174,7 +174,7 @@ export default function ContactPage() {
             <div className="block rounded-md border border-zinc-800 px-4 sm:px-5 py-4 bg-zinc-900 min-w-0">
               <span className="block text-xs text-zinc-400 uppercase break-words">Payment</span>
               <span className="text-xs text-zinc-300 mt-1 block break-words">{PAY_1} | {PAY_2} | {PAY_3} | BANK TRANSFER</span>
-              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% Before Dispatch • Sample Before Bulk • Handcrafted • Custom Made On Demand</span>
+              <span className="text-xs text-zinc-400 mt-1 block break-words">Retail: 100% Advance • Wholesale: 50% Advance - 50% Before Dispatch • Sample Before Bulk • Custom Made On Demand</span>
             </div>
           </div>
         </div>
