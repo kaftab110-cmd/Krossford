@@ -4,25 +4,34 @@ import { useState } from "react";
 
 // FOLDER: components
 // FILE: Hero.tsx - PEHLE SE HAI - ISKO POORA REPLACE KARO
-// FIX: Hero image break thi kyunki sirf 1 image thi - /images/hero-bag.jpg
-// Ab 3-level fallback hai: hero-bag.jpg -> leather-duffle-bag.jpg -> wallet.jpg
-// Koi 1 bhi mil gayi to hero kabhi kaala / toota nahi dikhega.
+// FINAL FIX: Tuta hua icon kabhi nahi dikhega.
+// Pehle wali file me problem ye thi - img tag hamesha dikhta tha, chahe image na mile.
+// Ab: Agar 3no image fail ho jayein to img tag hi gayab ho jayega - Sirf gradient + writing rahega - Saaf lagega - Toota nahi lagega.
 export default function Hero() {
   const FALLBACKS = ["/images/hero-bag.jpg", "/images/leather-duffle-bag.jpg", "/images/wallet.jpg"];
   const [heroIdx, setHeroIdx] = useState(0);
+  const [imgFailedAll, setImgFailedAll] = useState(false);
   const heroSrc = FALLBACKS[Math.min(heroIdx, FALLBACKS.length - 1)];
   return (
     <section className="relative w-full min-h-[calc(100svh-132px)] flex flex-col justify-center items-center text-center overflow-hidden bg-black">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <img
-          src={heroSrc}
-          alt="Krossford Leather Bag"
-          onError={() => { if (heroIdx < FALLBACKS.length - 1) setHeroIdx((i) => i + 1); }}
-          className="w-full h-full object-cover opacity-70"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+      {/* Background - Gradient hamesha rahega - Taake image na bhi ho to hero kaala / toota na lage */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#2a2118_0%,#000000_65%)]" />
+      {/* Background Image - Sirf tab dikhega jab tak fail nahi hua */}
+      {!imgFailedAll && (
+        <div className="absolute inset-0">
+          <img
+            src={heroSrc}
+            alt=""
+            aria-hidden="true"
+            onError={() => {
+              if (heroIdx < FALLBACKS.length - 1) setHeroIdx((i) => i + 1);
+              else setImgFailedAll(true);
+            }}
+            className="w-full h-full object-cover opacity-70"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
+      )}
       {/* Content - pb-14 rakha hai taake neeche wali Ticker buttons ke upar na chadhe */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 pt-6 pb-14 w-full max-w-6xl mx-auto">
         <p className="text-2xl sm:text-3xl md:text-4xl text-amber-400 uppercase text-center leading-none" style={{ fontFamily: "var(--font-brand)", fontWeight: 600, letterSpacing: "0.05em" }}>
